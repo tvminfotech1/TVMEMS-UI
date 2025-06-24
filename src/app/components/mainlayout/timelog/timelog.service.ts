@@ -5,7 +5,6 @@ import { Observable } from 'rxjs';
 export interface TimelogEntry {
   employeeName: string;
   project: string;
-  wfol: boolean;
   hours: {
     Monday: string;
     Tuesday: string;
