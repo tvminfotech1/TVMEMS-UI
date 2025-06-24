@@ -1,0 +1,64 @@
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.2rem;
+  margin: 20px auto;
+  max-width: 800px;
+  }
+  
+  .form-group {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .form-group label {
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  
+  input, select {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: #fefefe;
+  }
+  
+  .button-group {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  .update-button {
+    padding: 10px 20px;
+    border-radius: 8px;
+    background-color: blue;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .button-group a {
+    text-decoration: none;
+    background-color: #f0f0f0;
+    padding: 10px 20px;
+    border-radius: 8px;
+    color: black;
+    font-weight: bold;
+  }
+  
+  .button-group a:hover, .update-button:hover {
+    background-color: #004aad;
+    color: white;
+  }
+  
+  .error {
+  color: red;
+  font-size: 12px;
+  margin-top: 4px;
+}
+input[readonly]:hover{
+cursor: not-allowed;
+}

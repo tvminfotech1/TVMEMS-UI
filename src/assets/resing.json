@@ -1,0 +1,26 @@
+[
+  {
+    "name": "John Doe",
+    "employeeId": "EMP001",
+    "reason": "Personal Reasons",
+    "comment": "I need to focus on personal growth and mental health.",
+    "date": "2025-06-10",
+    "status": "Submitted"
+  },
+  {
+    "name": "Priya Sharma",
+    "employeeId": "EMP002",
+    "reason": "Relocation",
+    "comment": "I am moving to a different city with my family.",
+    "date": "2025-06-09",
+    "status": "Submitted"
+  },
+  {
+    "name": "Rahul Verma",
+    "employeeId": "EMP003",
+    "reason": "Career Growth",
+    "comment": "I have received a better opportunity that aligns with my long-term goals.",
+    "date": "2025-06-08",
+    "status": "Submitted"
+  }
+]

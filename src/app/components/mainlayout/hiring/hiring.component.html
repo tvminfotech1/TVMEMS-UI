@@ -1,0 +1,29 @@
+<div class="container">
+  <div class="card" *ngFor="let job of jobs; let i = index">
+    <div class="ribbon">Hiring</div>
+    <div class="circle">{{ job.positions }}</div>
+    <h3>{{ job.title }}</h3>
+    <p class="qualifications">Qualifications: {{ job.qualifications }}</p>
+    <p>Year of Passout:{{ job.Passout }}</p>
+    <p
+      class="experience"
+      [class.red]="job.experience.toLowerCase().includes('fresher')"
+    >
+      {{ job.experience }}
+    </p>
+
+    <P>Location: {{ job.location }}</P>
+
+    <p
+      class="details"
+      (click)="toggleDescription(i)"
+      style="cursor: pointer; font-size: 12px"
+    >
+      {{
+        expandedIndex === i
+          ? job.description
+          : (job.description | slice : 0 : 30) + "..."
+      }}
+    </p>
+  </div>
+</div>

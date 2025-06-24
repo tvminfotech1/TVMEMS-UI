@@ -1,0 +1,179 @@
+<app-nav-display></app-nav-display>
+<div class="container">
+    <form  id="form" class="form-grid">
+      
+      <div class="form-group">
+        <label for="fname">First Name:</label>
+        <input type="text" [value]="employeeDetails.fname"readonly>
+      </div>
+  
+      <div class="form-group">
+        <label for="mname">Middle Name:</label>
+        <input type="text" [value]="employeeDetails.mname? employeeDetails.mname : '' " readonly>
+      </div>
+  
+      <div class="form-group">
+        <label for="lname">Last Name (Surname):</label>
+        <input type="text"  [value]="employeeDetails.lname" readonly >
+      </div>
+  
+      <div class="form-group">
+        <label for="pemail">Personal Email:</label>
+        <input type="text" [value]="employeeDetails.email" readonly>
+        
+      </div>
+  
+      <div class="form-group">
+        <label for="gender">Gender:</label>
+        <input type="text" [value]="employeeDetails.gender" readonly>
+      </div>
+  
+      <div class="form-group">
+        <label for="bloodg">Blood Group:</label>
+        <input type="text" [value]="employeeDetails.bloodGroup" readonly>
+      </div>
+  
+      <div class="form-group">
+        <label for="dob">Official DOB:</label>
+        <input type="text" [value]="employeeDetails.dob" readonly>
+      </div>
+  
+      <div class="form-group">
+        <label for="merital">Marital Status:</label>
+        <input type="text" [value]="employeeDetails.merital" readonly>
+      </div>
+  
+      <div class="form-group">
+        <label for="marriegedate">Marriage Date:</label>
+        <input type="text" [value]="employeeDetails.marriegedate? employeeDetails.marriegedate:'' "  readonly>
+      </div>
+  
+      <div class="form-group full-width">
+        <label for="current_address">Current Address:</label>
+        <textarea readonly>{{ employeeDetails.current_address }}</textarea>
+      </div>
+  
+      <div class="form-group">
+        <label for="current_country">Country:</label>
+        <input type="text" [value]="employeeDetails.current_country" readonly>
+      </div>
+    
+      
+      <div class="form-group">
+        <label for="current_state">State:</label>
+        <input type="text" id="current_state" [value]="employeeDetails.current_state" readonly>
+      </div>
+  
+      <div class="form-group">
+        <label for="current_city">City:</label>
+        <input type="text" id="current_city" [value]="employeeDetails.current_city" readonly>
+        
+      </div>
+  
+      <div class="form-group">
+        <label for="current_pincode">Pincode:</label>
+        <input type="number" id="current_pincode" [value]="employeeDetails.current_pincode" readonly>
+      </div>
+  
+      <div class="form-group">
+        <label for="current_contact">Contact Number:</label>
+        <input type="number" id="current_contact" [value]="employeeDetails.current_contact" readonly>
+        
+      </div>
+  
+      <div class="form-group full-width">
+        <label for="permanent_address">Permanent Address: 
+       </label>
+      <textarea id="permanent_address" readonly>{{employeeDetails.permanent_address}}</textarea> 
+  </div>
+      <div class="form-group">
+        <label for="permanent_country">Country:</label>
+        <input type="text" [value]="employeeDetails.permanent_country" readonly>
+      </div>
+  
+      <div class="form-group">
+        <label for="permanent_state">State:</label>
+        <input type="text" id="permanent_state" [value]="employeeDetails.permanent_state" readonly>
+        
+      </div>
+  
+      <div class="form-group">
+        <label for="permanent_city">City:</label>
+        <input type="text" id="permanent_city" [value]="employeeDetails.permanent_city" readonly>
+      </div>
+  
+      <div class="form-group">
+        <label for="permanent_pincode">Pincode:</label>
+        <input type="number" id="permanent_pincode" [value]="employeeDetails.permanent_pincode" readonly>
+      </div>
+  
+      <div class="form-group">
+        <label for="permanent_contact">Permanent Contact Number:</label>
+        <input type="number" id="permanent_contact" [value]="employeeDetails.permanent_contact" readonly>
+      </div>
+  
+      <div class="form-group full-width">
+        <label for="bcp_address">BCP Work Address (with Landmark):</label>
+        <textarea id="bcp_address" >{{employeeDetails.bcp_address}}</textarea>
+        
+      </div>
+  
+      <div class="form-group">
+        <label for="bcp_country">Country:</label>
+        <input type="text" [value]="employeeDetails.bcp_country" readonly>
+      </div>
+  
+      <div class="form-group">
+        <label for="bcp_state">State:</label>
+        <input type="text" id="bcp_state" [value]="employeeDetails.bcp_state" readonly>
+      </div>
+  
+      <div class="form-group">
+        <label for="bcp_city">City:</label>
+        <input type="text" id="bcp_city" [value]="employeeDetails.bcp_city" readonly>
+      </div>
+  
+      <div class="form-group">
+        <label for="bcp_pincode">Pincode:</label>
+        <input type="number"  id="bcp_pincode" [value]="employeeDetails.bcp_pincode" readonly>
+      </div>
+  
+      <div class="form-group full-width">
+        <label for="emergency_contact_name">Emergency Contact Name & Address:</label>
+        <textarea  id="emergency_contact_name" readonly>{{employeeDetails.emergency_contact_name}}</textarea>
+      </div>
+  
+      <div class="form-group">
+        <label for="emergency_contact_number">Emergency Contact Number:</label>
+        <input type="number"  id="emergency_contact_number" [value]="employeeDetails.emergency_contact_number" readonly>
+
+      </div>
+  
+      <div class="form-group">
+        <label for="emergency_relationship">Relationship with Employee:</label>
+        <input type="text"  id="emergency_relationship" [value]="employeeDetails.emergency_relationship" readonly>
+      </div> <br>
+  
+      <div class="form-group">
+        <label for="relevant_experience">Relevant Experience:</label>
+          <input type="text" [value]="employeeDetails.relevantYear" readonly>
+      </div>
+      <div class="form-group">
+        <label for="prev_experience_years">Previous Experience (Years):</label>
+        <input type="text" [value]="employeeDetails.year" readonly>
+      </div>
+  
+      <div class="form-group">
+        <label for="prev_experience_months">Previous Experience (Months):</label>
+        <input type="text" [value]="employeeDetails.month" readonly>
+          
+      </div>
+      <div class=" full-width button-group">
+        <button  class="update-button" routerLink="/admin/empkyc" >Next &raquo;</button>
+
+        <!-- <a routerLink="/kyc" class="next-link">Next &raquo;</a> -->
+      </div>
+  
+    </form>
+  </div>
+  

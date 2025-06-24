@@ -1,0 +1,68 @@
+<app-nav-display></app-nav-display>
+<form class="form-grid" >
+  
+  <div class="form-group">
+    <label for="">Qualification</label>
+    <input type="text" [value]="employeeDetails.education.qualification" readonly>
+    
+  </div>
+
+  <div class="form-group">
+    <label for="">Specilization</label>
+    <input type="text" [value]="employeeDetails.education.specilization" readonly/>
+    
+  </div>
+
+  <div class="form-group">
+    <label for="">Institute Name</label>
+    <input type="text" [value]="employeeDetails.education.instituteName" readonly>
+   
+  </div>
+
+  <div class="form-group">
+    <label for="">University Name</label>
+    <input type="text" [value]="employeeDetails.education.universityName"  readonly>
+    
+  </div>
+
+  <div class="form-group">
+    <label for="">Study Mode</label>
+    <input type="text" [value]="employeeDetails.education.time" readonly>
+    
+  </div>
+
+  <div class="form-group">
+    <label for="">From</label>
+    <input type="text" [value]="employeeDetails.education.fromDate" readonly>
+    
+  </div>
+
+  <div class="form-group">
+    <label for="">To</label>
+    <input type="text"  [value]="employeeDetails.education.toDate" readonly>
+    
+  </div>
+
+  <div class="form-group">
+    <label for="">Percentage(%)</label>
+    <input type="number"  [value]="employeeDetails.education.percentage" readonly>
+    
+  </div>
+
+  <div class="form-group">
+    <label for="">Roll No:</label>
+    <input type="text" [value]="employeeDetails.education.rollNo" readonly>
+    
+  </div>
+
+  <div class="form-group">
+    <label for="">Education Type</label>
+    <input type="text" [value]="employeeDetails.education.educationType" readonly>
+  </div>
+
+  <br>
+  <div class="button-group">
+    <a routerLink="/admin/emppreviousEmployee">&laquo; Previous</a>
+    <button class="update-button" routerLink="/admin/empskills">Next &raquo;</button>
+  </div>
+</form>

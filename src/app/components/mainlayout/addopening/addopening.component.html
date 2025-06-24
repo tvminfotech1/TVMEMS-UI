@@ -1,0 +1,98 @@
+<div class="job-form-container">
+  <h2>Add Job Opening</h2>
+  <form [formGroup]="jobForm" (ngSubmit)="onSubmit()">
+    <label> Job Title: </label>
+    <input formControlName="title" type="text" placeholder="Enter job title" />
+    <div
+      class="error"
+      *ngIf="jobForm.get('title')?.touched && jobForm.get('title')?.invalid"
+    >
+      Title is required.
+    </div>
+
+    <label> Qualifications: </label>
+    <input
+      formControlName="qualifications"
+      type="text"
+      placeholder="Enter qualifications"
+    />
+    <div
+      class="error"
+      *ngIf="
+        jobForm.get('qualifications')?.touched &&
+        jobForm.get('qualifications')?.invalid
+      "
+    >
+      Qualifications are required.
+    </div>
+
+    <label> Year of Passout: </label>
+    <input
+      formControlName="yearOfPassout"
+      type="number"
+      placeholder="Enter year of passout"
+    />
+    <div
+      class="error"
+      *ngIf="
+        jobForm.get('yearOfPassout')?.touched &&
+        jobForm.get('yearOfPassout')?.invalid
+      "
+    >
+      Year of passout is required.
+    </div>
+
+    <label> Location: </label>
+    <input
+      formControlName="location"
+      type="text"
+      placeholder="Enter location"
+    />
+    <div
+      class="error"
+      *ngIf="
+        jobForm.get('location')?.touched && jobForm.get('location')?.invalid
+      "
+    >
+      Location is required.
+    </div>
+
+    <label> Experience (Years): </label>
+    <input
+      formControlName="experience"
+      type="number"
+      placeholder="Enter experience"
+    />
+    <div
+      class="error"
+      *ngIf="
+        jobForm.get('experience')?.touched && jobForm.get('experience')?.invalid
+      "
+    >
+      Experience is required and must be non-negative.
+    </div>
+
+    <label> Required Skills (comma-separated): </label>
+    <input
+      formControlName="skills"
+      type="text"
+      placeholder="e.g. Java, Angular, MySQL"
+    />
+    <div
+      class="error"
+      *ngIf="jobForm.get('skills')?.touched && jobForm.get('skills')?.invalid"
+    >
+      Skills are required.
+    </div>
+
+    <label> Description: </label>
+    <textarea
+      formControlName="description"
+      placeholder="Enter job description"
+    ></textarea>
+
+    <div class="job-btn">
+      <button type="submit">Post Job</button>
+    </div>
+  </form>
+</div>

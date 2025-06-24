@@ -1,0 +1,92 @@
+<!-- timesheet.component.html -->
+<div class="timesheet-container">
+    <h1 class="title">Time Sheets</h1>
+
+    <!-- Filters: Date, Status, ID -->
+    <div class="filter-row">
+        <label>Period</label>
+        <input type="date" [(ngModel)]="startDate">
+        <span>to</span>
+        <input type="date" [(ngModel)]="endDate">
+    </div>
+
+    <div class="filter-row">
+        <label>Status</label>
+        <select [(ngModel)]="statusFilter">
+            <option value="">All</option>
+            <option value="Approved">Approved</option>
+            <option value="Rejected">Rejected</option>
+        </select>
+        <input type="text" [(ngModel)]="idFilter" placeholder="Enter Criteria">
+        <div class="filter-buttons">
+            <button (click)="applyFilters()">Apply Filters</button>
+
+        </div>
+    </div>
+
+
+    <table class="timesheet-table">
+        <thead>
+            <tr>
+                <th>Status</th>
+                <th>ID</th>
+                <th>Revision</th>
+                <th>Main Documents</th>
+                <th>Main Documents</th>
+                <th>Supervisor</th>
+                <th>Start Date</th>
+                <th>End</th>
+                <th>ST</th>
+                <th>OT</th>
+                <th>DT</th>
+                <th>Others</th>
+                <th>NB</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngIf="paginatedFilteredEntries.length === 0">
+              <td colspan="13" style="text-align: center; padding: 20px; color: #888;">
+                No data found for the selected filters.
+              </td>
+            </tr>
+            <tr *ngFor="let entry of paginatedFilteredEntries">
+              <td>
+                <span class="status" [ngClass]="entry.status.toLowerCase()">
+                  {{ entry.status }}
+                </span>
+              </td>
+              <td>
+                <a [routerLink]="['/timesheet-view', entry.id]" class="id-link">{{ entry.id }}</a>
+              </td>              
+              <td>{{ entry.revision }}</td>
+              <td>{{ entry.mainDoc1 }}</td>
+              <td>{{ entry.mainDoc2 }}</td>
+              <td>{{ entry.supervisor }}</td>
+              <td>{{ entry.startDate }}</td>
+              <td>{{ entry.endDate }}</td>
+              <td>{{ entry.st }}</td>
+              <td>{{ entry.ot }}</td>
+              <td>{{ entry.dt }}</td>
+              <td>{{ entry.others }}</td>
+              <td>{{ entry.nb }}</td>
+            </tr>
+          </tbody>
+    </table>
+    <div class="mt-3 d-flex justify-content-start gap-2">
+        <button class="btn btn-secondary" (click)="clearSort()">Clear Sort</button>
+        <button class="btn btn-secondary" (click)="clearFilters()">Clear Filters</button>
+    </div>
+
+    <div class="pagination-controls">
+        <button (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1">‹</button>
+        <span>{{ (currentPage - 1) * itemsPerPage + 1 }} - {{ getEndCount() }} of {{ timesheetEntries.length }}</span>
+
+        <button (click)="goToPage(currentPage + 1)" [disabled]="currentPage === totalPages">›</button>
+    </div>
+
+    <div class="footer">
+        <span>Data as of {{ currentTime }}</span>
+        <button (click)="refresh()">Refresh</button>
+        <button (click)="downloadListData()">Download List Data</button>
+    </div>
+</div>

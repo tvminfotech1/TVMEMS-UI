@@ -1,0 +1,17 @@
+<app-nav-display></app-nav-display>
+<form>
+    <strong>Profile & Achievements:</strong>
+    
+    <textarea style="width: 100%; height: 200px; border-radius: 10px; margin-top: 20px; padding: 10px;" name="achievements" readonly>{{employeeDetails.resume?.achievements}} </textarea>
+    <div class="">
+        <label for="">Category</label>
+        <input type="text" [value]="employeeDetails.resume?.resumeCate" readonly>
+          
+</div>
+    <div class="button-group">
+        <a  routerLink='/admin/empdocument'>&laquo; Previous</a>
+        <button class="update-button" routerLink="/admin/empfinal">Next &raquo;</button>
+        <!-- <a routerLink='/final'>Next &raquo;</a> -->
+      </div>
+    
+</form>

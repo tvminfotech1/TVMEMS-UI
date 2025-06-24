@@ -1,0 +1,58 @@
+<app-nav-display></app-nav-display>
+
+<div class="form-grid">
+
+  <!-- Father Name -->
+  <div class="form-group">
+    <label>Father Name:</label>
+    <input type="text" [value]="employeeDetails?.fatherName" readonly />
+  </div>
+
+  <!-- Father DOB -->
+  <div class="form-group">
+    <label>Father DOB:</label>
+    <input type="text" [value]="employeeDetails?.fatherDOB" readonly />
+  </div>
+
+  <!-- Mother Name -->
+  <div class="form-group">
+    <label>Mother Name:</label>
+    <input type="text" [value]="employeeDetails?.motherName" readonly />
+  </div>
+
+  <!-- Mother DOB -->
+  <div class="form-group">
+    <label>Mother DOB:</label>
+    <input type="text" [value]="employeeDetails?.motherDOB" readonly />
+  </div>
+
+  <!-- Spouse Name -->
+  <div class="form-group">
+    <label>Spouse Name:</label>
+    <input type="text" [value]="employeeDetails?.spouseName" readonly />
+  </div>
+
+  <!-- Spouse DOB -->
+  <div class="form-group">
+    <label>Spouse DOB:</label>
+    <input type="text" [value]="employeeDetails?.spouseDOB" readonly />
+  </div>
+
+  <!-- Spouse Gender -->
+  <div class="form-group">
+    <label>Spouse Gender:</label>
+    <input type="text" [value]="employeeDetails?.spouseGender" readonly />
+  </div>
+
+  <!-- Children -->
+  <div class="form-group">
+    <label>Do you have children:</label>
+    <input type="text" [value]="employeeDetails?.children" readonly />
+  </div>
+
+</div>
+
+<div class="button-group">
+  <a routerLink="/admin/emppassport" class="prev-btn">&laquo; Previous</a>
+  <a routerLink="/admin/emppreviousEmployee" class="update-btn">Next &raquo;</a>
+</div>

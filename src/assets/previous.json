@@ -1,0 +1,23 @@
+[
+  {
+    "companyName": "Tech Solutions Pvt Ltd",
+    "designation": "Software Engineer",
+    "employmentType": "Full-time",
+    "startDate": "2019-06-01",
+    "endDate": "2021-08-31"
+  },
+  {
+    "companyName": "Innovatech Ltd",
+    "designation": "Senior Developer",
+    "employmentType": "Contract",
+    "startDate": "2021-09-01",
+    "endDate": "2023-03-15"
+  },
+  {
+    "companyName": "SkyNet Systems",
+    "designation": "Lead Engineer",
+    "employmentType": "Full-time",
+    "startDate": "2023-04-01",
+    "endDate": "2024-12-31"
+  }
+]

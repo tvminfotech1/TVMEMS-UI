@@ -1,0 +1,38 @@
+<div class="container">
+
+  <div class="card">
+    <div class="image-section">
+      <img src="https://static.vecteezy.com/system/resources/thumbnails/035/832/837/small/ai-generated-beautiful-young-business-woman-portrait-woman-face-smiling-cute-girl-with-long-hair-studio-shot-isolated-on-gray-background-photo.jpg" alt="Profile" />
+    </div>
+    <div class="details-section">
+      <form [formGroup]="userForm">
+        <p><strong>ID:</strong> 3422</p>
+        <p><strong>Email:</strong> {{ userForm.get('email')?.value }}</p>
+        <p><strong>Mobile:</strong> {{ userForm.get('mobile')?.value }}</p>
+        <p><strong>Joining Date:</strong> {{ userForm.get('joiningDate')?.value }}</p>
+        <p><strong>Department:</strong> IT</p>
+        <p><strong>Reporting To:</strong> Yogarani</p>
+      </form>
+    </div>
+  </div>
+
+  <h3 class="header">Project History</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Project Name</th>
+        <th>Start Date / End Date</th>
+        <th>Project Manager</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let project of projects">
+        <td>{{ project.name }}</td>
+        <td>{{ project.startDate }} / {{ project.endDate }}</td>
+        <td>{{ project.manager }}</td>
+        <td><span class="status">{{ project.status }}</span></td>
+      </tr>
+    </tbody>
+  </table>
+</div>

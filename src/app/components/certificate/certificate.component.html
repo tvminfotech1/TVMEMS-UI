@@ -1,0 +1,102 @@
+<app-nav-details></app-nav-details>
+
+<!-- Certificate List -->
+<div class="noCertificate" *ngIf="certificateList.length === 0">
+  <p>No certificates added.</p>
+</div>
+
+<ul *ngIf="certificateList.length > 0">
+  <li *ngFor="let cert of certificateList; let i = index">
+    {{ cert.certificateName }} by {{ cert.certifiedBy }} on
+    {{ cert.completionDate }} - Marks: {{ cert.marks }}
+    <button (click)="deleteCertificate(i)">Delete</button>
+  </li>
+</ul>
+
+<!-- Certificate Form -->
+<form
+  class="form-grid"
+  [formGroup]="certificateForm"
+  (ngSubmit)="addCertificate()"
+>
+  <div class="form-group">
+    <label>Certificate Name</label>
+    <input
+      type="text"
+      formControlName="certificateName"
+      placeholder="Enter Certificate Name (e.g., AWS Cloud Practitioner)"
+    />
+    <div
+      class="error"
+      *ngIf="
+        certificateForm.get('certificateName')?.touched &&
+        certificateForm.get('certificateName')?.invalid
+      "
+    >
+      Certificate name is required.
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label>Certified by</label>
+    <input
+      type="text"
+      formControlName="certifiedBy"
+      placeholder="Certified By (e.g., Amazon, Microsoft)"
+    />
+    <div
+      class="error"
+      *ngIf="
+        certificateForm.get('certifiedBy')?.touched &&
+        certificateForm.get('certifiedBy')?.invalid
+      "
+    >
+      Certified by is required.
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label>Completion Date</label>
+    <input type="date" formControlName="completionDate" />
+    <div
+      class="error"
+      *ngIf="
+        certificateForm.get('completionDate')?.touched &&
+        certificateForm.get('completionDate')?.invalid
+      "
+    >
+      Completion date is required.
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label>Marks</label>
+    <input
+      type="number"
+      formControlName="marks"
+      placeholder="Enter Marks or Score (if any)"
+      min="0"
+    />
+    <div
+      class="error"
+      *ngIf="
+        certificateForm.get('marks')?.touched &&
+        certificateForm.get('marks')?.invalid
+      "
+    >
+      Marks are required.
+    </div>
+  </div>
+
+  <div class="button-group">
+    <button class="update-button" type="submit">Add Certificate</button>
+  </div>
+</form>
+
+<!-- Navigation Buttons -->
+<div class="button-group">
+  <a routerLink="/skills">&laquo; Previous</a>
+  <button class="update-button" type="button" (click)="finalSubmit()">
+    Next &raquo;
+  </button>
+</div>

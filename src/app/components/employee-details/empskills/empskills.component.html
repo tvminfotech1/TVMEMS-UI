@@ -1,0 +1,43 @@
+<app-nav-display></app-nav-display>
+
+<div class="container">
+  <div *ngIf="employeeDetails?.skills?.length > 0; else noSkills">
+    <div *ngFor="let skill of employeeDetails.skills" class="skill-card">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Skill Name</label>
+          <input type="text" [value]="skill.skillName" readonly>
+        </div>
+        <div class="form-group">
+          <label>Skill Category</label>
+          <input type="text" [value]="skill.skillCategories" readonly>
+        </div>
+        <div class="form-group">
+          <label>Version Number</label>
+          <input type="text" [value]="skill.versionNum" readonly>
+        </div>
+        <div class="form-group">
+          <label>Experience (Years)</label>
+          <input type="text" [value]="skill.experience_year" readonly>
+        </div>
+        <div class="form-group">
+          <label>Experience (Months)</label>
+          <input type="text" [value]="skill.experience_month" readonly>
+        </div>
+        <div class="form-group">
+          <label>Self Rating (1-5)</label>
+          <input type="text" [value]="skill.selfRate" readonly>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #noSkills>
+    <p>No skills added.</p>
+  </ng-template>
+</div>
+
+<div class="button-group">
+  <a routerLink="/admin/empeducation" class="btn prev-btn">&laquo; Previous</a>
+  <button class="btn next-btn" routerLink="/admin/empcertificate">Next &raquo;</button>
+</div>

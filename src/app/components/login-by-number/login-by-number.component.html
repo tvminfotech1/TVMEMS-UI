@@ -1,0 +1,33 @@
+<div class="login-container">
+    <h2><i class="ri-user-line"></i> Login</h2>
+    <form [formGroup]="mobileLoginForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label>Mobile Number</label>
+        <input
+          type="text"
+          formControlName="mobile"
+          placeholder="Enter your mobile number"
+        />
+        <div *ngIf="mobileLoginForm.get('mobile')?.touched && mobileLoginForm.get('mobile')?.invalid" class="error">
+          Valid mobile number is required
+        </div>
+      </div>
+  
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" formControlName="password" placeholder="*****" />
+        <div *ngIf="mobileLoginForm.get('password')?.touched && mobileLoginForm.get('password')?.invalid" class="error">
+          Password is required
+        </div>
+      </div>
+  
+      <button type="submit" class="login-btn">Login</button>
+  
+      <div class="register-link">
+        <!-- <a routerLink="/signup">Don't have an account? Register</a> -->
+        <br />
+        <a routerLink="/login">Login using email</a>
+      </div>
+    </form>
+  </div>
+  

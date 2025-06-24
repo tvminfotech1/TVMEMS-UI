@@ -1,0 +1,84 @@
+.tabs {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+}
+
+.tab-header {
+  display: flex;
+  border-bottom: 1px solid #ccc;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.tab-header li {
+  padding: 10px 20px;
+  cursor: pointer;
+  border: 1px solid transparent;
+  border-bottom: none;
+}
+
+.tab-header li.active {
+  border: 1px solid #ccc;
+  border-bottom: 1px solid white;
+  background-color: white;
+  font-weight: bold;
+}
+
+.tab-body {
+  border: 1px solid #ccc;
+  padding: 20px;
+  background-color: white;
+}
+
+main {
+  flex-grow: 1;
+  background-color: white;
+  padding: 1.5rem;
+  overflow-y: auto;
+  position: relative;  /* For absolute positioning inside */
+  padding-top: 60px;   /* To avoid overlap with top-bar-icons */
+}
+
+/* Top bar */
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #0a0f3c;
+  color: #ffff;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #ccc;
+}
+
+.welcome {
+  font-size: 1rem;
+} 
+.icon-menu {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.icon-menu button {
+  display: flex;
+  align-items: center;
+  background: #0a0f3c;
+  color: #ffff;
+  border: none;
+  padding: 0.5rem 0.5rem;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.icon-menu button:hover {
+  background-color: #dce0e5;
+  transform: scale(1.02);
+}
+
+.icon-menu .material-icons {
+  margin-right: 5px;
+}

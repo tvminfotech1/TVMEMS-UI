@@ -1,0 +1,115 @@
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  background: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+
+.full-width {
+  grid-column: 1 / -1;
+}
+
+.form-group label {
+  margin-bottom: 6px;
+  font-weight: bold;
+  color: #333;
+}
+
+
+input, select, textarea {
+  padding: 10px 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background-color: #fafafa;
+  font-size: 16px;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: #007BFF;
+}
+
+
+textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+
+.button-group {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  align-items: center;
+  margin-top: 20px;
+}
+
+
+.update-button {
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.update-button:hover {
+  background-color: #0056b3;
+}
+
+.button-group a {
+  text-decoration: none;
+  background-color: #f0f0f0;
+  padding: 10px 20px;
+  border-radius: 8px;
+  color: black;
+  font-weight: bold;
+}
+
+.button-group a:hover, .update-button:hover {
+  background-color: #004aad;
+  color: white;
+}
+
+
+
+.save-warning {
+
+  margin-top: 30px;
+  background-color: #fff3cd;
+  color: #856404;
+  border: 1px solid #ffeeba;
+  padding: 5px;
+  border-radius: 8px;
+  font-size: 16px;
+  text-align: center;
+}
+
+input[readonly]:hover{
+cursor: not-allowed;
+}
+textarea:hover{
+cursor: not-allowed;
+}

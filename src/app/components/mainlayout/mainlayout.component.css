@@ -1,0 +1,256 @@
+/* Container */
+.container {
+  display: flex;
+  font-family: 'Segoe UI', sans-serif;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+/* Sidebar */
+.sidebar {
+  background-color: #0a0f3c;
+  color: white;
+  width: 18%;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Remove bullets from all ul in sidebar and dropdown */
+.sidebar ul,
+.dropdown-content ul,
+.dropdown-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.logo {
+  border-radius: 10px;
+}
+img {
+  width: 100%;
+  height: 20%;
+}
+.sidebar-list {
+  margin-top: 2rem;
+}
+
+.nav-button {
+  background: none;
+  padding-top: 5px;
+  border: none;
+  color: white;
+  display: flex;
+  align-items: center;
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 0.75rem 1rem;
+  width: 100%;
+  border-radius: 4px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.nav-button .material-icons {
+  margin-right: 10px;
+  font-size: 26px;
+}
+
+.nav-button:hover,
+.nav-button:focus {
+  background-color: #1a237e;
+  color: #ffffff;
+  outline: none;
+}
+
+.dropdown-content {
+  margin-left: 2rem;
+  margin-top: 0.5rem;
+}
+
+/* Submenu Items */
+.nav-link {
+  display: flex;
+  align-items: center;
+  color: white;
+  text-decoration: none;
+  padding: 0.3rem 0;
+  font-size: 1.2rem;
+}
+
+.nav-link .material-icons,
+.dropdown-list .material-icons {
+  margin-right: 8px;
+  font-size: 22px;
+}
+
+/* Tabs */
+.tabs {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+}
+
+.tab-header {
+  display: flex;
+  border-bottom: 1px solid #ccc;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.tab-header li {
+  padding: 10px 20px;
+  cursor: pointer;
+  border: 1px solid transparent;
+  border-bottom: none;
+}
+
+.tab-header li.active {
+  border: 1px solid #ccc;
+  border-bottom: 1px solid white;
+  background-color: white;
+  font-weight: bold;
+}
+
+.tab-body {
+  border: 1px solid #ccc;
+  padding: 20px;
+  background-color: white;
+}
+
+main {
+  flex-grow: 1;
+  background-color: white;
+  padding: 1.5rem;
+  overflow-y: auto;
+  position: relative;
+  padding-top: 60px;
+  min-height: 100vh;
+}
+
+.top-bar-icons {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  z-index: 100;
+}
+
+.icon-btn {
+  font-size: 26px;
+  cursor: pointer;
+  color: #0a0f3c ;
+  background: transparent;
+  border: none;
+  padding: 6px;
+  border-radius: 50%;
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.icon-btn:hover {
+  color: #000;
+  background-color: #ffffff;
+}
+.accordion-icon {
+  margin-left: 5px;
+  vertical-align: middle;
+}
+
+/* 👉 Customized Search Icon Button */
+.search-icon-btn {
+  background-color: #f0f0f0;
+  color: #0a0f3c;
+  border-radius: 50%;
+  border: 1px solid #ccc;
+  padding: 8px;
+  font-size: 24px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.search-icon-btn:hover {
+  background-color: #0a0f3c;
+  color: white;
+  border-color: #0a0f3c;
+  transform: scale(1.05);
+}
+
+.search-icon-btn:active {
+  box-shadow: 0 0 10px rgba(10, 15, 60, 0.4);
+}
+
+/* Search Input */
+.search-input {
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  outline: none;
+  font-size: 14px;
+  transition: width 0.3s ease;
+  width: 180px;
+}
+
+/* Settings Dropdown Styles */
+.settings-wrapper {
+  position: relative;
+}
+
+.settings-dropdown {
+  position: absolute;
+  top: 45px;
+  right: 0;
+  width: 240px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  font-size: 14px;
+  z-index: 99;
+}
+
+.profile-header {
+  background: #444a7c;
+  color: white;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+.profile-img {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.profile-name {
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.settings-menu {
+  list-style: none;
+  padding: 10px 0;
+  margin: 0;
+}
+
+.settings-menu li {
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.settings-menu li:hover {
+  background-color: #f5f5f5;
+}
+
+.settings-menu .material-icons {
+  margin-right: 10px;
+  font-size: 20px;
+}

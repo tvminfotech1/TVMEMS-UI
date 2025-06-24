@@ -1,0 +1,167 @@
+<div class="timesheet-classic-container">
+  <!-- Year & Month selectors -->
+  <div class="classic-dropdown-section">
+    <div class="classic-form-group">
+      <label for="year">Year:</label>
+      <select id="year" name="year" [(ngModel)]="timelog.year" (change)="onMonthOrYearChange()" required>
+        <option *ngFor="let y of years" [value]="y">{{ y }}</option>
+      </select>
+    </div>
+    <div class="classic-form-group">
+      <label for="month">Month:</label>
+      <select id="month" name="month" [(ngModel)]="timelog.month" (change)="onMonthOrYearChange()" required>
+        <option value="" disabled>Select Month</option>
+        <option *ngFor="let m of months" [value]="m">{{ m }}</option>
+      </select>
+    </div>
+    <div class="classic-form-group">
+      <label for="weekendDate">Weekend Date:</label>
+      <select id="weekendDate" name="weekendDate" [(ngModel)]="timelog.weekendDate" (change)="onWeekendDateSelect()" required>
+        <option value="" disabled>Select Weekend Monday</option>
+        <option *ngFor="let date of weekendDates" [value]="date">{{ date }}</option>
+      </select>
+    </div>
+    <div class="classic-form-group">
+      <label for="employeeName">Employee Name:</label>
+      <input type="text" id="employeeName" name="employeeName" [(ngModel)]="timelog.employeeName" readonly />
+    </div>
+  </div>
+
+  <!-- Latest Submitted Entry -->
+  <div *ngIf="latestEntry" class="latest-entry-section">
+    <h3>Latest Submitted Entry</h3>
+    <table class="classic-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Project</th>
+          <th>Total Hrs.</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{ latestEntry.employeeName }}</td>
+          <td>{{ latestEntry.project }}</td>
+          <td>{{ latestEntry.totalHours }}</td>
+          <td>{{ latestEntry.description }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Accordion Sections -->
+  <div class="classic-accordion">
+    <!-- Timesheet Summary -->
+    <div class="accordion-item">
+      <h2 class="accordion-header" (click)="toggleAccordion(0)">Timesheet Summary</h2>
+      <div class="accordion-content" *ngIf="accordionState[0]">
+        <table class="classic-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Project</th>
+              <th>Total Hrs.</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let entry of timelogSummary">
+              <td>{{ entry.employeeName }}</td>
+              <td>{{ entry.project }}</td>
+              <td>{{ entry.totalHours }}</td>
+              <td>{{ entry.description }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Fill Your Timesheet -->
+    <div class="accordion-item">
+      <h2 class="accordion-header" (click)="toggleAccordion(2)">Fill Your Timesheet</h2>
+      <div class="accordion-content" *ngIf="accordionState[2]">
+        <form #timelogForm="ngForm" (ngSubmit)="onSubmit(timelogForm)">
+          <table class="classic-table">
+            <thead>
+              <tr>
+                <th>WFOL</th>
+                <th>Project</th>
+                <th>Mon</th>
+                <th>Tue</th>
+                <th>Wed</th>
+                <th>Thu</th>
+                <th>Fri</th>
+                <th>Total Hrs.</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <input type="checkbox" name="wfol" [(ngModel)]="timelogEntry.wfol" />
+                </td>
+                <td>
+                  <select name="project" [(ngModel)]="timelogEntry.project" required>
+                    <option value="" disabled>Select Project</option>
+                    <option>Project Alpha</option>
+                    <option>Project Beta</option>
+                    <option>Project 1</option>
+                    <option>Project 2</option>
+                  </select>
+                </td>
+                <td>
+                  <select name="hoursMonday" [(ngModel)]="timelogEntry.hours.Monday" (change)="calculateTotalHours()" required>
+                    <option value="8">WFO</option>
+                    <option value="8">WFH</option>
+                    <option value="0">Leave</option>
+                    <option value="0">Holiday</option>
+                  </select>
+                </td>
+                <td>
+                  <select name="hoursTuesday" [(ngModel)]="timelogEntry.hours.Tuesday" (change)="calculateTotalHours()" required>
+                    <option value="8">WFO</option>
+                    <option value="8">WFH</option>
+                    <option value="0">Leave</option>
+                    <option value="0">Holiday</option>
+                  </select>
+                </td>
+                <td>
+                  <select name="hoursWednesday" [(ngModel)]="timelogEntry.hours.Wednesday" (change)="calculateTotalHours()" required>
+                    <option value="8">WFO</option>
+                    <option value="8">WFH</option>
+                    <option value="0">Leave</option>
+                    <option value="0">Holiday</option>
+                  </select>
+                </td>
+                <td>
+                  <select name="hoursThursday" [(ngModel)]="timelogEntry.hours.Thursday" (change)="calculateTotalHours()" required>
+                    <option value="8">WFO</option>
+                    <option value="8">WFH</option>
+                    <option value="0">Leave</option>
+                    <option value="0">Holiday</option>
+                  </select>
+                </td>
+                <td>
+                  <select name="hoursFriday" [(ngModel)]="timelogEntry.hours.Friday" (change)="calculateTotalHours()" required>
+                    <option value="8">WFO</option>
+                    <option value="8">WFH</option>
+                    <option value="0">Leave</option>
+                    <option value="0">Holiday</option>
+                  </select>
+                </td>
+                <td>
+                  <input type="text" name="totalHours" [value]="timelogEntry.totalHours" readonly />
+                </td>
+                <td>
+                  <input type="text" name="description" [(ngModel)]="timelogEntry.description" required />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <button type="submit">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

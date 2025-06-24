@@ -1,0 +1,45 @@
+<app-nav-display></app-nav-display>
+
+<div id="container">
+  <div class="form-grid">
+    <div class="form-group">
+      <label>Pan Card Number</label>
+      <input type="text" [value]="employeeDetails?.pan" readonly />
+    </div>
+
+    <div class="form-group">
+      <label>Name on Pan Card</label>
+      <input type="text" [value]="employeeDetails?.panName" readonly />
+    </div>
+
+    <div class="form-group">
+      <label>Aadhar Number</label>
+      <input type="text" [value]="employeeDetails?.aadhar" readonly />
+    </div>
+
+    <div class="form-group">
+      <label>Name on Aadhar Card</label>
+      <input type="text" [value]="employeeDetails?.aadharName" readonly />
+    </div>
+
+    <div class="form-group">
+      <label>UAN Number</label>
+      <input type="text" [value]="employeeDetails?.uan" readonly />
+    </div>
+
+    <div class="form-group">
+      <label>PF Number</label>
+      <input type="text" [value]="employeeDetails?.pf" readonly />
+    </div>
+
+    <div class="form-group full-width">
+      <label>Do you have HDFC Bank Details?</label>
+      <input type="text" [value]="employeeDetails?.hdfc" readonly />
+    </div>
+  </div>
+
+  <div class="button-group">
+    <a routerLink="/admin/empdetails">&laquo; Previous</a>
+    <a routerLink="/admin/emppassport" class="update-button">Next &raquo;</a>
+  </div>
+</div>

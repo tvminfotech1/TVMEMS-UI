@@ -1,0 +1,360 @@
+<app-nav-details></app-nav-details>
+<div class="container">
+    <form [formGroup]="userForm" (ngSubmit)="submitForm()" id="form" class="form-grid">
+      
+      <div class="form-group">
+        <label for="fname">First Name:</label>
+        <input type="text" name="fname" id="fname" placeholder="First Name" formControlName="fname">
+        <div *ngIf="userForm.get('fname')?.touched && userForm.get('fname')?.hasError('required')" class="error">
+    First Name is required
+  </div>
+      </div>
+  
+      <div class="form-group">
+        <label for="mname">Middle Name:</label>
+        <input type="text" name="mname" id="mname" placeholder="Middle Name" formControlName="mname">
+      </div>
+  
+      <div class="form-group">
+        <label for="lname">Last Name (Surname):</label>
+        <input type="text" name="lname" id="lname" placeholder="Last Name" formControlName="lname">
+        <div *ngIf="userForm.get('lname')?.touched && userForm.get('lname')?.hasError('required')" class="error">
+    Last Name is required
+  </div>
+      </div>
+  
+      <div class="form-group">
+        <label for="pemail">Personal Email:</label>
+        <input type="email" name="email" id="pemail" placeholder="example@gmail.com" formControlName="email">
+        <div *ngIf="userForm.get('email')?.touched && userForm.get('email')?.hasError('required')" class="error">
+    Email is required
+  </div>
+  <div *ngIf="userForm.get('email')?.touched && userForm.get('email')?.hasError('pattern')" class="error">
+    Enter a valid email address
+  </div>
+      </div>
+  
+      <div class="form-group">
+        <label for="gender">Gender:</label>
+        <select name="gender" id="gender" formControlName="gender">
+          <option value="">Select gender</option>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+          <option value="other">Other</option>
+        </select>
+        <div *ngIf="userForm.get('gender')?.touched && userForm.get('gender')?.hasError('required')" class="error">
+    Gender is required
+  </div>
+      </div>
+  
+      <div class="form-group">
+        <label for="bloodg">Blood Group:</label>
+        <select name="bloodGroup" id="bloodg" formControlName="bloodGroup">
+          <option value="">Select blood group</option>
+          <option value="O+">O+</option>
+          <option value="O-">O-</option>
+          <option value="A+">A+</option>
+          <option value="A-">A-</option>
+          <option value="B+">B+</option>
+          <option value="B-">B-</option>
+          <option value="AB+">AB+</option>
+          <option value="AB-">AB-</option>
+        </select>
+        <div *ngIf="userForm.get('bloodGroup')?.touched && userForm.get('bloodGroup')?.hasError('required')" class="error">
+    Blood Group is required
+  </div>
+      </div>
+  
+      <div class="form-group">
+        <label for="dob">Official DOB:</label>
+        <input type="text" id="dob" name="dob" placeholder="DD-MM-YYYY" formControlName="dob">
+        <div *ngIf="userForm.get('dob')?.touched && userForm.get('dob')?.hasError('required')" class="error">
+    DOB is required
+  </div>
+      </div>
+  
+      <div class="form-group">
+        <label for="merital">Marital Status:</label>
+        <select name="merital" id="merital" formControlName="merital">
+          <option value="">Select status</option>
+          <option value="single">Single</option>
+          <option value="married">Married</option>
+          <option value="divorced">Divorced</option>
+        </select>
+        <div *ngIf="userForm.get('merital')?.touched && userForm.get('merital')?.hasError('required')" class="error">
+    Merital Status is required
+  </div>
+      </div>
+  
+      <div class="form-group">
+        <label for="marriegedate">Marriage Date:</label>
+        <input type="text" id="marriegedate" name="marriegedate" placeholder="Ex. 4-March" formControlName="marriegedate">
+        
+      </div>
+  
+      <div class="form-group full-width">
+        <label for="current_address">Current Address:</label>
+        <textarea name="current_address" id="current_address" placeholder="Current Address" formControlName="current_address"></textarea>
+        <div *ngIf="userForm.get('current_address')?.touched && userForm.get('current_address')?.hasError('required')" class="error">
+    Current Address Group is required
+  </div>
+      </div>
+  
+      <div class="form-group">
+        <label for="current_country">Country:</label>
+        <select id="current_country" formControlName="current_country" [(ngModel)]="current_countryValue">
+          <option value="">Select</option>
+          <option value="india">India</option>
+          <option value="nepal">Nepal</option>
+          <option value="usa">USA</option>
+          <option value="russia">Russia</option>
+          <option value="bangladesh">Bangladesh</option>
+          <option value="other">Other</option>
+        </select>
+        <div *ngIf="userForm.get('current_country')?.touched && userForm.get('current_country')?.hasError('required')" class="error">
+    Current country Group is required
+  </div>
+      </div>
+      
+      <div class="form-group" *ngIf="current_countryValue === 'other'">
+        <label for="other_country">Country Name:</label>
+        <input type="text" id="other_country" formControlName="other_country" placeholder="Enter country">
+      </div>
+      
+      <div class="form-group">
+        <label for="current_state">State:</label>
+        <input type="text" id="current_state" name="current_state" placeholder="State" formControlName="current_state">
+        <div *ngIf="userForm.get('current_state')?.touched && userForm.get('current_state')?.hasError('required')" class="error">
+  current state  is required
+  </div>
+      </div>
+  
+      <div class="form-group">
+        <label for="current_city">City:</label>
+        <input type="text" id="current_city" name="current_city" placeholder="City" formControlName="current_city">
+        <div *ngIf="userForm.get('current_city')?.touched && userForm.get('current_city')?.hasError('required')" class="error">
+  current city  is required
+  </div>
+      </div>
+  
+      <div class="form-group">
+        <label for="current_pincode">Pincode:</label>
+        <input type="number" id="current_pincode" name="pincode" placeholder="ex.808080" formControlName="current_pincode">
+        <div *ngIf="userForm.get('current_pincode')?.touched && userForm.get('current_pincode')?.hasError('required')" class="error">
+    Pincode is required
+  </div>
+  <div *ngIf="userForm.get('current_pincode')?.touched && userForm.get('current_pincode')?.hasError('pattern')" class="error">
+    Enter a valid 6-digit pincode
+  </div>
+      </div>
+  
+      <div class="form-group">
+        <label for="current_contact">Contact Number:</label>
+        <input type="number" id="current_contact" name="current_contact" placeholder="9876543210" formControlName="current_contact">
+        <div *ngIf="userForm.get('current_contact')?.touched && userForm.get('current_contact')?.hasError('required')" class="error">
+    Contact number is required
+  </div>
+  <div *ngIf="userForm.get('current_contact')?.touched && userForm.get('current_contact')?.hasError('pattern')" class="error">
+    Enter a valid 10-digit number
+  </div>
+      </div>
+  
+      <div class="form-group full-width">
+        <label for="permanent_address">Permanent Address: 
+          <input type="checkbox" id="same_as_current"> Same as Above
+        </label>
+        <textarea name="permanent_address" id="permanent_address" placeholder="Permanant Address" formControlName="permanent_address"></textarea>
+        <div *ngIf="userForm.get('permanent_address')?.touched && userForm.get('permanent_address')?.hasError('required')" class="error">
+  permanent address  is required
+  </div>
+      </div>
+  
+      <div class="form-group">
+        <label for="permanent_country">Country:</label>
+        <select name="permanent_country" id="permanent_country" formControlName="permanent_country">
+          <option value="">Select</option>
+          <option value="india">India</option>
+          <option value="nepal">Nepal</option>
+          <option value="usa">USA</option>
+          <option value="russia">Russia</option>
+          <option value="bangladesh">Bangladesh</option>
+        </select>
+        <div *ngIf="userForm.get('permanent_country')?.touched && userForm.get('permanent_country')?.hasError('required')" class="error">
+   permanent country is required
+  </div>
+      </div>
+  
+      <div class="form-group">
+        <label for="permanent_state">State:</label>
+        <input type="text" id="permanent_state" name="permanent_state" placeholder="State" formControlName="permanent_state">
+        <div *ngIf="userForm.get('permanent_state')?.touched && userForm.get('permanent_state')?.hasError('required')" class="error">
+  permanent state  is required
+  </div>
+      </div>
+  
+      <div class="form-group">
+        <label for="permanent_city">City:</label>
+        <input type="text" id="permanent_city" name="permanent_city" placeholder="City" formControlName="permanent_city">
+        <div *ngIf="userForm.get('permanent_city')?.touched && userForm.get('permanent_city')?.hasError('required')" class="error">
+  permanent city  is required
+  </div>
+      </div>
+  
+      <div class="form-group">
+        <label for="permanent_pincode">Pincode:</label>
+        <input type="number" id="permanent_pincode" name="permanent_pincode" placeholder="ex.808080" formControlName="permanent_pincode">
+        <div *ngIf="userForm.get('permanent pincode')?.touched && userForm.get('permanent pincode')?.hasError('required')" class="error">
+   permanent pincode is required
+  </div>
+      </div>
+  
+      <div class="form-group">
+        <label for="permanent_contact">Permanent Contact Number:</label>
+        <input type="number" id="permanent_contact" name="permanent_contact" placeholder="Permanent Number" formControlName="permanent_contact">
+        <div *ngIf="userForm.get('permanent_contact')?.touched && userForm.get('permanent_contact')?.hasError('required')" class="error">
+  permanent contact  is required
+  </div>
+      </div>
+  
+      <div class="form-group full-width">
+        <label for="bcp_address">BCP Work Address (with Landmark):</label>
+        <textarea id="bcp_address" name="bcp_address" placeholder="BPC Address" formControlName="bcp_address"></textarea>
+        <div *ngIf="userForm.get('bcp_address')?.touched && userForm.get('bcp_address')?.hasError('required')" class="error">
+  bcp address  is required
+  </div>
+      </div>
+  
+      <div class="form-group">
+        <label for="bcp_country">Country:</label>
+        <select id="bcp_country" name="bcp_country" formControlName="bcp_country">
+          <option value="">Select</option>
+          <option value="india">India</option>
+          <option value="nepal">Nepal</option>
+          <option value="usa">USA</option>
+          <option value="russia">Russia</option>
+          <option value="bangladesh">Bangladesh</option>
+        </select>
+        <div *ngIf="userForm.get('bcp_country')?.touched && userForm.get('bcp_country')?.hasError('required')" class="error">
+  bcp country  is required
+  </div>
+      </div>
+  
+      <div class="form-group">
+        <label for="bcp_state">State:</label>
+        <input type="text" name="bcp_state" id="bcp_state" placeholder="State" formControlName="bcp_state">
+        <div *ngIf="userForm.get('bcp_state')?.touched && userForm.get('bcp_state')?.hasError('required')" class="error">
+  bcp state  is required
+  </div>
+      </div>
+  
+      <div class="form-group">
+        <label for="bcp_city">City:</label>
+        <input type="text" name="bcp_city" id="bcp_city" placeholder="City" formControlName="bcp_city">
+        <div *ngIf="userForm.get('bcp_city')?.touched && userForm.get('bcp_city')?.hasError('required')" class="error">
+  bcp city  is required
+  </div>
+      </div>
+  
+      <div class="form-group">
+        <label for="bcp_pincode">Pincode:</label>
+        <input type="number" name="bcp_pincode" id="bcp_pincode" placeholder="ex.808080" formControlName="bcp_pincode">
+        <div *ngIf="userForm.get('bcp_pincode')?.touched && userForm.get('bcp_pincode')?.hasError('required')" class="error">
+  bcp pincode  is required
+  </div>
+      </div>
+  
+      <div class="form-group full-width">
+        <label for="emergency_contact_name">Emergency Contact Name & Address:</label>
+        <textarea name="emergency_contact_name" id="emergency_contact_name" placeholder="Emergency Contact Name & Address" formControlName="emergency_contact_name"></textarea>
+        <div *ngIf="userForm.get('emergency_contact_name')?.touched && userForm.get('emergency_contact_name')?.hasError('required')" class="error">
+   emergency contact name is required
+  </div>
+      </div>
+  
+      <div class="form-group">
+        <label for="emergency_contact_number">Emergency Contact Number:</label>
+        <input type="number" name="emergency_contact_number" id="emergency_contact_number" placeholder="Emergency Number" formControlName="emergency_contact_number">
+        <div *ngIf="userForm.get('emergency_contact_number')?.touched && userForm.get('emergency_contact_number')?.hasError('required')" class="error">
+  emergency contact number  is required
+  </div>
+      </div>
+  
+      <div class="form-group">
+        <label for="emergency_relationship">Relationship with Employee:</label>
+        <input type="text" name="emergency_relationship" id="emergency_relationship" placeholder="Relationship with Employee" formControlName="emergency_relationship">
+        <div *ngIf="userForm.get('emergency_relationship')?.touched && userForm.get('emergency_relationship')?.hasError('required')" class="error">
+   emergency relationship is required
+  </div>
+      </div> <br>
+  
+      <div class="form-group">
+        <label for="relevant_experience">Relevant Experience:</label>
+        <select name="relevantYear" id="relevant_experience" formControlName="relevantYear">
+          <option value="">Select year</option>
+          <option value="0">0</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+        </select>
+        <div *ngIf="userForm.get('relevantYear')?.touched && userForm.get('relevantYear')?.hasError('required')" class="error">
+  relevantYear  is required
+  </div>
+      </div>
+      <div class="form-group">
+        <label for="prev_experience_years">Previous Experience (Years):</label>
+        <select name="year" id="prev_experience_years" formControlName="year">
+          <option value="">Select year</option>
+          <option value="0">0</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+        </select>
+        <div *ngIf="userForm.get('year')?.touched && userForm.get('year')?.hasError('required')" class="error">
+  year  is required
+  </div>
+      </div>
+  
+      <div class="form-group">
+        <label for="prev_experience_months">Previous Experience (Months):</label>
+        <select name="month" id="prev_experience_months" formControlName="month">
+          <option value="">Select Month</option>
+          <option value="0">0</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+          <option value="11">11</option>
+          <option value="12">12</option>
+        </select>
+        <div *ngIf="userForm.get('month')?.touched && userForm.get('month')?.hasError('required')" class="error">
+  month  is required
+  </div>
+      </div>
+  
+      
+  
+      <div class=" full-width button-group">
+        <button type="submit" class="update-button" >Next &raquo;</button>
+
+        <!-- <a routerLink="/kyc" class="next-link">Next &raquo;</a> -->
+      </div>
+  
+      <!-- <div class="save-warning full-width">
+        <strong>Save!</strong> Your data before clicking on next/previous
+      </div> -->
+  
+    </form>
+  </div>
+  

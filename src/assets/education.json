@@ -1,0 +1,26 @@
+[
+  {
+    "qualification": "Bachelor of Technology",
+    "specilization": "Computer Science",
+    "instituteName": "ABC Institute of Technology",
+    "universityName": "XYZ University",
+    "time": "Full-time",
+    "fromDate": "2018-08-01",
+    "toDate": "2022-05-31",
+    "percentage": "85",
+    "rollNo": "CSE1800456",
+    "educationType": "Graduation"
+  },
+  {
+    "qualification": "Higher Secondary",
+    "specilization": "Science",
+    "instituteName": "Government Higher Secondary School",
+    "universityName": "State Board",
+    "time": "Full-time",
+    "fromDate": "2016-06-01",
+    "toDate": "2018-03-31",
+    "percentage": "92",
+    "rollNo": "HSC20181234",
+    "educationType": "12th"
+  }
+]

@@ -1,0 +1,39 @@
+.thank-you-container {
+    text-align: center;
+    margin-top: 100px;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  .icon {
+    font-size: 80px;
+    color: green;
+    margin-bottom: 20px;
+  }
+  
+  h1 {
+    color: #2e7d32;
+    margin-bottom: 10px;
+  }
+  
+  p {
+    font-size: 18px;
+    color: #444;
+    margin: 10px 0;
+  }
+  
+  .home-btn {
+    margin-top: 30px;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #4caf50;
+    border: none;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  
+  .home-btn:hover {
+    background-color: #45a049;
+  }
+  

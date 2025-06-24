@@ -1,0 +1,11 @@
+{
+  "timelogs": [
+    {
+      "employeeName": "John Doe",
+      "project": "Project1",
+      "totalHours": "40",
+      "description": "Completed feature development and testing.",
+      "weekendDate": "2025-06-06"
+    }
+  ]
+}

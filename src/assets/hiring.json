@@ -1,0 +1,36 @@
+
+
+  [
+    {
+      "title": "Tech Lead",
+      "qualifications": "MCA,M.Sc,B.TECH",
+      "experience": "10+ years",
+     "Passout":"2015", 
+      "location": "Chennai",
+      "positions": 1,
+      "skills": ["Angular", "TypeScript", "HTML", "CSS"],
+      "description": "Design and develop responsive web interfaces using Angular and TypeScript. Ensure clean, maintainable code with strong HTML and CSS styling practices. Collaborate with backend teams to deliver seamless user experiences."
+    },
+    {
+      "title": "Full stack developer",
+      "qualifications": "MCA,M.Sc,B.TECH",
+      "experience": "5+ years",
+      "Passout":"2020", 
+      "location": "Chennai",
+      "positions": 1,
+      "skills": ["Angular", "TypeScript", "HTML", "CSS"],
+      "description": "Design and develop responsive web interfaces using Angular and TypeScript. Ensure clean, maintainable code with strong HTML and CSS styling practices. Collaborate with backend teams to deliver seamless user experiences."
+    },
+    {
+      "title": "Java Developer",
+      "qualifications": "MCA,M.Sc,B.TECH",
+      "experience": "3+ years",
+       "Passout":"2022", 
+      "location": "Chennai",
+      "positions": 1,
+      "skills": ["Angular", "TypeScript", "HTML", "CSS"],
+      "description": "Design and develop responsive web interfaces using Angular and TypeScript. Ensure clean, maintainable code with strong HTML and CSS styling practices. Collaborate with backend teams to deliver seamless user experiences."
+    }
+  ]
+
+

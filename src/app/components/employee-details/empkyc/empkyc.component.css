@@ -1,0 +1,147 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    /* font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; */
+  }
+  
+  html, body {
+    width: 100vw;
+    min-height: 100vh;
+    background-color: #f9f9f9;
+    color: #333;
+  }
+  
+  nav {
+    background-color: black;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    flex-wrap: wrap;
+  }
+  
+  #navBar {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  
+  #iconimg {
+    width: 60px;
+    height: 50px;
+    object-fit: contain;
+  }
+  
+  .nav-link {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+  }
+  
+  .nav-link i {
+    margin-right: 5px;
+  }
+  
+  .tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 20px 0;
+    justify-content: center;
+  }
+  
+  .tabs button {
+    padding: 8px 16px;
+    border: 1px solid #ccc;
+    background: white;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  
+  .tabs .active {
+    background-color: #004aad;
+    color: white;
+    border-color: #004aad;
+  }
+  
+  #container {
+    max-width: 900px;
+    margin: auto;
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  }
+  
+  .form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+  }
+  
+  .form-group {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .form-group label {
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  
+  input[type="text"],
+  select {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: #fefefe;
+  }
+  
+  .full-width {
+    grid-column: 1 / -1;
+  }
+  
+  .button-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 30px;
+  }
+  
+  .update-button {
+    background-color: #004aad;
+    color: white;
+    padding: 10px 25px;
+    border: none;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  .update-button:hover {
+    background-color: #0066cc;
+  }
+  
+  .button-group a {
+    text-decoration: none;
+    background-color: #f0f0f0;
+    padding: 10px 20px;
+    border-radius: 8px;
+    color: black;
+    font-weight: bold;
+  }
+  
+  .button-group a:hover, .update-button:hover {
+    background-color: #004aad;
+    color: white;
+  }
+input[readonly]:hover{
+cursor: not-allowed;
+}
+input:focus, select:focus, textarea:focus {
+  border-color: #007BFF;
+}

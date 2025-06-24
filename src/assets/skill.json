@@ -1,0 +1,26 @@
+[
+  {
+    "skillName": "Angular",
+    "skillCategories": "Frontend",
+    "versionNum": "15",
+    "experience_year": "2",
+    "experience_month": "6",
+    "selfRate": "4"
+  },
+  {
+    "skillName": "Java",
+    "skillCategories": "Backend",
+    "versionNum": "17",
+    "experience_year": "3",
+    "experience_month": "0",
+    "selfRate": "5"
+  },
+  {
+    "skillName": "MySQL",
+    "skillCategories": "Database",
+    "versionNum": "8.0",
+    "experience_year": "2",
+    "experience_month": "3",
+    "selfRate": "3"
+  }
+]

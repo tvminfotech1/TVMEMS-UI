@@ -1,0 +1,29 @@
+<app-nav-display></app-nav-display>
+<form >
+  <h1 style="text-align: center; margin-bottom: 20px; text-decoration: underline;">Self Declaration</h1>
+
+  <div>
+    <label>
+      I hereby declare that all the information provided in the pre-onboarding process is correct and true to the best of my knowledge and belief.
+    </label>
+    
+  </div>
+
+  <div style="margin-top: 30px;" class="form-grid">
+    <div class="form-group">
+      <label for="sign">Signature</label>
+      <input type="text" [value]="employeeDetails.aFinal?.signature" readonly />
+
+    </div>
+
+    <div class="form-group">
+      <label for="date">Date</label>
+      <input type="date" id="date" name="date" [value]="employeeDetails.aFinal?.date" readonly/>
+    
+    </div>
+  </div>
+
+  <div style="margin-top: 20px;" class="button-group">
+    <a routerLink="/admin/empresume">&laquo; Previous</a>
+  </div>
+</form>

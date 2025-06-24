@@ -1,0 +1,53 @@
+<div class="top-bar">
+  <div class="welcome">
+    {{greeting}}, <strong>{{ userName }}</strong><br />
+    <small>Welcome to ETAQ, You're in the R1 shift (11:30 - 20:30)</small>
+  </div>
+</div>
+<div class="icon-menu" role="toolbar" aria-label="Quick access menu">
+  <button aria-label="Workhours" (click)="toggle('workhours')">
+    <span class="material-icons">access_time</span> Workhours
+  </button>
+  <button aria-label="Wishes" (click)="toggle('wishes')">
+    <span class="material-icons">favorite</span> Wishes
+  </button>
+  <button aria-label="Hirings" (click)="toggle('hirings')">
+    <span class="material-icons">person_add</span> Hirings
+  </button>
+  <button aria-label="Holidays" (click)="toggle('holidays')">
+    <span class="material-icons">event</span> Holidays
+  </button>
+  <button aria-label="Work History" (click)="toggle('workhistory')">
+    <span class="material-icons">history</span> Work History
+  </button>
+  <button aria-label="Announcement" (click)="toggle('announcement')">
+    <span class="material-icons">campaign</span> Announcement
+  </button>
+</div>
+
+
+<div *ngIf="show.holidays" class="calendar-container">
+  <app-hoilday-calendar></app-hoilday-calendar>
+</div>
+
+
+<div *ngIf="show.workhours" class="workhours-container">
+   <app-workhours></app-workhours>
+</div> 
+
+<div *ngIf="show.hirings" class="hining-container">
+   <app-hiring></app-hiring>
+</div> 
+
+<div *ngIf="show.workhistory" class="workhistory-container">
+   <app-work-history></app-work-history>
+</div> 
+
+<div *ngIf="show.wishes" class="showwishes-container">
+   <app-wishcard></app-wishcard>
+</div> 
+
+<div *ngIf="show.announcement" class="showAnnouncement-container">
+   <app-announcement></app-announcement>
+</div> 
+

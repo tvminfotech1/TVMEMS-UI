@@ -1,0 +1,51 @@
+
+<div class="review-container">
+  <div class="tab-headers">
+    <div 
+      class="tab" 
+      [class.active]="selectedTab === 'active'" 
+      (click)="selectedTab = 'active'">
+      Active Review (0)
+    </div>
+    <div 
+      class="tab" 
+      [class.active]="selectedTab === 'completed'" 
+      (click)="selectedTab = 'completed'">
+      Completed Reviews (0)
+    </div>
+  </div>
+
+  <div class="tab-content" *ngIf="selectedTab === 'active'">
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>OKR NAME</th>
+            <th>START / END DATE</th>
+            <th>PROJECT / DEPARTMENT HEAD</th>
+            <th>RATING</th>
+            <th>STATUS</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="reviews.length === 0">
+            <td colspan="5" class="no-data">There is no Reviews available!</td>
+          </tr>
+          <tr *ngFor="let review of reviews">
+            <td>{{ review.okr }}</td>
+            <td>{{ review.start }} / {{ review.end }}</td>
+            <td>{{ review.head }}</td>
+            <td>{{ review.rating }}</td>
+            <td>{{ review.status }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="tab-content" *ngIf="selectedTab === 'completed'">
+    <div class="table-wrapper">
+      <p class="no-data">There is no Reviews available!</p>
+    </div>
+  </div>
+</div>

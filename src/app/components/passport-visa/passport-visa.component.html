@@ -1,0 +1,53 @@
+<app-nav-details></app-nav-details>
+<form #form="ngForm" [formGroup]="userForm" (ngSubmit)="submitForm()">
+  <div class="form-grid">
+
+    <!-- Nationality -->
+    <div class="form-group">
+      <label for="nationality">Nationality:</label>
+      <select id="nationality" name="nationality" ngModel formControlName="nationality">
+        <option value="">Select</option>
+        <option value="Indian">Indian</option>
+        <option value="Other">Other</option>
+      </select>
+      <div *ngIf="userForm.get('nationality')?.touched && userForm.get('nationality')?.hasError('required')" class="error">
+        Nationality is required
+      </div>
+    </div>
+
+    <!-- Passport -->
+    <div class="form-group">
+      <label for="passport">Do you have passport:</label>
+      <select id="passport" name="ifPassport" [(ngModel)]="passportValue" formControlName="ifPassport">
+        <option value="">Select</option>
+        <option value="Yes">Yes</option>
+        <option value="No">No</option>
+      </select>
+      <div *ngIf="userForm.get('ifPassport')?.touched && userForm.get('ifPassport')?.hasError('required')" class="error">
+        Please select if you have a passport
+      </div>
+    </div>
+
+    <!-- Passport Number -->
+    <div class="form-group" *ngIf="passportValue === 'Yes'">
+      <label for="passportNumber">Enter Passport Number:</label>
+      <input
+        type="text"
+        id="passportNumber"
+        name="passportNumber"
+        ngModel
+        placeholder="Passport Number"
+        formControlName="passportNumber"
+      />
+      <div *ngIf="userForm.get('passportNumber')?.touched && userForm.get('passportNumber')?.hasError('required')" class="error">
+        Passport Number is required
+      </div>
+    </div>
+
+  </div>
+
+  <div class="button-group">
+    <a routerLink="/kyc" class="prev-btn">&laquo; Previous</a>
+    <button type="submit" class="save-btn">Next &raquo;</button>
+  </div>
+</form>

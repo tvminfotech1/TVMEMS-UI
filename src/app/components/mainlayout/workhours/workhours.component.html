@@ -1,0 +1,19 @@
+<div class="charts-wrapper">
+  <div class="chart pie-chart">
+    <canvas *ngIf="showChart" id="attendancePieChart"></canvas>
+  </div>
+  <!-- Right side: Bar chart -->
+  <div class="chart bar-chart" *ngIf="showChart">
+    <div class="date-range">02 Jun 2025 - 08 Jun 2025</div>
+    <canvas id="attendanceBarChart"></canvas>
+
+    <div class="label-group">
+      <div class="label"><span class="dot green"></span> Present</div>
+      <div class="label"><span class="dot purple"></span> WFH</div>
+      <div class="label"><span class="dot yellow"></span> Break</div>
+      <div class="label"><span class="dot red"></span> Absent</div>
+      <div class="label"><span class="dot gray"></span> Week Off</div>
+      <div class="label"><span class="dot blue"></span> Holiday</div>
+    </div>
+  </div>
+</div>

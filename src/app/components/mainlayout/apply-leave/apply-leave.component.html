@@ -1,0 +1,66 @@
+<div class="apply-leave-container">
+  <div class="leave-summary">
+    <h2>Apply Leave</h2>
+    <h3>Leave Summary</h3>
+    <table>
+      <tr><th>Type</th><th>Available</th><th>Availed</th></tr>
+      <tr><td>CL</td><td>8</td><td>2</td></tr>
+      <tr><td>SL</td><td>5</td><td>1</td></tr>
+      <tr><td>PL</td><td>10</td><td>3</td></tr>
+    </table>
+
+    <div class="calendar">
+      <h4>June 2025</h4>
+      <table>
+        <tr>
+          <th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th>
+        </tr>
+        <tr>
+          <td></td><td>1</td><td>2</td><td>3</td><td>4</td><td class="selected">5</td><td>6</td>
+        </tr>
+        <tr>
+          <td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td>
+        </tr>
+        <tr>
+          <td>14</td><td>15</td><td>16</td><td>17</td><td>18</td><td>19</td><td>20</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="leave-form">
+    <form #leaveForm="ngForm" (ngSubmit)="onSubmit()">
+      <label>Leave Type</label>
+      <select [(ngModel)]="leave.leaveType" name="leaveType" required>
+        <option value="CL">Casual Leave</option>
+        <option value="SL">Sick Leave</option>
+        <option value="PL">Privilege Leave</option>
+      </select>
+
+      <label>From</label>
+      <input type="date" [(ngModel)]="leave.from" name="from" required>
+
+      <div class="day-type">
+        <label><input type="radio" name="fromType" value="full" [(ngModel)]="leave.fromType"> Full Day</label>
+        <label><input type="radio" name="fromType" value="half" [(ngModel)]="leave.fromType"> Half Day</label>
+      </div>
+
+      <label>To</label>
+      <input type="date" [(ngModel)]="leave.to" name="to" required>
+
+      <div class="day-type">
+        <label><input type="radio" name="toType" value="full" [(ngModel)]="leave.toType"> Full Day</label>
+        <label><input type="radio" name="toType" value="half" [(ngModel)]="leave.toType"> Half Day</label>
+      </div>
+
+      <label>Comments</label>
+      <textarea [(ngModel)]="leave.comments" name="comments"></textarea>
+
+      <label>Notify To</label>
+      <input type="text" [(ngModel)]="leave.notifyTo" name="notifyTo">
+
+      <p class="approver">Approver: Ramesh Kumar</p>
+      <button type="submit">Apply</button>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,94 @@
+<div class="signup-container">
+  <h2><i class="ri-user-add-fill"></i> Create User</h2>
+  <form [formGroup]="signupForm" (ngSubmit)="onSubmit()" class="form-grid">
+
+    <!-- Full Name -->
+    <div class="form-group">
+      <label>Full Name</label>
+      <input type="text" formControlName="fullName" placeholder="Full name" />
+      <div *ngIf="signupForm.get('fullName')?.touched && signupForm.get('fullName')?.invalid" class="error">
+        Required
+      </div>
+    </div>
+
+    <!-- Mobile -->
+    <div class="form-group">
+      <label>Mobile Number</label>
+      <input type="tel" formControlName="mobile" placeholder="9876543210" />
+      <div *ngIf="signupForm.get('mobile')?.touched && signupForm.get('mobile')?.invalid" class="error">
+        10-digit mobile number required
+      </div>
+    </div>
+
+    <!-- Email -->
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email" formControlName="email" placeholder="example@gmail.com" />
+      <div *ngIf="signupForm.get('email')?.touched && signupForm.get('email')?.invalid" class="error">
+        Please enter a valid Gmail address (example@gmail.com).
+      </div>
+      
+    </div>
+
+    <!-- Aadhar -->
+    <div class="form-group">
+      <label>Aadhar Number</label>
+      <input type="text" formControlName="aadhar" placeholder="12-digit Aadhar" />
+      <div *ngIf="signupForm.get('aadhar')?.touched && signupForm.get('aadhar')?.invalid" class="error">
+        Valid Aadhar required
+      </div>
+    </div>
+
+    <!-- DOB -->
+    <div class="form-group">
+      <label>Date of Birth</label>
+      <input type="date" formControlName="dob" />
+      <div *ngIf="signupForm.get('dob')?.touched && signupForm.get('dob')?.invalid" class="error">
+        DOB required
+      </div>
+    </div>
+
+    <!-- Gender -->
+    <div class="form-group">
+      <label>Gender</label>
+      <select formControlName="gender">
+        <option value="" disabled>Select</option>
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+        <option value="Other">Other</option>
+      </select>
+      <div *ngIf="signupForm.get('gender')?.touched && signupForm.get('gender')?.invalid" class="error">
+        Gender required
+      </div>
+    </div>
+
+    <!-- Password -->
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" formControlName="password" placeholder="******" />
+      <div *ngIf="signupForm.get('password')?.touched && signupForm.get('password')?.invalid" class="error">
+        Password must start with a capital letter, be at least 8 characters, and include a number and a special character (@, #, $, &).
+      </div>
+      
+      
+    </div>
+
+    <!-- Confirm Password -->
+    <div class="form-group">
+      <label>Confirm Password</label>
+      <input type="password" formControlName="confirmPassword" placeholder="******" />
+      <div *ngIf="signupForm.errors?.['mismatch'] && signupForm.get('confirmPassword')?.touched" class="error">
+        Passwords do not match
+      </div>
+    </div>
+
+    <!-- Submit Button (Full Width) -->
+    <div class=" full-width">
+      <button type="submit" [disabled]="signupForm.invalid">Create</button>
+    </div>
+  </form>
+
+  <div class="login-link">
+    <p>Already have an account? <a routerLink="/login">Login here</a></p>
+  </div>
+</div>

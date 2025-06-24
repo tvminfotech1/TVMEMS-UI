@@ -1,0 +1,46 @@
+<div class="searchBox">
+  <i class="ri-user-search-fill"></i>
+  <input
+    type="text"
+    id="search"
+    [(ngModel)]="searchText"
+    (input)="onSearch()"
+    placeholder="Search by name,city,contact,or ID"
+  />
+</div>
+
+<div class="admin-container">
+  <h2>Employee List</h2>
+  <table *ngIf="filteredEmployees.length > 0; else noData">
+    <thead>
+      <tr>
+        <th>Employee ID</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Contact</th>
+        <th>City</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let emp of filteredEmployees">
+        <td>
+          <a
+            [routerLink]="['/admin/empdetails', emp.details.id]"
+            title="View Employee Details"
+            style="cursor: pointer"
+          >
+            {{ emp.index }}
+          </a>
+        </td>
+        <td>{{ emp.name }}</td>
+        <td>{{ emp.email }}</td>
+        <td>{{ emp.contact }}</td>
+        <td>{{ emp.city }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <ng-template id="notFound" #noData>
+    <p>No employee data available.</p>
+  </ng-template>
+</div>

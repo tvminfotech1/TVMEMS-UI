@@ -1,0 +1,84 @@
+<!-- File: timesheet.component.html  -->
+<div class="header-bar">
+  <div class="breadcrumb">Time Sheets List</div>
+  <div class="top-section">
+    <div class="left">
+      <div class="name"><strong>{{ timesheet.name }}</strong></div>
+      <span class="badge">Time Sheet</span>
+      <div class="row">
+        <div><strong>Status:</strong> {{ timesheet.status }}</div>
+        <div><strong>Time Sheet ID:</strong> {{ timesheet.id }}</div>
+        <div><strong>Period:</strong> {{ timesheet.period }}</div>
+        <div><strong>Buyer:</strong> {{ timesheet.buyer }}</div>
+        <div><strong>Supplier:</strong> {{ timesheet.supplier }}</div>
+      </div>
+    </div>
+    <div class="right">
+      <button class="btn">Withdraw</button>
+      <button class="btn">Actions ▼</button>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>Time Worked</h3>
+  <p><strong>Worker ID:</strong> {{ timesheet.workerId }}</p>
+
+ 
+  <table class="styled-table">
+    <thead>
+      <tr>
+        <th rowspan="2">Day</th>
+        <th *ngFor="let date of timesheet.dates">{{ date }}</th>
+        <th rowspan="2">Total Worked</th>
+      </tr>
+      <tr>
+        <th *ngFor="let day of timesheet.days">{{ day }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td colspan="9" class="billable">Billable</td>
+      </tr>
+      <tr>
+        <td colspan="9">Cost Center |{{ timesheet.costCenter }} ({{ timesheet.costCenter }}) - Hours Worked - {{ timesheet.description }}</td>
+      </tr>
+      <tr>
+        <td>ST /Hr</td>
+        <td *ngFor="let hour of timesheet.hours">{{ hour.toFixed(2) }}</td>
+        <td>{{ totalHours.toFixed(2) }}</td>
+      </tr>
+      <tr class="highlight">
+        <td>Total Worked</td>
+        <td *ngFor="let hour of timesheet.hours">{{ hour.toFixed(2) }}</td>
+        <td>{{ totalHours.toFixed(2) }}</td>
+      </tr>
+
+      <!-- Non-Billable Section -->
+      <tr>
+        <td colspan="9" class="billable">Non-Billable</td>
+      </tr>
+      <tr>
+        <td colspan="9">Cost Center |{{ timesheet.costCenter }} ({{ timesheet.costCenter }}) - Hours Worked - {{ timesheet.description }}</td>
+      </tr>
+      <tr>
+        <td>ST /Hr</td>
+        <td *ngFor="let hour of timesheet.hours">{{ hour.toFixed(2) }}</td>
+        <td>{{ totalHours.toFixed(2) }}</td>
+      </tr>
+      <tr class="highlight">
+        <td>Total Worked</td>
+        <td *ngFor="let hour of timesheet.hours">{{ hour.toFixed(2) }}</td>
+        <td>{{ totalHours.toFixed(2) }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="section">
+  <h3>Posting Information</h3>
+  <p><strong>Submit Date:</strong> {{ timesheet.submitDate }}</p>
+  <p><strong>SOW Owner:</strong> {{ timesheet.sowOwner }}</p>
+  <p><strong>Site:</strong> {{ timesheet.site }}</p>
+  <p><strong>Business Unit:</strong> {{ timesheet.businessUnit }}</p>
+</div>

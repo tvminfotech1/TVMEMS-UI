@@ -1,0 +1,29 @@
+<app-nav-display></app-nav-display>
+
+
+<div class="form-grid">
+
+  <!-- Nationality -->
+  <div class="form-group">
+    <label>Nationality:</label>
+    <input type="text" [value]="employeeDetails?.nationality" readonly />
+  </div>
+
+  <!-- If Passport -->
+  <div class="form-group">
+    <label>Do you have a passport:</label>
+    <input type="text" [value]="employeeDetails?.ifPassport" readonly />
+  </div>
+
+  <!-- Passport Number (only if yes) -->
+  <div class="form-group" *ngIf="employeeDetails?.ifPassport === 'Yes'">
+    <label>Passport Number:</label>
+    <input type="text" [value]="employeeDetails?.passportNumber" readonly />
+  </div>
+
+</div>
+
+<div class="button-group">
+  <a routerLink="/admin/empkyc" class="prev-btn">&laquo; Previous</a>
+  <a routerLink="/admin/empfamily" class="save-btn">Next &raquo;</a>
+</div>

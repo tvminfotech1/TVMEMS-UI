@@ -1,0 +1,137 @@
+<!-- Main View -->
+<div *ngIf="currentView === 'main'">
+  <div class="header">
+    <div class="logo">TVM Infotech pvt ltd</div>
+  </div>
+
+  <div class="container">
+    <div class="section-title">My Goals <span style="color: orange;">2025</span></div>
+    <div class="btn" style="text-align: right">
+      <button type="button" style="background-color: #4278e2; color: #fff;" (click)="goToGoalType()">Add Goal</button>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <div class="goal-overview">
+          <p class="goal-overview-header">Goals Overview</p>
+          <div class="overview-content">
+            <div class="donut-column">
+              <div class="donut">0 of 0</div>
+            </div>
+            <div class="stats-column">
+              <ul>
+                <li>🟦 On Track - 0</li>
+                <li>🔷 Behind - 0</li>
+                <li>⬜ Not Started - 0</li>
+                <li>🟩 Completed - 0</li>
+                <li>🟫 Cancelled - 0</li>
+                <li>🟨 Postponed - 0</li>
+              </ul>
+            </div>
+            <div class="notifications">
+              <p >Notifications You Might Have Missed</p>
+              <div class="notification-box">
+                <p>📄</p>
+                <p>No Notifications</p>
+                <p>You don’t have any past notifications yet</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="more-info">
+      <div class="info-card"><h4>📁 Archive Goals</h4><p>Add or manage archived goals.</p></div>
+      <div class="info-card"><h4>📌 Contribute Goals</h4><p>Assign goals you contribute to.</p></div>
+      <div class="info-card"><h4>✅ SMART Goals</h4><p>Review and track progress effectively.</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- Goal Type Modal -->
+<div *ngIf="currentView === 'goalType'" class="modal-overlay">
+  <div class="modal">
+    <div class="close-btn" (click)="goClose()">×</div>
+    <h2>Choose Goal Type</h2>
+    <p>Select what type of goal to add</p>
+    <div class="card-container">
+      <div class="goal-card" (click)="move()">
+        <img src="https://img.icons8.com/ios-filled/50/idea.png" alt="Personal Goal" />
+        <div class="goal-title">Personal Goal</div>
+        <div>Personal Goal allows you to make up your own goal and assign any metrics you want.</div>
+      </div>
+      <div class="goal-card">
+        <img src="https://img.icons8.com/ios-filled/50/save-as.png" alt="Archived Goal" />
+        <div class="goal-title">Archived Goal</div>
+        <div>Archived goals are the goals that have been saved by you for later use.</div>
+      </div>
+      <div class="goal-card">
+        <img src="https://img.icons8.com/ios-filled/50/track-order.png" alt="Move Goal" />
+        <div class="goal-title">Move Goal</div>
+        <div>You can bring your goals from last year into the current year and make use of it.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- New Goal Form -->
+<div *ngIf="currentView === 'newGoal'" class="new-goal">
+  <h3>New Goal</h3>
+  <form [formGroup]="goalForm" (ngSubmit)="submitGoal()">
+    <label>Category*</label>
+    <select formControlName="category">
+      <option value="" disabled selected>Choose a category</option>
+      <option>Business</option>
+      <option>Technology</option>
+      <option>People</option>
+    </select>
+    <div class="error" *ngIf="goalForm.get('category')?.touched && goalForm.get('category')?.invalid">
+      Category is required
+    </div>
+
+    <label>Goal Description*</label>
+    <input type="text" formControlName="description" maxlength="35" />
+    <div class="error" *ngIf="goalForm.get('description')?.touched && goalForm.get('description')?.invalid">
+      Description is required (max 35 characters)
+    </div>
+
+    <label>Metrics*</label>
+    <textarea rows="2" formControlName="metrics"></textarea>
+    <div class="error" *ngIf="goalForm.get('metrics')?.touched && goalForm.get('metrics')?.invalid">
+      Metrics are required
+    </div>
+
+    <label>Outcome*</label>
+    <select formControlName="outcome">
+      <option value="" disabled selected>Select</option>
+      <option>Achieved</option>
+      <option>Missed</option>
+      <option>Ongoing</option>
+    </select>
+    <div class="error" *ngIf="goalForm.get('outcome')?.touched && goalForm.get('outcome')?.invalid">
+      Outcome is required
+    </div>
+
+    <label>Weight* (%)</label>
+    <input type="number" formControlName="weight" min="0" max="100" />
+    <div class="error" *ngIf="goalForm.get('weight')?.touched && goalForm.get('weight')?.invalid">
+      Weight must be between 0 and 100
+    </div>
+
+    <label>Start Date*</label>
+    <input type="date" formControlName="startDate" />
+    <div class="error" *ngIf="goalForm.get('startDate')?.touched && goalForm.get('startDate')?.invalid">
+      Start Date is required
+    </div>
+
+    <label>End Date*</label>
+    <input type="date" formControlName="endDate" />
+    <div class="error" *ngIf="goalForm.get('endDate')?.touched && goalForm.get('endDate')?.invalid">
+      End Date is required
+    </div>
+
+    <button type="submit">Submit</button>
+    <button type="button" (click)="goBack()">← Back</button>
+  </form>
+</div>

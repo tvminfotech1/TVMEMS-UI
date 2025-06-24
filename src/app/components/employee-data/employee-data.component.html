@@ -1,0 +1,282 @@
+<div class="employee-detail-container">
+  <h2>
+    Employee Details - {{ employeeDetails.fname }}
+    {{ employeeDetails.mname ? employeeDetails.name : "" }}
+    {{ employeeDetails.lname }}
+  </h2>
+
+  <!-- Personal Information -->
+  <section class="section">
+    <h3>Personal Information</h3>
+    <div class="sub-section">
+      <div class="row">
+        <label>Name:</label> {{ employeeDetails.fname }}
+        {{ employeeDetails.mname ? employeeDetails.mname + " " : "" }}
+        {{ employeeDetails.lname }}
+      </div>
+      <div class="row"><label>Email:</label> {{ employeeDetails.email }}</div>
+      <div class="row"><label>DOB:</label> {{ employeeDetails.dob }}</div>
+      <div class="row"><label>Gender:</label> {{ employeeDetails.gender }}</div>
+      <div class="row">
+        <label>Blood Group:</label> {{ employeeDetails.bloodGroup }}
+      </div>
+      <div class="row">
+        <label>Date of Birth:</label> {{ employeeDetails.dob }}
+      </div>
+      <div class="row">
+        <label>Merital:</label> {{ employeeDetails.merital }}
+      </div>
+      <div class="row">
+        <label>Marriege date:</label> {{ employeeDetails.marriegedate }}
+      </div>
+
+      <div class="row">
+        <label> Emergency Contact Name:</label>
+        {{ employeeDetails.emergency_contact_name }}
+      </div>
+      <div class="row">
+        <label> Emergency Contact Number:</label>
+        {{ employeeDetails.emergency_contact_number }}
+      </div>
+      <div class="row">
+        <label> Emergency relationship:</label>
+        {{ employeeDetails.emergency_relationship }}
+      </div>
+      <div class="row"><label> year:</label> {{ employeeDetails.year }}</div>
+      <div class="row"><label> month:</label> {{ employeeDetails.month }}</div>
+      <div class="row">
+        <label> relevantYear:</label> {{ employeeDetails.relevantYear }}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h3>Current Address</h3>
+    <div class="sub-section">
+      <div class="row">
+        <label>Current Address:</label> {{ employeeDetails.current_address }}
+      </div>
+      <div class="row">
+        <label>Country:</label> {{ employeeDetails.current_country }}
+      </div>
+      <div class="row">
+        <label>State:</label> {{ employeeDetails.current_state }}
+      </div>
+      <div class="row">
+        <label>City:</label> {{ employeeDetails.current_city }}
+      </div>
+      <div class="row">
+        <label>Pincode:</label> {{ employeeDetails.current_pincode }}
+      </div>
+      <div class="row">
+        <label>contact:</label> {{ employeeDetails.current_contact }}
+      </div>
+    </div>
+  </section>
+  <section class="section">
+    <h3>Permanent Address</h3>
+    <div class="sub-section">
+      <div class="row">
+        <label> Permanent address:</label>
+        {{ employeeDetails.permanent_address }}
+      </div>
+      <div class="row">
+        <label> country:</label> {{ employeeDetails.permanent_country }}
+      </div>
+      <div class="row">
+        <label> state:</label> {{ employeeDetails.permanent_state }}
+      </div>
+      <div class="row">
+        <label> city:</label> {{ employeeDetails.permanent_city }}
+      </div>
+      <div class="row">
+        <label> pincode:</label> {{ employeeDetails.permanent_pincode }}
+      </div>
+      <div class="row">
+        <label> contact:</label> {{ employeeDetails.permanent_contact }}
+      </div>
+    </div>
+  </section>
+  <section class="section">
+    <h3>BCP Address</h3>
+    <div class="sub-section">
+      <div class="row">
+        <label> Bcp address:</label> {{ employeeDetails.bcp_address }}
+      </div>
+      <div class="row">
+        <label> country:</label> {{ employeeDetails.bcp_country }}
+      </div>
+      <div class="row">
+        <label> state:</label> {{ employeeDetails.bcp_state }}
+      </div>
+      <div class="row">
+        <label> city:</label> {{ employeeDetails.bcp_city }}
+      </div>
+      <div class="row">
+        <label> pincode:</label> {{ employeeDetails.bcp_pincode }}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" *ngIf="employeeDetails.family?.length">
+    <h3>Family Details</h3>
+    <div class="sub-section">
+      <div class="row">
+        <label>Father Name:</label> {{ employeeDetails.family.fatherName }}
+      </div>
+      <div class="row">
+        <label>Father DOB:</label> {{ employeeDetails.family.fatherDOB }}
+      </div>
+      <div class="row">
+        <label>Mother Name:</label> {{ employeeDetails.family.motherName }}
+      </div>
+      <div class="row">
+        <label>Mother DOB:</label> {{ employeeDetails.family.motherDOB }}
+      </div>
+      <div class="row">
+        <label>Spouse Name:</label>
+        {{
+          employeeDetails.family.spouseName
+            ? employeeDetails.family.spouseName
+            : ""
+        }}
+      </div>
+      <div class="row">
+        <label>Spouse DOB:</label>
+        {{
+          employeeDetails.family.spouseDOB
+            ? employeeDetails.family.spouseDOB
+            : ""
+        }}
+      </div>
+      <div class="row">
+        <label>Spouse Gender:</label>
+        {{
+          employeeDetails.family.spouseGender
+            ? employeeDetails.family.spouseGender
+            : ""
+        }}
+      </div>
+      <div class="row">
+        <label>children::</label> {{ employeeDetails.family.children }}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" *ngIf="employeeDetails.passport.length">
+    <h3>Passport Details</h3>
+    <div class="sub-section">
+      <div class="row">
+        <label>Nationality:</label> {{ employeeDetails.passport.nationality }}
+      </div>
+      <div class="row">
+        <label>passport:</label> {{ employeeDetails.passport.ifPassport }}
+      </div>
+      <div class="row">
+        <label>Passport Number:</label>
+        {{ employeeDetails.passport.passportNumber }}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" *ngIf="employeeDetails.previousEmployment?.length">
+    <h3>Previous Employment</h3>
+    <div
+      class="sub-section"
+      *ngFor="let emp of employeeDetails.previousEmployment"
+    >
+      <div class="row"><label>Company:</label> {{ emp.companyName }}</div>
+      <div class="row"><label>Designation:</label> {{ emp.designation }}</div>
+      <div class="row">
+        <label>Employment Type:</label> {{ emp.employmentType }}
+      </div>
+      <div class="row"><label>Type:</label> {{ emp.employmentType }}</div>
+      <div class="row">
+        <label>From:</label> {{ emp.startDate }} <b>To:</b> {{ emp.endDate }}
+      </div>
+    </div>
+  </section>
+
+  <!-- Education -->
+  <section class="section" *ngIf="employeeDetails.education?.length">
+    <h3>Education</h3>
+    <div class="sub-section" *ngFor="let edu of employeeDetails.education">
+      <div class="row">
+        <label>Qualification:</label> {{ edu.qualification }} ({{
+          edu.specilization
+        }})
+      </div>
+      <div class="row"><label>Institute:</label> {{ edu.instituteName }}</div>
+      <div class="row"><label>University:</label> {{ edu.universityName }}</div>
+      <div class="row">
+        <label>From:</label> {{ edu.fromDate }} <b>To:</b> {{ edu.toDate }}
+      </div>
+      <div class="row"><label>Marks:</label> {{ edu.percentage }}%</div>
+      <div class="row"><label>Roll No:</label> {{ edu.rollNo }}</div>
+      <div class="row">
+        <label>Education Type:</label> {{ edu.educationType }}
+      </div>
+    </div>
+  </section>
+
+  <!-- Skills -->
+  <section class="section" *ngIf="employeeDetails.skills?.length">
+    <h3>Skills</h3>
+    <div class="sub-section" *ngFor="let skill of employeeDetails.skills">
+      <div class="row">
+        <label>Skill:</label> {{ skill.skillName }} (v{{ skill.versionNum }})
+      </div>
+      <div class="row">
+        <label>Category:</label> {{ skill.skillCategories }}
+      </div>
+      <div class="row">
+        <label>Experience:</label> {{ skill.experience_year }}y
+        {{ skill.experience_month }}m
+      </div>
+      <div class="row"><label>Self Rating:</label> {{ skill.selfRate }}/5</div>
+    </div>
+  </section>
+
+  <!-- Certifications -->
+  <section class="section" *ngIf="employeeDetails.certification?.length">
+    <h3>Certifications</h3>
+    <div class="sub-section" *ngFor="let cert of employeeDetails.certification">
+      <div class="row">
+        <label>Certificate:</label> {{ cert.certificateName }}
+      </div>
+      <div class="row"><label>By:</label> {{ cert.certifiedBy }}</div>
+      <div class="row">
+        <label>Completed on:</label> {{ cert.completionDate }}
+      </div>
+      <div class="row"><label>Marks:</label> {{ cert.marks }}</div>
+    </div>
+  </section>
+
+  <!-- Resume Info -->
+  <section class="section">
+    <h3>Resume Info</h3>
+    <div class="sub-section">
+      <div class="row">
+        <label>Achievements:</label> {{ employeeDetails.resume?.achievements }}
+      </div>
+      <div class="row">
+        <label>Category:</label> {{ employeeDetails.resume?.resumeCate }}
+      </div>
+    </div>
+  </section>
+
+  <!-- Final Declaration -->
+  <section class="section">
+    <h3>Final Declaration</h3>
+    <div class="row">
+      <label>Signature:</label> {{ employeeDetails.aFinal?.signature }}
+    </div>
+    <div class="row">
+      <label>Date:</label> {{ employeeDetails.aFinal?.date }}
+    </div>
+  </section>
+
+  <button class="back-button" routerLink="/admin">
+    ⬅ Back to Employee List
+  </button>
+</div>

@@ -1,0 +1,133 @@
+<div class="app-container">
+  <!-- Main Content -->
+  <div class="main-content">
+    <header class="header">
+      <div class="tabs">
+        <button 
+          class="tab" 
+          [class.active]="activeTab === 'business'"
+          (click)="setActiveTab('business')">
+          Business Unit Org Chart
+        </button>
+        <button 
+          class="tab" 
+          [class.active]="activeTab === 'reporting'"
+          (click)="setActiveTab('reporting')">
+          Reporting Structure Org Chart
+        </button>
+        <button 
+          class="tab" 
+          [class.active]="activeTab === 'directory'"
+          (click)="setActiveTab('directory')">
+          Organization Directory
+        </button>
+      </div>
+    </header>
+
+    <!-- Org Chart View -->
+    <div *ngIf="activeTab !== 'directory'" class="org-chart-container">
+      
+      <!-- Show department card ONLY for Business tab -->
+      <div class="department-card" *ngIf="activeTab === 'business'">
+        <h3>CLOUDSENS SERVICES</h3>
+        <p>Head by Suresh Vadivel</p>
+        <p>Arumugam 📧</p>
+        <small>Department</small>
+      </div>
+
+      <div class="employees-grid">
+        <!-- Business Unit Org Chart: Show all team members -->
+        <ng-container *ngIf="activeTab === 'business'">
+          <div 
+            *ngFor="let employee of getTeamMembers()" 
+            class="employee-card"
+            (click)="selectEmployee(employee)">
+            <div class="employee-photo">
+              <img [src]="employee.photo" [alt]="employee.name">
+            </div>
+            <h4>{{ employee.name }}</h4>
+            <p class="designation">{{ employee.designation }}</p>
+            <p class="location">{{ employee.location }}</p>
+            <p class="team">{{ employee.team }}</p>
+          </div>
+        </ng-container>
+
+        <!-- Reporting Structure Org Chart: Show only logged-in user profile card -->
+        <ng-container *ngIf="activeTab === 'reporting'">
+          <div 
+            class="employee-card"
+            *ngIf="getLoggedInUser()"
+            (click)="selectEmployee(getLoggedInUser()!)">
+            <div class="employee-photo">
+              <img [src]="getLoggedInUser()?.photo" [alt]="getLoggedInUser()?.name">
+            </div>
+            <h4>{{ getLoggedInUser()?.name }}</h4>
+            <p class="designation">{{ getLoggedInUser()?.designation }}</p>
+            <p class="location">{{ getLoggedInUser()?.location }}</p>
+            <p class="team">{{ getLoggedInUser()?.team }}</p>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+
+    <!-- Directory View -->
+    <div *ngIf="activeTab === 'directory'" class="directory-container">
+      <div class="search-section">
+        <div class="search-box">
+          <input 
+            type="text" 
+            placeholder="Search by Emp Name/Id"
+            [(ngModel)]="searchTerm"
+            (input)="filterEmployees()">
+          <i class="search-icon">🔍</i>
+        </div>
+        <div class="sort-options">
+          <select [(ngModel)]="sortBy" (change)="sortEmployees()">
+            <option value="name">Sort by Name</option>
+            <option value="department">Sort by Department</option>
+            <option value="designation">Sort by Designation</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="employee-list">
+        <div 
+          *ngFor="let employee of filteredEmployees" 
+          class="employee-row">
+          <div class="employee-info">
+            <div class="employee-photo-small">
+              <img [src]="employee.photo" [alt]="employee.name">
+            </div>
+            <div class="employee-details">
+              <h4>{{ employee.name }}</h4>
+              <p>Employee ID: {{ employee.id }}</p>
+              <p>Location: {{ employee.location }}</p>
+            </div>
+          </div>
+          <div class="employee-contact">
+            <p>Work Email: {{ employee.email }}</p>
+            <p>Department: {{ employee.department }}</p>
+          </div>
+          <div class="employee-role">
+            <p>Designation: {{ employee.designation }}</p>
+            <button class="action-btn">👤</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Selected Employee Detail (Modal-like) -->
+    <div *ngIf="selectedEmployee && activeTab !== 'directory'" class="employee-detail-overlay">
+      <div class="employee-detail-card">
+        <button class="close-btn" (click)="closeEmployeeDetail()">×</button>
+        <div class="employee-photo-large">
+          <img [src]="selectedEmployee.photo" [alt]="selectedEmployee.name">
+        </div>
+        <h3>{{ selectedEmployee.name }}</h3>
+        <p>{{ selectedEmployee.location }}</p>
+        <p>{{ selectedEmployee.department }}</p>
+        <p class="designation-large">{{ selectedEmployee.designation }}</p>
+      </div>
+    </div>
+  </div>
+</div>

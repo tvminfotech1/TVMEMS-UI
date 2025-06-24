@@ -1,0 +1,11 @@
+[
+  {
+    "title": "Frontend Developer",
+    "qualifications": ["B.E", "B.Tech"],
+    "yearOfPassout": 2022,
+    "location": "Chennai",
+    "experience": 1,
+    "skills": ["HTML", "CSS", "JavaScript"],
+    "description": "Looking for a creative frontend developer."
+  }
+]

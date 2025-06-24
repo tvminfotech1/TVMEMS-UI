@@ -1,0 +1,10 @@
+{
+  "pieData": {
+    "labels": ["Present", "WFH", "Break", "Absent", "Week Off", "Holiday"],
+    "values": [5, 3, 1, 0, 0, 0]
+  },
+  "barData": {
+    "labels": ["Present", "Absent", "WFH", "Holiday", "Present"],
+    "values": [8, 0, 6, 0, 9]
+  }
+}

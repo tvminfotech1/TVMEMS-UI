@@ -1,0 +1,98 @@
+/* Make container full page width by removing fixed container */
+:host {
+  display: block;
+  max-width: 80vw;
+  padding: 10px 20px;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+/* Month Switcher full width */
+.month-switcher {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 15px;
+  font-size: 16px;
+  font-weight: bold;
+  width: 100%;
+}
+
+.month-switcher button {
+  margin: 0 10px;
+  padding: 6px 12px;
+  cursor: pointer;
+  background-color: #007bff;
+  border: none;
+  color: white;
+  border-radius: 4px;
+  font-weight: bold;
+  min-width: 40px;
+}
+
+.month-switcher button:hover {
+  background-color: #0056b3;
+}
+
+/* Table full width */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+th, td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  vertical-align: top;
+  word-wrap: break-word;
+}
+
+th {
+  background-color: #f2f2f2;
+  text-align: left;
+}
+
+.hours-row td {
+  text-align: center;
+  font-weight: bold;
+  background-color: #f9f9f9;
+  font-size: 16px;
+}
+
+.main-date {
+  font-weight: bold;
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+
+.status-wfh {
+  color: green;
+  font-weight: bold;
+}
+
+.status-weekoff {
+  color: brown;
+  font-weight: bold;
+}
+
+.highlight {
+  background-color: #e6f1f8;
+}
+
+/* Responsive for smaller devices */
+@media (max-width: 768px) {
+  .month-switcher {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  th, td {
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  .month-switcher button {
+    width: 100px;
+  }
+}

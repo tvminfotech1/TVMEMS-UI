@@ -1,0 +1,147 @@
+.searchBox {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  background-color: #f1f3f5;
+  border-radius: 50px;
+  padding: 8px 16px;
+  /* width: fit-content; */
+  width: 400px;
+  margin-left: auto;
+  margin-right: 200px;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  box-shadow: 0 4px 10px rgba(0,  0,  0,  0.1);
+}
+.searchBox i {
+  font-size: 22px;
+  color: #1976d2;
+  margin-right: 12px;
+}
+
+.searchBox input {
+  border: none;
+  background-color: #f1f3f5;
+  outline: none;
+  font-size: 15px;
+  width: 100%;
+}
+
+/* 🧑‍💼 Admin Container */
+.admin-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 30px 20px;
+  background: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+}
+
+.admin-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 26px;
+  color: #333;
+}
+
+/* 📋 Table */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+}
+
+th,
+td {
+  padding: 14px 12px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+th {
+  background-color: #1976d2;
+  color: white;
+}
+tr:nth-child(1) {
+  width: 40px;
+}
+tr:nth-child(2) {
+  width: 200px;
+}
+tr:nth-child(3) {
+  width: 300px;
+}
+tr:hover {
+  background-color: #f1f1f1;
+}
+
+a {
+  color: #1976d2;
+  text-decoration: underline;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+/* 🪟 Popup Styling */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.popup-content {
+  background-color: #fff;
+  width: 90%;
+  max-width: 800px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+.popup-content h3,
+.popup-content h4 {
+  margin-bottom: 10px;
+  color: #1976d2;
+}
+
+.popup-content p {
+  margin: 6px 0;
+}
+
+.popup-content hr {
+  margin: 15px 0;
+  border: none;
+  height: 1px;
+  background-color: #eee;
+}
+
+button {
+  display: block;
+  margin: 20px auto 0 auto;
+  padding: 10px 20px;
+  background-color: #1976d2;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+button:hover {
+  background-color: #125ea7;
+}

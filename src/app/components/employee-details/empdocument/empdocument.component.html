@@ -1,0 +1,106 @@
+<app-nav-display></app-nav-display>
+
+<form>
+  <div class="borderLine">
+    <h3>KYC Documents</h3>
+    <p style="margin: 10px;">Upload images in less size (Max 1 MB)</p>
+    <div class="form-grid">
+
+      <div class="form-group">
+        <label>Pan card Image</label>
+        <input type="file" disabled>
+        <div *ngIf="employeeDetails?.documents?.panCard">
+          <img [src]="getFileUrl(employeeDetails.documents.panCard)" width="150" alt="PAN Card">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Aadhar card Image</label>
+        <input type="file" disabled>
+        <div *ngIf="employeeDetails?.documents?.aadharCard">
+          <img [src]="getFileUrl(employeeDetails.documents.aadharCard)" width="150" alt="Aadhar Card">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Passport size Image</label>
+        <input type="file" disabled>
+        <div *ngIf="employeeDetails?.documents?.pSizePhoto">
+          <img [src]="getFileUrl(employeeDetails.documents.pSizePhoto)" width="150" alt="Passport Size">
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="borderLine">
+    <h3>Education Documents</h3>
+    <p style="margin: 10px;">Supported file type: .pdf (Max 1 MB)</p>
+    <div class="form-grid">
+
+      <div class="form-group">
+        <label>10th document</label>
+        <input type="file" accept=".pdf" disabled>
+        <div *ngIf="employeeDetails?.documents?.matric">
+          <a [href]="getFileUrl(employeeDetails.documents.matric)" target="_blank">View 10th PDF</a>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>12th document</label>
+        <input type="file" accept=".pdf" disabled>
+        <div *ngIf="employeeDetails?.documents?.intermediate">
+          <a [href]="getFileUrl(employeeDetails.documents.intermediate)" target="_blank">View 12th PDF</a>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Graduation document</label>
+        <input type="file" accept=".pdf" disabled>
+        <div *ngIf="employeeDetails?.documents?.graduationMarksheet">
+          <a [href]="getFileUrl(employeeDetails.documents.graduationMarksheet)" target="_blank">View Graduation PDF</a>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Post Graduation document</label>
+        <input type="file" accept=".pdf" disabled>
+        <div *ngIf="employeeDetails?.documents?.postGraduation">
+          <a [href]="getFileUrl(employeeDetails.documents.postGraduation)" target="_blank">View PG PDF</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="borderLine">
+    <div class="leftBox">
+      <h3>Bank Details</h3>
+      <p>Upload clear image of Check Leaf and Passbook (Max 1 MB)</p>
+
+      <div class="form-group">
+        <label>Upload Check Leaf</label>
+        <input type="file" disabled>
+        <div *ngIf="employeeDetails?.documents?.checkLeaf">
+          <img [src]="getFileUrl(employeeDetails.documents.checkLeaf)" width="150" alt="Check Leaf">
+        </div>
+      </div>
+    </div>
+
+    <div class="rightBox">
+      <div class="form-group">
+        <label>Upload Bank Passbook</label>
+        <input type="file" disabled>
+        <div *ngIf="employeeDetails?.documents?.passbook">
+          <img [src]="getFileUrl(employeeDetails.documents.passbook)" width="150" alt="Bank Passbook">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <br>
+  <div class="button-group">
+    <a routerLink="/admin/empcertificate">&laquo; Previous</a>
+    <button class="update-button" routerLink="/admin/empresume">Next &raquo;</button>
+  </div>
+</form>

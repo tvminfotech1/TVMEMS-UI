@@ -1,0 +1,53 @@
+<div class="dashboard">
+  <div class="card">
+    <div class="card-banner">
+      <div class="card-header">
+        <span class="arrow-icon" (click)="previous('WELCOME ON BOARD')" title="Previous">&#8592;</span>
+        <span class="category">{{ getCurrentCard('WELCOME ON BOARD')?.category }}</span>
+      </div>
+      <div class="profile-pic-container" (click)="next('WELCOME ON BOARD')">
+        <img [src]="getCurrentCard('WELCOME ON BOARD')?.image" alt="Profile Image">
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>{{ getCurrentCard('WELCOME ON BOARD')?.name }}</h3>
+      <div class="date">{{ getCurrentCard('WELCOME ON BOARD')?.date }}</div>
+      <div class="role">{{ getCurrentCard('WELCOME ON BOARD')?.role }}</div>
+      <button *ngIf="getCurrentCard('WELCOME ON BOARD')?.showButton" (click)="sendWishes(getCurrentCard('WELCOME ON BOARD')?.name)">Send Wishes</button>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-banner">
+      <div class="card-header">
+        <span class="arrow-icon" (click)="previous('BIRTHDAY WISHES')" title="Previous">&#8592;</span>
+        <span class="category">{{ getCurrentCard('BIRTHDAY WISHES')?.category }}</span>
+      </div>
+      <div class="profile-pic-container" (click)="next('BIRTHDAY WISHES')">
+        <img [src]="getCurrentCard('BIRTHDAY WISHES')?.image" alt="Profile Image">
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>{{ getCurrentCard('BIRTHDAY WISHES')?.name }}</h3>
+      <div class="date">{{ getCurrentCard('BIRTHDAY WISHES')?.date }}</div>
+      <div class="role">{{ getCurrentCard('BIRTHDAY WISHES')?.role }}</div>
+      <button *ngIf="getCurrentCard('BIRTHDAY WISHES')?.showButton" (click)="sendWishes(getCurrentCard('BIRTHDAY WISHES')?.name)">Send Wishes</button>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-banner">
+      <div class="card-header">
+        <span class="arrow-icon" (click)="previous('ANNIVERSARY WISHES')" title="Previous">&#8592;</span>
+        <span class="category">{{ getCurrentCard('ANNIVERSARY WISHES')?.category }}</span>
+      </div>
+      <div class="profile-pic-container" (click)="next('ANNIVERSARY WISHES')">
+        <img [src]="getCurrentCard('ANNIVERSARY WISHES')?.image" alt="Profile Image">
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>{{ getCurrentCard('ANNIVERSARY WISHES')?.name }}</h3>
+      <div class="date">{{ getCurrentCard('ANNIVERSARY WISHES')?.date }}</div>
+      <div class="role">{{ getCurrentCard('ANNIVERSARY WISHES')?.role }}</div>
+      <button *ngIf="getCurrentCard('ANNIVERSARY WISHES')?.showButton" (click)="sendWishes(getCurrentCard('ANNIVERSARY WISHES')?.name)">Send Wishes</button>
+    </div>
+  </div>
+</div>

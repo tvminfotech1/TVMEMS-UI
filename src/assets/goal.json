@@ -1,0 +1,38 @@
+[
+  {
+    "category": "Business",
+    "description": "Complete Angular certification",
+    "metrics": "Certificate obtained",
+    "outcome": "Achieved",
+    "weight": 25,
+    "startDate": "2025-06-01",
+    "endDate": "2025-08-01"
+  },
+  {
+    "category": "People",
+    "description": "Deliver project Alpha on time",
+    "metrics": "Project milestones met",
+    "outcome": "Client satisfaction and timely release",
+    "weight": 40,
+    "startDate": "2025-06-10",
+    "endDate": "2025-07-30"
+  },
+  {
+    "category": "Technology",
+    "description": "Mentor 2 junior developers",
+    "metrics": "Mentoring logs and feedback",
+    "outcome": "Increased team productivity",
+    "weight": 20,
+    "startDate": "2025-06-15",
+    "endDate": "2025-09-15"
+  },
+  {
+    "category": "Business",
+    "description": "Attend 3 technical webinars",
+    "metrics": "Certificates or notes from webinars",
+    "outcome": "Knowledge enhancement",
+    "weight": 15,
+    "startDate": "2025-06-05",
+    "endDate": "2025-07-20"
+  }
+]

@@ -1,0 +1,42 @@
+<div class="pending-users-container">
+  <h1>Pending Users</h1>
+  <p>Users who have not submitted their full details will appear as "Pending".</p>
+
+  <input type="text" placeholder="Search by name or email..." [(ngModel)]="searchTerm" class="search-box" />
+
+  <table class="user-table">
+    <thead>
+      <tr>
+        <th>Full Name</th>
+        <th>Email</th>
+        <th>Mobile</th>
+        <th>Aadhar</th>
+        <th>DOB</th>
+        <th>Gender</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of filteredUsers()">
+        <td>{{ user.fullName || '---' }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.mobile || '---' }}</td>
+        <td>{{ user.aadhar || '---' }}</td>
+        <td>{{ user.dob || '---' }}</td>
+        <td>{{ user.gender || '---' }}</td>
+        <td>
+            <span >{{ user.status==0?"Pending":"Submitted" }}</span>
+          <!-- <span class="status-badge" [ngClass]="{
+            'pending': user.status === 'Pending',
+            'submitted': user.status === 'Submitted'
+          }"> 
+            
+          </span>-->
+        </td>
+      </tr>
+      <tr *ngIf="filteredUsers().length === 0">
+        <td colspan="7" class="empty-message">🎉 No pending users at the moment!</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

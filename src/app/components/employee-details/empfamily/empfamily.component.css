@@ -1,0 +1,139 @@
+input[readonly] {
+  background-color: transparent;
+  border: none;
+  font-weight: 500;
+  color: #333;
+  padding: 5px 0;
+}
+
+input[readonly]:hover{
+cursor: not-allowed;
+}
+
+/* .form-container {
+  max-width: 800px;
+  margin: 140px auto;
+  padding: 30px;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+} */
+
+/* Grid layout for form fields */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.2rem;
+  margin: 20px auto;
+  max-width: 800px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center; */
+}
+
+.form-group label {
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #333;
+}
+
+.form-group input,
+.form-group select {
+  padding: 10px;
+  font-size: 0.95rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  transition: border-color 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+/* Radio group for children */
+.radio-group {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  margin: 20px 0;
+  font-weight: 500;
+}
+
+.radio-group label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* Button styling */
+.button-group {
+  margin-top: 30px;
+  display: flex;
+  justify-content: space-around;
+  gap: 12px;
+}
+
+
+.update-btn
+ {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 22px;
+  border: none;
+  font-weight: 500;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+}
+
+.button-group a {
+  text-decoration: none;
+  background-color: #f0f0f0;
+  padding: 10px 20px;
+  border-radius: 8px;
+  color: black;
+  font-weight: bold;
+}
+
+.button-group a:hover, .update-button:hover {
+  background-color: #004aad;
+  color: white;
+}
+
+
+.prev-btn:hover,
+.update-btn:hover,
+.next-btn:hover {
+  background-color: #0056b3;
+}
+
+/* Nominee section */
+.nominee-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 40px;
+  border-top: 1px solid #ccc;
+  padding-top: 20px;
+}
+
+.add-new-btn {
+  background-color: #007bff;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.add-new-btn:hover {
+  background-color: #0056b3;
+}

@@ -1,0 +1,80 @@
+.container {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin: 40px 0;
+  flex-wrap: wrap;
+}
+
+.card {
+  border: 2px solid #0c93d1;
+  border-radius: 12px;
+  padding: 30px 20px;
+  width: 300px;
+  position: relative;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  background-color: #fff;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.ribbon {
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  background-color: #0c93d1;
+  color: white;
+  padding: 5px 12px;
+  font-weight: bold;
+  border-top-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  font-size: 14px;
+}
+
+.circle {
+  border: 6px solid #0c93d1;
+  width: 110PX;
+  height: 110PX;
+  border-radius: 50%;
+  margin: 0 auto 10px;
+  font-size: 24px;
+  font-weight: bold;
+  /* color: #0c93d1; */
+  border-top-color: black;   
+  border-bottom-color: black;
+  border-left-color: #0c93d1;
+  border-right-color: #0c93d1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+h3 {
+  font-size: 20px;
+  margin: 10px 0 5px;
+  color: #333;
+}
+
+.experience {
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 4px;
+}
+
+.experience.red {
+  color: red;
+  font-weight: 500;
+}
+
+.shift {
+  font-size: 15px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.description {
+  font-size: 14px;
+  color: #555;
+  margin-top: 15px;
+  word-wrap: break-word;
+}

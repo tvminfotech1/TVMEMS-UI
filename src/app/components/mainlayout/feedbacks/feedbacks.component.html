@@ -1,0 +1,18 @@
+<h2>My Feedbacks</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Description</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngIf="feedbacks.length === 0">
+      <td class="no-data">No feedback data available</td>
+    </tr>
+    <tr *ngFor="let feedback of feedbacks">
+      <td>{{ feedback.description }}</td>
+      <td>{{ feedback.status }}</td>
+    </tr>
+  </tbody>
+</table>

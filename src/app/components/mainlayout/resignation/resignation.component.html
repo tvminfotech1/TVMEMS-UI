@@ -1,0 +1,76 @@
+<div class="resignation-container">
+  <!-- Top-right button -->
+  <div class="top-bar">
+    <button class="apply-btn" (click)="openForm()">+ Apply Resignation</button>
+  </div>
+
+  <!-- Background table -->
+  <div class="table-card">
+    <table>
+      <thead>
+        <tr>
+          <th>NAME</th>
+          <th>EMPLOYEE ID</th>
+          <th>REASON</th>
+          <th>SUBMITTED DATE</th>
+          <th>COMMENTS</th>
+          <th>STATUS</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngIf="submittedData.length === 0">
+          <td colspan="6">No Data available!</td>
+        </tr>
+        <tr *ngFor="let data of submittedData">
+          <td>{{ data.name }}</td>
+          <td>{{ data.employeeId }}</td>
+          <td>{{ data.reason }}</td>
+          <td>{{ data.date }}</td>
+          <td>{{ data.explanation }}</td>
+          <td>{{ data.status }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Right-side sliding form -->
+  <div *ngIf="showForm" class="form-slide-panel">
+    <button class="close-btn" (click)="closeForm()" aria-label="Close form">×</button>
+
+    <div class="form-card">
+      <h2>Resignation Form</h2>
+
+      <form [formGroup]="resignationForm">
+        <label>Name <span class="required">*</span></label>
+        <input type="text" formControlName="name" placeholder="Enter your name" />
+
+        <label>Employee ID <span class="required">*</span></label>
+        <input type="text" formControlName="employeeId" placeholder="Enter your employee ID" />
+
+        <label>Reason <span class="required">*</span></label>
+        <select formControlName="reason">
+          <option value="">-- Select Reason --</option>
+          <option value="Personal">Personal</option>
+          <option value="Career Growth">Career Growth</option>
+          <option value="Relocation">Relocation</option>
+          <option value="Other">Other</option>
+        </select>
+
+        <label>Explain Your Reason <span class="required">*</span></label>
+        <textarea rows="4" formControlName="explanation"></textarea>
+
+        <label class="checkbox">
+          <input type="checkbox" formControlName="acknowledge" />
+          I acknowledge that I have submitted this resignation form. <span class="required">*</span>
+        </label>
+
+        <p class="note">The Save button will be enabled only after all the mandatory fields are filled.</p>
+
+        <div class="buttons">
+          <button type="button" class="clear-btn" (click)="clearForm()">CLEAR</button>
+          <button type="button" class="save-btn" [disabled]="!resignationForm.valid" (click)="saveForm()">SAVE</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

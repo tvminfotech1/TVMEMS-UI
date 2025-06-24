@@ -1,0 +1,54 @@
+<div class="announcement-wrapper">
+  <!-- Tab Header as plain clickable text/icons -->
+  <div class="tab-header">
+    <span class="tab-link" [class.active]="currentTab === 'notification'" (click)="switchTab('notification')">
+      🔔 Notification
+    </span>
+    <span class="tab-link" [class.active]="currentTab === 'announcement'" (click)="switchTab('announcement')">
+      📢 Announcement
+    </span>
+  </div>
+
+  <!-- Optional Loading Spinner (disabled, can re-enable if needed) -->
+  <!-- <div class="loading-overlay" *ngIf="isLoading">
+    <div class="spinner"></div>
+    <p>Loading...</p>
+  </div> -->
+
+  <!-- Tab Switching -->
+  <div [ngSwitch]="currentTab">
+    
+    <!-- Notification Page -->
+    <div *ngSwitchCase="'notification'" class="notification-container">
+      <h2>Notifications</h2>
+      <p>This is the notification section. You can display updates or alerts here.</p>
+    </div>
+
+    <!-- Announcement Page -->
+    <div *ngSwitchCase="'announcement'" class="announcement-container">
+      <h1>Announcement:</h1><br><br>
+      <table>
+        <thead>
+          <tr>
+            <th>TITLE</th>
+            <th>START/END DATE</th>
+            <th>ACTION</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let a of visibleAnnouncements">
+            <td>{{ a.title }}</td>
+            <td>{{ a.startDate }} - {{ a.endDate }}</td>
+            <td><span class="calendar-icon" (click)="openCalendar(a)">📅</span></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="pagination-container">
+        <button class="pagination-button" (click)="changePage(1)" [disabled]="currentPage === 1">1</button>
+        <button class="pagination-button" (click)="changePage(2)" [disabled]="currentPage === 2">2</button>
+      </div>
+    </div>
+    
+  </div>
+</div>

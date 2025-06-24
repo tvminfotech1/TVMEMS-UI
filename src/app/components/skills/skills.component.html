@@ -1,0 +1,89 @@
+<app-nav-details></app-nav-details>
+
+<!-- List Section -->
+<div class="noSkill" *ngIf="skillList.length === 0">
+  <p>No skills added.</p>
+</div>
+
+<ul *ngIf="skillList.length > 0">
+  <li *ngFor="let skill of skillList; let i = index">
+    {{ skill.skillName }} ({{ skill.skillCategories }}) - Version: {{ skill.versionNum }},
+    Exp: {{ skill.experience_year }}y {{ skill.experience_month }}m, Rating: {{ skill.selfRate }}
+    <button (click)="deleteSkill(i)">Delete</button>
+  </li>
+</ul>
+
+<!-- Add Skill Button -->
+<button class="addSkill" (click)="openPopup()">Add Skill</button>
+
+<!-- Popup Form -->
+<div class="popup" *ngIf="showPopup">
+  <div class="popup-content">
+    <span class="close" (click)="closePopup()">&times;</span>
+
+    <form [formGroup]="skillForm" (ngSubmit)="addSkill()">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Skill Name</label>
+          <input type="text" formControlName="skillName" placeholder="Enter Skill Name (e.g., Angular, Java)">
+          <div class="error" *ngIf="skillForm.get('skillName')?.touched && skillForm.get('skillName')?.invalid">
+            Skill name is required.
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Skill categories</label>
+          <input type="text" formControlName="skillCategories" placeholder="Enter Skill Category (e.g., Frontend, Backend)">
+          <div class="error" *ngIf="skillForm.get('skillCategories')?.touched && skillForm.get('skillCategories')?.invalid">
+            Skill category is required.
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Version Number</label>
+          <input type="text" formControlName="versionNum" placeholder="Enter Version (e.g., 16.2.0)">
+          <div class="error" *ngIf="skillForm.get('versionNum')?.touched && skillForm.get('versionNum')?.invalid">
+            Version number is required.
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Experience in years</label>
+          <input type="text" formControlName="experience_year" placeholder="Enter Years of Experience" min="0">
+          <div class="error" *ngIf="skillForm.get('experience_year')?.touched && skillForm.get('experience_year')?.invalid">
+            Years of experience is required.
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Experience in months</label>
+          <input type="text" formControlName="experience_month" placeholder="Enter Additional Months" min="0" max="11">
+          <div class="error" *ngIf="skillForm.get('experience_month')?.touched && skillForm.get('experience_month')?.invalid">
+            Months of experience is required.
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Self rating (1-5)</label>
+          <select formControlName="selfRate">
+            <option value="">Select</option>
+            <option *ngFor="let rate of [1,2,3,4,5]" [value]="rate">{{ rate }}</option>
+          </select>
+          <div class="error" *ngIf="skillForm.get('selfRate')?.touched && skillForm.get('selfRate')?.invalid">
+            Self rating is required.
+          </div>
+        </div>
+
+        <div class="form-group full-width">
+          <button type="submit">Save Skill</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Navigation -->
+<div class="button-group">
+  <a routerLink="/education">&laquo; Previous</a>
+  <button type="button" (click)="finalSubmit()">Next &raquo;</button>
+</div>

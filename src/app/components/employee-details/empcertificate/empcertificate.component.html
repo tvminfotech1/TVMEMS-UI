@@ -1,0 +1,38 @@
+<app-nav-display></app-nav-display>
+
+<!-- Certificate List -->
+<div class="noCertificate" *ngIf="employeeDetails && employeeDetails.certification?.length === 0">
+  <p>No certificates added.</p>
+</div>
+
+
+<!-- Certificate Form List -->
+<div *ngFor="let cert of employeeDetails.certification">
+  <form class="form-grid">
+    <div class="form-group">
+      <label>Certificate Name</label>
+      <input type="text" [value]="cert.certificateName" readonly/>
+    </div>
+
+    <div class="form-group">
+      <label>Certified by</label>
+      <input type="text" [value]="cert.certifiedBy" readonly/>
+    </div>
+
+    <div class="form-group">
+      <label>Completion Date</label>
+      <input type="date" [value]="cert.completionDate" readonly/>
+    </div>
+
+    <div class="form-group">
+      <label>Marks</label>
+      <input type="number" [value]="cert.marks" readonly/>
+    </div>
+  </form>
+</div>
+
+<!-- Navigation Buttons -->
+<div class="button-group">
+  <a routerLink="/admin/empskills">&laquo; Previous</a>
+  <button class="update-button" routerLink="/admin/empdocument">Next &raquo;</button>
+</div>

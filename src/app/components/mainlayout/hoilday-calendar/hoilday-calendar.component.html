@@ -1,0 +1,21 @@
+<div class="calendar-container">
+  <h2>Holiday Calendar</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>SL NO</th>
+        <th>HOLIDAY NAME</th>
+        <th>DATE</th>
+        <th>DAY</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let holiday of holidays">
+        <td>{{ holiday.sl }}</td>
+        <td>{{ holiday.name }}</td>
+        <td>{{ holiday.date }}</td>
+        <td>{{ holiday.day }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,36 @@
+<app-nav-details></app-nav-details>
+<form [formGroup]="resumeForm" (ngSubmit)="submitForm()" >
+    <strong>Profile & Achievements:</strong>
+    
+    <textarea style="width: 100%; height: 200px; border-radius: 10px; margin-top: 20px; padding: 10px;" name="achievements" formControlName="achievements" placeholder="Briefly describe your profile, key achievements, and skills. For example: Experience in web development, leadership skills, notable project contributions, etc."></textarea>
+    <div *ngIf="resumeForm.get('achievements')?.touched && resumeForm.get('achievements')?.hasError('required')" class="error">
+        Achievements is required
+      </div>
+    <div class="">
+        <select name="resumeCate" formControlName="resumeCate">
+            <option value="">Select Category</option>
+            <option value="Programming">Programming</option>
+            <option value="Design">Design</option>
+            <option value="Management">Management</option>
+            <option value="Development">Development</option>
+            <option value="Data Science">Data Science</option>
+            <option value="Cybersecurity">Cybersecurity</option>
+            <option value="DevOps">DevOps</option>
+            <option value="Cloud Computing">Cloud Computing</option>
+            <option value="UI/UX">UI/UX</option>
+            <option value="AI & ML">AI & ML</option>
+            <option value="QA & Testing">QA & Testing</option>
+            <option value="other">Other</option>
+          </select>
+          <div *ngIf="resumeForm.get('resumeCate')?.touched && resumeForm.get('resumeCate')?.hasError('required')" class="error">
+        Select category  is required
+      </div>
+          
+</div>
+    <div class="button-group">
+        <a  routerLink='/document'>&laquo; Previous</a>
+        <button class="update-button" type="submit">Next &raquo;</button>
+        <!-- <a routerLink='/final'>Next &raquo;</a> -->
+      </div>
+    
+</form>

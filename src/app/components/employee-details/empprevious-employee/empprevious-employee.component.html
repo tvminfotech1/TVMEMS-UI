@@ -1,0 +1,35 @@
+<app-nav-display></app-nav-display>
+
+<div class="employment-section">
+  <h2>Employment History</h2>
+
+  <!-- Employment Form -->
+
+  <div *ngIf="employeeDetails.previousEmployment?.length === 0">
+    <p>No Employment data added.</p>
+  </div>
+
+  <ul *ngIf="employeeDetails.previousEmployment?.length">
+    <h3>Previous Employment</h3>
+    <div
+      class="sub-section"
+      *ngFor="let emp of employeeDetails.previousEmployment"
+    >
+      <div class="row"><label>Company:</label> {{ emp.companyName }}</div>
+      <div class="row"><label>Designation:</label> {{ emp.designation }}</div>
+      <div class="row">
+        <label>Employment Type:</label> {{ emp.employmentType }}
+      </div>
+      <div class="row"><label>Type:</label> {{ emp.employmentType }}</div>
+      <div class="row">
+        <label>From:</label> {{ emp.startDate }} <b>To:</b> {{ emp.endDate }}
+      </div>
+    </div>
+  </ul>
+</div>
+<div class="button-group">
+  <a routerLink="/admin/empfamily">&laquo; Previous</a>
+  <button class="update-button" routerLink="/admin/empeducation">
+    Next &raquo;
+  </button>
+</div>

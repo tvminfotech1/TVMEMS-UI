@@ -1,0 +1,113 @@
+<app-nav-details></app-nav-details>
+
+<div class="employment-section">
+  <button class="add-btn" (click)="openPopup()">Add</button>
+
+  <div *ngIf="employmentList.length === 0">
+    <p>No Employment data added.</p>
+  </div>
+
+  <ul *ngIf="employmentList.length > 0">
+    <li *ngFor="let emp of employmentList; let i = index">
+      <strong>{{ emp.companyName }}</strong> — {{ emp.designation }} ({{ emp.employmentType }})<br />
+      From: {{ emp.startDate }} To: {{ emp.endDate }}
+      <button (click)="deleteEmployment(i)" class="delete-btn">Delete</button>
+    </li>
+  </ul>
+</div>
+
+<!-- Popup Modal -->
+<div class="popup" *ngIf="showPopup">
+  <div class="popup-content">
+    <span class="close" (click)="closePopup()">&times;</span>
+    <form [formGroup]="employmentForm" (ngSubmit)="saveEmployment()">
+      <div class="form-grid">
+        <!-- Company Name -->
+        <div class="form-group">
+          <label>Company name</label>
+          <input type="text" placeholder="ABC Company" formControlName="companyName" />
+          <div *ngIf="employmentForm.get('companyName')?.touched && employmentForm.get('companyName')?.invalid" class="error">
+            Company name is required
+          </div>
+        </div>
+
+        <!-- Designation -->
+        <div class="form-group">
+          <label>Designation</label>
+          <select formControlName="designation">
+            <option value="">Select</option>
+            <option value="developer">Developer</option>
+            <option value="tester">Tester</option>
+            <option value="designer">Designer</option>
+            <option value="frontend_developer">Frontend Developer</option>
+            <option value="backend_developer">Backend Developer</option>
+            <option value="fullstack_developer">Full Stack Developer</option>
+            <option value="devops_engineer">DevOps Engineer</option>
+            <option value="data_engineer">Data Engineer</option>
+            <option value="data_scientist">Data Scientist</option>
+            <option value="machine_learning_engineer">Machine Learning Engineer</option>
+            <option value="qa_engineer">QA Engineer</option>
+            <option value="ui_ux_designer">UI/UX Designer</option>
+            <option value="business_analyst">Business Analyst</option>
+            <option value="project_manager">Project Manager</option>
+            <option value="product_manager">Product Manager</option>
+            <option value="scrum_master">Scrum Master</option>
+            <option value="system_admin">System Administrator</option>
+            <option value="network_engineer">Network Engineer</option>
+            <option value="technical_writer">Technical Writer</option>
+            <option value="support_engineer">Support Engineer</option>
+          </select>
+          <div *ngIf="employmentForm.get('designation')?.touched && employmentForm.get('designation')?.invalid" class="error">
+            Designation is required
+          </div>
+        </div>
+
+        <!-- Employment Type -->
+        <div class="form-group">
+          <label>Employment type</label>
+          <select formControlName="employmentType">
+            <option value="">Select Employment Type</option>
+            <option value="full_time">Full-time</option>
+            <option value="part_time">Part-time</option>
+            <option value="contractual">Contractual</option>
+            <option value="freelance">Freelance</option>
+            <option value="intern">Intern</option>
+            <option value="consultant">Consultant</option>
+          </select>
+          <div *ngIf="employmentForm.get('employmentType')?.touched && employmentForm.get('employmentType')?.invalid" class="error">
+            Employment type is required
+          </div>
+        </div>
+
+        <!-- Start Date -->
+        <div class="form-group">
+          <label>Start date</label>
+          <input type="date" formControlName="startDate" />
+          <div *ngIf="employmentForm.get('startDate')?.touched && employmentForm.get('startDate')?.invalid" class="error">
+            Start date is required
+          </div>
+        </div>
+
+        <!-- End Date -->
+        <div class="form-group">
+          <label>Exit date</label>
+          <input type="date" formControlName="endDate" />
+          <div *ngIf="employmentForm.get('endDate')?.touched && employmentForm.get('endDate')?.invalid" class="error">
+            Exit date is required
+          </div>
+        </div>
+
+        <!-- Submit -->
+        <div class="form-group full-width">
+          <button id="save-btn" type="submit">Save</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Navigation Buttons -->
+<div class="button-group">
+  <a routerLink="/family">&laquo; Previous</a>
+  <button class="update-button" type="submit" (click)="finalSave()">Next</button>
+</div>

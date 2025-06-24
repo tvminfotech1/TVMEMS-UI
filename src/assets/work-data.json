@@ -1,0 +1,27 @@
+{
+  "user": {
+    "id": 3422,
+    "name": "Shalini Raj",
+    "email": "shalini.raj@company.com",
+    "mobile": "9876543210",
+    "joiningDate": "2022-01-15",
+    "department": "IT",
+    "reportingTo": "Yogarani"
+  },
+  "projects": [
+    {
+      "name": "Employee Management System",
+      "startDate": "Jan 2022",
+      "endDate": "Dec 2022",
+      "manager": "Ravi",
+      "status": "Completed"
+    },
+    {
+      "name": "Goal Tracker",
+      "startDate": "Jan 2023",
+      "endDate": "Ongoing",
+      "manager": "Kavitha",
+      "status": "In Progress"
+    }
+  ]
+}

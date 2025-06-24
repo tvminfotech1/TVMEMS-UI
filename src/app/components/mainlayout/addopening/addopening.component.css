@@ -1,0 +1,65 @@
+.job-form-container {
+  max-width: 70%;
+  margin: auto;
+  background: #0a0f3c;
+  padding: 20px;
+  color: #ffff;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+h2 {
+  text-align: center;
+  color: #ffff;
+}
+.job-btn{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  button {
+    background-color: blue;
+  }
+}
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  font-weight: 500;
+}
+
+input, textarea {
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+button {
+  background-color: #0a0f3c;
+  color: white;
+  padding: 10px;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+button:hover {
+  background-color: #1f2a72;
+}
+
+.error {
+  color: red;
+  font-size: 12px;
+}

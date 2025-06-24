@@ -1,0 +1,70 @@
+.onboarding-container {
+  max-width: 90vw;
+  height: 80vh;
+  margin: 2rem auto;
+  padding: 2rem;
+  border-radius: 12px;
+  background-color: #f8f9fa;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.welcome-section h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.welcome-section p {
+  font-size: 1.2rem;
+  color: #555;
+}
+
+.steps-section {
+  margin-top: 2rem;
+}
+
+.steps-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.steps-section li {
+  font-size: 1.1rem;
+  margin: 0.5rem 0;
+  display: flex;
+  align-items: center;
+}
+
+.step-status {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  margin-right: 0.5rem;
+  font-size: 1.2rem;
+  text-align: center;
+}
+
+.step-status.complete {
+  color: green;
+}
+
+.actions-section {
+  margin-top: 2rem;
+  display: flex;
+  gap: 1rem;
+}
+
+.actions-section button {
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  background-color: #007bff;
+  color: white;
+  transition: background-color 0.3s ease;
+}
+
+.actions-section button:hover {
+  background-color: #0056b3;
+}

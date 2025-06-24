@@ -1,0 +1,12 @@
+[
+  { "sl": 1, "name": "Pongal", "date": "14 Jan 25", "day": "Tuesday" },
+  { "sl": 2, "name": "Maha Shivaratri", "date": "26 Feb 25", "day": "Wednesday" },
+  { "sl": 3, "name": "Ramdan(Ramjan)", "date": "31 Mar 25", "day": "Monday" },
+  { "sl": 4, "name": "Tamil New Year", "date": "14 Apr 25", "day": "Monday" },
+  { "sl": 5, "name": "Bakra Eid", "date": "7 Jun 2025", "day": "Saturday" },
+  { "sl": 6, "name": "Independence Day", "date": "15 Aug 25", "day": "Friday" },
+  { "sl": 7, "name": "Vinayaga Chaturthi", "date": "27 Aug 25", "day": "Wednesday" },
+  { "sl": 8, "name": "Vijaya Dashami / Gandhi Jayanti", "date": "02 Oct 25", "day": "Thursday" },
+  { "sl": 9, "name": "Diwali", "date": "20 Oct 25", "day": "Monday" },
+  { "sl": 10, "name": "Christmas Day", "date": "25 Dec 2025", "day": "Thursday" }
+]

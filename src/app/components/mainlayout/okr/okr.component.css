@@ -1,0 +1,63 @@
+.review-container {
+  padding: 20px;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.tab-headers {
+  display: flex;
+  border-bottom: 2px solid #ccc;
+  margin-bottom: 20px;
+}
+
+.tab {
+  padding: 10px 20px;
+  cursor: pointer;
+  font-weight: bold;
+  border: 2px solid transparent;
+  border-bottom: none;
+  transition: all 0.3s;
+  margin-right: 10px;
+  background-color: #f5f5f5;
+}
+
+.tab.active {
+  background-color: #fff;
+  border-color: #ccc #ccc #fff #ccc;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+}
+
+/* .tab-content {
+  background-color: #fff;
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-top: none;
+} */
+
+.table-wrapper {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+}
+
+th, td {
+  text-align: left;
+  padding: 12px;
+  border-bottom: 1px solid #ccc;
+  font-size: 14px;
+}
+
+th {
+  font-weight: bold;
+  background-color: #f5f5f5;
+}
+
+.no-data {
+  text-align: center;
+  padding: 20px;
+  color: #888;
+}

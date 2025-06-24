@@ -1,0 +1,38 @@
+<div class="month-switcher">
+  <button (click)="goToPreviousMonth()">&lt;</button>
+  <span>{{ selectedMonthYear }}</span>
+  <button (click)="goToNextMonth()">&gt;</button>
+</div>
+
+<table>
+  <thead>
+    <tr class="hours-row">
+      <td colspan="5">HOURS</td>
+    </tr>
+    <tr>
+      <th>Date</th>
+      <th>Working</th>
+      <th>Break</th>
+      <th>Total</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <ng-container *ngFor="let entry of attendance">
+      <tr [ngClass]="{ 'highlight': entry.highlight }">
+        <td><div class="main-date">{{ entry.date }}</div></td>
+        <td>{{ entry.working || '00h, 00m' }}</td>
+        <td>{{ entry.break || '00h, 00m' }}</td>
+        <td>{{ entry.total || '00h, 00m' }}</td>
+        <td
+          [ngClass]="{
+            'status-wfh': entry.status.includes('WFH'),
+            'status-weekoff': entry.status === 'Weekoff'
+          }"
+        >
+          {{ entry.status }}
+        </td>
+      </tr>
+    </ng-container>
+  </tbody>
+</table>

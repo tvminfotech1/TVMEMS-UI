@@ -1,0 +1,250 @@
+.timesheet-classic-container {
+  font-family: 'Arial', sans-serif;
+  color: #2c3e50;
+  background-color: #ecf0f1;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.timesheet-classic-container .classic-header {
+  text-align: center;
+  color: #1abc9c;
+  font-size: 1.8rem;
+  margin-bottom: 2rem;
+  text-transform: uppercase;
+}
+
+.timesheet-classic-container .classic-dropdown-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.timesheet-classic-container .classic-dropdown-section .classic-form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.timesheet-classic-container .classic-dropdown-section .classic-form-group label {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.timesheet-classic-container .classic-dropdown-section .classic-form-group select,
+.timesheet-classic-container .classic-dropdown-section .classic-form-group input {
+  padding: 0.5rem;
+  border: 1px solid #bdc3c7;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+.timesheet-classic-container .classic-dropdown-section .classic-form-group select:focus,
+.timesheet-classic-container .classic-dropdown-section .classic-form-group input:focus {
+  outline: none;
+  border-color: #1abc9c;
+  box-shadow: 0 0 4px #1abc9c;
+}
+
+.timesheet-classic-container .classic-accordion {
+  border-top: 1px solid #bdc3c7;
+}
+
+.timesheet-classic-container .accordion-item {
+  margin: 1rem 0;
+}
+
+.timesheet-classic-container .accordion-header {
+  cursor: pointer;
+  background-color: #34495e;
+  color: #ecf0f1;
+  padding: 0.8rem;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.timesheet-classic-container .accordion-header:hover {
+  background-color: #3e5870;
+}
+
+.timesheet-classic-container .accordion-content {
+  margin-top: 0.5rem;
+  padding: 1rem;
+  background-color: #f2f4f5;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.timesheet-classic-container .classic-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.timesheet-classic-container .classic-table thead {
+  background-color: #34495e;
+  color: #ecf0f1;
+}
+
+.timesheet-classic-container .classic-table th {
+  padding: 0.5rem;
+  text-align: left;
+  border: 1px solid #bdc3c7;
+}
+
+.timesheet-classic-container .classic-table td {
+  padding: 0.5rem;
+  border: 1px solid #bdc3c7;
+}
+
+.timesheet-classic-container .classic-table tbody tr:nth-child(even) {
+  background-color: #ffffff;
+}
+
+.timesheet-classic-container .classic-table input,
+.timesheet-classic-container .classic-table select,
+.timesheet-classic-container .classic-table textarea {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #bdc3c7;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+.timesheet-classic-container .classic-table input:focus,
+.timesheet-classic-container .classic-table select:focus,
+.timesheet-classic-container .classic-table textarea:focus {
+  outline: none;
+  border-color: #1abc9c;
+}
+
+.timesheet-classic-container .input-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+
+.timesheet-classic-container .input-container input {
+  flex: 0;
+  padding: 0.5rem;
+  padding-right: 2rem;
+  border: 1px solid #bdc3c7;
+  border-radius: 4px;
+  font-size: 1rem;
+  transition: transform 0.3s ease-in-out;
+}
+
+.timesheet-classic-container .input-container input:focus {
+  outline: none;
+  border-color: #1abc9c;
+  box-shadow: 0 0 4px #1abc9c;
+}
+
+.timesheet-classic-container .input-container .plus-icon {
+  position: absolute;
+  top: -0.7rem;
+  right: -0.7rem;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 1.5rem;
+  height: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.timesheet-classic-container .input-container .plus-icon:hover {
+  background-color: #0069d9;
+}
+
+.timesheet-classic-container .input-container .popup-box {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  max-width: 400px;
+  width: 100%;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.timesheet-classic-container .input-container.popup-visible .popup-box {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.timesheet-classic-container .input-container .popup-box input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  outline: none;
+}
+
+.timesheet-classic-container .input-container .popup-box button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.timesheet-classic-container .input-container .popup-box button:hover {
+  background-color: #0056b3;
+}
+
+.timesheet-classic-container .input-container .popup-box button:focus {
+  outline: none;
+}
+
+.timesheet-classic-container .input-container .popup-box button:active {
+  transform: scale(0.98);
+}
+
+.timesheet-classic-container .input-container .note-display {
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  color: #555;
+}
+
+.timesheet-classic-container .input-container .error {
+  color: #e74c3c;
+  font-size: 0.8rem;
+  margin-top: 0.3rem;
+}
+
+.timesheet-classic-container .classic-submit-btn {
+  background-color: #1abc9c;
+  color: #ecf0f1;
+  padding: 0.8rem 1.5rem;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 1rem;
+  transition: background-color 0.3s;
+}
+
+.timesheet-classic-container .classic-submit-btn:hover {
+  background-color: #16a085;
+}
