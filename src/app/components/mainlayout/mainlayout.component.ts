@@ -1,4 +1,5 @@
 import { Component, HostListener } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-mainlayout',
@@ -17,6 +18,7 @@ export class MainlayoutComponent {
   showAddJobDropdown = false;
   showSettings = false;
   showSearch = false;
+  // router: any;
 
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent) {
@@ -93,6 +95,18 @@ export class MainlayoutComponent {
   toggleSearch() {
     this.showSearch = !this.showSearch;
   }
-
   
+ constructor(private router: Router) {}
+  onLogout(): void {
+    console.log('Logout clicked');
+    localStorage.clear();
+      sessionStorage.clear();
+    this.router.navigateByUrl('/login'); 
+  }
+//   ngOnInit() {
+//   const token = localStorage.getItem('userToken');
+//   if (!token) {
+//     this.router.navigate(['/login']);
+//   }
+// }
 }
