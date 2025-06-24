@@ -135,6 +135,18 @@
   text-align: center;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
+.leave-card:nth-child(1){
+  background-color:lightcyan;
+}
+.leave-card:nth-child(2){
+  background-color:lightgreen;
+}
+.leave-card:nth-child(3){
+  background-color:lightcoral;
+}
+.leave-card:nth-child(4){
+  background-color: lightgoldenrodyellow;
+}
 
 .leave-card:hover {
   transform: translateY(-2px);
