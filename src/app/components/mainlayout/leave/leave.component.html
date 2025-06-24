@@ -10,22 +10,12 @@
   <!-- Main Content -->
   <div class="main-content">
     <h2 class="page-title">Leave Details</h2>
-    
-    <!-- Date Range -->
-  <div class="date-range">
-  <span class="date-text">{{ formatDateRange() }}</span>
-  
-  <!-- Hidden input (native date picker) -->
-  <input 
-    type="date" 
-    [(ngModel)]="selectedDate" 
-    (change)="onDateChange()" 
-    #dateInput 
-    style="display: none;" />
 
-  <!-- Button that opens the calendar -->
-  <!-- <button type="date" class="date-picker-btn" (click)="dateInput.click()">📅</button> -->
-</div>
+    <!-- Date Range -->
+    <div class="date-range">
+      <span class="date-text">{{ formatDateRange() }}</span>
+      <input type="date" [(ngModel)]="selectedDate" (change)="onDateChange()" #dateInput style="display: none;" />
+    </div>
 
     <!-- Leave Cards -->
     <div class="leave-cards-grid">
@@ -52,29 +42,14 @@
     <!-- Leave Request Table -->
     <div class="table-section">
       <div class="table-tabs">
-        <button 
-          class="tab-button" 
-          [class.active]="activeTab === 'leave'"
-          (click)="switchTab('leave')">
-          Leave Request Overview
-        </button>
-        <button 
-          class="tab-button" 
-          [class.active]="activeTab === 'compoff'"
-          (click)="switchTab('compoff')">
-          Comp-off Overview
-        </button>
+        <button class="tab-button" [class.active]="activeTab === 'leave'" (click)="switchTab('leave')">Leave Request Overview</button>
+        <button class="tab-button" [class.active]="activeTab === 'compoff'" (click)="switchTab('compoff')">Comp-off Overview</button>
       </div>
-      
+
       <div class="table-container">
         <div class="table-controls">
           <div class="search-box">
-            <input 
-              type="text" 
-              placeholder="Search leave requests..." 
-              [(ngModel)]="searchTerm"
-              (input)="filterRequests()"
-              class="search-input">
+            <input type="text" placeholder="Search leave requests..." [(ngModel)]="searchTerm" (input)="filterRequests()" class="search-input">
           </div>
           <div class="filter-controls">
             <select [(ngModel)]="statusFilter" (change)="filterRequests()" class="filter-select">
@@ -85,93 +60,49 @@
             </select>
           </div>
         </div>
-        
+
         <table class="leave-table">
           <thead>
             <tr>
-              <th (click)="sortBy('type')" class="sortable">
-                LEAVE TYPE 
-                <span class="sort-indicator" [ngClass]="getSortClass('type')">↕</span>
-              </th>
-              <th (click)="sortBy('duration')" class="sortable">
-                DURATION (HRS./DAYS)
-                <span class="sort-indicator" [ngClass]="getSortClass('duration')">↕</span>
-              </th>
-              <th (click)="sortBy('status')" class="sortable">
-                STATUS
-                <span class="sort-indicator" [ngClass]="getSortClass('status')">↕</span>
-              </th>
+              <th (click)="sortBy('type')" class="sortable">LEAVE TYPE <span class="sort-indicator" [ngClass]="getSortClass('type')">↕</span></th>
+              <th (click)="sortBy('duration')" class="sortable">DURATION (HRS./DAYS) <span class="sort-indicator" [ngClass]="getSortClass('duration')">↕</span></th>
+              <th (click)="sortBy('status')" class="sortable">STATUS <span class="sort-indicator" [ngClass]="getSortClass('status')">↕</span></th>
               <th>ACTION</th>
             </tr>
           </thead>
           <tbody>
             <tr class="no-data-row" *ngIf="filteredRequests.length === 0">
-              <td colspan="4" class="no-data">
-                {{ searchTerm || statusFilter ? 'No matching records found' : 'No Data Available' }}
-              </td>
+              <td colspan="4" class="no-data">{{ searchTerm || statusFilter ? 'No matching records found' : 'No Data Available' }}</td>
             </tr>
-            <tr *ngFor="let request of filteredRequests; let i = index">
+            <tr *ngFor="let request of filteredRequests">
               <td>
                 <div class="leave-type-cell">
-                  <span class="leave-type-badge" [ngClass]="getLeaveTypeBadgeClass(request.type)">
-                    {{ request.type }}
-                  </span>
+                  <span class="leave-type-badge" [ngClass]="getLeaveTypeBadgeClass(request.type)">{{ request.type }}</span>
                 </div>
               </td>
               <td>{{ request.duration }}</td>
               <td>
-                <span class="status-badge" [ngClass]="getStatusBadgeClass(request.status)">
-                  {{ request.status }}
-                </span>
+                <span class="status-badge" [ngClass]="getStatusBadgeClass(request.status)">{{ request.status }}</span>
               </td>
               <td>
                 <div class="action-buttons">
-                  <button 
-                    class="action-btn view-btn" 
-                    (click)="viewRequest(request)"
-                    title="View Details">
-                    👁
-                  </button>
-                  <button 
-                    *ngIf="request.status === 'Pending'" 
-                    class="action-btn edit-btn" 
-                    (click)="editRequest(request)"
-                    title="Edit Request">
-                    ✏
-                  </button>
-                  <button 
-                    *ngIf="request.status === 'Pending'" 
-                    class="action-btn cancel-btn" 
-                    (click)="cancelRequest(request)"
-                    title="Cancel Request">
-                    ❌
-                  </button>
+                  <button class="action-btn view-btn" (click)="viewRequest(request)" title="View Details">👁</button>
+                  <button *ngIf="request.status === 'Pending'" class="action-btn edit-btn" (click)="editRequest(request)" title="Edit Request">✏</button>
+                  <button *ngIf="request.status === 'Pending'" class="action-btn cancel-btn" (click)="cancelRequest(request)" title="Cancel Request">❌</button>
                 </div>
               </td>
             </tr>
           </tbody>
         </table>
-        
+
         <div class="table-pagination" *ngIf="filteredRequests.length > 0">
           <div class="pagination-info">
-            Showing {{ (currentPage - 1) * itemsPerPage + 1 }} to 
-            {{ paginationEndIndex }} 
-            of {{ filteredRequests.length }} entries
+            Showing {{ (currentPage - 1) * itemsPerPage + 1 }} to {{ paginationEndIndex }} of {{ filteredRequests.length }} entries
           </div>
           <div class="pagination-controls">
-            <button 
-              class="pagination-btn" 
-              [disabled]="currentPage === 1"
-              (click)="changePage(currentPage - 1)">
-              Previous
-            </button>
+            <button class="pagination-btn" [disabled]="currentPage === 1" (click)="changePage(currentPage - 1)">Previous</button>
             <span class="page-info">Page {{ currentPage }} of {{ totalPages }}</span>
-            <button 
-              class="pagination-btn" 
-              [disabled]="currentPage === totalPages"
-              (click)="changePage(currentPage + 1)">
-              Next
-            </button>
+            <button class="pagination-btn" [disabled]="currentPage === totalPages" (click)="changePage(currentPage + 1)">Next</button>
           </div>
         </div>
       </div>
@@ -179,7 +110,7 @@
   </div>
 </div>
 
-<!-- Apply Leave Modal - Only shows when showApplyLeaveModal is true -->
+<!-- Apply Leave Modal -->
 <div class="modal-overlay" *ngIf="showApplyLeaveModal" (click)="closeApplyLeaveModal()">
   <div class="modal-dialog" (click)="$event.stopPropagation()">
     <div class="modal-content">
@@ -221,7 +152,7 @@
   </div>
 </div>
 
-<!-- Comp-off Leave Modal - Only shows when showCompOffModal is true -->
+<!-- Comp-off Leave Modal -->
 <div class="modal-overlay" *ngIf="showCompOffModal" (click)="closeCompOffModal()">
   <div class="modal-dialog" (click)="$event.stopPropagation()">
     <div class="modal-content">
