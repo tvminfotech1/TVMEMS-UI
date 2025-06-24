@@ -69,4 +69,7 @@ export class SignupComponent implements OnInit {
       this.signupForm.markAllAsTouched();
     }
   }
+   goBack() {
+    window.history.back();
+  }
 }
