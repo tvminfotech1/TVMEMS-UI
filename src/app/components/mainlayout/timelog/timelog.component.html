@@ -85,7 +85,6 @@
           <table class="classic-table">
             <thead>
               <tr>
-                <th>WFOL</th>
                 <th>Project</th>
                 <th>Mon</th>
                 <th>Tue</th>
@@ -98,9 +97,6 @@
             </thead>
             <tbody>
               <tr>
-                <td>
-                  <input type="checkbox" name="wfol" [(ngModel)]="timelogEntry.wfol" />
-                </td>
                 <td>
                   <select name="project" [(ngModel)]="timelogEntry.project" required>
                     <option value="" disabled>Select Project</option>
@@ -158,8 +154,8 @@
                 </td>
               </tr>
             </tbody>
-          </table>
-          <button type="submit">Submit</button>
+          </table><br><br>
+          <button type="submit" class="submit-btn" [disabled]="isFutureOrPastDateSelected">Submit</button>
         </form>
       </div>
     </div>

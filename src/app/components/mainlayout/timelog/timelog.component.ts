@@ -27,11 +27,11 @@ export class TimelogComponent implements OnInit {
   };
 
   timelogEntry: TimelogEntry = this.getEmptyEntry();
-
   timelogSummary: TimelogEntry[] = [];
   latestEntry: TimelogEntry | null = null;
-
   accordionState = [false, false, false];
+  isFutureOrPastDateSelected = false;
+  currentMondayISO = '';
 
   constructor(
     private timelogService: TimelogService,
@@ -45,6 +45,7 @@ export class TimelogComponent implements OnInit {
 
     this.initializeYears();
     this.loadTimelogs();
+    this.setCurrentWeek();
   }
 
   initializeYears(): void {
@@ -52,14 +53,37 @@ export class TimelogComponent implements OnInit {
     this.years = Array.from({ length: 5 }, (_, i) => currentYear + i);
   }
 
+  setCurrentWeek(): void {
+    const today = new Date();
+    const monday = new Date(today);
+    monday.setDate(today.getDate() - today.getDay() + 1);
+    monday.setHours(0, 0, 0, 0);
+    this.currentMondayISO = monday.toISOString().split('T')[0];
+    this.timelog.weekendDate = this.currentMondayISO;
+  }
+
   loadTimelogs(): void {
-    this.timelogService.getTimelogs().subscribe(data => {
-      this.timelogSummary = data;
-      if (data.length > 0) {
-        this.latestEntry = data[0];
-      }
+  this.timelogService.getTimelogs().subscribe(data => {
+    // Sort by date descending to find the most recent
+    const sorted = [...data].sort((a, b) => {
+      const dateA = new Date(a.weekendDate).getTime();
+      const dateB = new Date(b.weekendDate).getTime();
+      return dateB - dateA;
+    });
+
+    // Get latest for this user
+    const employeeName = this.timelog.employeeName;
+    this.latestEntry = sorted.find(entry => entry.employeeName === employeeName) || null;
+
+    // Exclude latest from the summary
+    this.timelogSummary = sorted.filter(entry =>
+      !(entry.employeeName === this.latestEntry?.employeeName &&
+        entry.project === this.latestEntry?.project &&
+        entry.weekendDate === this.latestEntry?.weekendDate)
+      );
     });
   }
+
 
   onMonthOrYearChange(): void {
     if (this.timelog.month && this.timelog.year) {
@@ -76,10 +100,17 @@ export class TimelogComponent implements OnInit {
 
     while (date.getMonth() === monthIndex) {
       if (date.getDay() === 1) {
-        this.weekendDates.push(date.toISOString().split('T')[0]);
+        const mondayISO = date.toISOString().split('T')[0];
+        this.weekendDates.push(mondayISO);
       }
       date.setDate(date.getDate() + 1);
     }
+  }
+
+  isWeekendDateDisabled(date: string): boolean {
+    const dateObj = new Date(date);
+    const current = new Date(this.currentMondayISO);
+    return dateObj.getTime() !== current.getTime();
   }
 
   onWeekendDateSelect(): void {
@@ -87,6 +118,10 @@ export class TimelogComponent implements OnInit {
       this.timelogEntry.weekendDate = this.timelog.weekendDate;
       this.populateWeekDays(this.timelog.weekendDate);
       this.openFillYourTimelogAccordion();
+
+      const selected = new Date(this.timelog.weekendDate);
+      const current = new Date(this.currentMondayISO);
+      this.isFutureOrPastDateSelected = selected.getTime() !== current.getTime();
     }
   }
 
@@ -120,75 +155,66 @@ export class TimelogComponent implements OnInit {
   }
 
   onSubmit(form: NgForm): void {
-  if (!form.valid) {
-    alert('Please fill all required fields correctly before submitting.');
-    return;
-  }
-
-  this.calculateTotalHours();
-
-  const fullEntry: TimelogEntry = {
-    ...this.timelogEntry,
-    employeeName: this.timelog.employeeName,
-    weekendDate: this.timelog.weekendDate
-  };
-
-  // Ensure unique entry exists
-  const alreadySubmitted = this.timelogSummary.some(entry =>
-    entry.employeeName === fullEntry.employeeName &&
-    entry.weekendDate === fullEntry.weekendDate &&
-    entry.project === fullEntry.project
-  );
-
-  if (alreadySubmitted) {
-    alert('Timesheet for this week and project has already been submitted.');
-    return;
-  }
-
-  this.timelogService.addTimelog(fullEntry).subscribe({
-    next: () => {
-      alert('Timesheet submitted successfully.');
-
-      // Optional: Instead of pushing manually, reload from backend
-      this.loadTimelogs();
-
-      // Set the latest entry for summary display
-      this.latestEntry = fullEntry;
-
-      // Reset form fields
-      form.resetForm({
-        employeeName: this.timelog.employeeName,
-        weekendDate: this.timelog.weekendDate,
-        project: '',
-        wfol: false,
-        hours: {
-          Monday: '',
-          Tuesday: '',
-          Wednesday: '',
-          Thursday: '',
-          Friday: ''
-        },
-        totalHours: '',
-        description: ''
-      });
-
-      this.timelogEntry = this.getEmptyEntry();
-      this.timelogEntry.employeeName = this.timelog.employeeName;
-      this.timelogEntry.weekendDate = this.timelog.weekendDate;
-    },
-    error: (err) => {
-      console.error('Error adding entry:', err);
-      alert('Failed to submit timesheet.');
+    if (!form.valid || this.isFutureOrPastDateSelected) {
+      alert('Cannot submit. Only current week submissions are allowed.');
+      return;
     }
-  });
-}
 
+    this.calculateTotalHours();
+
+    const fullEntry: TimelogEntry = {
+      ...this.timelogEntry,
+      employeeName: this.timelog.employeeName,
+      weekendDate: this.timelog.weekendDate
+    };
+
+    const alreadySubmitted = this.timelogSummary.some(entry =>
+      entry.employeeName === fullEntry.employeeName &&
+      entry.weekendDate === fullEntry.weekendDate &&
+      entry.project === fullEntry.project
+    );
+
+    if (alreadySubmitted) {
+      alert('Timesheet for this week and project has already been submitted.');
+      return;
+    }
+
+    this.timelogService.addTimelog(fullEntry).subscribe({
+      next: () => {
+        alert('Timesheet submitted successfully.');
+        this.loadTimelogs();
+        this.latestEntry = fullEntry;
+
+        form.resetForm({
+          employeeName: this.timelog.employeeName,
+          weekendDate: this.timelog.weekendDate,
+          project: '',
+          hours: {
+            Monday: '',
+            Tuesday: '',
+            Wednesday: '',
+            Thursday: '',
+            Friday: ''
+          },
+          totalHours: '',
+          description: ''
+        });
+
+        this.timelogEntry = this.getEmptyEntry();
+        this.timelogEntry.employeeName = this.timelog.employeeName;
+        this.timelogEntry.weekendDate = this.timelog.weekendDate;
+      },
+      error: (err) => {
+        console.error('Error adding entry:', err);
+        alert('Failed to submit timesheet.');
+      }
+    });
+  }
 
   private getEmptyEntry(): TimelogEntry {
     return {
       employeeName: '',
       project: '',
-      wfol: false,
       hours: {
         Monday: '',
         Tuesday: '',
@@ -201,4 +227,4 @@ export class TimelogComponent implements OnInit {
       weekendDate: ''
     };
   }
-}
+} 
