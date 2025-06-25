@@ -60,6 +60,15 @@ import { AttendanceComponent } from './components/mainlayout/attendance/attendan
 import { OrganizationComponent } from './components/mainlayout/organization/organization.component';
 import { AddOpeningComponent } from './components/mainlayout/addopening/addopening.component';
 import { GoalComponent } from './components/mainlayout/goal/goal.component';
+import { DashboardComponent } from './components/payroll/dashboard/dashboard.component';
+import { AddEmployeeComponent } from './components/payroll/add-employee/add-employee.component';
+import { PayrollEmployeeComponent } from './components/payroll/payroll-employee/payroll-employee.component';
+import { EmployeeViewComponent } from './components/payroll/employee-view/employee-view.component';
+import { PayrunsComponent } from './components/payroll/payruns/payruns.component';
+import { AddSalaryComponent } from './components/payroll/add-salary/add-salary.component';
+import { MonthlySalarySlipComponent } from './components/payroll/monthly-salary-slip/monthly-salary-slip.component';
+import { ReportComponent } from './components/payroll/report/report.component';
+import { YearlySalarySlipComponent } from './components/payroll/yearly-salary-slip/yearly-salary-slip.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -121,6 +130,15 @@ const routes: Routes = [
       { path: 'document', component: DocumentComponent },
       { path: 'resume', component: ResumeComponent },
       { path: 'final', component: FinalComponent },
+      { path: 'add-employee', component: AddEmployeeComponent },
+      { path: 'payroll-dashbord', component: DashboardComponent },
+      { path: 'payroll-employee', component: PayrollEmployeeComponent },
+      { path: 'payroll-employee/:id', component: EmployeeViewComponent},
+      { path: 'payruns', component: PayrunsComponent},
+      { path: 'payruns/:id', component: AddSalaryComponent},
+      { path: 'payruns/:empId/:salaryId', component: MonthlySalarySlipComponent},
+      {path:'reports',component:ReportComponent},
+      {path:'reports/:empId',component:YearlySalarySlipComponent},
     ]
   },
 
@@ -138,7 +156,14 @@ const routes: Routes = [
   { path: 'admin/empfinal', component: EmpfinalComponent },
   { path: 'timesheet', component: TimeSheetComponent },
   { path: 'timesheet-view/:id', component: TimeSheetViewComponent },
+// Payroll 
+  // {path:"add-employee",component:AddEmployeeComponent},
+
   { path: '**', component: HomeComponent }, // Wildcard route
+
+  
+  
+
 ];
 
 @NgModule({

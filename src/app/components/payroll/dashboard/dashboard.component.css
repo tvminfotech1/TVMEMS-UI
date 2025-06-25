@@ -1,0 +1,172 @@
+.dashboard-container {
+  padding: 30px;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f5f8ff;
+  min-height: 100vh;
+  min-width: 80vw;
+  margin:auto;
+}
+@media (max-width: 768px) {
+  .dashboard-container {
+    margin-left: 20px;
+  }
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #333;
+}
+
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.card {
+  flex: 1 1 220px;
+  padding: 20px;
+  border-radius: 12px;
+  color: #fff;
+  text-align: center;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+.card h3 {
+  margin-bottom: 10px;
+}
+
+.total {
+  background: #007bff;
+}
+
+.active {
+  background: #28a745;
+}
+
+.inactive {
+  background: #dc3545;
+}
+
+.department {
+  background: #17a2b8;
+}
+
+.recent-section {
+  margin-top: 40px;
+}
+
+.recent-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.recent-table th,
+.recent-table td {
+  padding: 12px 20px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.recent-table th {
+  background-color: #007bff;
+  color: white;
+}
+
+.nav-buttons {
+  margin-bottom: 40px;
+  /* margin-top: 40px; */
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.nav-btn {
+  padding: 12px 25px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  color: white;
+  transition: background-color 0.3s;
+}
+
+.nav-btn.add {
+  background-color: #28a745;
+}
+
+.nav-btn.add:hover {
+  background-color: #218838;
+}
+
+.nav-btn.view {
+  background-color: #007bff;
+}
+
+.nav-btn.view:hover {
+  background-color: #0056b3;
+}
+
+.nav-btn.report {
+  background-color: #6f42c1;
+}
+
+.nav-btn.report:hover {
+  background-color: #5936a1;
+}
+
+.recent-section {
+  margin-top: 30px;
+  padding: 20px;
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.recent-section h3 {
+  margin-bottom: 15px;
+  font-size: 20px;
+  color: #333;
+  border-left: 4px solid #007bff;
+  padding-left: 10px;
+}
+
+.recent-table {
+  display: table;
+  width: 100%;
+  border: 1px solid black;
+}
+
+.recent-table th, .recent-table td {
+  border: 1px solid #999;
+  padding: 6px;
+}
+
+.no-data {
+  font-style: italic;
+  color: gray;
+}
+
+
+
+.recent-table thead {
+  background-color: #f1f5f9;
+}
+
+.recent-table tr:hover {
+  background-color: #f9fbff;
+}
+
+.no-data {
+  font-style: italic;
+  color: #888;
+  margin-top: 10px;
+}

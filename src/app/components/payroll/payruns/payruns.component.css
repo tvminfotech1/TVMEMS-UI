@@ -1,0 +1,91 @@
+.payruns-container {
+  max-width: 1000px;
+  margin:auto;
+  margin-top: 20px;
+  padding: 20px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px #ccc;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.filters-bar {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  gap: 10px;
+}
+
+.filters-bar input[type="text"],
+.filters-bar input[type="month"] {
+  padding: 8px 12px;
+  font-size: 14px;
+  width: 250px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.salary-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.salary-table th{
+  background-color: #4a4a4a;
+  color: #fff;
+}
+.salary-table th:nth-child(4), th:nth-child(5){
+    text-align: center;
+}
+.salary-table td:nth-child(4),.salary-table td:nth-child(5){
+    text-align: center;
+}
+
+.salary-table th, .salary-table td {
+  padding: 10px;
+  border: 1px solid #000;
+  text-align: left;
+}
+
+.name-photo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+
+.paid {
+  color: green;
+  font-weight: bold;
+}
+
+.pending {
+  color: red;
+  font-weight: bold;
+}
+
+.view-slip {
+  text-align: center;
+  cursor: pointer;
+  /* font-weight: bold; */
+}
+
+.text-primary {
+  color: #007bff;
+}
+
+.text-warning {
+  color: #ff9800;
+}
+

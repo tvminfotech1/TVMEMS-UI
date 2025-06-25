@@ -1,0 +1,60 @@
+<div class="payruns-container">
+  <h2>Salary Status of {{ selectedMonth }}</h2>
+
+  <!-- Filters -->
+  <div class="filters-bar">
+    <!-- 🔍 Search Box -->
+    <input
+      type="text"
+      placeholder="Search by ID or Name..."
+      [(ngModel)]="searchText"
+      (input)="onSearch()"
+    />
+
+    <!-- 📅 Month Picker -->
+    <input type="month" [(ngModel)]="selectedMonth" />
+  </div>
+
+  <!-- Salary Table -->
+  <table class="salary-table">
+    <thead>
+      <tr>
+        <th>Employee ID</th>
+        <th>Name</th>
+        <th>Account No.</th>
+        <th>Status</th>
+        <th>Salary Slip</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let emp of filteredEmployees">
+        <td>{{ emp.id }}</td>
+        <td>
+          <div class="name-photo">
+            <img
+              [src]="emp.profileImageUrl || 'https://via.placeholder.com/30'"
+              class="avatar"
+              alt="Profile"
+            />
+            {{ emp.firstName }} {{ emp.lastName }}
+          </div>
+        </td>
+        <td>{{ emp.bankDetails.accountNumber }}</td>
+        <td>
+          <span [ngClass]="isPaid(emp.id) ? 'paid' : 'pending'">
+            {{ isPaid(emp.id) ? 'Paid' : 'Pending' }}
+          </span>
+        </td>
+        <td class="view-slip">
+          <i
+            class="ri-article-line"
+            [ngClass]="isSalaryGenerated(emp) ? 'text-primary' : 'text-warning'"
+            (click)="viewOrGenerateSalary(emp)"
+          >
+            {{ isSalaryGenerated(emp) ? "View" : "Generate" }}
+          </i>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

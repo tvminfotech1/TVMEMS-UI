@@ -1,0 +1,136 @@
+<div class="container">
+  <h2>Generate Salary for {{ employee.firstName }} {{ employee.lastName }} ({{ employee.id }})</h2>
+
+  <table class="employee-details-table" *ngIf="employee">
+  <thead>
+    <tr>
+      <th colspan="4">Employee Details</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Employee Name</strong></td>
+      <td>{{ employee.firstName }} {{ employee.lastName }}</td>
+      <td><strong>Joining Date</strong></td>
+      <td>{{ employee.joiningDate }}</td>
+    </tr>
+    <tr>
+      <td><strong>Employee Id</strong></td>
+      <td>{{ employee.id }}</td>
+      <td><strong>Location</strong></td>
+      <td>{{ employee.location || 'Chennai' }}</td>
+    </tr>
+    <tr>
+      <td><strong>Designation</strong></td>
+      <td>{{ employee.designation }}</td>
+      <td><strong>NWD</strong></td>
+      <td>
+        <input type="number" [(ngModel)]="nwd" min="0" />
+      </td>
+    </tr>
+    <tr>
+      <td><strong>PAN No</strong></td>
+      <td>{{ employee.panNumber }}</td>
+      <td><strong>NOL</strong></td>
+      <td>
+        <input type="number" [(ngModel)]="nol" min="0" />
+      </td>
+    </tr>
+    <tr>
+      <td><strong>DOB</strong></td>
+      <td>{{ employee.dob }}</td>
+      <td><strong>Bank Acc No</strong></td>
+      <td>{{ employee.bankDetails.accountNumber }}</td>
+    </tr>
+  </tbody>
+</table>
+
+
+  <div class="form-row">
+    <div class="form-group">
+      <label>Pay Month</label>
+      <input type="month" [(ngModel)]="payMonth" (change)="updateNWDFromMonth()"  />
+    </div>
+  </div>
+
+  <h4><u>Earnings</u></h4>
+
+  <div class="form-row">
+    <div class="form-group">
+      <label>Basic Salary</label>
+      <input type="number" [(ngModel)]="basicSalary" (input)="calculateSalary()" />
+    </div>
+
+    <div class="form-group">
+      <label>HRA</label>
+      <input type="number" [(ngModel)]="hra" (input)="calculateSalary()" />
+    </div>
+
+    <div class="form-group">
+      <label>Medical Allowance</label>
+      <input type="number" [(ngModel)]="medicalAllowance" (input)="calculateSalary()" />
+    </div>
+
+    <div class="form-group">
+      <label>Conveyance Allowance</label>
+      <input type="number" [(ngModel)]="conveyanceAllowance" (input)="calculateSalary()" />
+    </div>
+
+    <div class="form-group">
+      <label>Flexi Benefit</label>
+      <input type="number" [(ngModel)]="flexiBenefit" (input)="calculateSalary()" />
+    </div>
+
+    <div class="form-group">
+      <label>Leave Travel</label>
+      <input type="number" [(ngModel)]="leaveTravel" (input)="calculateSalary()" />
+    </div>
+
+    <div class="form-group">
+      <label>Special Allowance</label>
+      <input type="number" [(ngModel)]="specialAllowance" (input)="calculateSalary()" />
+    </div>
+  </div>
+
+  <h4>Total Earnings: ₹{{ totalEarnings }}</h4>
+
+  <h4><u>Deductions</u></h4>
+
+  <div class="form-row">
+    <div class="form-group">
+      <label>PF</label>
+      <input type="number" [(ngModel)]="pf" (input)="calculateSalary()" />
+    </div>
+
+    <div class="form-group">
+      <label>ESI</label>
+      <input type="number" [(ngModel)]="esi" (input)="calculateSalary()" />
+    </div>
+
+    <div class="form-group">
+      <label>Professional Tax</label>
+      <input type="number" [(ngModel)]="professionalTax" (input)="calculateSalary()" />
+    </div>
+
+    <div class="form-group">
+      <label>Income Tax</label>
+      <input type="number" [(ngModel)]="incomeTax" (input)="calculateSalary()" />
+    </div>
+
+    <div class="form-group">
+      <label>Leave Deduction</label>
+      <input type="number" [(ngModel)]="leaveDeduction" (input)="calculateSalary()" />
+    </div>
+
+    <div class="form-group">
+      <label>Other Deduction</label>
+      <input type="number" [(ngModel)]="otherDeduction" (input)="calculateSalary()" />
+    </div>
+  </div>
+
+  <h4>Total Deductions: ₹{{ totalDeductions }}</h4>
+  <h4><b>Net Pay: ₹{{ netPay }}</b></h4>
+  <h4>Remaining CTC: ₹{{ remainingCtc }}</h4>
+
+  <button class="btn btn-primary mt-3" (click)="addSalary()">Add Salary</button>
+</div>

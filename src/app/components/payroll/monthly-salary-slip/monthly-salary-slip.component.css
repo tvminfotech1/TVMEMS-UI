@@ -1,0 +1,87 @@
+.slip-container {
+  max-width: 800px;
+  margin:auto;
+  margin-top:20px ;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  background: #fff;
+  border: 1px solid #ccc;
+}
+.logo{
+    width: 120px;
+    height: 70px;
+}
+.center {
+  text-align: center;
+  margin: 0;
+}
+.company-header {
+  margin-bottom: 15px;
+  font-size: 13px;
+  line-height: 1.4;
+  color: #333;
+}
+
+.company-header h2 {
+  margin-bottom: 5px;
+}
+
+.company-header p {
+  margin: 2px 0;
+}
+
+
+.details-table, .salary-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  font-size: 14px;
+}
+
+.details-table th,
+.details-table td,
+.salary-table th,
+.salary-table td {
+  border: 1px solid #000;
+  padding: 8px;
+  text-align: left;
+}
+.details-table th{
+  background-color: #6e6a6a;
+  text-align: start;
+  color: #fff;
+}
+
+.salary-table th {
+  background-color: #6e6a6a;
+  text-align: center;
+  color: #fff;
+}
+
+.net-salary {
+  margin-top: 20px;
+  font-weight: bold;
+  font-size: 16px;
+  text-align: right;
+}
+
+.note {
+  font-size: 12px;
+  margin-top: 10px;
+  text-align: center;
+}
+
+.download-btn {
+  text-align: center;
+  margin-top: 20px;
+}
+
+button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 20px;
+  font-size: 14px;
+  border-radius: 4px;
+  cursor: pointer;
+}

@@ -1,0 +1,57 @@
+
+<div class="dashboard-container">
+   <h2>Payroll Dashboard</h2>
+   <div class="nav-buttons">
+  <button class="nav-btn add" (click)="goToAddEmployee()">➕ Add New Employee</button>
+  <button class="nav-btn view" (click)="goToAllEmployees()">📋 View All Employees</button>
+  <button class="nav-btn report" (click)="goToReports()">📊 Go to Reports</button>
+</div>
+ 
+
+  <div class="cards">
+    <div class="card total">
+      <h3>Total Employees</h3>
+      <p>{{ totalEmployees }}</p>
+    </div>
+    <div class="card active">
+      <h3>Active Employees</h3>
+      <p>{{ activeEmployees }}</p>
+    </div>
+    <div class="card inactive">
+      <h3>Inactive Employees</h3>
+      <p>{{ inactiveEmployees }}</p>
+    </div>
+    <div class="card department">
+      <h3>Total Departments</h3>
+      <p>{{ departmentCount }}</p>
+    </div>
+  </div>
+
+  <div class="recent-section">
+  <h3>🆕 Recently Added Employees</h3>
+  
+<div *ngIf="recentEmployees && recentEmployees.length > 0">
+  <table class="recent-table">
+    <thead>
+      <tr>
+        <th>Emp ID</th>
+        <th>Name</th>
+        <th>Designation</th>
+        <th>Department</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let emp of recentEmployees">
+      <td>{{ emp.id }}</td>
+      <td>{{ emp.firstName }} {{ emp.lastName }}</td>
+      <td>{{ emp.designation }}</td>
+      <td>{{ emp.department }}</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<ng-template #noData>
+  <p class="no-data">No recent employees found.</p>
+</ng-template>
+
+
