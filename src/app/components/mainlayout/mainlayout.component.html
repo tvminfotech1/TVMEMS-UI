@@ -295,6 +295,50 @@
               </ul>
             </div>
           </li>
+                    <!-- Payroll -->
+           <li class="dropdown">
+  <button
+    class="nav-button"
+    (click)="togglePayrollDropdown()"
+    [attr.aria-expanded]="showPayrollDropdown"
+    aria-controls="payrollDropdown"
+    aria-haspopup="true"
+  >
+    <span class="material-icons">request_quote</span> Payroll
+    <span class="accordion-icon">
+      {{ showPayrollDropdown ? "⯆" : "⯈" }}
+    </span>
+  </button>
+
+  <div
+    *ngIf="showPayrollDropdown"
+    class="dropdown-content"
+    id="payrollDropdown"
+  >
+    <ul class="dropdown-list">
+      <li>
+        <a routerLink="payroll-dashbord" class="nav-link sub">
+          <span class="material-icons">dashboard</span>Payroll  Dashboard
+        </a>
+      </li>
+      <li>
+        <a routerLink="payroll-employee" class="nav-link sub">
+          <span class="material-icons">group</span> Employees
+        </a>
+      </li>
+      <li>
+        <a routerLink="/mainlayout/payruns" class="nav-link sub">
+          <span class="material-icons">attach_money</span> Pay Runs
+        </a>
+      </li>
+      <li>
+        <a routerLink="/mainlayout/reports" class="nav-link sub">
+          <span class="material-icons">bar_chart</span> Reports
+        </a>
+      </li>
+    </ul>
+  </div>
+</li>
         </ul>
       </nav>
     </div>

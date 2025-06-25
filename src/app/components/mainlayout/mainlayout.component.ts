@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./mainlayout.component.css']
 })
 export class MainlayoutComponent {
+  // Dropdown visibility states
   showHomeDropdown = false;
   showWFHDropdown = false;
   showLeaveDropdown = false;
@@ -16,10 +17,13 @@ export class MainlayoutComponent {
   showOffboardingDropdown = false;
   showOnboardingDropdown = false;
   showAddJobDropdown = false;
+  showPayrollDropdown = false; // ✅ Added for Payroll
   showSettings = false;
   showSearch = false;
-  // router: any;
 
+  constructor(private router: Router) {}
+
+  // Close all dropdowns if clicked outside
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent) {
     const target = event.target as HTMLElement;
@@ -28,7 +32,8 @@ export class MainlayoutComponent {
       this.closeAllDropdowns();
     }
   }
-  // Hide all dropdowns except the one passed
+
+  // Close all dropdowns except the one passed
   closeAllDropdowns(except: string = '') {
     this.showHomeDropdown = except === 'home';
     this.showWFHDropdown = except === 'wfh';
@@ -39,6 +44,7 @@ export class MainlayoutComponent {
     this.showOffboardingDropdown = except === 'offboarding';
     this.showOnboardingDropdown = except === 'onboarding';
     this.showAddJobDropdown = except === 'addJob';
+    this.showPayrollDropdown = except === 'payroll'; // ✅ Added
     this.showSettings = except === 'settings';
   }
 
@@ -87,6 +93,11 @@ export class MainlayoutComponent {
     this.closeAllDropdowns(willShow ? 'addJob' : '');
   }
 
+  togglePayrollDropdown() {
+    const willShow = !this.showPayrollDropdown;
+    this.closeAllDropdowns(willShow ? 'payroll' : '');
+  }
+
   toggleSettings() {
     const willShow = !this.showSettings;
     this.closeAllDropdowns(willShow ? 'settings' : '');
@@ -95,18 +106,11 @@ export class MainlayoutComponent {
   toggleSearch() {
     this.showSearch = !this.showSearch;
   }
-  
- constructor(private router: Router) {}
+
   onLogout(): void {
     console.log('Logout clicked');
     localStorage.clear();
-      sessionStorage.clear();
-    this.router.navigateByUrl('/login'); 
+    sessionStorage.clear();
+    this.router.navigateByUrl('/login');
   }
-//   ngOnInit() {
-//   const token = localStorage.getItem('userToken');
-//   if (!token) {
-//     this.router.navigate(['/login']);
-//   }
-// }
 }

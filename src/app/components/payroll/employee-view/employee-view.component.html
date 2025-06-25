@@ -1,0 +1,133 @@
+<div class="container" *ngIf="employee">
+  <div class="card">
+    <div class="card-header">
+      <h3>View Employee Details</h3>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-left">
+          <img
+            [src]="employee.profileImageUrl"
+            alt="Profile Image"
+            class="profile-img"
+          />
+          <h4>{{ employee.firstName }} {{ employee.lastName }}</h4>
+          <p><strong>ID:</strong> {{ employee.id }}</p>
+          <p>
+            <strong>Status:</strong>
+            <span
+              [ngClass]="
+                employee.status === 'Active' ? 'text-success' : 'text-danger'
+              "
+            >
+              {{ employee.status }}
+            </span>
+          </p>
+          <button
+            class="status-btn"
+            [ngClass]="employee.status === 'Active' ? 'danger' : 'success'"
+            (click)="toggleStatus()"
+          >
+            {{ employee.status === "Active" ? "Deactivate" : "Activate" }}
+          </button>
+        </div>
+        <div class="col-right">
+          <table class="custom-table">
+            <tr>
+              <th>Email</th>
+              <td>{{ employee.email }}</td>
+            </tr>
+            <tr>
+              <th>Phone</th>
+              <td>{{ employee.phone }}</td>
+            </tr>
+            <tr>
+              <th>Gender</th>
+              <td>{{ employee.gender }}</td>
+            </tr>
+            <tr>
+              <th>Date of Birth</th>
+              <td>{{ employee.dob }}</td>
+            </tr>
+            <tr>
+              <th>Designation</th>
+              <td>{{ employee.designation }}</td>
+            </tr>
+            <tr>
+              <th>Department</th>
+              <td>{{ employee.department }}</td>
+            </tr>
+            <tr>
+              <th>Joining Date</th>
+              <td>{{ employee.joiningDate }}</td>
+            </tr>
+            <tr>
+              <th>Employee Type</th>
+              <td>{{ employee.employeeType }}</td>
+            </tr>
+            <tr>
+              <th>Reporting Manager</th>
+              <td>{{ employee.reportingManager }}</td>
+            </tr>
+            <tr>
+              <th>Location</th>
+              <td>{{ employee.location }}</td>
+            </tr>
+            <tr>
+              <th>CTC</th>
+              <td>₹{{ employee.ctc }}</td>
+            </tr>
+            <tr>
+              <th>Basic Salary</th>
+              <td>₹{{ employee.basicSalary }}</td>
+            </tr>
+            <tr>
+              <th>In-Hand Salary</th>
+              <td>₹{{ employee.inHandSalary }}</td>
+            </tr>
+            <tr>
+              <th>Address</th>
+              <td>{{ employee.address }}</td>
+            </tr>
+            <tr>
+              <th>Aadhaar</th>
+              <td>{{ employee.aadhaarNumber }}</td>
+            </tr>
+            <tr>
+              <th>PAN</th>
+              <td>{{ employee.panNumber }}</td>
+            </tr>
+            <tr>
+              <th>Blood Group</th>
+              <td>{{ employee.bloodGroup }}</td>
+            </tr>
+            <tr>
+              <th>Emergency Contact</th>
+              <td>{{ employee.emergencyContact }}</td>
+            </tr>
+          </table>
+
+          <h5>Bank Details</h5>
+          <table class="custom-table striped">
+            <tr>
+              <th>Bank Name</th>
+              <td>{{ employee.bankDetails.bankName }}</td>
+            </tr>
+            <tr>
+              <th>Account Number</th>
+              <td>{{ employee.bankDetails.accountNumber }}</td>
+            </tr>
+            <tr>
+              <th>IFSC Code</th>
+              <td>{{ employee.bankDetails.ifscCode }}</td>
+            </tr>
+            <tr>
+              <th>Branch</th>
+              <td>{{ employee.bankDetails.branch }}</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

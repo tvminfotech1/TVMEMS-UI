@@ -1,0 +1,66 @@
+<div class="download-btn mb-4 text-center">
+  <button (click)="downloadAllSlips()">Download All Slips</button>
+</div>
+
+<div *ngIf="salaryHistory.length && employee">
+  <div *ngFor="let salary of salaryHistory" [id]="'slip-' + salary.salaryId" class="slip-container">
+    <div class="company-header center">
+      <img src="assets/images/TVM Infotech Logo.jpg" alt="TVM Logo" class="logo" />
+      <p><strong>TVM Infotech Private Limited</strong></p>
+      <p>2B, Kamakoti Nagar, 1st Main Road, 7th Street,<br />
+        Pallikaranai, Chennai – 600100</p>
+      <p>📞 +91 9710112080, +91 9150871694 |
+        <a style="text-decoration: none;" href="https://www.tvminfotech.com/">🌐 www.tvminfotech.com</a>
+      </p>
+    </div>
+
+    <h4 class="center">Pay Slip for The Month of {{ salary.month }}/{{ salary.year }}</h4>
+
+    <!-- Employee Details -->
+    <table class="details-table">
+      <tr><th colspan="4">Employee Details</th></tr>
+      <tr>
+        <td><b>Employee Name</b></td><td>{{ employee.firstName }} {{ employee.lastName }}</td>
+        <td><b>Joining Date</b></td><td>{{ employee.joiningDate }}</td>
+      </tr>
+      <tr>
+        <td><b>Employee Id</b></td><td>{{ employee.id }}</td>
+        <td><b>Location</b></td><td>{{ employee.location }}</td>
+      </tr>
+      <tr>
+        <td><b>Designation</b></td><td>{{ employee.designation }}</td>
+        <td><b>NWD</b></td><td>{{ salary.nwd }}</td>
+      </tr>
+      <tr>
+        <td><b>PAN No</b></td><td>{{ employee.panNumber }}</td>
+        <td><b>NOL</b></td><td>{{ salary.nol }}</td>
+      </tr>
+      <tr>
+        <td><b>DOB</b></td><td>{{ employee.dob }}</td>
+        <td><b>Bank Acc No</b></td><td>{{ employee.bankDetails.accountNumber }}</td>
+      </tr>
+    </table>
+
+    <!-- Salary Split -->
+    <table class="salary-table">
+      <tr><th>Earnings</th><th>Amount (₹)</th><th>Deductions</th><th>Amount (₹)</th></tr>
+      <tr><td>Basic Salary</td><td>{{ salary.basicSalary }}</td><td>Professional Tax</td><td>{{ salary.professionalTax }}</td></tr>
+      <tr><td>House Rent Allowance</td><td>{{ salary.hra }}</td><td>Income Tax</td><td>{{ salary.incomeTax }}</td></tr>
+      <tr><td>Medical Allowance</td><td>{{ salary.medicalAllowance }}</td><td>Leave Deductions</td><td>{{ salary.leaveDeduction }}</td></tr>
+      <tr><td>Conveyance Allowance</td><td>{{ salary.conveyanceAllowance }}</td><td>Other Deductions</td><td>{{ salary.otherDeduction }}</td></tr>
+      <tr><td>Flexi Benefit Plan</td><td>{{ salary.flexiBenefit }}</td><td>ESI</td><td>{{ salary.esi }}</td></tr>
+      <tr><td>Leave Travel Allowance</td><td>{{ salary.leaveTravel }}</td><td colspan="2"></td></tr>
+      <tr><td>Special Allowance</td><td>{{ salary.specialAllowance }}</td><td colspan="2"></td></tr>
+      <tr>
+        <td><b>Total</b></td>
+        <td><b>{{ calculateTotalEarnings(salary) }}</b></td>
+        <td><b>Total</b></td>
+        <td><b>{{ calculateTotalDeductions(salary) }}</b></td>
+      </tr>
+    </table>
+
+    <p class="net-salary">Net Salary: ₹{{ salary.netPay }}</p>
+    <p class="note">(This is a system generated statement and requires no signature)</p>
+    <hr />
+  </div>
+</div>

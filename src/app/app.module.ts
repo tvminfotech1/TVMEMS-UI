@@ -62,6 +62,15 @@ import { AttendanceComponent } from './components/mainlayout/attendance/attendan
 import { OrganizationComponent } from './components/mainlayout/organization/organization.component';
 import { AddOpeningComponent } from './components/mainlayout/addopening/addopening.component';
 import { GoalComponent } from './components/mainlayout/goal/goal.component';
+import { AddSalaryComponent } from './components/payroll/add-salary/add-salary.component';
+import { DashboardComponent } from './components/payroll/dashboard/dashboard.component';
+import { EmployeeViewComponent } from './components/payroll/employee-view/employee-view.component';
+import { MonthlySalarySlipComponent } from './components/payroll/monthly-salary-slip/monthly-salary-slip.component';
+import { PayrollEmployeeComponent } from './components/payroll/payroll-employee/payroll-employee.component';
+import { PayrunsComponent } from './components/payroll/payruns/payruns.component';
+import { ReportComponent } from './components/payroll/report/report.component';
+import { YearlySalarySlipComponent } from './components/payroll/yearly-salary-slip/yearly-salary-slip.component';
+import { AddEmployeeComponent } from './components/payroll/add-employee/add-employee.component';
 
 
 @NgModule({
@@ -128,6 +137,15 @@ import { GoalComponent } from './components/mainlayout/goal/goal.component';
     OrganizationComponent,
     AddOpeningComponent,
     GoalComponent,
+    AddSalaryComponent,
+    DashboardComponent,
+    EmployeeViewComponent,
+    MonthlySalarySlipComponent,
+    PayrollEmployeeComponent,
+    PayrunsComponent,
+    ReportComponent,
+    YearlySalarySlipComponent,
+    AddEmployeeComponent,
     
   ],
   imports: [
