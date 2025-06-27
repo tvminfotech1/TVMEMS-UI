@@ -34,8 +34,8 @@ export class TimelogComponent implements OnInit {
   currentMondayISO = '';
 
   constructor(
-    private timelogService: TimelogService,
-    private authService: AuthService
+    private timelogService : TimelogService,
+    private authService : AuthService
   ) {}
 
   ngOnInit(): void {
