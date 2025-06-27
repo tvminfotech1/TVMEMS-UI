@@ -6,6 +6,8 @@ export interface BankDetails {
 }
 
 export interface Employee {
+  name: string;
+  photo: string;
   id: string;
   firstName: string;
   lastName: string;

@@ -18,6 +18,8 @@
 <div class="card-row" [ngClass]="viewMode">
   <div class="card" *ngFor="let card of filteredCards">
     <strong>{{ card.label }}</strong> | {{ card.title }}
+  <br>
+  <small>Assigned To: {{ card.employeeName }}</small>
     <div>{{ card.description }}</div>
     <small>Start: {{ card.startDate }} | Due: {{ card.dueDate }}</small><br />
     <small>Priority: {{ card.priority }} | Status: {{ card.status }}</small>
@@ -28,6 +30,7 @@
 <div *ngIf="showForm" class="popup-overlay">
   <div class="task-form">
     <h3>Add New Task</h3>
+    <label>Employee Name: <input [(ngModel)]="newTask.employeeName" /></label>
     <label>Task Name: <input [(ngModel)]="newTask.title" /></label>
     <label>Label: <input [(ngModel)]="newTask.label" /></label>
     <label>Description: <textarea [(ngModel)]="newTask.description"></textarea></label>

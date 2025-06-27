@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
+// import { MainLayoutService } from '../Service/MainLayoutService';
+import { JobPosting } from '../goal/interface/job-openingDto';
+import { MainLayoutService } from '../resignation/service/MainLayoutSevice';
 
 @Component({
   selector: 'app-addopening',
@@ -9,9 +11,14 @@ import { HttpClient } from '@angular/common/http';
 })
 export class AddOpeningComponent implements OnInit {
   jobForm: FormGroup;
-  submittedJobs: any[] = [];
+  submittedJobs: JobPosting[] = [];
 
-  constructor(private fb: FormBuilder, private http: HttpClient) {
+  @Output() jobPosted = new EventEmitter<JobPosting>();
+  
+  constructor(
+    private fb: FormBuilder,
+    private mainLayoutService: MainLayoutService
+  ) {
     this.jobForm = this.fb.group({
       title: ['', Validators.required],
       qualifications: ['', Validators.required],
@@ -24,25 +31,35 @@ export class AddOpeningComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.http.get<any[]>('assets/job-openings.json').subscribe(data => {
-      this.submittedJobs = data;
-    });
+    // Initialization logic (no POST request here)
   }
 
-  onSubmit() {
+  onSubmit(): void {
     if (this.jobForm.valid) {
-      const formData = {
+      const formData: JobPosting = {
         ...this.jobForm.value,
         qualifications: this.jobForm.value.qualifications
           .split(',')
           .map((q: string) => q.trim()),
         skills: this.jobForm.value.skills
           .split(',')
-          .map((s: string) => s.trim())
+          .map((s: string) => s.trim()),
+        yearOfPassout: String(this.jobForm.value.yearOfPassout),
+        experience: String(this.jobForm.value.experience),
+        status: 'OPEN'
       };
-      this.submittedJobs.push(formData);
-      console.log('Job Posted:', formData);
-      this.jobForm.reset();
+
+      this.mainLayoutService.postJobPostings(formData).subscribe({
+        next: (data: JobPosting) => {
+          console.log('Job Posted Successfully:', data);
+          // this.submittedJobs.push(data);
+           this.jobPosted.emit(data);
+          this.jobForm.reset();
+        },
+        error: (err: any) => {
+          console.error('Error posting job:', err);
+        }
+      });
     } else {
       this.jobForm.markAllAsTouched();
     }
