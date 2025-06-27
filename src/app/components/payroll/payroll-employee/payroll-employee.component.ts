@@ -70,6 +70,8 @@ export class PayrollEmployeeComponent  implements OnInit {
         bloodGroup: row['Blood Group'] || '',
         emergencyContact: row['Emergency Contact'] || '',
         profileImageUrl: row['Profile Image URL'] || 'https://static.vecteezy.com/system/resources/previews/032/176/191/non_2x/business-avatar-profile-black-icon-man-of-user-symbol-in-trendy-flat-style-isolated-on-male-profile-people-diverse-face-for-social-network-or-web-vector.jpg',
+        name: row['Name'] || '',      
+        photo: row['Photo'] || '',
         bankDetails: {
           bankName: row['Bank Name'] || '',
           accountNumber: row['Account Number'] || '',
