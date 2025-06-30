@@ -1,7 +1,6 @@
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import { NgModule, } from '@angular/core';
+import { BrowserModule,} from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { PersonalComponent } from './components/personal/personal.component';
@@ -71,7 +70,7 @@ import { PayrunsComponent } from './components/payroll/payruns/payruns.component
 import { ReportComponent } from './components/payroll/report/report.component';
 import { YearlySalarySlipComponent } from './components/payroll/yearly-salary-slip/yearly-salary-slip.component';
 import { AddEmployeeComponent } from './components/payroll/add-employee/add-employee.component';
-
+import { AddAnnouncementComponent } from './components/mainlayout/add-announcement/add-announcement.component';
 
 @NgModule({
   declarations: [
@@ -146,6 +145,7 @@ import { AddEmployeeComponent } from './components/payroll/add-employee/add-empl
     ReportComponent,
     YearlySalarySlipComponent,
     AddEmployeeComponent,
+    AddAnnouncementComponent,
     
   ],
   imports: [
