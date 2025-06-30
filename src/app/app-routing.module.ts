@@ -69,6 +69,8 @@ import { AddSalaryComponent } from './components/payroll/add-salary/add-salary.c
 import { MonthlySalarySlipComponent } from './components/payroll/monthly-salary-slip/monthly-salary-slip.component';
 import { ReportComponent } from './components/payroll/report/report.component';
 import { YearlySalarySlipComponent } from './components/payroll/yearly-salary-slip/yearly-salary-slip.component';
+import { AddAnnouncementComponent } from './components/mainlayout/add-announcement/add-announcement.component';
+
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -118,6 +120,8 @@ const routes: Routes = [
       {path:'attendance', component:AttendanceComponent},
       {path:'addopening', component:AddOpeningComponent},
       {path:'goal', component:GoalComponent},
+      { path: 'add-announcement', component: AddAnnouncementComponent },
+
       
       { path: 'personal', component: PersonalComponent },
       { path: 'kyc', component: KycComponent },

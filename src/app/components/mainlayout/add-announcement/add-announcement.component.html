@@ -1,0 +1,21 @@
+<div class="form-wrapper">
+
+  <form [formGroup]="announcementForm" (ngSubmit)="submitForm()">
+    <label for="title">Title</label>
+    <input id="title" formControlName="title" type="text" placeholder="Enter title" />
+
+    <label for="announceStartDate">Start Date</label>
+    <input id="announceStartDate" formControlName="announceStartDate" type="date" />
+
+    <label for="announceEndDate">End Date</label>
+    <input id="announceEndDate" formControlName="announceEndDate" type="date" />
+
+    <label for="description">Description</label>
+    <textarea id="description" formControlName="description" rows="4" placeholder="Enter announcement details..."></textarea>
+
+    <div class="button-row">
+      <button type="submit" [disabled]="announcementForm.invalid">Submit</button>
+      <button type="button" (click)="cancel()">Cancel</button>
+    </div>
+  </form>
+</div>
