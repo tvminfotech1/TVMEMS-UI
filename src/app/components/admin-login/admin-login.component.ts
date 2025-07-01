@@ -1,7 +1,8 @@
-import { Component, OnInit } from "@angular/core";
+import { Component } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { HttpClient } from "@angular/common/http";
 import { Router } from "@angular/router";
+import { jwtDecode } from "jwt-decode";
 
 @Component({
   selector: "app-admin-login",
@@ -11,6 +12,7 @@ import { Router } from "@angular/router";
 export class AdminLoginComponent {
   public adminLoginForm: FormGroup;
   public loginError: string = "";
+
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,
@@ -26,29 +28,30 @@ export class AdminLoginComponent {
     if (this.adminLoginForm.valid) {
       const loginData = this.adminLoginForm.value;
 
-      // Load JSON file from assets folder
-      this.http.get<any[]>("assets/users.json").subscribe({
-        next: (users) => {
-          const matchedUser = users.find(
-            (user) =>
-              user.email === loginData.email &&
-              user.password === loginData.password
-          );
+      this.http.post<any>("http://localhost:8080/adminlogin", loginData).subscribe({
+        next: (res) => {
+          try {
+            const token = res.token;
+            const decoded: any = jwtDecode(token); // ✅ Decode JWT
+            const roles = decoded.roles;
 
-          if (matchedUser) {
-            this.router.navigate(["/mainlayout/dashboard"]);
-          } else {
-            this.loginError = "Admin email or password is incorrect";
+            if (Array.isArray(roles) && roles.includes('ROLE_ADMIN')) {
+              localStorage.setItem("token", token);
+              this.router.navigate(["/mainlayout/dashboard"]);
+            } else {
+              this.loginError = "You are not authorized as admin.";
+            }
+          } catch (e) {
+            this.loginError = "Token decode error.";
           }
         },
-        error: (err) => {
-          console.error("Error loading admin users JSON:", err);
-          this.loginError = "An error occurred. Please try again later.";
-        },
+        error: () => {
+          this.loginError = "Invalid credentials or server error.";
+        }
       });
     } else {
       this.adminLoginForm.markAllAsTouched();
+      this.loginError = "Please enter valid login details.";
     }
-    this.loginError = "";
   }
 }

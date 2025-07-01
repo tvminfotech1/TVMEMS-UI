@@ -27,8 +27,4 @@ export class PayrollEmployeeService {
  updateEmployeeStatus(id: string, status: string): Observable<any> {
   return this.http.patch(`${this.apiUrl}/${id}`, { status });
 }
-
-
-
-
 }

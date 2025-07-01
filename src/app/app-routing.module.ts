@@ -69,6 +69,9 @@ import { AddSalaryComponent } from './components/payroll/add-salary/add-salary.c
 import { MonthlySalarySlipComponent } from './components/payroll/monthly-salary-slip/monthly-salary-slip.component';
 import { ReportComponent } from './components/payroll/report/report.component';
 import { YearlySalarySlipComponent } from './components/payroll/yearly-salary-slip/yearly-salary-slip.component';
+import { adminAuthGuard } from './guards/admin-auth.guard';
+
+
 import { AddAnnouncementComponent } from './components/mainlayout/add-announcement/add-announcement.component';
 
 
@@ -90,7 +93,7 @@ const routes: Routes = [
   { path: 'loginByNumber', component: LoginByNumberComponent },
   { path: 'signup', component: SignupComponent },
   { path: 'admin', component: AdminComponent },
-  { path: 'adminLogin', component: AdminLoginComponent },
+  { path: 'adminLogin', component: AdminLoginComponent},
   { path: 'employeeData/:id', component: EmployeeDataComponent },
   { path: 'thankYou', component: ThankYouComponent },
   { path: 'onboarding', component: OnboardingComponent },
@@ -100,6 +103,7 @@ const routes: Routes = [
   {
     path: 'mainlayout',
     component: MainlayoutComponent,
+     canActivate: [adminAuthGuard],
     children: [       
       {path: 'dashboard', component: DashboardhomeComponent},
       {path: 'holidays', component: HoildayCalendarComponent },
