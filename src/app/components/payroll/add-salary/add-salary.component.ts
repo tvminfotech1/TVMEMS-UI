@@ -51,22 +51,24 @@ nol: number = 0;  // No. of Leaves
     private salaryService: SalaryHistoryService
   ) {}
 
-  ngOnInit(): void {
-  const empId = this.route.snapshot.paramMap.get('id');
+ngOnInit(): void {
+  const empIdParam = this.route.snapshot.paramMap.get('id');
   const selectedMonth = this.route.snapshot.queryParamMap.get('month');
 
   setTimeout(() => {
     this.updateNWDFromMonth();
   });
+
   if (selectedMonth) {
-    this.payMonth = selectedMonth; // set payMonth (bound to <input type="month">)
-    this.payYear = parseInt(selectedMonth.split('-')[0]); // extract year
+    this.payMonth = selectedMonth;
+    this.payYear = parseInt(selectedMonth.split('-')[0]);
   } else {
     this.payMonth = new Date().toISOString().substring(0, 7);
     this.payYear = new Date().getFullYear();
   }
 
-  if (empId) {
+  if (empIdParam) {
+    const empId = +empIdParam; // ✅ Convert to number
     this.employeeService.getEmployeeById(empId).subscribe(emp => {
       this.employee = emp;
       this.basicSalary = emp.basicSalary;
@@ -75,6 +77,7 @@ nol: number = 0;  // No. of Leaves
     });
   }
 }
+
 
 updateNWDFromMonth(): void {
   const [year, month] = this.payMonth.split('-').map(Number);
@@ -107,9 +110,9 @@ updateNWDFromMonth(): void {
     this.remainingCtc = this.ctc - (this.totalEarnings + this.totalDeductions);
   }
 
-  addSalary(): void {
-  const month = this.payMonth;
-  const empId = this.employee.id;
+addSalary(): void {
+  const month: string = this.payMonth;
+  const empId: number = this.employee.id;
 
   this.salaryService.getSalaryByEmployeeAndMonth(empId, month).subscribe(existing => {
     if (existing && existing.length > 0) {
@@ -152,5 +155,6 @@ updateNWDFromMonth(): void {
     });
   });
 }
+
 
 }

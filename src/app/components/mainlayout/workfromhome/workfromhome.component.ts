@@ -6,7 +6,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./workfromhome.component.css']
 })
 export class WorkfromhomeComponent {
-  currentMonthIndex = 5; // June
+  currentMonthIndex = 5;
   year = 2025;
 
   getMonthName(): string {

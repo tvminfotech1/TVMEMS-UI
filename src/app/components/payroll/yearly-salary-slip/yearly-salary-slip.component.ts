@@ -21,11 +21,13 @@ export class YearlySalarySlipComponent implements OnInit {
     private employeeService: PayrollEmployeeService
   ) {}
 
- ngOnInit(): void {
-  const empId = this.route.snapshot.paramMap.get('empId');
+ngOnInit(): void {
+  const empIdParam = this.route.snapshot.paramMap.get('empId');
   const selectedYear = this.route.snapshot.queryParamMap.get('year');
 
-  if (empId) {
+  const empId = empIdParam ? +empIdParam : null; // convert string to number
+
+  if (empId !== null) {
     this.employeeService.getEmployeeById(empId).subscribe(emp => {
       this.employee = emp;
     });
@@ -38,6 +40,7 @@ export class YearlySalarySlipComponent implements OnInit {
     });
   }
 }
+
 
 
   calculateTotalEarnings(salary: SalaryHistory): number {

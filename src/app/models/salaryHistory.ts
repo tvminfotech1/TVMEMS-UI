@@ -1,6 +1,6 @@
 export interface SalaryHistory {
   salaryId: string;            // Unique ID like "TVM001-202506"
-  id: string;                  // Employee ID
+  id: number;                  // Employee ID
 
   month: string;               // Format: "YYYY-MM"
   year: number;                // Example: 2025

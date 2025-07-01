@@ -25,7 +25,7 @@
       <td>{{ record.totalPaid }}</td>
       <td>{{ record.remainingCTC }}</td>
       <td>
-        <button (click)="viewSlip(record.employee.id)">View Slips</button>
+        <button (click)="viewSlip(record.employee.id.toString())">View Slips</button>
 
       </td>
     </tr>

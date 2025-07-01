@@ -28,7 +28,7 @@ export class AddAnnouncementComponent {
     if (this.announcementForm.valid) {
       const announcementData = this.announcementForm.value;
 
-      this.http.post('http://localhost:3000/announcements', announcementData).subscribe({
+      this.http.post('http://localhost:8080/api/announcements', announcementData).subscribe({
         next: () => {
           alert('Announcement added successfully!');
           this.router.navigate(['/mainlayout/announcement']);
@@ -38,6 +38,8 @@ export class AddAnnouncementComponent {
           alert('Failed to add announcement.');
         }
       });
+    } else {
+      alert('Please fill all required fields.');
     }
   }
 
