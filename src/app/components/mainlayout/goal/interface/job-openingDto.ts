@@ -8,3 +8,4 @@ export interface JobPosting {
   description: string;
   status?: string; // optional field for backend
 }
+
