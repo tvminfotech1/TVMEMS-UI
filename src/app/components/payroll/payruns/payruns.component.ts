@@ -38,7 +38,7 @@ export class PayrunsComponent  implements OnInit {
     });
   }
 
-  isPaid(empId: string): boolean {
+  isPaid(empId: number): boolean {
     return this.salaryHistory.some(
       (sal) => sal.id === empId && sal.month === this.selectedMonth
     );
@@ -47,7 +47,7 @@ export class PayrunsComponent  implements OnInit {
   onSearch(): void {
     const text = this.searchText.toLowerCase().trim();
     this.filteredEmployees = this.employees.filter(emp =>
-      emp.id.toLowerCase().includes(text) ||
+      emp.id.toString().toLowerCase().includes(text) ||
       (`${emp.firstName} ${emp.lastName}`).toLowerCase().includes(text)
     );
   }

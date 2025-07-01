@@ -22,21 +22,24 @@ export class MonthlySalarySlipComponent implements OnInit {
     private employeeService: PayrollEmployeeService
   ) {}
 
-  ngOnInit(): void {
-    const salaryId = this.route.snapshot.paramMap.get('salaryId');
-    const empId = this.route.snapshot.paramMap.get('empId');
-    if (salaryId) {
-      this.salaryService.getAllSalaryHistory().subscribe(salaries => {
-        const record = salaries.find(s => s.salaryId === salaryId && s.id === empId);
-        if (record) {
-          this.salary = record;
-          this.employeeService.getEmployeeById(record.id).subscribe(emp => {
-            this.employee = emp;
-          });
-        }
-      });
-    }
+ ngOnInit(): void {
+  const salaryId = this.route.snapshot.paramMap.get('salaryId');
+  const empIdParam = this.route.snapshot.paramMap.get('empId');
+  const empId = empIdParam ? +empIdParam : null;  // Convert to number
+
+  if (salaryId && empId !== null) {
+    this.salaryService.getAllSalaryHistory().subscribe(salaries => {
+      const record = salaries.find(s => s.salaryId === salaryId && s.id === empId);
+      if (record) {
+        this.salary = record;
+        this.employeeService.getEmployeeById(record.id).subscribe(emp => {
+          this.employee = emp;
+        });
+      }
+    });
   }
+}
+
 calculateTotalEarnings(): number {
   return this.salary.basicSalary +
          this.salary.hra +

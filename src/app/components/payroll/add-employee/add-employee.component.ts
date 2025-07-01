@@ -10,7 +10,7 @@ import { Employee } from 'src/app/models/employee';
 })
 export class AddEmployeeComponent {
   employee: Employee = {
-    id: '',
+    id: 0,
     firstName: '',
     lastName: '',
     email: '',

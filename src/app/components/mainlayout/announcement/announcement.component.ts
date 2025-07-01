@@ -21,26 +21,35 @@ export class AnnouncementComponent implements OnInit {
 
   constructor(private http: HttpClient, private router: Router) {}
 
-  ngOnInit() {
-    this.http.get<any>('assets/announcement-data.json').subscribe(data => {
-      this.announcements = data.announcements;
+  ngOnInit(): void {
+    this.fetchAnnouncements();
+  }
+
+  fetchAnnouncements(): void {
+    this.http.get<any>('http://localhost:8080/api/announcements').subscribe({
+      next: (response) => {
+        this.announcements = response.announcements || response;
+      },
+      error: (err) => {
+        console.error('Failed to fetch announcements:', err);
+      }
     });
   }
 
-  changePage(page: number) {
+  changePage(page: number): void {
     this.currentPage = page;
   }
 
-  openCalendar(announcement: any) {
+  openCalendar(announcement: any): void {
     console.log('Calendar clicked for:', announcement);
   }
 
-  switchTab(tab: 'notification' | 'announcement') {
+  switchTab(tab: 'notification' | 'announcement'): void {
     this.currentTab = tab;
   }
 
-  onAddAnnouncement() {
-    console.log('Add Announcement clicked');  
-    this.router.navigate(['/mainlayout/add-announcement']);  
+  onAddAnnouncement(): void {
+    console.log('Add Announcement clicked');
+    this.router.navigate(['/mainlayout/add-announcement']);
   }
 }

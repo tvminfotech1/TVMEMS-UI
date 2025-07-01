@@ -9,7 +9,7 @@ import { SalaryHistory } from '../models/salaryHistory';
 })
 export class SalaryHistoryService {
 
-  private apiUrl = 'http://localhost:3000/salaryHistory'; // json-server url
+  private apiUrl = 'http://localhost:8080/api/salaryHistory';
 
   constructor(private http: HttpClient) {}
 
@@ -20,7 +20,7 @@ export class SalaryHistoryService {
   // getSalaryHistoryByEmployeeId(employeeId: string): Observable<SalaryHistory[]> {
   //   return this.http.get<SalaryHistory[]>(`${this.apiUrl}?employeeId=${employeeId}`);
   // }
-  getSalaryByEmployeeAndMonth(empId: string, month: string): Observable<SalaryHistory[]> {
+  getSalaryByEmployeeAndMonth(empId: number, month: string): Observable<SalaryHistory[]> {
   return this.http.get<SalaryHistory[]>(`${this.apiUrl}?id=${empId}&month=${month}`);
 }
 
