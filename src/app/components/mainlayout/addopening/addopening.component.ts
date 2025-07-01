@@ -10,7 +10,7 @@ import { MainLayoutService } from '../resignation/service/MainLayoutSevice';
   styleUrls: ['./addopening.component.css']
 })
 export class AddOpeningComponent implements OnInit {
-  jobForm: FormGroup;
+   jobForm: FormGroup;
   submittedJobs: JobPosting[] = [];
 
   @Output() jobPosted = new EventEmitter<JobPosting>();
@@ -56,7 +56,7 @@ export class AddOpeningComponent implements OnInit {
            this.jobPosted.emit(data);
           this.jobForm.reset();
         },
-        error: (err: any) => {
+        error: (err) => {
           console.error('Error posting job:', err);
         }
       });
@@ -64,4 +64,5 @@ export class AddOpeningComponent implements OnInit {
       this.jobForm.markAllAsTouched();
     }
   }
+  
 }
