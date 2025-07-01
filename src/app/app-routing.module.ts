@@ -72,6 +72,8 @@ import { YearlySalarySlipComponent } from './components/payroll/yearly-salary-sl
 import { adminAuthGuard } from './guards/admin-auth.guard';
 
 
+import { AddAnnouncementComponent } from './components/mainlayout/add-announcement/add-announcement.component';
+
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -122,6 +124,8 @@ const routes: Routes = [
       {path:'attendance', component:AttendanceComponent},
       {path:'addopening', component:AddOpeningComponent},
       {path:'goal', component:GoalComponent},
+      { path: 'add-announcement', component: AddAnnouncementComponent },
+
       
       { path: 'personal', component: PersonalComponent },
       { path: 'kyc', component: KycComponent },

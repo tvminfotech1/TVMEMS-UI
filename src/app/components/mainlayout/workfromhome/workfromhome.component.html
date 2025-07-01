@@ -1,21 +1,22 @@
 <div class="banner">
   Your WFH Request Eligibility has been removed. Please reach
-  <a href="mailto:wfm@sensiple.com">wfm@sensiple.com</a> for more details.
+  <a href="mailto:wfm@sensiple.com">wfmsensiple.com</a> for more details.
 </div>
 
 <div class="month-nav">
   <button (click)="prevMonth()">&#60;</button>
-  <h2>📅{{ getMonthName() }} {{ year }}</h2>
+  <h2>📅 {{ getMonthName() }} {{ year }}</h2>
   <button (click)="nextMonth()">&#62;</button>
 </div>
 
+<!-- Status Cards -->
 <div class="status-cards">
   <div class="card pending">
     <h3>Pending</h3>
     <p><span class="color">↑</span> {{ getCount('pending') }} / {{ totalRequests }}</p>
     <div class="percent">{{ getProgress('pending') }}%</div>
     <div class="progress-bar">
-      <div class="progress" [style.width.%]="getProgress('pending')"></div>
+      <div class="progress pending" [style.width.%]="getProgress('pending')"></div>
     </div>
   </div>
 
@@ -24,7 +25,7 @@
     <p><span>↑</span> {{ getCount('approved') }} / {{ totalRequests }}</p>
     <div class="percent">{{ getProgress('approved') }}%</div>
     <div class="progress-bar">
-      <div class="progress" [style.width.%]="getProgress('approved')"></div>
+      <div class="progress approved" [style.width.%]="getProgress('approved')"></div>
     </div>
   </div>
 
@@ -33,11 +34,12 @@
     <p><span class="red">↑</span> {{ getCount('rejected') }} / {{ totalRequests }}</p>
     <div class="percent">{{ getProgress('rejected') }}%</div>
     <div class="progress-bar">
-      <div class="progress" [style.width.%]="getProgress('rejected')"></div>
+      <div class="progress rejected" [style.width.%]="getProgress('rejected')"></div>
     </div>
   </div>
 </div>
 
+<!-- Request Table -->
 <div class="details-table">
   <div class="row header">
     <div>Date Range</div>
@@ -45,12 +47,25 @@
     <div>Reason</div>
     <div>Created At / Approver</div>
     <div>Status</div>
+    <div>Action</div>
   </div>
-  <div class="row">
-    <div>02 Jun 25 - 02 Jun 25</div>
-    <div>1 Day</div>
-    <div>Transport Disruptions</div>
-    <div>22 May 25<br />Praveenkumar Subramanian</div>
-    <div class="approved-status">Approved ✅</div>
+
+  <div class="row" *ngFor="let d of details">
+    <div>{{ d.fromDate }} - {{ d.toDate }}</div>
+    <div>{{ d.days }}</div>
+    <div>{{ d.reason }}</div>
+    <div>{{ d.created }}<br />{{ d.approver }}</div>
+    <div [ngClass]="{
+          'approved-status': d.status === 'approved',
+          'rejected-status': d.status === 'rejected',
+          'pending-status': d.status === 'pending'
+        }">
+      {{ d.status | titlecase }}
+    </div>
+    <div>
+      <button (click)="updateStatus(d, 'approved')">✔️</button>
+      <button (click)="updateStatus(d, 'rejected')">❌</button>
+      <button (click)="updateStatus(d, 'pending')">🕒</button>
+    </div>
   </div>
 </div>

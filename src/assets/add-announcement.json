@@ -1,0 +1,11 @@
+{
+  "announcements": [
+    {
+      "id": 1,
+      "title": "Sample Announcement",
+      "announceStartDate": "2025-07-01",
+      "announceEndDate": "2025-07-03",
+      "description": "This is a sample announcement for testing purposes."
+    }
+  ]
+}
