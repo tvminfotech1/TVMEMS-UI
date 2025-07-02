@@ -111,6 +111,6 @@ export class MainlayoutComponent {
     console.log('Logout clicked');
     localStorage.clear();
     sessionStorage.clear();
-    this.router.navigateByUrl('/login');
+    this.router.navigateByUrl('/adminLogin');
   }
 }

@@ -11,7 +11,7 @@ export class UserService {
   public formData: any = {};
   public formGroups: { [key: string]: FormGroup } = {}; 
 
-  private readonly BASE_URL = 'http://localhost:8081'; // Your backend port here
+  private readonly BASE_URL = 'http://localhost:8080';
 
   constructor(private http: HttpClient) {}
 

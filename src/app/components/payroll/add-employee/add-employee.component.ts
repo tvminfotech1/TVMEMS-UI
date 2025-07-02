@@ -33,8 +33,6 @@ export class AddEmployeeComponent {
     bloodGroup: '',
     emergencyContact: '',
     profileImageUrl: '',
-      name: '',       
-     photo: '' ,
     bankDetails: {
   bankName: '',
   accountNumber: '',
@@ -47,6 +45,8 @@ export class AddEmployeeComponent {
   constructor(private empService: PayrollEmployeeService, private router: Router) {}
 
   onSubmit() {
+    console.log('payroll employee:', this.employee); 
+
     this.empService.addEmployee(this.employee).subscribe(() => {
       alert('Employee Added Successfully!');
       this.router.navigate(['/employees']);
