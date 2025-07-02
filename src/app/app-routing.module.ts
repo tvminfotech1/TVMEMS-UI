@@ -147,6 +147,8 @@ const routes: Routes = [
       { path: 'payruns/:empId/:salaryId', component: MonthlySalarySlipComponent},
       {path:'reports',component:ReportComponent},
       {path:'reports/:empId',component:YearlySalarySlipComponent},
+      { path: 'pendingUser', component: PendingUserComponent },
+      { path: 'admin', component: AdminComponent },
     ]
   },
 
