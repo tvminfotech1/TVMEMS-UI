@@ -88,10 +88,13 @@ import { Goal } from './interface/goalDto';
 export class GoalComponent implements OnInit {
   currentView: 'main' | 'goalType' | 'newGoal' = 'main';
   goalForm!: FormGroup;
-  goals:Goal [] = [];
+  goals: Goal[] = [];
+  filteredGoals: Goal[] = [];
+  selectedMonth: string = '';
+  selectedLabel: string = '';
+  previousMonthOptions: { value: string, label: string }[] = [];
 
-  // ✅ Use the actual API endpoint from your backend (not Swagger UI URL)
-  private apiUrl = 'http://localhost:8080/goals';
+  private apiUrl = 'http://localhost:8080/goals'; // 🔁 Your backend API
 
   constructor(private fb: FormBuilder, private http: HttpClient) {}
 
@@ -107,41 +110,86 @@ export class GoalComponent implements OnInit {
     });
 
     this.fetchGoals();
+    this.generatePreviousMonths();
   }
 
+  // fetchGoals(): void {
+  //   this.http.get<Goal[]>(this.apiUrl).subscribe({
+  //     next: (data) => {
+  //       this.goals = data;
+  //       this.filteredGoals = data;
+  //     },
+  //     error: (err) => {
+  //       console.error('Error fetching goals:', err.message || err);
+  //       alert('⚠️ Failed to load goals.');
+  //     }
+  //   });
+  // }
   fetchGoals(): void {
-    this.http.get<Goal[]>(this.apiUrl).subscribe({
-      next: (data) => {
-        this.goals = data;
-      },
-      error: (err) => {
-        console.error('❌ Error fetching goals:', err.message || err);
-        alert('⚠️ Failed to load goals from the server. Please try again later.');
-      }
-    });
-  }
-submitGoal(): void {
-  if (this.goalForm.valid) {
-    const newGoal: Goal = this.goalForm.value;
+  const requestBody = {
+    // example payload: you can customize it
+    filter: 'all', // or current, last, etc.
+    userId: 1       // optional: if needed
+  };
 
-    this.http.post<Goal>(this.apiUrl, newGoal).subscribe({
-      next: (savedGoal) => {
-        this.goals.push(savedGoal);
-        alert('✅ Goal submitted successfully!');
-        this.goalForm.reset();
-        this.currentView = 'main';
-      },
-      error: (err) => {
-        console.error('❌ Error submitting goal:', err.message || err);
-        alert('❌ Failed to submit goal. Please try again.');
-      }
-    });
-  } else {
-    alert('Please fill all required fields correctly.');
-    this.goalForm.markAllAsTouched();
-  }
+  this.http.post<Goal[]>(this.apiUrl, requestBody).subscribe({
+    next: (data) => {
+      this.goals = data;
+      this.filteredGoals = data;
+    },
+    error: (err) => {
+      console.error('Error fetching goals:', err.message || err);
+      alert('⚠️ Failed to load goals.');
+    }
+  });
 }
 
+
+  generatePreviousMonths(): void {
+    const today = new Date();
+    for (let i = 1; i <= 12; i++) {
+      const date = new Date(today.getFullYear(), today.getMonth() - i, 1);
+      const value = `${date.getMonth() + 1}-${date.getFullYear()}`;
+      const label = `${date.toLocaleString('default', { month: 'short' })} ${date.getFullYear()}`;
+      this.previousMonthOptions.push({ value, label });
+    }
+  }
+
+  filterGoalsByMonthYear(): void {
+    const today = new Date();
+
+    if (this.selectedMonth === 'current') {
+      const month = today.getMonth() + 1;
+      const year = today.getFullYear();
+      this.selectedLabel = 'Current Month';
+      this.loadFilteredGoals(month, year);
+    } else if (this.selectedMonth === 'last') {
+      const lastMonth = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+      const month = lastMonth.getMonth() + 1;
+      const year = lastMonth.getFullYear();
+      this.selectedLabel = 'Last Month';
+      this.loadFilteredGoals(month, year);
+    } else {
+      const [monthStr, yearStr] = this.selectedMonth.split('-');
+      const month = +monthStr;
+      const year = +yearStr;
+      const label = this.previousMonthOptions.find(o => o.value === this.selectedMonth)?.label || '';
+      this.selectedLabel = label;
+      this.loadFilteredGoals(month, year);
+    }
+  }
+
+  loadFilteredGoals(month: number, year: number): void {
+    this.http.get<Goal[]>(`${this.apiUrl}?month=${month}&year=${year}`).subscribe({
+      next: (data) => {
+        this.filteredGoals = data;
+      },
+      error: (err) => {
+        console.error('Error filtering goals:', err.message || err);
+        this.filteredGoals = [];
+      }
+    });
+  }
 
   goToGoalType(): void {
     this.currentView = 'goalType';
@@ -158,4 +206,28 @@ submitGoal(): void {
   goBack(): void {
     this.currentView = 'goalType';
   }
-}
+
+  submitGoal(): void {
+    if (this.goalForm.valid) {
+      const newGoal: Goal = this.goalForm.value;
+      this.http.post<Goal>(this.apiUrl, newGoal).subscribe({
+        next: (savedGoal) => {
+          this.goals.push(savedGoal);
+          alert('✅ Goal submitted successfully!');
+          this.goalForm.reset();
+          this.currentView = 'main';
+        },   
+        error: (err) => {
+          console.error('Error submitting goal:', err.message || err);
+          alert('❌ Failed to submit goal.');
+        }
+      });
+    } else {
+      alert('Please fill all required fields correctly.');
+      this.goalForm.markAllAsTouched();
+    }
+  }
+
+
+
+} 
