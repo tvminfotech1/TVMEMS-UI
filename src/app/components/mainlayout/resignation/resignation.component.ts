@@ -1,18 +1,21 @@
-import { HttpClient } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ResingService } from './service/resing.service';
 
 @Component({
   selector: 'app-resignation',
   templateUrl: './resignation.component.html',
   styleUrls: ['./resignation.component.css']
 })
-export class ResignationComponent {
-   showForm = false;
+export class ResignationComponent implements OnInit {
+  showForm = false;
   resignationForm: FormGroup;
   submittedData: any[] = [];
 
-  constructor(private fb: FormBuilder, private http: HttpClient) {
+  constructor(
+    private fb: FormBuilder,
+    private resingService: ResingService
+  ) {
     this.resignationForm = this.fb.group({
       name: ['', Validators.required],
       employeeId: ['', Validators.required],
@@ -23,8 +26,17 @@ export class ResignationComponent {
   }
 
   ngOnInit(): void {
-    this.http.get<any[]>('assets/resignations.json').subscribe(data => {
-      this.submittedData = data;
+    this.fetchResignations();
+  }
+
+  fetchResignations() {
+    this.resingService.getResignations().subscribe({
+      next: (data) => {
+        this.submittedData = data.reverse(); // Newest first
+      },
+      error: (err) => {
+        console.error('Error fetching resignations:', err);
+      }
     });
   }
 
@@ -43,21 +55,22 @@ export class ResignationComponent {
   saveForm() {
     if (this.resignationForm.valid) {
       const formData = {
-        name: this.resignationForm.value.name,
-        employeeId: this.resignationForm.value.employeeId,
-        reason: this.resignationForm.value.reason,
-        explanation: this.resignationForm.value.explanation,
-        date: new Date().toLocaleDateString(),
+        ...this.resignationForm.value,
+        date: new Date().toISOString().split('T')[0], // YYYY-MM-DD
         status: 'Submitted'
       };
 
-      console.log('Form submitted:', formData);
-
-      this.submittedData.push(formData);
-      this.resignationForm.reset();
-      this.showForm = false;
+      this.resingService.submitResignation(formData).subscribe({
+        next: (res) => {
+          this.submittedData.unshift(res); // Add to top of list
+          this.resignationForm.reset();
+          this.showForm = false;
+        },
+        error: (err) => {
+          console.error('Error saving resignation:', err);
+        }
+      });
     } else {
-      console.warn('Form is invalid');
       this.resignationForm.markAllAsTouched();
     }
   }
