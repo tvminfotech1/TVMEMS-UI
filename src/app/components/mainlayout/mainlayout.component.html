@@ -239,33 +239,45 @@
           </li>
 
           <!-- Onboarding -->
-          <li class="dropdown">
-            <button
-              class="nav-button"
-              (click)="toggleOnboardingDropdown()"
-              [attr.aria-expanded]="showOnboardingDropdown"
-              aria-controls="onboardingDropdown"
-              aria-haspopup="true"
-            >
-              <span class="material-icons">how_to_reg</span> OnBoarding
-              <span class="accordion-icon">
-                {{ showOnboardingDropdown ? "⯆" : "⯈" }}
-              </span>
-            </button>
-            <div
-              *ngIf="showOnboardingDropdown"
-              class="dropdown-content"
-              id="onboardingDropdown"
-            >
-              <ul class="dropdown-list">
-                <li>
-                  <a routerLink="personal" class="nav-link sub"
-                    ><span class="material-icons">person</span> Personal Info</a
-                  >
-                </li>
-              </ul>
-            </div>
-          </li>
+<li class="dropdown">
+  <button
+    class="nav-button"
+    (click)="toggleOnboardingDropdown()"
+    [attr.aria-expanded]="showOnboardingDropdown"
+    aria-controls="onboardingDropdown"
+    aria-haspopup="true"
+  >
+    <span class="material-icons">how_to_reg</span> OnBoarding
+    <span class="accordion-icon">
+      {{ showOnboardingDropdown ? "⯆" : "⯈" }}
+    </span>
+  </button>
+
+  <div
+    *ngIf="showOnboardingDropdown"
+    class="dropdown-content"
+    id="onboardingDropdown"
+  >
+    <ul class="dropdown-list">
+      <li>
+        <a routerLink="personal" class="nav-link sub">
+          <span class="material-icons">person</span> Personal Info
+        </a>
+      </li>
+      <li>
+        <a routerLink="pendingUser" class="nav-link sub">
+          <span class="material-icons">hourglass_empty</span> Pending User
+        </a>
+      </li>
+      <li>
+        <a routerLink="admin" class="nav-link sub">
+          <span class="material-icons">group</span> User List
+        </a>
+      </li>
+    </ul>
+  </div>
+</li>
+
 
           <!-- Add Job Opening -->
           <li class="dropdown">
