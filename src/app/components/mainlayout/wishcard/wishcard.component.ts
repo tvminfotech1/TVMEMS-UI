@@ -22,7 +22,7 @@ export class WishcardComponent implements OnInit {
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
-    this.http.get<any[]>('assets/wishes.json').subscribe(data => {
+    this.http.get<any[]>('http://localhost:8080/personal/wishes').subscribe(data => {
       this.allWishes = data;
       this.filterWishes();
     });

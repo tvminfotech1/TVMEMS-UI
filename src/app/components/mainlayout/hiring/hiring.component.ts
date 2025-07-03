@@ -12,7 +12,7 @@ export class HiringComponent {
 
    
   ngOnInit(): void {
-    this.http.get<any[]>('assets/hiring.json').subscribe(data => {
+    this.http.get<any[]>('http://localhost:8080/api/hiring/jobs').subscribe(data => {
       this.jobs = data;
     });
   }
