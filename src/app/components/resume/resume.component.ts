@@ -33,7 +33,7 @@ export class ResumeComponent implements OnInit {
     //   });
     // });
 
-    this.userService.setFormData('education', this.resumeForm);
+    // this.userService.setFormData("resume", this.resumeForm.value); 
   }
 
   submitForm() {

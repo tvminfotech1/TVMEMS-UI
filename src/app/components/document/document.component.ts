@@ -30,7 +30,7 @@ export class DocumentComponent {
     });
 
     // Store FormGroup to userService for validation checks later
-    this.userService.setFormGroup("education", this.documentForm);
+    // this.userService.setFormData("DocumentDetails", this.documentForm.value);
   }
 
   onFileChange(event: any, controlName: string) {

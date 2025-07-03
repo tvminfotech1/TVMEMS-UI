@@ -29,13 +29,13 @@ export class CertificateComponent {
     });
 
     // Optional: you can sync form data with your userService if needed
-    this.userService.setFormData("education", this.certificateForm);
+    // this.userService.setFormData("certification", this.certificateList);
   }
 
   addCertificate() {
     if (this.certificateForm.valid) {
       this.certificateList.push(this.certificateForm.value);
-      this.userService.setFormData("certification", this.certificateList);
+      this.userService.setFormData("certification", this.certificateList.values);
       this.certificateForm.reset();
     } else {
       alert("All fields are mandatory!");

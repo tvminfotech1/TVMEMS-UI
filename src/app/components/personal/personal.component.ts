@@ -58,7 +58,7 @@ export class PersonalComponent {
       relevantYear: ['', Validators.required]
     });
 
-    this.userService.setFormGroup('personal', this.userForm);
+    // this.userService.setFormGroup('personal', this.userForm);
     // this.loadJsonData();  // Load data into form
   }
 
