@@ -41,7 +41,7 @@
         <tbody>
           <tr *ngFor="let a of visibleAnnouncements">
             <td>{{ a.title }}</td>
-            <td>{{ a.startDate }} - {{ a.endDate }}</td>
+           <td>{{ a.announceStartDate }} - {{ a.announceEndDate }}</td>
             <td><span class="calendar-icon" (click)="openCalendar(a)">📅</span></td>
           </tr>
         </tbody>
