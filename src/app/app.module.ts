@@ -1,6 +1,6 @@
 import { NgModule, } from '@angular/core';
 import { BrowserModule,} from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { PersonalComponent } from './components/personal/personal.component';
@@ -26,6 +26,7 @@ import { EmployeeDataComponent } from './components/employee-data/employee-data.
 import { LoginByNumberComponent } from './components/login-by-number/login-by-number.component';
 import { OnboardingComponent } from './components/onboarding/onboarding.component';
 import { PendingUserComponent } from './components/pending-user/pending-user.component';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
 
 import { EmployeeDetailsComponent } from './components/employee-details/employee-details.component';
 import { NavDisplayComponent } from './components/nav-display/nav-display.component';
@@ -155,7 +156,13 @@ import { AddAnnouncementComponent } from './components/mainlayout/add-announceme
     ReactiveFormsModule,
     HttpClientModule,
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

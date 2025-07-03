@@ -61,7 +61,8 @@ export class PreviousEmploymentComponent implements OnInit {
 
   finalSave(): void {
     if (this.employmentList.length > 0) {
-      this.userService.setFormData('previousEmployment', this.employmentForm.value);
+      this.userService.setFormData('previousEmployment', this.employmentList); 
+      console.log("pre emp: ",this.employmentList)
       this.router.navigate(['/mainlayout/education']);
     } else {
       alert('Please add at least one employment record.');

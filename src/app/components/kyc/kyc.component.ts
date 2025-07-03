@@ -33,7 +33,7 @@ export class KycComponent implements OnInit {
       hdfc: ["", Validators.required],
     });
 
-    this.userService.setFormGroup("kyc", this.kycForm);
+    // this.userService.setFormGroup("kyc", this.kycForm);
     // this.loadKycJson();
   }
 

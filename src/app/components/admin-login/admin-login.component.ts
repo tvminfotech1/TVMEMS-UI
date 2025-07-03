@@ -24,51 +24,71 @@ export class AdminLoginComponent {
     });
   }
 
-  public onAdminLogin(): void {
-    if (this.adminLoginForm.valid) {
-      const loginData = this.adminLoginForm.value;
-      const { email, password } = loginData;
+  // public onAdminLogin(): void {
+  //   if (this.adminLoginForm.valid) {
+  //     const loginData = this.adminLoginForm.value;
+  //     const { email, password } = loginData;
 
-      if (email === 'admin@local.com' && password === 'admin123') {
-        const payload = {
-          sub: 'admin',
-          roles: ['ROLE_ADMIN'],
-          exp: Math.floor(Date.now() / 1000) + 60 * 60 // 1 hour expiry
-        };
+  //     if (email === 'admin@local.com' && password === 'admin123') {
+  //       const payload = {
+  //         sub: 'admin',
+  //         roles: ['ROLE_ADMIN'],
+  //         exp: Math.floor(Date.now() / 1000) + 60 * 60
+  //       };
 
-        const base64 = (obj: any) => btoa(JSON.stringify(obj));
-        const fakeToken = `${base64({ alg: 'HS256', typ: 'JWT' })}.${base64(payload)}.signature`;
+  //       const base64 = (obj: any) => btoa(JSON.stringify(obj));
+  //       const fakeToken = `${base64({ alg: 'HS256', typ: 'JWT' })}.${base64(payload)}.signature`;
 
-        localStorage.setItem("token", fakeToken);
-        this.router.navigate(["/mainlayout/dashboard"]);
-        return;
+  //       localStorage.setItem("token", fakeToken);
+  //       this.router.navigate(["/mainlayout/dashboard"]);
+  //       return;
+  //     }
+
+  //     this.http.post<any>("http://localhost:8080/adminlogin", loginData).subscribe({
+  //       next: (res) => {
+  //         try {
+  //           const token = res.token;
+  //           const decoded: any = jwtDecode(token);
+  //           const roles = decoded.roles;
+
+  //           if (Array.isArray(roles) && roles.includes('ROLE_ADMIN')) {
+  //             localStorage.setItem("token", token);
+  //             this.router.navigate(["/mainlayout/dashboard"]);
+  //           } else {
+  //             this.loginError = "You are not authorized as admin.";
+  //           }
+  //         } catch (e) {
+  //           this.loginError = "Token decode error.";
+  //         }
+  //       },
+  //       error: () => {
+  //         this.loginError = "Invalid credentials or server error.";
+  //       }
+  //     });
+
+  //   } else {
+  //     this.adminLoginForm.markAllAsTouched();
+  //     this.loginError = "Please enter valid login details.";
+  //   }
+  // }
+  onAdminLogin(): void {
+  if (this.adminLoginForm.valid) {
+    const loginData = this.adminLoginForm.value;
+
+    this.http.post<any>('http://localhost:8080/adminlogin', loginData).subscribe({
+      next: (res) => {
+        const token = res.token;
+        localStorage.setItem('token', token);
+        this.router.navigate(['/mainlayout/dashboard']);
+      },
+      error: () => {
+        this.loginError = "Invalid credentials or server error.";
       }
-
-      this.http.post<any>("http://localhost:8080/adminlogin", loginData).subscribe({
-        next: (res) => {
-          try {
-            const token = res.token;
-            const decoded: any = jwtDecode(token);
-            const roles = decoded.roles;
-
-            if (Array.isArray(roles) && roles.includes('ROLE_ADMIN')) {
-              localStorage.setItem("token", token);
-              this.router.navigate(["/mainlayout/dashboard"]);
-            } else {
-              this.loginError = "You are not authorized as admin.";
-            }
-          } catch (e) {
-            this.loginError = "Token decode error.";
-          }
-        },
-        error: () => {
-          this.loginError = "Invalid credentials or server error.";
-        }
-      });
-
-    } else {
-      this.adminLoginForm.markAllAsTouched();
-      this.loginError = "Please enter valid login details.";
-    }
+    });
+  } else {
+    this.adminLoginForm.markAllAsTouched();
+    this.loginError = "Please enter valid login details.";
   }
+}
+
 }

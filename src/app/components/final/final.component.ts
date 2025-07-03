@@ -42,7 +42,7 @@ export class FinalComponent {
         passport: this.userService.getFormData("passport"),
         family: this.userService.getFormData("family"),
         previousEmployment: this.userService.getFormData("previousEmployment"),
-        education: this.userService.getFormData("education"),
+        education: this.userService.getFormData("educationList"),
         skills: this.userService.getFormData("skills"),
         certification: this.userService.getFormData("certification"),
         DocumentDetails: this.userService.getFormData("DocumentDetails"),

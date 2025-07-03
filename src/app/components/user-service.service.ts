@@ -19,9 +19,12 @@ export class UserService {
     this.formData[step] = data;
   }
 
-  getFormData(p0: string) {
-    return this.formData;
-  }
+  // getFormData(p0: string) {
+  //   return this.formData;
+  // }
+  getFormData(key: string) {
+  return this.formData[key];
+}
 
   clearFormData() {
     this.formData = {};

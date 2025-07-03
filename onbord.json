@@ -1,0 +1,140 @@
+{
+    "personal":{
+    "fname": "Rohit",
+    "mname": "Kumar",
+    "lname": "Kumar",
+    "email": "rohitkumar15031@gmail.com",
+    "gender": "male",
+    "bloodGroup": "B-",
+    "dob": "27/12/2003",
+    "merital": "married",
+    "marriegedate": "NA",
+    "current_address": "Vill Kanuani kalyanpur",
+    "current_country": "india",
+    "other_country": "",
+    "current_state": "Bihar",
+    "current_city": "Sheohar",
+    "current_pincode": 843329,
+    "current_contact": 7645050131,
+    "permanent_country": "india",
+    "permanent_address": "Dhanalakshmi Srinivasan College of engineering and technology,Mamallapuram",
+    "permanent_state": "TAMILNADU",
+    "permanent_city": "Mamallapuram",
+    "permanent_pincode": 603104,
+    "permanent_contact": 7645050131,
+    "bcp_address": "mahabalipuram",
+    "bcp_country": "india",
+    "bcp_state": "Tamil Nadu",
+    "bcp_city": "CHENGALPATTU",
+    "bcp_pincode": 603104,
+    "emergency_contact_name": "mahabalipuram\nnear college",
+    "emergency_contact_number": 8986232004,
+    "emergency_relationship": "brother",
+    "year": "2",
+    "month": "8",
+    "relevantYear": "2"
+},
+"kyc":{
+    "pan": "ABCDE1234F",
+    "panName": "ROHIT",
+    "aadhar": "562452365125",
+    "aadharName": "Rohit Kumar",
+    "uan": "120656546556",
+    "pf": "15445548",
+    "hdfc": "yes"
+},
+"passport":{
+    "nationality": "Indian",
+    "ifPassport": "Yes",
+    "passportNumber": "1234567899"
+},
+"family":{
+    "fatherName": "kishori",
+    "fatherDOB": "2025-07-03",
+    "motherName": "malti",
+    "motherDOB": "2025-07-09",
+    "spouseName": "awefarg",
+    "spouseDOB": "2025-07-24",
+    "spouseGender": "Male",
+    "children": "No"
+},
+"previousEmployment":[
+    {
+        "companyName": "tvm",
+        "designation": "tester",
+        "employmentType": "full_time",
+        "startDate": "2025-07-01",
+        "endDate": "2025-07-26"
+    },
+    {
+        "companyName": "abc",
+        "designation": "tester",
+        "employmentType": "full_time",
+        "startDate": "2025-07-03",
+        "endDate": "2025-07-25"
+    }
+],
+"education":{
+    "qualification": "btech",
+    "specilization": "it",
+    "instituteName": "abcd",
+    "universityName": "anna university",
+    "time": "full_time",
+    "fromDate": "2021",
+    "toDate": "2025",
+    "percentage": 80,
+    "rollNo": "123456",
+    "educationType": "phd"
+},
+"skills":[
+    {
+        "skillName": "egb",
+        "skillCategories": "rtgbh",
+        "versionNum": "4",
+        "experience_year": "4",
+        "experience_month": "4",
+        "selfRate": "1"
+    },
+    {
+        "skillName": "egb",
+        "skillCategories": "rtgbh",
+        "versionNum": "4",
+        "experience_year": "4",
+        "experience_month": "4",
+        "selfRate": "1"
+    }
+],"certification":[
+    {
+        "certificateName": "erdgf",
+        "certifiedBy": "gdfg",
+        "completionDate": "2025-07-25",
+        "marks": 54
+    },
+    {
+        "certificateName": "erdgf",
+        "certifiedBy": "gdfg",
+        "completionDate": "2025-07-25",
+        "marks": 54
+    }
+],
+    "DocumentDetails": {
+    "panCard": {},
+    "aadharCard": {},
+    "pSizePhoto": {},
+    "matric": {},
+    "intermediate": {},
+    "graduationMarksheet": {},
+    "postGraduation": {},
+    "checkLeaf": {},
+    "passbook": {}
+},
+"resume":{
+    "achievements": "gdsfh",
+    "resumeCate": "DevOps"
+},
+"aFinal":{
+    "checked": true,
+    "signature": "rohit",
+    "date": "2025-07-22"
+}
+}

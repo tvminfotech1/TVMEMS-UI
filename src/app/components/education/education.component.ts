@@ -30,7 +30,8 @@ export class EducationComponent implements OnInit {
       educationType: ["", Validators.required],
     });
 
-    this.userService.setFormData("education", this.educationForm);
+    // this.userService.setFormData("educationList", this.educationForm.value);
+
   }
 
   ngOnInit(): void {
@@ -43,7 +44,6 @@ export class EducationComponent implements OnInit {
 
   submitForm(): void {
     if (this.educationForm.valid) {
-      // this.educationList.push();
       this.userService.setFormData("educationList", this.educationForm.value);
       this.router.navigate(["/mainlayout/skills"]);
     } else {

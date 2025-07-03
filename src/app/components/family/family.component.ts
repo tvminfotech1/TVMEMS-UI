@@ -29,7 +29,7 @@ export class FamilyComponent {
       children: ["", Validators.required],
     });
 
-    this.userService.setFormGroup("family", this.familyForm);
+    // this.userService.setFormGroup("family", this.familyForm);
 
     // this.http.get<any>("assets/family.json").subscribe((data) => {
     //   this.familyForm.patchValue(data);
