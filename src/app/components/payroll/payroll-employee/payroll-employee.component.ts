@@ -3,14 +3,13 @@ import { PayrollEmployeeService } from 'src/app/services/payroll-employee.servic
 import { Employee } from 'src/app/models/employee';
 import { Router } from '@angular/router';
 import * as XLSX from 'xlsx';
-import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-payroll-employee',
   templateUrl: './payroll-employee.component.html',
   styleUrls: ['./payroll-employee.component.css']
 })
-export class PayrollEmployeeComponent  implements OnInit {
+export class PayrollEmployeeComponent implements OnInit {
   employees: Employee[] = [];
   filteredEmployees: Employee[] = [];
 
@@ -19,20 +18,34 @@ export class PayrollEmployeeComponent  implements OnInit {
   selectedStatus: string = '';
   selectedDesignation: string = '';
 
-    excelEmployees: Employee[] = [];
+  uniqueLocations: string[] = [];
+  uniqueStatuses: string[] = [];
+  uniqueDesignations: string[] = [];
+
+  excelEmployees: Employee[] = [];
 
   constructor(private employeeService: PayrollEmployeeService, private router: Router) {}
 
   ngOnInit(): void {
+    this.selectedLocation = '';
+    this.selectedStatus = '';
+    this.selectedDesignation = '';
     this.loadEmployees();
   }
 
-  loadEmployees() {
+  loadEmployees(): void {
     this.employeeService.getEmployees().subscribe((data) => {
       this.employees = data;
-      this.filteredEmployees = data; // initial render
-      console.log("Employees Loaded: ", this.employees);
+      this.filteredEmployees = [...data];
+      this.extractUniqueFilters(data);
+      console.log('Employees Loaded:', this.employees);
     });
+  }
+
+  extractUniqueFilters(data: Employee[]): void {
+    this.uniqueLocations = [...new Set(data.map(emp => emp.location).filter(Boolean))];
+    this.uniqueStatuses = [...new Set(data.map(emp => emp.status).filter(Boolean))];
+    this.uniqueDesignations = [...new Set(data.map(emp => emp.designation).filter(Boolean))];
   }
 
   onFileChange(event: any): void {
@@ -70,8 +83,6 @@ export class PayrollEmployeeComponent  implements OnInit {
         bloodGroup: row['Blood Group'] || '',
         emergencyContact: row['Emergency Contact'] || '',
         profileImageUrl: row['Profile Image URL'] || 'https://static.vecteezy.com/system/resources/previews/032/176/191/non_2x/business-avatar-profile-black-icon-man-of-user-symbol-in-trendy-flat-style-isolated-on-male-profile-people-diverse-face-for-social-network-or-web-vector.jpg',
-        // name: row['Name'] || '',      
-        // photo: row['Photo'] || '',
         bankDetails: {
           bankName: row['Bank Name'] || '',
           accountNumber: row['Account Number'] || '',
@@ -106,30 +117,31 @@ export class PayrollEmployeeComponent  implements OnInit {
     }
   }
 
-  applyFilters() {
+  applyFilters(): void {
     this.filteredEmployees = this.employees.filter(emp =>
       (this.selectedLocation === '' || emp.location === this.selectedLocation) &&
       (this.selectedStatus === '' || emp.status === this.selectedStatus) &&
       (this.selectedDesignation === '' || emp.designation === this.selectedDesignation)
     );
+    console.log('Filtered:', this.filteredEmployees);
   }
-  viewPayRun(emp: any) {
-  if (emp.status === 'Active') {
-    this.router.navigate(['/mainlayout/payruns', emp.id]);
-  } else {
-    alert('Deactivated employee can\'t get salary.');
-  }
-}
 
-
-  resetFilters() {
+  resetFilters(): void {
     this.selectedLocation = '';
     this.selectedStatus = '';
     this.selectedDesignation = '';
     this.filteredEmployees = [...this.employees];
   }
 
-  navigateToAddEmployee() {
+  viewPayRun(emp: Employee): void {
+    if (emp.status === 'Active') {
+      this.router.navigate(['/mainlayout/payruns', emp.id]);
+    } else {
+      alert(`Deactivated employee can't get salary.`);
+    }
+  }
+
+  navigateToAddEmployee(): void {
     this.router.navigate(['/mainlayout/add-employee']);
   }
 }
