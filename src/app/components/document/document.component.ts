@@ -1,12 +1,12 @@
-import { Component } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { UserService } from "../user-service.service";
-import { Router } from "@angular/router";
+import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UserService } from '../user-service.service';
+import { Router } from '@angular/router';
 
 @Component({
-  selector: "app-document",
-  templateUrl: "./document.component.html",
-  styleUrls: ["./document.component.css"],
+  selector: 'app-document',
+  templateUrl: './document.component.html',
+  styleUrls: ['./document.component.css'],
 })
 export class DocumentComponent {
   fileErrors: { [key: string]: string } = {};
@@ -28,9 +28,6 @@ export class DocumentComponent {
       checkLeaf: [null, Validators.required],
       passbook: [null, Validators.required],
     });
-
-    // Store FormGroup to userService for validation checks later
-    // this.userService.setFormData("DocumentDetails", this.documentForm.value);
   }
 
   onFileChange(event: any, controlName: string) {
@@ -39,58 +36,37 @@ export class DocumentComponent {
       const maxSizeInMB = 1;
       const maxSizeInBytes = maxSizeInMB * 1024 * 1024;
       if (file.size > maxSizeInBytes) {
-        this.fileErrors[controlName] = "File size must be less than 1 MB";
-
-        // Clear file input to avoid invalid state
-        event.target.value = "";
+        this.fileErrors[controlName] = 'File size must be less than 1 MB';
+        event.target.value = '';
         this.documentForm.get(controlName)?.setValue(null);
-
         return;
       } else {
-        this.fileErrors[controlName] = "";
+        this.fileErrors[controlName] = '';
         this.documentForm.get(controlName)?.setValue(file);
       }
     }
   }
 
-  // submitForm() {
-  //   if (this.documentForm.valid) {
-  //     const formData = new FormData();
-  //     Object.keys(this.documentForm.controls).forEach((key) => {
-  //       const file = this.documentForm.get(key)?.value;
-  //       if (file) {
-  //         formData.append(key, file);
-  //       }
-  //     });
-  //     this.userService.setFormData("DocumentDetails", this.documentForm.value);
-  //     this.router.navigate(["/mainlayout/resume"]);
-  //   } else {
-  //     this.documentForm.markAllAsTouched();
-  //     alert("Please fill all required documents.");
-  //   }
-  // }
- submitForm() {
-  if (this.documentForm.valid) {
-    const formData = new FormData();
-    const documents: any = {};
+  submitForm() {
+    if (this.documentForm.valid) {
+      const formData = new FormData();
+      const documentFiles: any = {};
 
-    Object.keys(this.documentForm.controls).forEach((key) => {
-      const file = this.documentForm.get(key)?.value;
-      if (file) {
-        formData.append(key, file);
-        documents[key] = file.name;
-      }
-    });
+      Object.keys(this.documentForm.controls).forEach((key) => {
+        const file = this.documentForm.get(key)?.value;
+        if (file) {
+          formData.append(key, file);
+          documentFiles[key] = file.name; // store file name
+        }
+      });
 
-    this.userService.setFormData("documents", documents);
-    this.userService.setFormData("uploadedFiles", formData);
+      this.userService.setFormData('documents', documentFiles); // for display
+      this.userService.setFormData('uploadedFiles', formData); // actual files
 
-    this.router.navigate(["/mainlayout/resume"]);
-  } else {
-    this.documentForm.markAllAsTouched();
-    alert("Please fill all required documents.");
+      this.router.navigate(['/mainlayout/resume']);
+    } else {
+      this.documentForm.markAllAsTouched();
+      alert('Please fill all required documents.');
+    }
   }
-}
-
-
 }

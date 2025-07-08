@@ -31,10 +31,10 @@ export class UserService {
     this.formGroups = {}; 
   }
 
-  submitFinalData(data: any): Observable<any> {
-    const apiUrl = `${this.BASE_URL}/personal`; 
-    return this.http.post(apiUrl, data);
-  }
+ submitFinalData(finalFormData: FormData): Observable<any> {
+  return this.http.post(`${this.BASE_URL}/personal`, finalFormData);
+}
+
 
   setFormGroup(step: string, formGroup: FormGroup) {
     this.formGroups[step] = formGroup;

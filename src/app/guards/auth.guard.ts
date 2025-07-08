@@ -19,7 +19,7 @@ export class AuthGuard implements CanActivate {
 
     return this.authService.checkRole().pipe(
       map(res => {
-        return true; // Or check for 'ROLE_USER'
+        return true;
       }),
       catchError(() => {
         this.router.navigate(['/login']);
