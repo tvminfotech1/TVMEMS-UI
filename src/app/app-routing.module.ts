@@ -149,6 +149,19 @@ const routes: Routes = [
       {path:'reports/:empId',component:YearlySalarySlipComponent},
       { path: 'pendingUser', component: PendingUserComponent },
       { path: 'admin', component: AdminComponent },
+
+      // Employee details view page
+       { path: 'empdetails', component: EmployeeDetailsComponent },
+       { path: 'empkyc', component: EmpkycComponent },
+       { path: 'emppassport', component: EmppassportComponent },
+       { path: 'empfamily', component: EmpfamilyComponent },
+       { path: 'emppreviousEmployee', component: EmppreviousEmployeeComponent },
+       { path: 'empeducation', component: EmpeducationComponent },
+       { path: 'empskills', component: EmpskillsComponent },
+       { path: 'empcertificate', component: EmpcertificateComponent },
+       { path: 'empdocument', component: EmpdocumentComponent },
+       { path: 'empresume', component: EmpresumeComponent },
+       { path: 'empfinal', component: EmpfinalComponent },
     ]
   },
 

@@ -1,67 +1,68 @@
 <div class="employee-header">
   <h2>Active Employees</h2>
   <div class="emp-right-header">
-  <button class="add-btn" (click)="navigateToAddEmployee()">Add Employee</button>
-  <div>
-    <input type="file" (change)="onFileChange($event)" accept=".xlsx, .xls" />
-<button class="btn btn-success" (click)="uploadData()" [disabled]="!excelEmployees.length">Import</button>
-  </div>
+    <button class="add-btn" (click)="navigateToAddEmployee()">Add Employee</button>
+    <div>
+      <input type="file" (change)="onFileChange($event)" accept=".xlsx, .xls" />
+      <button class="btn btn-success" (click)="uploadData()" [disabled]="!excelEmployees.length">Import</button>
+    </div>
   </div>
 </div>
-
-
 
 <!-- Filters -->
 <div class="filters">
   <select [(ngModel)]="selectedLocation">
-  <option value="">Select Work Location</option>
-  <option value="Bangalore">Bangalore</option>
-  <option value="Chennai">Chennai</option>
-  <option value="Delhi">Delhi</option>
-  <option value="Noida">Noida</option>
-  <option value="Other">Other</option>
-</select>
-
+    <option value="">Select Work Location</option>
+    <option value="Bangalore">Bangalore</option>
+    <option value="Chennai">Chennai</option>
+    <option value="Delhi">Delhi</option>
+    <option value="Noida">Noida</option>
+    <option value="Other">Other</option>
+  </select>
 
   <select [(ngModel)]="selectedStatus">
-  <option value="">Select Status</option>
-  <option value="Active">Active</option>
-  <option value="Deactivated">Deactivated</option>
-  
-</select>
+    <option value="">Select Status</option>
+    <option value="Active">Active</option>
+    <option value="Deactivated">Deactivated</option>
+  </select>
 
-
-<select [(ngModel)]="selectedDesignation">
-  <option value="">Select Designation</option>
-  <option value="Trainee Software Engineer">Trainee Software Engineer</option>
-  <option value="Junior Software Developer">Junior Software Developer</option>
-  <option value="Software Engineer">Software Engineer</option>
-  <option value="Senior Software Developer">Senior Software Developer</option>
-  <option value="Frontend Developer">Frontend Developer</option>
-  <option value="Backend Developer">Backend Developer</option>
-  <option value="Full Stack Developer">Full Stack Developer</option>
-  <option value="Mobile App Developer">Mobile App Developer</option>
-  <option value="QA Engineer">QA Engineer</option>
-  <option value="Automation Test Engineer">Automation Test Engineer</option>
-  <option value="DevOps Engineer">DevOps Engineer</option>
-  <option value="Cloud Engineer">Cloud Engineer</option>
-  <option value="Project Manager">Project Manager</option>
-  <option value="Product Manager">Product Manager</option>
-  <option value="Tech Lead">Tech Lead</option>
-  <option value="Solution Architect">Solution Architect</option>
-</select>
-
-
+  <select [(ngModel)]="selectedDesignation">
+    <option value="">Select Designation</option>
+    <option value="Trainee Software Engineer">Trainee Software Engineer</option>
+    <option value="Junior Software Developer">Junior Software Developer</option>
+    <option value="Software Engineer">Software Engineer</option>
+    <option value="Senior Software Developer">Senior Software Developer</option>
+    <option value="Frontend Developer">Frontend Developer</option>
+    <option value="Backend Developer">Backend Developer</option>
+    <option value="Full Stack Developer">Full Stack Developer</option>
+    <option value="Mobile App Developer">Mobile App Developer</option>
+    <option value="QA Engineer">QA Engineer</option>
+    <option value="Automation Test Engineer">Automation Test Engineer</option>
+    <option value="DevOps Engineer">DevOps Engineer</option>
+    <option value="Cloud Engineer">Cloud Engineer</option>
+    <option value="Project Manager">Project Manager</option>
+    <option value="Product Manager">Product Manager</option>
+    <option value="Tech Lead">Tech Lead</option>
+    <option value="Solution Architect">Solution Architect</option>
+  </select>
 
   <button class="search-btn" (click)="applyFilters()">Search</button>
+  <button class="btn btn-secondary" (click)="resetFilters()">Reset</button>
+</div>
+
+<!-- Filtered employee count -->
+<p><b>Total Employees:</b> {{ filteredEmployees.length }}</p>
+
+<!-- No Data Message -->
+<div *ngIf="filteredEmployees.length === 0" class="text-danger">
+  No employees found for selected filters.
 </div>
 
 <!-- Employee Table -->
-<div class="employee-table">
+<div class="employee-table" *ngIf="filteredEmployees.length > 0">
   <table>
     <thead>
       <tr>
-        <!-- <th><input type="checkbox" /></th> -->
         <th>ID</th>
         <th>Employee Name</th>
         <th>Designation</th>
@@ -74,12 +75,18 @@
     </thead>
     <tbody>
       <tr *ngFor="let emp of filteredEmployees">
-        <td><div class="designation text-success" (click)="viewPayRun(emp)" style="cursor:pointer;"> {{ emp.id }}</div></td>
+        <td>
+          <div class="designation text-success" (click)="viewPayRun(emp)" style="cursor:pointer;">
+            {{ emp.id }}
+          </div>
+        </td>
         <td>
           <div class="profile-info">
-            <img [src]="emp.profileImageUrl || 'https://via.placeholder.com/30'" alt="avatar" />
-            <div  [routerLink]="['/employees/view', emp.id]" style="cursor:pointer;">
-              <div class="name"><b class="text-primary">{{ emp.firstName }} {{ emp.lastName }}</b></div>
+            <img [src]="emp.profileImageUrl || 'https://via.placeholder.com/30'" alt="avatar" width="30" height="30" />
+            <div [routerLink]="['/employees/view', emp.id]" style="cursor:pointer;">
+              <div class="name">
+                <b class="text-primary">{{ emp.firstName }} {{ emp.lastName }}</b>
+              </div>
             </div>
           </div>
         </td>
@@ -87,13 +94,15 @@
         <td>{{ emp.email }}</td>
         <td>{{ emp.department }}</td>
         <td [ngClass]="{
-      'text-success font-weight-bold': emp.status === 'Active',
-      'text-danger font-weight-bold': emp.status === 'Deactivated'
-    }">
- <b> {{ emp.status }}</b>
-</td>
+          'text-success font-weight-bold': emp.status === 'Active',
+          'text-danger font-weight-bold': emp.status === 'Deactivated'
+        }">
+          <b>{{ emp.status }}</b>
+        </td>
         <td>{{ emp.location }}</td>
-        <td><button [routerLink]="['/mainlayout/payroll-employee', emp.id]" class="view-btn">View</button></td>
+        <td>
+          <button [routerLink]="['/mainlayout/payroll-employee', emp.id]" class="view-btn">View</button>
+        </td>
       </tr>
     </tbody>
   </table>
