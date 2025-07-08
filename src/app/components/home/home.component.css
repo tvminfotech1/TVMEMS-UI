@@ -1,13 +1,20 @@
+
 .home-container {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  justify-content: center;
-  min-height: 85vh;
-  background: linear-gradient(to right, #e3f2fd, #ffffff);
+  justify-content: space-between;
+  height: calc(100vh - 60px); /* Adjust according to <app-nav> height */
+  padding: 40px 60px;
+  background: linear-gradient(135deg, #e0f7fa, #ffffff);
+  gap: 40px;
+  flex-wrap: wrap;
+  overflow: hidden;
+  box-sizing: border-box;
   animation: slideIn 1s ease forwards;
   opacity: 0;
 }
+
 
 @keyframes slideIn {
   0% {
@@ -20,13 +27,27 @@
   }
 }
 
-h1 {
-  margin-bottom: 40px;
-  color: #1a237e;
-  font-size: 2.5rem;
-  font-weight: 600;
-  text-align: center;
+
+.text-section {
+  max-width: 500px;
+  text-align: left;
 }
+
+
+h1 {
+  color: #1a237e;
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+
+p {
+  color: #333;
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+}
+
 
 .onboard-btn {
   padding: 14px 30px;
@@ -38,12 +59,52 @@ h1 {
   text-decoration: none;
   transition: all 0.4s ease;
   box-shadow: 0 4px 12px rgba(98, 0, 234, 0.4);
-  position: relative;
-  overflow: hidden;
 }
 
 .onboard-btn:hover {
   background-color: #3700b3;
   transform: scale(1.05);
   box-shadow: 0 6px 16px rgba(55, 0, 179, 0.5);
+}
+
+
+.image-section img {
+  width: 100%;
+  max-width: 500px;
+  max-height: 80vh;
+  height: auto;
+  object-fit: contain;
+  animation: fadeIn 1.2s ease forwards;
+  opacity: 0;
+}
+
+
+@keyframes fadeIn {
+  0% {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+
+@media (max-width: 768px) {
+  .home-container {
+    flex-direction: column;
+    text-align: center;
+    padding: 20px;
+    height: auto;
+  }
+
+  .text-section {
+    text-align: center;
+  }
+
+  .image-section img {
+    max-width: 90%;
+    max-height: 300px;
+  }
 }
