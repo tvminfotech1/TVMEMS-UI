@@ -6,9 +6,5 @@ import { Component } from "@angular/core";
   styleUrls: ["./home.component.css"],
 })
 export class HomeComponent {
-  showLogin = true;
-
-  toggleForm(isLogin: boolean): void {
-    this.showLogin = isLogin;
-  }
+ 
 }
