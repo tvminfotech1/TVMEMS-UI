@@ -36,19 +36,34 @@ export class FinalComponent {
       // Store only the form value (not the FormGroup itself)
       this.userService.setFormData("aFinal", this.declarationForm.value);
 
+      // const allData = {
+      //   personal: this.userService.getFormData("personal"),
+      //   kyc: this.userService.getFormData("kyc"),
+      //   passport: this.userService.getFormData("passport"),
+      //   family: this.userService.getFormData("family"),
+      //   previousEmployment: this.userService.getFormData("previousEmployment"),
+      //   education: this.userService.getFormData("education"),
+      //   skills: this.userService.getFormData("skills"),
+      //   certification: this.userService.getFormData("certification"),
+      //   DocumentDetails: this.userService.getFormData("DocumentDetails"),
+      //   resume: this.userService.getFormData("resume"),
+      //   aFinal: this.userService.getFormData("aFinal"),
+      // };
+
       const allData = {
-        personal: this.userService.getFormData("personal"),
-        kyc: this.userService.getFormData("kyc"),
-        passport: this.userService.getFormData("passport"),
-        family: this.userService.getFormData("family"),
-        previousEmployment: this.userService.getFormData("previousEmployment"),
-        education: this.userService.getFormData("educationList"),
-        skills: this.userService.getFormData("skills"),
-        certification: this.userService.getFormData("certification"),
-        DocumentDetails: this.userService.getFormData("DocumentDetails"),
-        resume: this.userService.getFormData("resume"),
-        aFinal: this.userService.getFormData("aFinal"),
-      };
+  ...this.userService.getFormData("personal"),   
+  kyc: this.userService.getFormData("kyc"), 
+  passport: this.userService.getFormData("passport"),
+  family: this.userService.getFormData("family"),
+  previousEmployment: this.userService.getFormData("previousEmployment"),
+  education: this.userService.getFormData("education"),
+  skills: this.userService.getFormData("skills"),
+  certification: this.userService.getFormData("certification"),
+  documents: this.userService.getFormData("documents"), 
+  resume: this.userService.getFormData("resume"),
+  aFinal: this.userService.getFormData("aFinal"),
+};
+
 
       // Optional: check structure
       console.log('Submitting final data:', allData);

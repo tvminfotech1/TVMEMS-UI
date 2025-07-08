@@ -13,8 +13,9 @@ export class AuthService {
     return this.http.post(`${this.baseUrl}/adminlogin`, data);
   }
   register(data: any): Observable<any> {
-  return this.http.post(`${this.baseUrl}/register`, data);
+  return this.http.post(`${this.baseUrl}/admin/newuser`, data, { responseType: 'text' });
 }
+
 
 
   getToken(): string | null {

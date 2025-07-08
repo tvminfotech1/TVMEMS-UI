@@ -53,8 +53,8 @@ export class PersonalComponent {
       emergency_contact_name: ['', Validators.required],
       emergency_contact_number: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
       emergency_relationship: ['', Validators.required],
-      year: ['', Validators.required],
-      month: ['', Validators.required],
+      exp_year: ['', Validators.required],
+      exp_month: ['', Validators.required],
       relevantYear: ['', Validators.required]
     });
 
@@ -67,14 +67,64 @@ export class PersonalComponent {
   //     this.userForm.patchValue(data);
   //   });
   // }
+copyCurrentToPermanent(event: any): void {
+  const checked = event.target.checked;
+
+  if (checked) {
+    this.userForm.patchValue({
+      permanent_address: this.userForm.value.current_address,
+      permanent_country: this.userForm.value.current_country,
+      permanent_state: this.userForm.value.current_state,
+      permanent_city: this.userForm.value.current_city,
+      permanent_pincode: this.userForm.value.current_pincode,
+      permanent_contact: this.userForm.value.current_contact
+    });
+
+    // Optional: Disable permanent fields to prevent editing
+    this.userForm.get('permanent_address')?.disable();
+    this.userForm.get('permanent_country')?.disable();
+    this.userForm.get('permanent_state')?.disable();
+    this.userForm.get('permanent_city')?.disable();
+    this.userForm.get('permanent_pincode')?.disable();
+    this.userForm.get('permanent_contact')?.disable();
+  } else {
+    this.userForm.patchValue({
+      permanent_address: '',
+      permanent_country: '',
+      permanent_state: '',
+      permanent_city: '',
+      permanent_pincode: '',
+      permanent_contact: ''
+    });
+
+    // Re-enable fields
+    this.userForm.get('permanent_address')?.enable();
+    this.userForm.get('permanent_country')?.enable();
+    this.userForm.get('permanent_state')?.enable();
+    this.userForm.get('permanent_city')?.enable();
+    this.userForm.get('permanent_pincode')?.enable();
+    this.userForm.get('permanent_contact')?.enable();
+  }
+}
 
   submitForm() {
-    if (this.userForm.valid) {
-      this.userService.setFormData('personal', this.userForm.value);
-      this.router.navigate(['/mainlayout/kyc']);
-    } else {
-      alert("All fields are mandatory");
-      this.userForm.markAllAsTouched();
-    }
+  if (this.userForm.valid) {
+    const formValue = {
+      ...this.userForm.value,
+      current_pincode: +this.userForm.value.current_pincode,
+      permanent_pincode: +this.userForm.value.permanent_pincode,
+      bcp_pincode: +this.userForm.value.bcp_pincode,
+      current_contact: +this.userForm.value.current_contact,
+      permanent_contact: +this.userForm.value.permanent_contact,
+      emergency_contact_number: +this.userForm.value.emergency_contact_number
+    };
+
+    this.userService.setFormData('personal', formValue);
+    this.router.navigate(['/mainlayout/kyc']);
+  } else {
+    alert("All fields are mandatory");
+    this.userForm.markAllAsTouched();
   }
+}
+
 }

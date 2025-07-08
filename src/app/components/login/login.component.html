@@ -1,3 +1,4 @@
+<app-nav></app-nav>
 <div class="login-container">
   <h2><i class="ri-user-line"></i> Login</h2>
   <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
@@ -35,7 +36,6 @@
     <button type="submit" class="login-btn">Login</button>
 
     <div class="register-link">
-      <a routerLink="/signup">Don't have an account? Register</a>
       <a routerLink="/loginByNumber">Login by Mobile Number</a>
     </div>
   </form>

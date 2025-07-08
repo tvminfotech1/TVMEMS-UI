@@ -6,6 +6,25 @@
   box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.1);
 }
 
+.password-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-input-wrapper input {
+  flex: 1;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 10px;
+  cursor: pointer;
+  color: #007bff;
+  font-size: 14px;
+  user-select: none;
+}
+
 /* Responsive container for small screens */
 @media (max-width: 600px) {
   .signup-container {

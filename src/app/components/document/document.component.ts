@@ -53,20 +53,44 @@ export class DocumentComponent {
     }
   }
 
-  submitForm() {
-    if (this.documentForm.valid) {
-      const formData = new FormData();
-      Object.keys(this.documentForm.controls).forEach((key) => {
-        const file = this.documentForm.get(key)?.value;
-        if (file) {
-          formData.append(key, file);
-        }
-      });
-      this.userService.setFormData("DocumentDetails", this.documentForm.value);
-      this.router.navigate(["/mainlayout/resume"]);
-    } else {
-      this.documentForm.markAllAsTouched();
-      alert("Please fill all required documents.");
-    }
+  // submitForm() {
+  //   if (this.documentForm.valid) {
+  //     const formData = new FormData();
+  //     Object.keys(this.documentForm.controls).forEach((key) => {
+  //       const file = this.documentForm.get(key)?.value;
+  //       if (file) {
+  //         formData.append(key, file);
+  //       }
+  //     });
+  //     this.userService.setFormData("DocumentDetails", this.documentForm.value);
+  //     this.router.navigate(["/mainlayout/resume"]);
+  //   } else {
+  //     this.documentForm.markAllAsTouched();
+  //     alert("Please fill all required documents.");
+  //   }
+  // }
+ submitForm() {
+  if (this.documentForm.valid) {
+    const formData = new FormData();
+    const documents: any = {};
+
+    Object.keys(this.documentForm.controls).forEach((key) => {
+      const file = this.documentForm.get(key)?.value;
+      if (file) {
+        formData.append(key, file);
+        documents[key] = file.name;
+      }
+    });
+
+    this.userService.setFormData("documents", documents);
+    this.userService.setFormData("uploadedFiles", formData);
+
+    this.router.navigate(["/mainlayout/resume"]);
+  } else {
+    this.documentForm.markAllAsTouched();
+    alert("Please fill all required documents.");
   }
+}
+
+
 }

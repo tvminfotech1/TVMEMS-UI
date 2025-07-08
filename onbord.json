@@ -32,9 +32,8 @@
     "emergency_relationship": "brother",
     "year": "2",
     "month": "8",
-    "relevantYear": "2"
-},
-"kyc":{
+    "relevantYear": "2",
+    "kyc":{
     "pan": "ABCDE1234F",
     "panName": "ROHIT",
     "aadhar": "562452365125",
@@ -137,4 +136,4 @@
     "signature": "rohit",
     "date": "2025-07-22"
 }
-}
+    }
