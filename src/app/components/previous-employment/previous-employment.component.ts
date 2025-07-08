@@ -22,19 +22,20 @@ export class PreviousEmploymentComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.employmentForm = this.fb.group({
-      companyName: ['', Validators.required],
-      designation: ['', Validators.required],
-      employmentType: ['', Validators.required],
-      startDate: ['', Validators.required],
-      endDate: ['', Validators.required]
-    });
+  this.employmentForm = this.fb.group({
+    companyName: ['', Validators.required],
+    designation: ['', Validators.required],
+    employmentType: ['', Validators.required],
+    startDate: ['', Validators.required],
+    endDate: ['', Validators.required]
+  });
 
-    // this.http.get<any[]>('assets/previous-employment.json').subscribe(data => {
-    //   this.employmentList = data;
-    // });
-
+  const savedData = this.userService.getFormData('previousEmployment');
+  if (savedData) {
+    this.employmentList = savedData;
   }
+}
+
 
   openPopup(): void {
     this.showPopup = true;

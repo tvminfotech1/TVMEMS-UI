@@ -35,7 +35,7 @@ export class CertificateComponent {
   addCertificate() {
     if (this.certificateForm.valid) {
       this.certificateList.push(this.certificateForm.value);
-      this.userService.setFormData("certification", this.certificateList.values);
+this.userService.setFormData("certification", this.certificateList);
       this.certificateForm.reset();
     } else {
       alert("All fields are mandatory!");

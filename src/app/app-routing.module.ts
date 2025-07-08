@@ -91,7 +91,7 @@ const routes: Routes = [
 
   { path: 'login', component: LoginComponent },
   { path: 'loginByNumber', component: LoginByNumberComponent },
-  { path: 'signup', component: SignupComponent },
+  
   { path: 'admin', component: AdminComponent },
   { path: 'adminLogin', component: AdminLoginComponent},
   { path: 'employeeData/:id', component: EmployeeDataComponent },
@@ -105,6 +105,7 @@ const routes: Routes = [
     component: MainlayoutComponent,
      canActivate: [adminAuthGuard],
     children: [       
+      { path: 'signup', component: SignupComponent },
       {path: 'dashboard', component: DashboardhomeComponent},
       {path: 'holidays', component: HoildayCalendarComponent },
       {path: 'feedbacks', component: FeedbacksComponent },

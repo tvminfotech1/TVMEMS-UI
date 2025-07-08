@@ -161,7 +161,7 @@
   
       <div class="form-group full-width">
         <label for="permanent_address">Permanent Address: 
-          <input type="checkbox" id="same_as_current"> Same as Above
+          <input type="checkbox" id="same_as_current" (change)="copyCurrentToPermanent($event)"> Same as Above
         </label>
         <textarea name="permanent_address" id="permanent_address" placeholder="Permanant Address" formControlName="permanent_address"></textarea>
         <div *ngIf="userForm.get('permanent_address')?.touched && userForm.get('permanent_address')?.hasError('required')" class="error">
@@ -305,7 +305,7 @@
       </div>
       <div class="form-group">
         <label for="prev_experience_years">Previous Experience (Years):</label>
-        <select name="year" id="prev_experience_years" formControlName="year">
+        <select name="year" id="prev_experience_years" formControlName="exp_year">
           <option value="">Select year</option>
           <option value="0">0</option>
           <option value="1">1</option>
@@ -322,7 +322,7 @@
   
       <div class="form-group">
         <label for="prev_experience_months">Previous Experience (Months):</label>
-        <select name="month" id="prev_experience_months" formControlName="month">
+        <select name="month" id="prev_experience_months" formControlName="exp_month">
           <option value="">Select Month</option>
           <option value="0">0</option>
           <option value="1">1</option>

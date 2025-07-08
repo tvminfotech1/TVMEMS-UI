@@ -14,7 +14,7 @@
     <!-- Mobile -->
     <div class="form-group">
       <label>Mobile Number</label>
-      <input type="tel" formControlName="mobile" placeholder="9876543210" />
+      <input type="number" formControlName="mobile" placeholder="9876543210" />
       <div *ngIf="signupForm.get('mobile')?.touched && signupForm.get('mobile')?.invalid" class="error">
         10-digit mobile number required
       </div>
@@ -63,24 +63,46 @@
     </div>
 
     <!-- Password -->
-    <div class="form-group">
-      <label>Password</label>
-      <input type="password" formControlName="password" placeholder="******" />
-      <div *ngIf="signupForm.get('password')?.touched && signupForm.get('password')?.invalid" class="error">
-        Password must start with a capital letter, be at least 8 characters, and include a number and a special character (@, #, $, &).
-      </div>
-      
-      
-    </div>
+    <div class="form-group password-field">
+  <label for="password">Password</label>
+  <div class="password-input-wrapper">
+    <input [type]="showPassword ? 'text' : 'password'" id="password" formControlName="password" />
+    <span class="toggle-password" (click)="togglePassword()">
+      {{ showPassword ? 'Hide' : 'Show' }}
+    </span>
+  </div>
+
+ <!-- Invalid Password Pattern Error -->
+  <div class="error" *ngIf="signupForm.get('password')?.touched && signupForm.get('password')?.errors?.['pattern']">
+    Password must start with a capital letter, include digits, and one special character (@, #, $, &), and be at least 8 characters long.
+  </div>
+
+  <!-- Required Field Error -->
+  <div class="error" *ngIf="signupForm.get('password')?.touched && signupForm.get('password')?.errors?.['required']">
+    Password is required.
+  </div>
+</div>
+
 
     <!-- Confirm Password -->
-    <div class="form-group">
-      <label>Confirm Password</label>
-      <input type="password" formControlName="confirmPassword" placeholder="******" />
-      <div *ngIf="signupForm.errors?.['mismatch'] && signupForm.get('confirmPassword')?.touched" class="error">
-        Passwords do not match
-      </div>
-    </div>
+   <div class="form-group password-field">
+  <label for="confirmPassword">Confirm Password</label>
+  <div class="password-input-wrapper">
+    <input [type]="showConfirmPassword ? 'text' : 'password'" id="confirmPassword" formControlName="confirmPassword" />
+    <span class="toggle-password" (click)="toggleConfirmPassword()">
+      {{ showConfirmPassword ? 'Hide' : 'Show' }}
+    </span>
+  </div>
+   <!-- Required Field Error -->
+  <div class="error" *ngIf="signupForm.get('confirmPassword')?.touched && signupForm.get('confirmPassword')?.errors?.['required']">
+    Confirm password is required.
+  </div>
+
+  <!-- Password Mismatch Error -->
+  <div class="error" *ngIf="signupForm.errors?.['passwordMismatch'] && signupForm.get('confirmPassword')?.touched">
+    Password and Confirm Password do not match.
+  </div>
+</div>
 
     <!-- Submit Button (Full Width) -->
     <div class=" full-width">
