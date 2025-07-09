@@ -3,34 +3,42 @@
 <div class="employment-section">
   <h2>Employment History</h2>
 
-  <!-- Employment Form -->
-
-  <div *ngIf="employeeDetails.previousEmployment?.length === 0">
+  <div *ngIf="previousEmployments.length === 0">
     <p>No Employment data added.</p>
   </div>
 
-  <ul *ngIf="employeeDetails.previousEmployment?.length">
-    <h3>Previous Employment</h3>
-    <div
-      class="sub-section"
-      *ngFor="let emp of employeeDetails.previousEmployment"
-    >
-      <div class="row"><label>Company:</label> {{ emp.companyName }}</div>
-      <div class="row"><label>Designation:</label> {{ emp.designation }}</div>
-      <div class="row">
-        <label>Employment Type:</label> {{ emp.employmentType }}
-      </div>
-      <div class="row"><label>Type:</label> {{ emp.employmentType }}</div>
-      <div class="row">
-        <label>From:</label> {{ emp.startDate }} <b>To:</b> {{ emp.endDate }}
-      </div>
+  <div *ngFor="let emp of previousEmployments; let i = index" class="form-grid employment-form-block">
+    <h3>Employment {{ i + 1 }}</h3>
+
+    <div class="form-group">
+      <label>Company Name:</label>
+      <input type="text" [value]="emp.companyName" readonly />
     </div>
-  </ul>
-</div>
-<div class="button-group">
-  <a [routerLink]="['/mainlayout/empfamily', employeeDetails?.id]">&laquo; Previous</a>
-  <button class="update-button" [routerLink]="['/mainlayout/empeducation', employeeDetails?.id]">
-    Next &raquo;
-  </button>
+
+    <div class="form-group">
+      <label>Designation:</label>
+      <input type="text" [value]="emp.designation" readonly />
+    </div>
+
+    <div class="form-group">
+      <label>Employment Type:</label>
+      <input type="text" [value]="emp.employmentType" readonly />
+    </div>
+
+    <div class="form-group">
+      <label>Start Date:</label>
+      <input type="text" [value]="emp.startDate" readonly />
+    </div>
+
+    <div class="form-group">
+      <label>End Date:</label>
+      <input type="text" [value]="emp.endDate" readonly />
+    </div>
+  </div>
 </div>
 
+<!-- Navigation -->
+<div class="button-group">
+  <a [routerLink]="['/mainlayout/empfamily', employeeDetails?.id]">&laquo; Previous</a>
+  <button class="update-button" [routerLink]="['/mainlayout/empeducation', employeeDetails?.id]">Next &raquo;</button>
+</div>

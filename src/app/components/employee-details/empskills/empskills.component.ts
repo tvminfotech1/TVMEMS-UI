@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { EmployeeService } from 'src/app/services/employee.service';
-import { EmployeeDataService } from 'src/app/services/employee-data.service'; // Import shared service
+import { EmployeeDataService } from 'src/app/services/employee-data.service';
 
 @Component({
   selector: 'app-empskills',
@@ -9,31 +9,32 @@ import { EmployeeDataService } from 'src/app/services/employee-data.service'; //
   styleUrls: ['./empskills.component.css']
 })
 export class EmpskillsComponent implements OnInit {
-  employeeId: any;
+  employeeId: string | null = null;
   employeeDetails: any;
 
   constructor(
     private route: ActivatedRoute,
     private empService: EmployeeService,
-    private empDataService: EmployeeDataService // Inject shared service
+    private empDataService: EmployeeDataService
   ) {}
 
   ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id');
-    
-    // Check if employee details are available in shared service
+    this.employeeId = this.route.snapshot.paramMap.get('id');
+
     const sharedData = this.empDataService.getEmployeeData();
-    
+
     if (sharedData) {
-      this.employeeDetails = sharedData; // Use shared data if available
-    } else {
-      // If no shared data, fetch from API
+      this.employeeDetails = sharedData;
+    } else if (this.employeeId) {
       this.empService.getEmployees().subscribe({
         next: (res: any) => {
-          this.employeeDetails = res.body.find((emp: any) => emp.id == id);
-          this.empDataService.setEmployeeData(this.employeeDetails); // Save in shared service for future use
+          const found = res.body?.find((emp: any) => emp.id == this.employeeId);
+          if (found) {
+            this.employeeDetails = found;
+            this.empDataService.setEmployeeData(found);
+          }
         },
-        error: (err: any) => console.error('Error:', err)
+        error: (err) => console.error('Error fetching employee data:', err)
       });
     }
   }

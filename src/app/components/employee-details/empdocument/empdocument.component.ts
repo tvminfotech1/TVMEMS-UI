@@ -28,7 +28,7 @@ export class EmpdocumentComponent implements OnInit {
       this.empService.getEmployees().subscribe({
         next: (res: any) => {
           this.employeeDetails = res.body.find((emp: any) => emp.id == id);
-          this.empDataService.setEmployeeData(this.employeeDetails); // Optional: reset shared data
+          this.empDataService.setEmployeeData(this.employeeDetails);
         },
         error: (err: any) => console.error('Error:', err)
       });
@@ -36,6 +36,14 @@ export class EmpdocumentComponent implements OnInit {
   }
 
   getFileUrl(filePath: string): string {
-    return `https://your-server.com/uploads/${filePath}`;
+    return `https://your-server.com/uploads/${filePath}`; // 🔁 Replace with your actual file hosting path
+  }
+
+  downloadFile(filePath: string) {
+    const link = document.createElement('a');
+    link.href = this.getFileUrl(filePath);
+    link.download = filePath.split('/').pop() || 'document';
+    link.target = '_blank';
+    link.click();
   }
 }

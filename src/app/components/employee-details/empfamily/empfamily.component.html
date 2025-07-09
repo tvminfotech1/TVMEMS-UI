@@ -1,58 +1,58 @@
 <app-nav-display></app-nav-display>
 
-<div class="form-grid">
+<div class="form-grid" *ngIf="familyDetails">
 
   <!-- Father Name -->
   <div class="form-group">
     <label>Father Name:</label>
-    <input type="text" [value]="employeeDetails?.fatherName" readonly />
+    <input type="text" [value]="familyDetails?.fatherName" readonly />
   </div>
 
   <!-- Father DOB -->
   <div class="form-group">
     <label>Father DOB:</label>
-    <input type="text" [value]="employeeDetails?.fatherDOB" readonly />
+    <input type="text" [value]="familyDetails?.fatherDOB" readonly />
   </div>
 
   <!-- Mother Name -->
   <div class="form-group">
     <label>Mother Name:</label>
-    <input type="text" [value]="employeeDetails?.motherName" readonly />
+    <input type="text" [value]="familyDetails?.motherName" readonly />
   </div>
 
   <!-- Mother DOB -->
   <div class="form-group">
     <label>Mother DOB:</label>
-    <input type="text" [value]="employeeDetails?.motherDOB" readonly />
+    <input type="text" [value]="familyDetails?.motherDOB" readonly />
   </div>
 
   <!-- Spouse Name -->
   <div class="form-group">
     <label>Spouse Name:</label>
-    <input type="text" [value]="employeeDetails?.spouseName" readonly />
+    <input type="text" [value]="familyDetails?.spouseName" readonly />
   </div>
 
   <!-- Spouse DOB -->
   <div class="form-group">
     <label>Spouse DOB:</label>
-    <input type="text" [value]="employeeDetails?.spouseDOB" readonly />
+    <input type="text" [value]="familyDetails?.spouseDOB" readonly />
   </div>
 
   <!-- Spouse Gender -->
   <div class="form-group">
     <label>Spouse Gender:</label>
-    <input type="text" [value]="employeeDetails?.spouseGender" readonly />
+    <input type="text" [value]="familyDetails?.spouseGender" readonly />
   </div>
 
   <!-- Children -->
   <div class="form-group">
     <label>Do you have children:</label>
-    <input type="text" [value]="employeeDetails?.children" readonly />
+    <input type="text" [value]="familyDetails?.children" readonly />
   </div>
 
 </div>
 
 <div class="button-group">
- <a [routerLink]="['/mainlayout/emppassport', employeeDetails?.id]" class="prev-btn">&laquo; Previous</a>
-<a [routerLink]="['/mainlayout/emppreviousEmployee', employeeDetails?.id]" class="update-btn">Next &raquo;</a>
+  <a [routerLink]="['/mainlayout/emppassport', employeeDetails?.id]" class="prev-btn">&laquo; Previous</a>
+  <a [routerLink]="['/mainlayout/emppreviousEmployee', employeeDetails?.id]" class="update-btn">Next &raquo;</a>
 </div>
