@@ -154,17 +154,17 @@ const routes: Routes = [
       { path: 'admin', component: AdminComponent ,canActivate: [adminAuthGuard],},
 
       // Employee details view page
-       { path: 'empdetails', component: EmployeeDetailsComponent ,canActivate: [adminAuthGuard],},
-       { path: 'empkyc', component: EmpkycComponent ,canActivate: [adminAuthGuard],},
-       { path: 'emppassport', component: EmppassportComponent ,canActivate: [adminAuthGuard],},
-       { path: 'empfamily', component: EmpfamilyComponent,canActivate: [adminAuthGuard], },
-       { path: 'emppreviousEmployee', component: EmppreviousEmployeeComponent,canActivate: [adminAuthGuard], },
-       { path: 'empeducation', component: EmpeducationComponent ,canActivate: [adminAuthGuard],},
-       { path: 'empskills', component: EmpskillsComponent,canActivate: [adminAuthGuard], },
-       { path: 'empcertificate', component: EmpcertificateComponent ,canActivate: [adminAuthGuard],},
-       { path: 'empdocument', component: EmpdocumentComponent ,canActivate: [adminAuthGuard],},
-       { path: 'empresume', component: EmpresumeComponent ,canActivate: [adminAuthGuard],},
-       { path: 'empfinal', component: EmpfinalComponent ,canActivate: [adminAuthGuard],},
+       { path: 'empdetails/:id', component: EmployeeDetailsComponent ,canActivate: [adminAuthGuard],},
+       { path: 'empkyc/:id', component: EmpkycComponent ,canActivate: [adminAuthGuard],},
+       { path: 'emppassport/:id', component: EmppassportComponent ,canActivate: [adminAuthGuard],},
+       { path: 'empfamily/:id', component: EmpfamilyComponent,canActivate: [adminAuthGuard], },
+       { path: 'emppreviousEmployee/:id', component: EmppreviousEmployeeComponent,canActivate: [adminAuthGuard], },
+       { path: 'empeducation/:id', component: EmpeducationComponent ,canActivate: [adminAuthGuard],},
+       { path: 'empskills/:id', component: EmpskillsComponent,canActivate: [adminAuthGuard], },
+       { path: 'empcertificate/:id', component: EmpcertificateComponent ,canActivate: [adminAuthGuard],},
+       { path: 'empdocument/:id', component: EmpdocumentComponent ,canActivate: [adminAuthGuard],},
+       { path: 'empresume/:id', component: EmpresumeComponent ,canActivate: [adminAuthGuard],},
+       { path: 'empfinal/:id', component: EmpfinalComponent ,canActivate: [adminAuthGuard],},
     ]
   },
 

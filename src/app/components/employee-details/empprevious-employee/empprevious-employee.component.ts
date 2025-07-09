@@ -23,12 +23,12 @@ export class EmppreviousEmployeeComponent implements OnInit {
     const sharedData = this.empDataService.getEmployeeData();
 
     if (sharedData) {
-      this.employeeDetails = sharedData; // ✅ use shared data
+      this.employeeDetails = sharedData; 
     } else {
       this.empService.getEmployees().subscribe({
         next: (res: any) => {
           this.employeeDetails = res.body.find((emp: any) => emp.id == id);
-          this.empDataService.setEmployeeData(this.employeeDetails); // ✅ set shared data
+          this.empDataService.setEmployeeData(this.employeeDetails);
         },
         error: (err: any) => console.error('Error:', err)
       });

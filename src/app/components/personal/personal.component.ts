@@ -42,9 +42,9 @@ export class PersonalComponent {
       permanent_country: ['', Validators.required],
       permanent_address: ['', Validators.required],
       permanent_state: ['', Validators.required],
-      permanent_city: ['', Validators.required],
+      permanentCity: ['', Validators.required],
       permanent_pincode: ['', [Validators.required, Validators.pattern(/^\d{6}$/)]],
-      permanent_contact: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
+      permanentContact: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
       bcp_address: ['', Validators.required],
       bcp_country: ['', Validators.required],
       bcp_state: ['', Validators.required],
@@ -75,35 +75,35 @@ copyCurrentToPermanent(event: any): void {
       permanent_address: this.userForm.value.current_address,
       permanent_country: this.userForm.value.current_country,
       permanent_state: this.userForm.value.current_state,
-      permanent_city: this.userForm.value.current_city,
+      permanentCity: this.userForm.value.current_city,
       permanent_pincode: this.userForm.value.current_pincode,
-      permanent_contact: this.userForm.value.current_contact
+      permanentContact: this.userForm.value.current_contact
     });
 
     // Optional: Disable permanent fields to prevent editing
     this.userForm.get('permanent_address')?.disable();
     this.userForm.get('permanent_country')?.disable();
     this.userForm.get('permanent_state')?.disable();
-    this.userForm.get('permanent_city')?.disable();
+    this.userForm.get('permanentCity')?.disable();
     this.userForm.get('permanent_pincode')?.disable();
-    this.userForm.get('permanent_contact')?.disable();
+    this.userForm.get('permanentContact')?.disable();
   } else {
     this.userForm.patchValue({
       permanent_address: '',
       permanent_country: '',
       permanent_state: '',
-      permanent_city: '',
+      permanentCity: '',
       permanent_pincode: '',
-      permanent_contact: ''
+      permanentContact: ''
     });
 
     // Re-enable fields
     this.userForm.get('permanent_address')?.enable();
     this.userForm.get('permanent_country')?.enable();
     this.userForm.get('permanent_state')?.enable();
-    this.userForm.get('permanent_city')?.enable();
+    this.userForm.get('permanentCity')?.enable();
     this.userForm.get('permanent_pincode')?.enable();
-    this.userForm.get('permanent_contact')?.enable();
+    this.userForm.get('permanentContact')?.enable();
   }
 }
 
@@ -115,7 +115,7 @@ copyCurrentToPermanent(event: any): void {
       permanent_pincode: +this.userForm.value.permanent_pincode,
       bcp_pincode: +this.userForm.value.bcp_pincode,
       current_contact: +this.userForm.value.current_contact,
-      permanent_contact: +this.userForm.value.permanent_contact,
+      permanentContact: +this.userForm.value.permanentContact,
       emergency_contact_number: +this.userForm.value.emergency_contact_number
     };
 

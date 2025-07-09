@@ -62,7 +62,12 @@
 
   <br>
   <div class="button-group">
-    <a routerLink="/mainlayout/emppreviousEmployee">&laquo; Previous</a>
-    <button class="update-button" routerLink="/mainlayout/empskills">Next &raquo;</button>
-  </div>
+  <a [routerLink]="['/mainlayout/emppreviousEmployee', employeeDetails?.id]">
+    &laquo; Previous
+  </a>
+  <button class="update-button" [routerLink]="['/mainlayout/empskills', employeeDetails?.id]">
+    Next &raquo;
+  </button>
+</div>
+
 </form>

@@ -16,7 +16,7 @@ export class EmpeducationComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private empService: EmployeeService,
-    private empDataService: EmployeeDataService // ✅ inject shared service
+    private empDataService: EmployeeDataService 
   ) {}
 
   ngOnInit(): void {
@@ -29,7 +29,7 @@ export class EmpeducationComponent implements OnInit {
       this.empService.getEmployees().subscribe({
         next: (res: any) => {
           this.employeeDetails = res.body.find((emp: any) => emp.id == id);
-          this.empDataService.setEmployeeData(this.employeeDetails); // ✅ store it again
+          this.empDataService.setEmployeeData(this.employeeDetails);
         },
         error: (err: any) => console.error('Error:', err)
       });
