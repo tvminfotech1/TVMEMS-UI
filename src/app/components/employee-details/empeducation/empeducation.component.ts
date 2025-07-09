@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { EmployeeService } from 'src/app/services/employee.service';
-import { EmployeeDataService } from 'src/app/services/employee-data.service'; // ✅ import shared service
+import { EmployeeDataService } from 'src/app/services/employee-data.service';
 
 @Component({
   selector: 'app-empeducation',
@@ -9,14 +9,13 @@ import { EmployeeDataService } from 'src/app/services/employee-data.service'; //
   styleUrls: ['./empeducation.component.css']
 })
 export class EmpeducationComponent implements OnInit {
-
   employeeId: any;
   employeeDetails: any;
 
   constructor(
     private route: ActivatedRoute,
     private empService: EmployeeService,
-    private empDataService: EmployeeDataService 
+    private empDataService: EmployeeDataService
   ) {}
 
   ngOnInit(): void {
@@ -24,12 +23,15 @@ export class EmpeducationComponent implements OnInit {
     const sharedData = this.empDataService.getEmployeeData();
 
     if (sharedData) {
-      this.employeeDetails = sharedData; // ✅ use shared data
+      this.employeeDetails = sharedData;
     } else {
       this.empService.getEmployees().subscribe({
         next: (res: any) => {
-          this.employeeDetails = res.body.find((emp: any) => emp.id == id);
-          this.empDataService.setEmployeeData(this.employeeDetails);
+          const found = res.body.find((emp: any) => emp.id == id);
+          if (found) {
+            this.employeeDetails = found;
+            this.empDataService.setEmployeeData(found);
+          }
         },
         error: (err: any) => console.error('Error:', err)
       });

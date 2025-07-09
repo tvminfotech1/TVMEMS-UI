@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { EmployeeService } from 'src/app/services/employee.service';
-import { EmployeeDataService } from 'src/app/services/employee-data.service'; // ✅ shared service import
+import { EmployeeDataService } from 'src/app/services/employee-data.service';
 
 @Component({
   selector: 'app-emppassport',
@@ -11,11 +11,12 @@ import { EmployeeDataService } from 'src/app/services/employee-data.service'; //
 export class EmppassportComponent implements OnInit {
   employeeId: any;
   employeeDetails: any;
+  passportDetails: any;
 
   constructor(
     private route: ActivatedRoute,
     private empService: EmployeeService,
-    private empDataService: EmployeeDataService // ✅ inject shared service
+    private empDataService: EmployeeDataService
   ) {}
 
   ngOnInit(): void {
@@ -23,12 +24,17 @@ export class EmppassportComponent implements OnInit {
     const sharedData = this.empDataService.getEmployeeData();
 
     if (sharedData) {
-      this.employeeDetails = sharedData; // ✅ use shared data
+      this.employeeDetails = sharedData;
+      this.passportDetails = sharedData.passport; // ✅ access nested passport object
     } else {
       this.empService.getEmployees().subscribe({
         next: (res: any) => {
-          this.employeeDetails = res.body.find((emp: any) => emp.id == id);
-          this.empDataService.setEmployeeData(this.employeeDetails); // ✅ set shared data
+          const found = res.body.find((emp: any) => emp.id == id);
+          if (found) {
+            this.employeeDetails = found;
+            this.passportDetails = found.passport; // ✅ extract passport
+            this.empDataService.setEmployeeData(found);
+          }
         },
         error: (err: any) => console.error('Error:', err)
       });

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { EmployeeService } from 'src/app/services/employee.service';
-import { EmployeeDataService } from 'src/app/services/employee-data.service'; // ✅ import shared service
+import { EmployeeDataService } from 'src/app/services/employee-data.service';
 
 @Component({
   selector: 'app-empfamily',
@@ -12,11 +12,12 @@ export class EmpfamilyComponent implements OnInit {
 
   employeeId: any;
   employeeDetails: any;
+  familyDetails: any;
 
   constructor(
     private route: ActivatedRoute,
     private empService: EmployeeService,
-    private empDataService: EmployeeDataService // ✅ inject shared service
+    private empDataService: EmployeeDataService
   ) {}
 
   ngOnInit(): void {
@@ -24,12 +25,17 @@ export class EmpfamilyComponent implements OnInit {
     const sharedData = this.empDataService.getEmployeeData();
 
     if (sharedData) {
-      this.employeeDetails = sharedData; // ✅ use data from shared service
+      this.employeeDetails = sharedData;
+      this.familyDetails = sharedData.family;  // ✅ get nested family object
     } else {
       this.empService.getEmployees().subscribe({
         next: (res: any) => {
-          this.employeeDetails = res.body.find((emp: any) => emp.id == id);
-          this.empDataService.setEmployeeData(this.employeeDetails); // ✅ store for reuse
+          const found = res.body.find((emp: any) => emp.id == id);
+          if (found) {
+            this.employeeDetails = found;
+            this.familyDetails = found.family; // ✅ access nested family
+            this.empDataService.setEmployeeData(found);
+          }
         },
         error: (err: any) => console.error('Error:', err)
       });

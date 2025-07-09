@@ -160,16 +160,16 @@
       </div>
       <div class="form-group">
         <label for="prev_experience_years">Previous Experience (Years):</label>
-        <input type="text" [value]="employeeDetails.year" readonly>
+        <input type="text" [value]="employeeDetails.exp_year" readonly>
       </div>
   
       <div class="form-group">
         <label for="prev_experience_months">Previous Experience (Months):</label>
-        <input type="text" [value]="employeeDetails.month" readonly>
+        <input type="text" [value]="employeeDetails.exp_month" readonly>
           
       </div>
       <div class=" full-width button-group">
-        <button  class="update-button" routerLink="/mainlayout/empkyc/:id" >Next &raquo;</button>
+<a [routerLink]="['/mainlayout/empkyc', employeeDetails?.id]" class="update-button">Next &raquo;</a>
 
       </div>
   

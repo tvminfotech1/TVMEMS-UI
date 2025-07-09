@@ -1,6 +1,7 @@
 <app-nav-display></app-nav-display>
 
 <form>
+  <!-- KYC Documents -->
   <div class="borderLine">
     <h3>KYC Documents</h3>
     <p style="margin: 10px;">Upload images in less size (Max 1 MB)</p>
@@ -8,31 +9,38 @@
 
       <div class="form-group">
         <label>Pan card Image</label>
-        <input type="file" disabled>
+        <input type="file" disabled />
         <div *ngIf="employeeDetails?.documents?.panCard">
-          <img [src]="getFileUrl(employeeDetails.documents.panCard)" width="150" alt="PAN Card">
+          <img [src]="getFileUrl(employeeDetails.documents.panCard)" width="150" alt="PAN Card" />
+          <br />
+          <button type="button" (click)="downloadFile(employeeDetails.documents.panCard)">Download</button>
         </div>
       </div>
 
       <div class="form-group">
         <label>Aadhar card Image</label>
-        <input type="file" disabled>
+        <input type="file" disabled />
         <div *ngIf="employeeDetails?.documents?.aadharCard">
-          <img [src]="getFileUrl(employeeDetails.documents.aadharCard)" width="150" alt="Aadhar Card">
+          <img [src]="getFileUrl(employeeDetails.documents.aadharCard)" width="150" alt="Aadhar Card" />
+          <br />
+          <button type="button" (click)="downloadFile(employeeDetails.documents.aadharCard)">Download</button>
         </div>
       </div>
 
       <div class="form-group">
         <label>Passport size Image</label>
-        <input type="file" disabled>
+        <input type="file" disabled />
         <div *ngIf="employeeDetails?.documents?.pSizePhoto">
-          <img [src]="getFileUrl(employeeDetails.documents.pSizePhoto)" width="150" alt="Passport Size">
+          <img [src]="getFileUrl(employeeDetails.documents.pSizePhoto)" width="150" alt="Passport Size" />
+          <br />
+          <button type="button" (click)="downloadFile(employeeDetails.documents.pSizePhoto)">Download</button>
         </div>
       </div>
 
     </div>
   </div>
 
+  <!-- Education Documents -->
   <div class="borderLine">
     <h3>Education Documents</h3>
     <p style="margin: 10px;">Supported file type: .pdf (Max 1 MB)</p>
@@ -40,39 +48,48 @@
 
       <div class="form-group">
         <label>10th document</label>
-        <input type="file" accept=".pdf" disabled>
+        <input type="file" accept=".pdf" disabled />
         <div *ngIf="employeeDetails?.documents?.matric">
           <a [href]="getFileUrl(employeeDetails.documents.matric)" target="_blank">View 10th PDF</a>
+          <br />
+          <button type="button" (click)="downloadFile(employeeDetails.documents.matric)">Download</button>
         </div>
       </div>
 
       <div class="form-group">
         <label>12th document</label>
-        <input type="file" accept=".pdf" disabled>
+        <input type="file" accept=".pdf" disabled />
         <div *ngIf="employeeDetails?.documents?.intermediate">
           <a [href]="getFileUrl(employeeDetails.documents.intermediate)" target="_blank">View 12th PDF</a>
+          <br />
+          <button type="button" (click)="downloadFile(employeeDetails.documents.intermediate)">Download</button>
         </div>
       </div>
 
       <div class="form-group">
         <label>Graduation document</label>
-        <input type="file" accept=".pdf" disabled>
+        <input type="file" accept=".pdf" disabled />
         <div *ngIf="employeeDetails?.documents?.graduationMarksheet">
           <a [href]="getFileUrl(employeeDetails.documents.graduationMarksheet)" target="_blank">View Graduation PDF</a>
+          <br />
+          <button type="button" (click)="downloadFile(employeeDetails.documents.graduationMarksheet)">Download</button>
         </div>
       </div>
 
       <div class="form-group">
         <label>Post Graduation document</label>
-        <input type="file" accept=".pdf" disabled>
+        <input type="file" accept=".pdf" disabled />
         <div *ngIf="employeeDetails?.documents?.postGraduation">
           <a [href]="getFileUrl(employeeDetails.documents.postGraduation)" target="_blank">View PG PDF</a>
+          <br />
+          <button type="button" (click)="downloadFile(employeeDetails.documents.postGraduation)">Download</button>
         </div>
       </div>
 
     </div>
   </div>
 
+  <!-- Bank Documents -->
   <div class="borderLine">
     <div class="leftBox">
       <h3>Bank Details</h3>
@@ -80,9 +97,11 @@
 
       <div class="form-group">
         <label>Upload Check Leaf</label>
-        <input type="file" disabled>
+        <input type="file" disabled />
         <div *ngIf="employeeDetails?.documents?.checkLeaf">
-          <img [src]="getFileUrl(employeeDetails.documents.checkLeaf)" width="150" alt="Check Leaf">
+          <img [src]="getFileUrl(employeeDetails.documents.checkLeaf)" width="150" alt="Check Leaf" />
+          <br />
+          <button type="button" (click)="downloadFile(employeeDetails.documents.checkLeaf)">Download</button>
         </div>
       </div>
     </div>
@@ -90,17 +109,22 @@
     <div class="rightBox">
       <div class="form-group">
         <label>Upload Bank Passbook</label>
-        <input type="file" disabled>
+        <input type="file" disabled />
         <div *ngIf="employeeDetails?.documents?.passbook">
-          <img [src]="getFileUrl(employeeDetails.documents.passbook)" width="150" alt="Bank Passbook">
+          <img [src]="getFileUrl(employeeDetails.documents.passbook)" width="150" alt="Bank Passbook" />
+          <br />
+          <button type="button" (click)="downloadFile(employeeDetails.documents.passbook)">Download</button>
         </div>
       </div>
     </div>
   </div>
 
-  <br>
+  <!-- Navigation -->
+  <br />
   <div class="button-group">
-    <a routerLink="/mainlayout/empcertificate/:id">&laquo; Previous</a>
-    <button class="update-button" routerLink="/mainlayout/empresume/:id">Next &raquo;</button>
+    <a [routerLink]="['/mainlayout/empcertificate', employeeDetails?.id]">&laquo; Previous</a>
+    <button class="update-button" [routerLink]="['/mainlayout/empresume', employeeDetails?.id]">
+      Next &raquo;
+    </button>
   </div>
 </form>

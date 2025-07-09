@@ -1,30 +1,28 @@
 <app-nav-display></app-nav-display>
 
-
-<div class="form-grid">
+<div class="form-grid" *ngIf="passportDetails">
 
   <!-- Nationality -->
   <div class="form-group">
     <label>Nationality:</label>
-    <input type="text" [value]="employeeDetails?.nationality" readonly />
+    <input type="text" [value]="passportDetails?.nationality" readonly />
   </div>
 
   <!-- If Passport -->
   <div class="form-group">
     <label>Do you have a passport:</label>
-    <input type="text" [value]="employeeDetails?.ifPassport" readonly />
+    <input type="text" [value]="passportDetails?.ifPassport" readonly />
   </div>
 
   <!-- Passport Number (only if yes) -->
-  <div class="form-group" *ngIf="employeeDetails?.ifPassport === 'Yes'">
+  <div class="form-group" *ngIf="passportDetails?.ifPassport === 'Yes'">
     <label>Passport Number:</label>
-    <input type="text" [value]="employeeDetails?.passportNumber" readonly />
+    <input type="text" [value]="passportDetails?.passportNumber" readonly />
   </div>
 
 </div>
 
 <div class="button-group">
   <a [routerLink]="['/mainlayout/empkyc', employeeDetails?.id]" class="prev-btn">&laquo; Previous</a>
-<a [routerLink]="['/mainlayout/empfamily', employeeDetails?.id]" class="save-btn">Next &raquo;</a>
-
+  <a [routerLink]="['/mainlayout/empfamily', employeeDetails?.id]" class="save-btn">Next &raquo;</a>
 </div>
