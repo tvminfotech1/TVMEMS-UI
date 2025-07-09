@@ -1,14 +1,13 @@
 <div class="tabs">
-    <a routerLink="/mainlayout/empdetails" routerLinkActive="active-tab"  [routerLinkActiveOptions]="{ exact: true }">Personal</a>
-    <a routerLink="/mainlayout/empkyc" routerLinkActive="active-tab">KYC</a>
-    <a routerLink="/mainlayout/emppassport" routerLinkActive="active-tab">Passport & Visa</a>
-    <a routerLink="/mainlayout/empfamily" routerLinkActive="active-tab">Family</a>
-    <a routerLink="/mainlayout/emppreviousEmployee" routerLinkActive="active-tab">Previous Employment</a>
-    <a routerLink="/mainlayout/empeducation" routerLinkActive="active-tab">Education</a>
-    <a routerLink="/mainlayout/empskills" routerLinkActive="active-tab">Skills</a>
-    <a routerLink="/mainlayout/empcertificate" routerLinkActive="active-tab">Certifications</a>
-    <a routerLink="/mainlayout/empdocument" routerLinkActive="active-tab">Document</a>
-    <a routerLink="/mainlayout/empresume" routerLinkActive="active-tab">Resume</a>
-    <a routerLink="/mainlayout/empfinal" routerLinkActive="active-tab">Final</a>
-  </div>
-  
+  <a (click)="navigateTo('empdetails')" [class.active-tab]="isActive('empdetails')">Personal</a>
+  <a (click)="navigateTo('empkyc')" [class.active-tab]="isActive('empkyc')">KYC</a>
+  <a (click)="navigateTo('emppassport')" [class.active-tab]="isActive('emppassport')">Passport & Visa</a>
+  <a (click)="navigateTo('empfamily')" [class.active-tab]="isActive('empfamily')">Family</a>
+  <a (click)="navigateTo('emppreviousEmployee')" [class.active-tab]="isActive('emppreviousEmployee')">Previous Employment</a>
+  <a (click)="navigateTo('empeducation')" [class.active-tab]="isActive('empeducation')">Education</a>
+  <a (click)="navigateTo('empskills')" [class.active-tab]="isActive('empskills')">Skills</a>
+  <a (click)="navigateTo('empcertificate')" [class.active-tab]="isActive('empcertificate')">Certifications</a>
+  <a (click)="navigateTo('empdocument')" [class.active-tab]="isActive('empdocument')">Documents</a>
+  <a (click)="navigateTo('empresume')" [class.active-tab]="isActive('empresume')">Resume</a>
+  <a (click)="navigateTo('empfinal')" [class.active-tab]="isActive('empfinal')">Final</a>
+</div>

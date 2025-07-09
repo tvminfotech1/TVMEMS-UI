@@ -28,8 +28,9 @@
   </ul>
 </div>
 <div class="button-group">
-  <a routerLink="/mainlayout/empfamily">&laquo; Previous</a>
-  <button class="update-button" routerLink="/mainlayout/empeducation">
+  <a [routerLink]="['/mainlayout/empfamily', employeeDetails?.id]">&laquo; Previous</a>
+  <button class="update-button" [routerLink]="['/mainlayout/empeducation', employeeDetails?.id]">
     Next &raquo;
   </button>
 </div>
+

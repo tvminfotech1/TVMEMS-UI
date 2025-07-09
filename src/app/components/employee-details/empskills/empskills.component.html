@@ -38,6 +38,11 @@
 </div>
 
 <div class="button-group">
-  <a routerLink="/mainlayout/empeducation" class="btn prev-btn">&laquo; Previous</a>
-  <button class="btn next-btn" routerLink="/mainlayout/empcertificate">Next &raquo;</button>
+ <a [routerLink]="['/mainlayout/empeducation', employeeDetails?.id]" class="btn prev-btn">
+  &laquo; Previous
+</a>
+<button class="btn next-btn" [routerLink]="['/mainlayout/empcertificate', employeeDetails?.id]">
+  Next &raquo;
+</button>
+
 </div>

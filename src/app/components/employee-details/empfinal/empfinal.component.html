@@ -24,6 +24,7 @@
   </div>
 
   <div style="margin-top: 20px;" class="button-group">
-    <a routerLink="/mainlayout/empresume">&laquo; Previous</a>
+  <a [routerLink]="['/mainlayout/empresume', employeeDetails?.id]">&laquo; Previous</a>
+
   </div>
 </form>

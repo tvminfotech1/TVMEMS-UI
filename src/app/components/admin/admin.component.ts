@@ -47,7 +47,7 @@ export class AdminComponent implements OnInit {
         console.log("Response:", a);
         
         this.employees = d.body.map((data: any) => ({
-          index:"TVM-"+data.id,
+          index:data.id,
           name: data.fname + ' ' + data.lname,
           email: data.email,
           contact: data.permanentContact,

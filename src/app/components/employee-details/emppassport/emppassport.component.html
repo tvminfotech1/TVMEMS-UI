@@ -24,6 +24,7 @@
 </div>
 
 <div class="button-group">
-  <a routerLink="/mainlayout/empkyc" class="prev-btn">&laquo; Previous</a>
-  <a routerLink="/mainlayout/empfamily" class="save-btn">Next &raquo;</a>
+  <a [routerLink]="['/mainlayout/empkyc', employeeDetails?.id]" class="prev-btn">&laquo; Previous</a>
+<a [routerLink]="['/mainlayout/empfamily', employeeDetails?.id]" class="save-btn">Next &raquo;</a>
+
 </div>
