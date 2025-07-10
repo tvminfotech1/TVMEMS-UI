@@ -7,8 +7,8 @@ import { TaskService } from './service/task.service';
   styleUrls: ['./task.component.css']
 })
 export class TaskComponent {
-  startDate = new Date(2025, 3, 4); // April 4, 2025
-  endDate = new Date(2025, 7, 2);   // August 2, 2025
+  startDate = new Date(2025, 3, 4); 
+  endDate = new Date(2025, 7, 2);  
   dateRange = '';
 
   viewMode: 'list' | 'grid' = 'list';
@@ -64,50 +64,76 @@ export class TaskComponent {
     this.showForm = !this.showForm;
   }
 
-  submitTask() {
-    if (this.newTask.title && this.newTask.startDate && this.newTask.dueDate) {
-      this.taskService.addTask(this.newTask).subscribe({
-        next: () => {
-          this.loadTasks(); // ⬅️ Refresh tasks after adding
-          this.newTask = {
-            employeeName: '',
-            label: '',
-            title: '',
-            description: '',
-            startDate: '',
-            dueDate: '',
-            priority: '',
-            status: ''
-          };
-          this.toggleForm();
-        },
-        error: (err) => {
-          console.error('Failed to add task:', err);
-        }
-      });
+submitTask() {
+  const payload = {
+    taskName: this.newTask.title,
+    taskOwner: this.newTask.employeeName,
+    description: this.newTask.description,
+    priority: this.newTask.priority,
+    assignedDate: this.newTask.startDate,
+    dueDate: this.newTask.dueDate,
+    status: this.newTask.status
+  };
+
+  this.taskService.addTask(payload).subscribe({
+    next: () => {
+      this.loadTasks();
+      this.newTask = {
+        employeeName: '',
+        label: '',
+        title: '',
+        description: '',
+        startDate: '',
+        dueDate: '',
+        priority: '',
+        status: ''
+      };
+      this.toggleForm();
+    },
+    error: (err) => {
+      console.error('Failed to add task:', err);
     }
-  }
+  });
+}
+
+
 
   setViewMode(mode: 'list' | 'grid') {
     this.viewMode = mode;
   }
 
-  filterTasksByDate() {
-    this.filteredCards = this.cards.filter(task => {
-      const taskDate = new Date(task.startDate);
-      return taskDate >= this.startDate && taskDate <= this.endDate;
-    });
-  }
+ filterTasksByDate() {
+  this.filteredCards = this.cards.filter(task => {
+    if (!task.assignedDate) return false;
+    const taskDate = new Date(task.assignedDate);
+    return taskDate >= this.startDate && taskDate <= this.endDate;
+  });
+}
+
+
+  // loadTasks() {
+  //   this.taskService.getTasks().subscribe({
+  //     next: (tasks: any[]) => {
+  //       this.cards = tasks;
+  //       this.filterTasksByDate();
+  //     },
+  //     error: (err) => {
+  //       console.error('Failed to load tasks:', err);
+  //     }
+  //   });
+  // }
 
   loadTasks() {
-    this.taskService.getTasks().subscribe({
-      next: (tasks: any[]) => {
-        this.cards = tasks;
-        this.filterTasksByDate();
-      },
-      error: (err) => {
-        console.error('Failed to load tasks:', err);
-      }
-    });
-  }
+  this.taskService.getTasks().subscribe({
+    next: (res: any) => {
+      this.cards = res.body;
+      this.filterTasksByDate();
+      // this.filteredCards = this.cards;
+    },
+    error: (err) => {
+      console.error('Failed to load tasks:', err);
+    }
+  });
+}
+
 }

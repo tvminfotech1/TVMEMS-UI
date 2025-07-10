@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface TimelogEntry {
-  employeeName: string;
   project: string;
   hours: {
     Monday: string;
@@ -15,21 +14,28 @@ export interface TimelogEntry {
   totalHours: string;
   description: string;
   weekendDate: string;
+  employeeName?: string; 
+  employeeId?: string;  
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class TimelogService {
-  private apiUrl = 'http://localhost:3000/timelogs';
+  private apiUrl = 'http://localhost:8080/user/timesheet';
 
   constructor(private http: HttpClient) {}
 
-  getTimelogs(): Observable<TimelogEntry[]> {
-    return this.http.get<TimelogEntry[]>(this.apiUrl);
-  }
+  
+  getTimelogs(): Observable<any> {
+  return this.http.get<any>(this.apiUrl);
+}
 
-  addTimelog(entry: TimelogEntry): Observable<TimelogEntry> {
-    return this.http.post<TimelogEntry>(this.apiUrl, entry);
+
+  // ❗ Accepting `any` because we're sending different payload to backend
+  addTimelog(entry: any): Observable<HttpResponse<any>> {
+    return this.http.post<any>(this.apiUrl, entry, {
+      observe: 'response'
+    });
   }
 }
