@@ -119,7 +119,7 @@ const routes: Routes = [
       {path:'myleave',component:LeaveComponent,canActivate: [adminAuthGuard],},
       {path:'workfromhome',component:WorkfromhomeComponent,canActivate: [adminAuthGuard],},
       {path:'hiring', component: HiringComponent,canActivate: [adminAuthGuard],},
-      {path:'Timelog', component:TimelogComponent,canActivate: [adminAuthGuard],},
+      {path:'Timelog', component:TimelogComponent},
       {path:'task', component:TaskComponent,canActivate: [adminAuthGuard],},
       {path:'resignation', component:ResignationComponent,canActivate: [adminAuthGuard],},
       {path:'okr',component:OkrComponent,canActivate: [adminAuthGuard],},
