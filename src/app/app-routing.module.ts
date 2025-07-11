@@ -74,6 +74,8 @@ import { userAuthGuard } from './guards/user-auth.guard';
 
 
 import { AddAnnouncementComponent } from './components/mainlayout/add-announcement/add-announcement.component';
+import { AuthGuard } from './guards/auth.guard';
+import { MyProfileComponent } from './components/mainlayout/my-profile/my-profile.component';
 
 
 const routes: Routes = [
@@ -107,28 +109,29 @@ const routes: Routes = [
      
     children: [       
       {path: 'signup', component: SignupComponent,canActivate: [adminAuthGuard], },
-      {path: 'dashboard', component: DashboardhomeComponent,canActivate: [adminAuthGuard],},
-      {path: 'holidays', component: HoildayCalendarComponent,canActivate: [adminAuthGuard], },
-      {path: 'feedbacks', component: FeedbacksComponent,canActivate: [adminAuthGuard], },
-      {path:'organization', component:OrganizationComponent,canActivate: [adminAuthGuard],},
+      {path: 'dashboard', component: DashboardhomeComponent,canActivate: [AuthGuard],},
+      {path: 'myprofile/:id',component:MyProfileComponent,canActivate:[AuthGuard]},
+      {path: 'holidays', component: HoildayCalendarComponent,canActivate: [AuthGuard], },
+      {path: 'feedbacks', component: FeedbacksComponent,canActivate: [AuthGuard], },
+      {path:'organization', component:OrganizationComponent,canActivate: [AuthGuard],},
       {path: 'workhours',component: WorkhoursComponent,canActivate: [adminAuthGuard],},
       {path: 'workhistory', component: WorkHistoryComponent,canActivate: [adminAuthGuard],},
       {path:'wishcard', component: WishcardComponent,canActivate: [adminAuthGuard],},
       {path:'announcement', component:AnnouncementComponent,canActivate: [adminAuthGuard],},
       {path: 'applyleave', component:ApplyLeaveComponent,canActivate: [adminAuthGuard],},
-      {path:'myleave',component:LeaveComponent,canActivate: [adminAuthGuard],},
-      {path:'workfromhome',component:WorkfromhomeComponent,canActivate: [adminAuthGuard],},
+      {path:'myleave',component:LeaveComponent,canActivate: [AuthGuard],},
+      {path:'workfromhome',component:WorkfromhomeComponent,canActivate: [AuthGuard],},
       {path:'hiring', component: HiringComponent,canActivate: [adminAuthGuard],},
       {path:'Timelog', component:TimelogComponent},
-      {path:'task', component:TaskComponent,canActivate: [adminAuthGuard],},
-      {path:'resignation', component:ResignationComponent,canActivate: [adminAuthGuard],},
+      {path:'task', component:TaskComponent,canActivate: [AuthGuard],},
+      {path:'resignation', component:ResignationComponent,canActivate: [AuthGuard],},
       {path:'okr',component:OkrComponent,canActivate: [adminAuthGuard],},
-      {path:'attendance', component:AttendanceComponent,canActivate: [adminAuthGuard],},
+      {path:'attendance', component:AttendanceComponent,canActivate: [AuthGuard],},
       {path:'addopening', component:AddOpeningComponent,canActivate: [adminAuthGuard],},
-      {path:'goal', component:GoalComponent,canActivate: [adminAuthGuard],},
+      {path:'goal', component:GoalComponent,canActivate: [AuthGuard],},
       { path: 'add-announcement', component: AddAnnouncementComponent,canActivate: [adminAuthGuard], },
 
-      
+
       { path: 'personal', component: PersonalComponent,canActivate: [userAuthGuard] },
       { path: 'kyc', component: KycComponent ,canActivate:[userAuthGuard]},
       { path: 'passport', component: PassportVisaComponent,canActivate: [userAuthGuard] },

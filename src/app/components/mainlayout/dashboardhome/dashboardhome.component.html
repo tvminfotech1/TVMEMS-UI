@@ -1,29 +1,34 @@
 <div class="top-bar">
   <div class="welcome">
     {{greeting}}, <strong>{{ userName }}</strong><br />
-    <small>Welcome to ETAQ, You're in the R1 shift (11:30 - 20:30)</small>
-  </div>
+<small>{{ workInfo }}</small>  </div>
 </div>
 <div class="icon-menu" role="toolbar" aria-label="Quick access menu">
   <button aria-label="Workhours" (click)="toggle('workhours')">
     <span class="material-icons">access_time</span> Workhours
   </button>
-  <button aria-label="Wishes" (click)="toggle('wishes')">
+
+  <button aria-label="Wishes" (click)="toggle('wishes')" *ngIf="isUser || isAdmin">
     <span class="material-icons">favorite</span> Wishes
   </button>
-  <button aria-label="Hirings" (click)="toggle('hirings')">
+
+  <button aria-label="Hirings" (click)="toggle('hirings')" *ngIf="isAdmin">
     <span class="material-icons">person_add</span> Hirings
   </button>
+
   <button aria-label="Holidays" (click)="toggle('holidays')">
     <span class="material-icons">event</span> Holidays
   </button>
-  <button aria-label="Work History" (click)="toggle('workhistory')">
+
+  <button aria-label="Work History" (click)="toggle('workhistory')" *ngIf="isUser">
     <span class="material-icons">history</span> Work History
   </button>
-  <button aria-label="Announcement" (click)="toggle('announcement')">
+
+  <button aria-label="Announcement" (click)="toggle('announcement')" *ngIf="isAdmin">
     <span class="material-icons">campaign</span> Announcement
   </button>
 </div>
+
 
 
 <div *ngIf="show.holidays" class="calendar-container">
