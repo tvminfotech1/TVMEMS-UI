@@ -260,7 +260,7 @@
   >
     <ul class="dropdown-list">
       <li>
-        <a routerLink="signup" class="nav-link sub">
+        <a routerLink="signup" class="nav-link sub" *ngIf="isAdmin">
           <span class="material-icons">person_add</span> Add User
         </a>
       </li>
@@ -269,12 +269,12 @@
           <span class="material-icons">person</span> Onboarding form
         </a>
       </li>
-      <li>
+      <li *ngIf="isAdmin">
         <a routerLink="pendingUser" class="nav-link sub">
           <span class="material-icons">hourglass_empty</span> Pending User
         </a>
       </li>
-      <li>
+      <li *ngIf="isAdmin">
         <a routerLink="admin" class="nav-link sub">
           <span class="material-icons">group</span> User List
         </a>
@@ -285,7 +285,7 @@
 
 
           <!-- Add Job Opening -->
-          <li class="dropdown">
+          <li class="dropdown" *ngIf="isAdmin">
             <button
               class="nav-button"
               (click)="toggleAddJobDropdown()"
@@ -313,7 +313,7 @@
             </div>
           </li>
                     <!-- Payroll -->
-           <li class="dropdown">
+<li class="dropdown" *ngIf="isAdmin">
   <button
     class="nav-button"
     (click)="togglePayrollDropdown()"
@@ -386,10 +386,10 @@
         <div *ngIf="showSettings" class="settings-dropdown">
           <div class="profile-header">
             <img src="assets/profile.jpg" alt="Profile" class="profile-img" />
-            <div class="profile-name">Ramkumar Raja</div>
+            <div class="profile-name">{{userName}}</div>
           </div>
           <ul class="settings-menu">
-            <li><span class="material-icons">person</span> My Profile</li>
+            <li (click)="goToProfile()"><span class="material-icons">person</span> My Profile</li>
             <li>
               <span class="material-icons">campaign</span> My Announcements
             </li>

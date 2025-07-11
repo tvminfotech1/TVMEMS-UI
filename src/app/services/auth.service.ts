@@ -142,17 +142,17 @@ export class AuthService {
     return decoded?.sub || null;
   }
 
-  // ✅ Is Admin?
+  //Is Admin?
   isAdmin(): boolean {
     return this.getUserRole() === 'ROLE_ADMIN';
   }
 
-  // ✅ Is User?
+  //Is User?
   isUser(): boolean {
     return this.getUserRole() === 'ROLE_USER';
   }
 
-  // ✅ Guard Access – Observable
+  //Guard Access – Observable
   checkRole(): Observable<any> {
     const role = this.getUserRole();
     return of({ role: role });

@@ -1,12 +1,13 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener,OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-mainlayout',
   templateUrl: './mainlayout.component.html',
   styleUrls: ['./mainlayout.component.css']
 })
-export class MainlayoutComponent {
+export class MainlayoutComponent implements OnInit {
   // Dropdown visibility states
   showHomeDropdown = false;
   showWFHDropdown = false;
@@ -17,12 +18,23 @@ export class MainlayoutComponent {
   showOffboardingDropdown = false;
   showOnboardingDropdown = false;
   showAddJobDropdown = false;
-  showPayrollDropdown = false; // ✅ Added for Payroll
+  showPayrollDropdown = false;
   showSettings = false;
   showSearch = false;
+  isAdmin: boolean = false;
+  isUser: boolean = false;
+  userName: string = '';
+  employeeId!: string | null; 
 
-  constructor(private router: Router) {}
+  constructor(private router: Router,private authService: AuthService) {}
 
+  ngOnInit() {
+    this.isAdmin = this.authService.isAdmin();
+    this.isUser = this.authService.isUser();
+    this.userName = this.authService.getEmployeeName() || 'User';
+    this.employeeId = this.authService.getEmployeeId();
+    console.log("Employee ID from token:", this.employeeId);
+  }
   // Close all dropdowns if clicked outside
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent) {
@@ -112,5 +124,9 @@ export class MainlayoutComponent {
     localStorage.clear();
     sessionStorage.clear();
     this.router.navigateByUrl('/adminLogin');
+  }
+   goToProfile() {
+    console.log('Go to profile clicked');
+    this.router.navigate(['/mainlayout/myprofile',this.employeeId]);
   }
 }

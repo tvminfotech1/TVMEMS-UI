@@ -1,0 +1,41 @@
+<div class="profile-wrapper" *ngIf="userData">
+  <div class="profile-header">
+    <img src="assets/profile.jpg" alt="Profile" class="profile-img" />
+    <div class="profile-info">
+      <h2>{{ userData.fname }} {{ userData.mname }} {{ userData.lname }}</h2>
+      <p><strong>Email:</strong> {{ userData.email }}</p>
+      <p><strong>Employee ID:</strong> {{ userData.id }}</p>
+    </div>
+  </div>
+
+  <section class="profile-section">
+    <h3>🧾 Basic Information</h3>
+    <ul>
+      <li><strong>Gender:</strong> {{ userData.gender }}</li>
+      <li><strong>DOB:</strong> {{ userData.dob }}</li>
+      <li><strong>Blood Group:</strong> {{ userData.bloodGroup }}</li>
+      <li><strong>Marital Status:</strong> {{ userData.merital }}</li>
+      <li><strong>Marriage Date:</strong> {{ userData.marriegedate }}</li>
+    </ul>
+  </section>
+
+  <section class="profile-section">
+    <h3>📞 Contact Details</h3>
+    <ul>
+      <li><strong>Current Address:</strong> {{ userData.current_address }}, {{ userData.current_city }}, {{ userData.current_state }} - {{ userData.current_pincode }}</li>
+      <li><strong>Permanent Address:</strong> {{ userData.permanent_address }}, {{ userData.permanentCity }}, {{ userData.permanent_state }}</li>
+      <li><strong>Contact Number:</strong> {{ userData.current_contact }}</li>
+      <li><strong>Emergency Contact:</strong> {{ userData.emergency_contact_name }} ({{ userData.emergency_relationship }}) - {{ userData.emergency_contact_number }}</li>
+    </ul>
+  </section>
+
+  <section class="profile-section">
+    <h3>💼 Employment Details</h3>
+    <ul>
+      <li><strong>Total Experience:</strong> {{ userData.exp_year }} years {{ userData.exp_month }} months</li>
+      <li><strong>Relevant Experience:</strong> {{ userData.relevantYear }} years</li>
+    </ul>
+  </section>
+</div>
+
+<div *ngIf="!userData" class="loading-msg">Loading employee profile...</div>

@@ -72,6 +72,7 @@ import { ReportComponent } from './components/payroll/report/report.component';
 import { YearlySalarySlipComponent } from './components/payroll/yearly-salary-slip/yearly-salary-slip.component';
 import { AddEmployeeComponent } from './components/payroll/add-employee/add-employee.component';
 import { AddAnnouncementComponent } from './components/mainlayout/add-announcement/add-announcement.component';
+import { MyProfileComponent } from './components/mainlayout/my-profile/my-profile.component';
 
 @NgModule({
   declarations: [
@@ -147,6 +148,7 @@ import { AddAnnouncementComponent } from './components/mainlayout/add-announceme
     YearlySalarySlipComponent,
     AddEmployeeComponent,
     AddAnnouncementComponent,
+    MyProfileComponent,
     
   ],
   imports: [

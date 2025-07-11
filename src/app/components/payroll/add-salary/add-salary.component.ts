@@ -68,14 +68,24 @@ ngOnInit(): void {
   }
 
   if (empIdParam) {
-    const empId = +empIdParam; // ✅ Convert to number
-    this.employeeService.getEmployeeById(empId).subscribe(emp => {
+  const empId = +empIdParam; // ✅ string to number
+
+  console.log('empId from route:', empId);
+
+  this.employeeService.getEmployeeById(empId).subscribe({
+    next: emp => {
+      console.log('Employee fetched:', emp);
       this.employee = emp;
       this.basicSalary = emp.basicSalary;
       this.ctc = emp.ctc;
       this.calculateSalary();
-    });
-  }
+    },
+    error: err => {
+      console.error('Error fetching employee:', err);
+    }
+  });
+}
+
 }
 
 
