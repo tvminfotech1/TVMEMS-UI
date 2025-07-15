@@ -1,13 +1,17 @@
-import { Component } from '@angular/core';
+import { Component,OnInit } from '@angular/core';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-workfromhome',
   templateUrl: './workfromhome.component.html',
   styleUrls: ['./workfromhome.component.css']
 })
-export class WorkfromhomeComponent {
+export class WorkfromhomeComponent implements OnInit{
   currentMonthIndex = 5;
   year = 2025;
+isAdmin:Boolean = false;
+isUser:Boolean = false;
+
 
   getMonthName(): string {
     return new Date(this.year, this.currentMonthIndex).toLocaleString('default', { month: 'long' });
@@ -20,7 +24,12 @@ export class WorkfromhomeComponent {
   prevMonth() {
     if (this.currentMonthIndex > 0) this.currentMonthIndex--;
   }
+  constructor(private authservice:AuthService){}
 
+  ngOnInit(): void {
+      this.isAdmin = this.authservice.isAdmin();
+      this.isUser = this.authservice.isUser();
+  }
   details = [
     {
       fromDate: '01 Jun 25',

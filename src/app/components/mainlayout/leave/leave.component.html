@@ -67,7 +67,7 @@
               <th (click)="sortBy('type')" class="sortable">LEAVE TYPE <span class="sort-indicator" [ngClass]="getSortClass('type')">↕</span></th>
               <th (click)="sortBy('duration')" class="sortable">DURATION (HRS./DAYS) <span class="sort-indicator" [ngClass]="getSortClass('duration')">↕</span></th>
               <th (click)="sortBy('status')" class="sortable">STATUS <span class="sort-indicator" [ngClass]="getSortClass('status')">↕</span></th>
-              <th>ACTION</th>
+              <th *ngIf="isAdmin">ACTION</th>
             </tr>
           </thead>
           <tbody>
@@ -85,7 +85,7 @@
                 <span class="status-badge" [ngClass]="getStatusBadgeClass(request.status)">{{ request.status }}</span>
               </td>
               <td>
-                <div class="action-buttons">
+                <div class="action-buttons" *ngIf="isAdmin">
                   <button class="action-btn view-btn" (click)="viewRequest(request)" title="View Details">👁</button>
                   <button *ngIf="request.status === 'Pending'" class="action-btn edit-btn" (click)="editRequest(request)" title="Edit Request">✏</button>
                   <button *ngIf="request.status === 'Pending'" class="action-btn cancel-btn" (click)="cancelRequest(request)" title="Cancel Request">❌</button>

@@ -31,7 +31,7 @@ export class MainlayoutComponent implements OnInit {
   ngOnInit() {
     this.isAdmin = this.authService.isAdmin();
     this.isUser = this.authService.isUser();
-    this.userName = this.authService.getEmployeeName() || 'User';
+    this.userName = this.authService.getfullName() || 'User';
     this.employeeId = this.authService.getEmployeeId();
     console.log("Employee ID from token:", this.employeeId);
   }
@@ -64,6 +64,7 @@ export class MainlayoutComponent implements OnInit {
     const willShow = !this.showHomeDropdown;
     this.closeAllDropdowns(willShow ? 'home' : '');
   }
+  
 
   toggleWFHDropdown() {
     const willShow = !this.showWFHDropdown;

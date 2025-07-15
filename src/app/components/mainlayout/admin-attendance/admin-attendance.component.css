@@ -1,0 +1,43 @@
+.admin-attendance {
+  padding: 20px;
+}
+
+.filters {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 15px;
+}
+
+.filters input {
+  padding: 6px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.admin-attendance table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.admin-attendance th,
+.admin-attendance td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: center;
+}
+
+.admin-attendance .approved {
+  color: green;
+  font-weight: bold;
+}
+
+.admin-attendance .pending {
+  color: orange;
+  font-weight: bold;
+}
+
+button {
+  padding: 4px 10px;
+  margin: 2px;
+}

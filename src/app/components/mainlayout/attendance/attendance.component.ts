@@ -1,39 +1,120 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UserService } from '../../user-service.service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-attendance',
   templateUrl: './attendance.component.html',
   styleUrls: ['./attendance.component.css']
 })
-export class AttendanceComponent {
-  months = [
-    'January', 'February', 'March', 'April', 'May', 'June',
-    'July', 'August', 'September', 'October', 'November', 'December'
-  ];
-
-  currentMonthIndex = new Date().getMonth(); // 0 = January
+export class AttendanceComponent implements OnInit {
+  attendanceForm!: FormGroup;
+  attendanceList: any[] = [];
+  currentMonthIndex = new Date().getMonth();
   currentYear = new Date().getFullYear();
+  employee: any = {};
 
-  // Compute current month's display string like "01 June 2025 - 30 June 2025"
-  get selectedMonthYear(): string {
-    const start = this.getMonthStart(this.currentYear, this.currentMonthIndex);
-    const end = this.getMonthEnd(this.currentYear, this.currentMonthIndex);
-    return `${this.formatDate(start)} - ${this.formatDate(end)}`;
-  }
+  constructor(
+    private fb: FormBuilder,
+    private userService: UserService,
+    private http: HttpClient
+  ) {}
 
-  getMonthStart(year: number, monthIndex: number): Date {
-    return new Date(year, monthIndex, 1);
-  }
+  ngOnInit(): void {
+    this.employee = this.userService.getFormData('personal') || {
+      empId: '1001',
+      name: 'Rohit Kumar',
+      department: 'IT',
+      designation: 'Frontend Developer'
+    };
 
-  getMonthEnd(year: number, monthIndex: number): Date {
-    return new Date(year, monthIndex + 1, 0);
+    this.attendanceForm = this.fb.group({
+        empId: [this.employee.empId || 1001, [Validators.required, Validators.pattern(/^\d+$/)]],
+      name: [this.employee.name, Validators.required],
+      department: [this.employee.department, Validators.required],
+      designation: [this.employee.designation, Validators.required],
+      date: [this.formatDate(new Date()), Validators.required],
+      status: ['', Validators.required],
+      remarks: [''],
+      entryTime: [''] 
+    });
+
+    this.fetchMonthlyAttendance();
   }
 
   formatDate(date: Date): string {
-    const day = String(date.getDate()).padStart(2, '0');
-    const month = this.months[date.getMonth()];
-    const year = date.getFullYear();
-    return `${day} ${month} ${year}`;
+    const d = String(date.getDate()).padStart(2, '0');
+    const m = String(date.getMonth() + 1).padStart(2, '0');
+    const y = date.getFullYear();
+    return `${y}-${m}-${d}`;
+  }
+
+  submitAttendance() {
+  if (this.attendanceForm.valid) {
+    const formValue = this.attendanceForm.value;
+    const data = {
+      ...formValue,
+      empId: Number(formValue.empId),  // 👈 string to number conversion
+      isApproved: false
+    };
+
+    console.log("✅ Final Submitted Data:", data); // 👀 Verify in console
+
+    this.userService.submitAttendance(data).subscribe({
+      next: () => {
+        alert('✅ Attendance submitted');
+        this.attendanceForm.patchValue({
+          status: '',
+          remarks: '',
+          entryTime: '09:30'
+        });
+        this.fetchMonthlyAttendance();
+      },
+      error: () => alert('❌ Failed')
+    });
+  } else {
+    console.warn("⚠️ Form is invalid.");
+  }
+}
+
+
+  fetchMonthlyAttendance() {
+    const month = this.currentMonthIndex + 1;
+    const year = this.currentYear;
+    const empId = this.employee.empId;
+
+    // ✅ Static test data to show in table (without API call)
+    this.attendanceList = [
+  {
+    date: `${year}-${String(month).padStart(2, '0')}-01`,
+    name: this.employee.name,
+    status: 'P',
+    remarks: 'Work from Home',
+    isApproved: true
+  },
+  {
+    date: `${year}-${String(month).padStart(2, '0')}-02`,
+    name: this.employee.name,
+    status: 'A',
+    remarks: 'Sick Leave',
+    isApproved: false
+  },
+  {
+    date: `${year}-${String(month).padStart(2, '0')}-03`,
+    name: this.employee.name,
+    status: 'L',
+    remarks: 'Personal Reason',
+    isApproved: true
+  }
+];
+
+  }
+
+  get selectedMonthYear(): string {
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    return `${months[this.currentMonthIndex]} ${this.currentYear}`;
   }
 
   goToPreviousMonth() {
@@ -43,6 +124,7 @@ export class AttendanceComponent {
     } else {
       this.currentMonthIndex--;
     }
+    this.fetchMonthlyAttendance();
   }
 
   goToNextMonth() {
@@ -52,32 +134,6 @@ export class AttendanceComponent {
     } else {
       this.currentMonthIndex++;
     }
+    this.fetchMonthlyAttendance();
   }
-
-  attendance = [
-    {
-      date: 'Tue 03 Jun 25',
-      working: '00h, 00m',
-      break: '00h, 40m',
-      total: '01h, 00m',
-      status: '',
-      highlight: false
-    },
-    {
-      date: 'Mon 02 Jun 25',
-      working: '05h, 54m',
-      break: '01h, 01m',
-      total: '06h, 55m',
-      status: 'Present WFH (Full Day)',
-      highlight: true
-    },
-    {
-      date: 'Sun 01 Jun 25',
-      working: '',
-      break: '',
-      total: '',
-      status: 'Weekoff',
-      highlight: false
-    }
-  ];
 }

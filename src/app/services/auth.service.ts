@@ -137,7 +137,7 @@ export class AuthService {
   }
 
   // Get Employee Name
-  getEmployeeName(): string | null {
+  getfullName(): string | null {
     const decoded = this.getDecodedToken();
     return decoded?.sub || null;
   }

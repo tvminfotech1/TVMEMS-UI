@@ -1,0 +1,48 @@
+<div class="admin-attendance">
+  <h2>Admin - Attendance Approval</h2>
+
+  <!-- 🔍 Filter Section -->
+  <div class="filters">
+    <input type="date" [(ngModel)]="filterDate" (change)="applyFilters()" />
+    <input type="month" [(ngModel)]="filterMonth" (change)="applyFilters()" />
+    <input type="text" placeholder="Search by Emp ID" [(ngModel)]="filterEmpId" (input)="applyFilters()" />
+    <input type="text" placeholder="Search by Name" [(ngModel)]="filterName" (input)="applyFilters()" />
+  </div>
+
+  <!-- 📋 Attendance Table -->
+  <table *ngIf="filteredAttendance.length > 0">
+    <thead>
+      <tr>
+        <th>Emp ID</th>
+        <th>Name</th>
+        <th>Department</th>
+        <th>Date</th>
+        <th>Status</th>
+        <th>Remarks</th>
+        <th>Approval</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let entry of filteredAttendance">
+        <td>{{ entry.empId }}</td>
+        <td>{{ entry.name }}</td>
+        <td>{{ entry.department }}</td>
+        <td>{{ entry.date }} - ({{ entry.entryTime || '-' }})</td>
+        <td>{{ entry.status }}</td>
+        <td>{{ entry.remarks }}</td>
+        <td>
+          <span [ngClass]="{ 'approved': entry.isApproved, 'pending': !entry.isApproved }">
+            {{ entry.isApproved ? 'Approved' : 'Pending' }}
+          </span>
+        </td>
+        <td>
+          <button (click)="approveAttendance(entry)" [disabled]="entry.isApproved">Approve</button>
+          <button (click)="rejectAttendance(entry)" [disabled]="!entry.isApproved">Reject</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p *ngIf="filteredAttendance.length === 0">No attendance records found.</p>
+</div>

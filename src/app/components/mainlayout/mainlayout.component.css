@@ -4,9 +4,10 @@
   flex-direction: row;
   font-family: 'Segoe UI', sans-serif;
   width: 100%;
-  min-height: 100vh;
+  min-height: 95vh;
   height: auto;
 }
+
 
 /* Sidebar */
 .sidebar {

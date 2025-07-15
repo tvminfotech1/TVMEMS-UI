@@ -35,7 +35,7 @@ export class DashboardhomeComponent implements OnInit {
     }
 
     // Get user name from token
-    this.userName = this.authService.getEmployeeName() || 'User';
+    this.userName = this.authService.getfullName() || 'User';
 
     // Check roles
     this.isAdmin = this.authService.isAdmin();

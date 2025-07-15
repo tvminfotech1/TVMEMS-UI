@@ -1,98 +1,219 @@
-/* Make container full page width by removing fixed container */
-:host {
-  display: block;
-  max-width: 80vw;
-  padding: 10px 20px;
-  box-sizing: border-box;
-  font-family: Arial, sans-serif;
+/* -------------------- Container & Form -------------------- */
+.attendance-form {
+  max-width: 600px;
+  margin: 30px auto;
+  padding: 25px;
+  background-color: #f9fbfd;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
-/* Month Switcher full width */
+.attendance-form h2 {
+  text-align: center;
+  color: #007bff;
+  margin-bottom: 20px;
+}
+
+.attendance-form label {
+  display: block;
+  margin-top: 10px;
+  font-weight: 500;
+}
+
+.attendance-form input,
+.attendance-form select,
+.attendance-form textarea {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  font-size: 14px;
+}
+
+.attendance-form button {
+  width: 100%;
+  background-color: #007bff;
+  color: white;
+  font-weight: bold;
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.attendance-form button:hover {
+  background-color: #0056b3;
+}
+
+/* -------------------- Month Switcher -------------------- */
 .month-switcher {
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 20px;
+  margin: 20px auto;
+  font-size: 18px;
+  color: #333;
+}
+
+/* -------------------- Attendance Table -------------------- */
+.monthly-list {
+  max-width: 700px;
+  margin: 30px auto;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.07);
+}
+
+.monthly-list h3 {
+  text-align: center;
+  color: #333;
   margin-bottom: 15px;
-  font-size: 16px;
-  font-weight: bold;
-  width: 100%;
 }
 
-.month-switcher button {
-  margin: 0 10px;
-  padding: 6px 12px;
-  cursor: pointer;
-  background-color: #007bff;
-  border: none;
-  color: white;
-  border-radius: 4px;
-  font-weight: bold;
-  min-width: 40px;
-}
-
-.month-switcher button:hover {
-  background-color: #0056b3;
-}
-
-/* Table full width */
 table {
   width: 100%;
   border-collapse: collapse;
-  table-layout: fixed;
-}
-
-th, td {
-  border: 1px solid #ccc;
-  padding: 10px;
-  vertical-align: top;
-  word-wrap: break-word;
-}
-
-th {
-  background-color: #f2f2f2;
-  text-align: left;
-}
-
-.hours-row td {
-  text-align: center;
-  font-weight: bold;
-  background-color: #f9f9f9;
-  font-size: 16px;
-}
-
-.main-date {
-  font-weight: bold;
   font-size: 14px;
-  margin-bottom: 6px;
 }
 
-.status-wfh {
+table th,
+table td {
+  padding: 10px;
+  text-align: center;
+  border: 1px solid #ddd;
+}
+
+table thead {
+  background-color: #f0f4f7;
+  font-weight: 600;
+}
+
+/* -------------------- Status Colors -------------------- */
+.approved {
   color: green;
   font-weight: bold;
 }
 
-.status-weekoff {
-  color: brown;
+.pending {
+  color: orange;
   font-weight: bold;
 }
 
-.highlight {
-  background-color: #e6f1f8;
+.status-P {
+  color: green;
+  font-weight: bold;
 }
 
-/* Responsive for smaller devices */
+.status-A {
+  color: red;
+  font-weight: bold;
+}
+
+.status-L {
+  color: orange;
+  font-weight: bold;
+}
+
+.status-H {
+  color: blue;
+  font-weight: bold;
+}
+
+/* -------------------- Responsive -------------------- */
 @media (max-width: 768px) {
+  .attendance-form,
+  .monthly-list {
+    padding: 15px;
+  }
+
   .month-switcher {
+    font-size: 16px;
     flex-direction: column;
-    gap: 10px;
   }
 
-  th, td {
-    font-size: 14px;
-    padding: 8px;
-  }
-
-  .month-switcher button {
-    width: 100px;
+  table th,
+  table td {
+    padding: 6px;
+    font-size: 12px;
   }
 }
+.info-box {
+  background-color: #e8f4ff;
+  padding: 10px;
+  border-left: 4px solid #007bff;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+
+label {
+  font-weight: 500;
+  margin-bottom: 5px;
+  display: block;
+}
+
+input, select, textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  margin-top: 2px;
+}
+
+button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.month-switcher {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  margin: 20px auto;
+  font-size: 16px;
+  color: #333;
+}
+
+.monthly-list {
+  margin-top: 30px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+table th, table td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+}
+
+thead {
+  background-color: #f0f4f7;
+}
+
+.status-P { color: green; font-weight: bold; }
+.status-A { color: red; font-weight: bold; }
+.status-L { color: orange; font-weight: bold; }
+.status-H { color: blue; font-weight: bold; }
+.approved { color: green; font-weight: bold; }
+.pending { color: orange; font-weight: bold; }

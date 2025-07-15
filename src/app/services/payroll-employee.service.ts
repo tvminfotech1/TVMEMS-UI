@@ -24,11 +24,16 @@ export class PayrollEmployeeService {
     );
   }
 
-  getEmployeeById(id: number): Observable<Employee> {
-  return this.http.get<any>(`${this.apiUrl}/${id}`).pipe(
-    map(response => response.body as Employee)
+ getEmployeeById(id: number): Observable<Employee> {
+  return this.http.get<Employee[]>(`${this.apiUrl}/${id}`).pipe(
+    map(response => response[0]),
+    catchError(err => {
+      console.error('Failed to fetch employee by ID', err);
+      return of({} as Employee);
+    })
   );
 }
+
 
 
   addEmployee(employee: Employee): Observable<Employee> {

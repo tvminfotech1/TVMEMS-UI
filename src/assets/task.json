@@ -1,7 +1,7 @@
 {
   "tasks": [
     {
-      "employeeName": "kousi",
+      "fullName": "kousi",
       "title": "Build Login Page",
       "label": "UI",
       "description": "Create responsive login form with validations.",
@@ -11,7 +11,7 @@
       "status": "In Progress"
     },
     {
-      "employeeName": "ragu",
+      "fullName": "ragu",
       "title": "API Integration",
       "label": "Backend",
       "description": "Connect Angular form to backend API.",
@@ -21,7 +21,7 @@
       "status": "Not Started"
     },
     {
-      "employeeName": "ram",
+      "fullName": "ram",
       "title": "Write Unit Tests",
       "label": "Testing",
       "description": "Add unit tests for service and component.",
@@ -31,7 +31,7 @@
       "status": "Completed"
     },
     {
-      "employeeName": "krishika",
+      "fullName": "krishika",
       "title": "UX Design Review",
       "label": "Design",
       "description": "Review wireframes with stakeholders.",

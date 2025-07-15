@@ -46,14 +46,21 @@ export class AdminComponent implements OnInit {
        let a= d.body[0]
         console.log("Response:", a);
         
-        this.employees = d.body.map((data: any) => ({
-          index:data.id,
-          name: data.fname + ' ' + data.lname,
-          email: data.email,
-          contact: data.permanentContact,
-          city: data.permanentCity,
-          details: data
-        }));
+    this.employees = d.body.map((data: any) => {
+  console.log('permanentContact:', data.permanentContact);
+  console.log('permanentCity:', data.permanentCity);
+
+  return {
+    index: data.id,
+    name: data.fname + ' ' + data.lname,
+    email: data.email,
+    contact: data.permanentContact || 'N/A',
+    city: data.permanentCity || 'N/A',
+    details: data
+  };
+});
+
+
         
   
         this.filteredEmployees = [...this.employees];
