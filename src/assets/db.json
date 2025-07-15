@@ -1,7 +1,7 @@
 {
   "timelogs": [
     {
-      "employeeName": "John Doe",
+      "fullName": "John Doe",
       "project": "Project1",
       "totalHours": "40",
       "description": "Completed feature development and testing.",

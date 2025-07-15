@@ -107,17 +107,21 @@ copyCurrentToPermanent(event: any): void {
   }
 }
 
-  submitForm() {
+submitForm() {
   if (this.userForm.valid) {
+    const rawFormValue = this.userForm.getRawValue();
+
     const formValue = {
-      ...this.userForm.value,
-      current_pincode: +this.userForm.value.current_pincode,
-      permanent_pincode: +this.userForm.value.permanent_pincode,
-      bcp_pincode: +this.userForm.value.bcp_pincode,
-      current_contact: +this.userForm.value.current_contact,
-      permanentContact: +this.userForm.value.permanentContact,
-      emergency_contact_number: +this.userForm.value.emergency_contact_number
+      ...rawFormValue,
+      current_pincode: +rawFormValue.current_pincode,
+      permanent_pincode: +rawFormValue.permanent_pincode,
+      bcp_pincode: +rawFormValue.bcp_pincode,
+      current_contact: +rawFormValue.current_contact,
+      permanentContact: +rawFormValue.permanentContact,
+      emergency_contact_number: +rawFormValue.emergency_contact_number
     };
+
+    console.log("Submitting data: ", formValue); // ✅ Debug log
 
     this.userService.setFormData('personal', formValue);
     this.router.navigate(['/mainlayout/kyc']);
@@ -126,5 +130,6 @@ copyCurrentToPermanent(event: any): void {
     this.userForm.markAllAsTouched();
   }
 }
+
 
 }

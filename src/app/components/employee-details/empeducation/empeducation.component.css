@@ -1,64 +1,105 @@
-.form-grid {
+.education-section {
+  margin: 20px 10%;
+  padding: 20px;
+  background-color: #fefefe;
+  border-radius: 10px;
+  font-family: Arial, sans-serif;
+}
+
+.education-section h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 24px;
+  color: #333;
+}
+
+.education-card {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 1.2rem;
-  margin: 20px auto;
-  max-width: 800px;
-  }
-  
-  .form-group {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .form-group label {
-    margin-bottom: 5px;
-    font-weight: bold;
-  }
-  
-  input, select {
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    background-color: #fefefe;
-  }
-  
-  .button-group {
-    grid-column: 1 / -1;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 20px;
-  }
-  
-  .update-button {
-    padding: 10px 20px;
-    border-radius: 8px;
-    background-color: blue;
-    color: white;
-    border: none;
-    cursor: pointer;
-  }
-  
-  .button-group a {
-    text-decoration: none;
-    background-color: #f0f0f0;
-    padding: 10px 20px;
-    border-radius: 8px;
-    color: black;
-    font-weight: bold;
-  }
-  
-  .button-group a:hover, .update-button:hover {
-    background-color: #004aad;
-    color: white;
-  }
-  
-  .error {
-  color: red;
-  font-size: 12px;
-  margin-top: 4px;
+  gap: 1rem;
+  margin-bottom: 30px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-left: 5px solid #007bff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
-input[readonly]:hover{
-cursor: not-allowed;
+
+.education-card h3 {
+  grid-column: 1 / -1;
+  margin-bottom: 10px;
+  color: #007bff;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #444;
+  font-size: 14px;
+}
+
+input[readonly] {
+  background-color: #fff;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+input[readonly]:hover {
+  cursor: not-allowed;
+  background-color: #f0f0f0;
+}
+
+.button-group {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
+  padding: 0 10%;
+}
+
+.button-group a,
+.update-button {
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: bold;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  font-size: 14px;
+}
+
+.button-group a {
+  background-color: #e2e2e2;
+  color: #333;
+  border: 1px solid #ccc;
+}
+
+.button-group a:hover {
+  background-color: #ccc;
+}
+
+.update-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.update-button:hover {
+  background-color: #0056b3;
+}
+
+.fallback-message {
+  text-align: center;
+  padding: 20px;
+  color: #b10000;
+  background-color: #ffecec;
+  border-radius: 8px;
+  margin: 40px 10%;
+  border: 1px solid #ffcaca;
 }

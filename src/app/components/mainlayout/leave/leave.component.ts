@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from 'src/app/services/auth.service';
+
 @Component({
   selector: 'app-leave',
   templateUrl: './leave.component.html',
@@ -7,6 +9,8 @@ import { Component, OnInit } from '@angular/core';
 export class LeaveComponent implements OnInit {
   Math = Math;
   selectedDate: string = '';  
+  isAdmin: boolean = false;
+  isUser: boolean = false;
   
   // Modal visibility flags
   showApplyLeaveModal = false;
@@ -85,10 +89,12 @@ export class LeaveComponent implements OnInit {
   
   filteredRequests = [...this.allRequests];
   
-  constructor() { }
+  constructor(private authService:AuthService) { }
   
   ngOnInit(): void {
     this.filterRequests();
+    this.isAdmin = this.authService.isAdmin();
+    this.isUser = this.authService.isUser();
   }
   
   // Modal Methods

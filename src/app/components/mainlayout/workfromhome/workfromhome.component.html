@@ -47,7 +47,7 @@
     <div>Reason</div>
     <div>Created At / Approver</div>
     <div>Status</div>
-    <div>Action</div>
+    <div *ngIf="isAdmin">Action</div>
   </div>
 
   <div class="row" *ngFor="let d of details">
@@ -62,7 +62,7 @@
         }">
       {{ d.status | titlecase }}
     </div>
-    <div>
+    <div *ngIf="isAdmin">
       <button (click)="updateStatus(d, 'approved')">✔️</button>
       <button (click)="updateStatus(d, 'rejected')">❌</button>
       <button (click)="updateStatus(d, 'pending')">🕒</button>

@@ -1,38 +1,105 @@
-<div class="month-switcher">
-  <button (click)="goToPreviousMonth()">&lt;</button>
-  <span>{{ selectedMonthYear }}</span>
-  <button (click)="goToNextMonth()">&gt;</button>
+<!-- Attendance Entry Header -->
+<h2 style="text-align: center; margin-bottom: 20px; color: #0056b3;">Employee Daily Attendance</h2>
+
+<!-- Form Starts -->
+<form [formGroup]="attendanceForm" (ngSubmit)="submitAttendance()" style="margin-bottom: 30px;">
+  <!-- Employee Info in Grid -->
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+    <div>
+      <label>Employee ID</label>
+      <input type="number" formControlName="empId" readonly />
+    </div>
+    <div>
+      <label>Name</label>
+      <input formControlName="name" readonly />
+    </div>
+    <div>
+      <label>Department</label>
+      <input formControlName="department" readonly />
+    </div>
+    <div>
+      <label>Designation</label>
+      <input formControlName="designation" readonly />
+    </div>
+    <div>
+      <label>Date</label>
+      <input formControlName="date" readonly />
+    </div>
+    <div>
+      <label>Status</label>
+      <select formControlName="status">
+        <option value="">Select</option>
+        <option value="P">Present</option>
+        <option value="A">Absent</option>
+        <option value="L">Leave</option>
+        <option value="H">Holiday</option>
+      </select>
+    </div>
+  </div>
+
+ <!-- Remarks & Time Row -->
+<div style="display: flex; gap: 15px; margin-top: 20px;">
+   <div style="flex: 1;">
+    <label>Entry Time</label>
+    <input formControlName="entryTime" type="time" />
+  </div>
+  <!-- Remarks -->
+  <div style="flex: 2;">
+    <label>Remarks</label>
+    <textarea formControlName="remarks" rows="3"></textarea>
+  </div>
+
+  <!-- Entry Time -->
+ 
 </div>
 
-<table>
-  <thead>
-    <tr class="hours-row">
-      <td colspan="5">HOURS</td>
-    </tr>
-    <tr>
-      <th>Date</th>
-      <th>Working</th>
-      <th>Break</th>
-      <th>Total</th>
-      <th>Status</th>
-    </tr>
-  </thead>
-  <tbody>
-    <ng-container *ngFor="let entry of attendance">
-      <tr [ngClass]="{ 'highlight': entry.highlight }">
-        <td><div class="main-date">{{ entry.date }}</div></td>
-        <td>{{ entry.working || '00h, 00m' }}</td>
-        <td>{{ entry.break || '00h, 00m' }}</td>
-        <td>{{ entry.total || '00h, 00m' }}</td>
-        <td
-          [ngClass]="{
-            'status-wfh': entry.status.includes('WFH'),
-            'status-weekoff': entry.status === 'Weekoff'
-          }"
-        >
-          {{ entry.status }}
+
+
+  <!-- Submit -->
+  <div style="text-align: center; margin-top: 20px;">
+    <button type="submit" style="padding: 10px 30px;">Submit Attendance</button>
+  </div>
+</form>
+
+<!-- Month Switcher -->
+<div class="month-switcher">
+  <button (click)="goToPreviousMonth()">⬅️</button>
+  <strong>{{ selectedMonthYear }}</strong>
+  <button (click)="goToNextMonth()">➡️</button>
+</div>
+
+
+<!-- Monthly Attendance Table -->
+<div class="monthly-list">
+  <h3>Monthly Attendance Log ({{ selectedMonthYear }})</h3>
+
+  <table *ngIf="attendanceList.length > 0">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Entry Time</th>
+        <th>Name</th>
+        <th>Status</th>
+        <th>Remarks</th>
+        <th>Approval</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of attendanceList">
+        <td>{{ item.date }}</td>
+        <td>{{ item.entryTime || '-' }}</td>
+        <td>{{ item.name || employee.name }}</td>
+        <td [ngClass]="'status-' + item.status">{{ item.status }}</td>
+        <td>{{ item.remarks || '-' }}</td>
+        <td>
+          <span [ngClass]="{ 'approved': item.isApproved, 'pending': !item.isApproved }">
+            {{ item.isApproved ? 'Approved' : 'Pending' }}
+          </span>
         </td>
       </tr>
-    </ng-container>
-  </tbody>
-</table>
+    </tbody>
+  </table>
+
+  <p *ngIf="attendanceList.length === 0">No records found for this month.</p>
+</div>
+

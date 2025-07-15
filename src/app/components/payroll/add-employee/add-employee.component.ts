@@ -49,7 +49,7 @@ export class AddEmployeeComponent {
 
     this.empService.addEmployee(this.employee).subscribe(() => {
       alert('Employee Added Successfully!');
-      this.router.navigate(['/employees']);
+      this.router.navigate(['/mainlayout/payroll-employee']);
     });
   }
 }

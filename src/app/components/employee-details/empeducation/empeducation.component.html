@@ -1,70 +1,70 @@
 <app-nav-display></app-nav-display>
 
-<form class="form-grid" *ngIf="employeeDetails?.education">
-  <h2 style="grid-column: 1 / -1;">Education Details</h2>
+<div class="education-section" *ngIf="employeeDetails?.education?.length > 0">
+  <h2>Education Details</h2>
 
-  <div class="form-group">
-    <label>Qualification</label>
-    <input type="text" [value]="employeeDetails?.education?.qualification" readonly />
+  <div *ngFor="let edu of employeeDetails.education; let i = index" class="form-grid education-card">
+    <h3>Education {{ i + 1 }}</h3>
+
+    <div class="form-group">
+      <label>Qualification</label>
+      <input type="text" [value]="edu.qualification" readonly />
+    </div>
+
+    <div class="form-group">
+      <label>Specialization</label>
+      <input type="text" [value]="edu.specilization" readonly />
+    </div>
+
+    <div class="form-group">
+      <label>Institute Name</label>
+      <input type="text" [value]="edu.instituteName" readonly />
+    </div>
+
+    <div class="form-group">
+      <label>University Name</label>
+      <input type="text" [value]="edu.universityName" readonly />
+    </div>
+
+    <div class="form-group">
+      <label>Study Mode</label>
+      <input type="text" [value]="edu.time" readonly />
+    </div>
+
+    <div class="form-group">
+      <label>From</label>
+      <input type="text" [value]="edu.fromDate" readonly />
+    </div>
+
+    <div class="form-group">
+      <label>To</label>
+      <input type="text" [value]="edu.toDate" readonly />
+    </div>
+
+    <div class="form-group">
+      <label>Percentage (%)</label>
+      <input type="text" [value]="edu.percentage" readonly />
+    </div>
+
+    <div class="form-group">
+      <label>Roll No</label>
+      <input type="text" [value]="edu.rollNo" readonly />
+    </div>
+
+    <div class="form-group">
+      <label>Education Type</label>
+      <input type="text" [value]="edu.educationType" readonly />
+    </div>
   </div>
 
-  <div class="form-group">
-    <label>Specialization</label>
-    <input type="text" [value]="employeeDetails?.education?.specilization" readonly />
+  <!-- Navigation Buttons -->
+  <div class="button-group">
+    <a [routerLink]="['/mainlayout/emppreviousEmployee', employeeDetails?.id]">&laquo; Previous</a>
+    <button class="update-button" [routerLink]="['/mainlayout/empskills', employeeDetails?.id]">Next &raquo;</button>
   </div>
+</div>
 
-  <div class="form-group">
-    <label>Institute Name</label>
-    <input type="text" [value]="employeeDetails?.education?.instituteName" readonly />
-  </div>
-
-  <div class="form-group">
-    <label>University Name</label>
-    <input type="text" [value]="employeeDetails?.education?.universityName" readonly />
-  </div>
-
-  <div class="form-group">
-    <label>Study Mode</label>
-    <input type="text" [value]="employeeDetails?.education?.time" readonly />
-  </div>
-
-  <div class="form-group">
-    <label>From</label>
-    <input type="text" [value]="employeeDetails?.education?.fromDate" readonly />
-  </div>
-
-  <div class="form-group">
-    <label>To</label>
-    <input type="text" [value]="employeeDetails?.education?.toDate" readonly />
-  </div>
-
-  <div class="form-group">
-    <label>Percentage (%)</label>
-    <input type="number" [value]="employeeDetails?.education?.percentage" readonly />
-  </div>
-
-  <div class="form-group">
-    <label>Roll No</label>
-    <input type="text" [value]="employeeDetails?.education?.rollNo" readonly />
-  </div>
-
-  <div class="form-group">
-    <label>Education Type</label>
-    <input type="text" [value]="employeeDetails?.education?.educationType" readonly />
-  </div>
-
-  <!-- ✅ Navigation Buttons -->
-  <div class="button-group full-width">
-    <a [routerLink]="['/mainlayout/emppreviousEmployee', employeeDetails?.id]" class="prev-btn">
-      &laquo; Previous
-    </a>
-    <a [routerLink]="['/mainlayout/empskills', employeeDetails?.id]" class="update-button">
-      Next &raquo;
-    </a>
-  </div>
-</form>
-
-<!-- ❗ Fallback if education data not available -->
-<div *ngIf="!employeeDetails?.education" class="fallback-message">
-  <p>Education details not available.</p>
+<!-- Fallback -->
+<div *ngIf="employeeDetails?.education?.length === 0" class="fallback-message">
+  <p>No education data added.</p>
 </div>

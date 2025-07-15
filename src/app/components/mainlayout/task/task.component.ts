@@ -18,7 +18,7 @@ export class TaskComponent {
   filteredCards: any[] = [];
 
   newTask: any = {
-    employeeName: '',
+    fullName: '',
     label: '',
     title: '',
     description: '',
@@ -67,7 +67,7 @@ export class TaskComponent {
 submitTask() {
   const payload = {
     taskName: this.newTask.title,
-    taskOwner: this.newTask.employeeName,
+    taskOwner: this.newTask.fullName,
     description: this.newTask.description,
     priority: this.newTask.priority,
     assignedDate: this.newTask.startDate,
@@ -79,7 +79,7 @@ submitTask() {
     next: () => {
       this.loadTasks();
       this.newTask = {
-        employeeName: '',
+        fullName: '',
         label: '',
         title: '',
         description: '',

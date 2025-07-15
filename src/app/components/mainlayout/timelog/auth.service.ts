@@ -8,7 +8,7 @@ export class AuthService {
   constructor() { }
   getAuthenticatedEmployee() {
     // Replace with real authentication logic
-    return { employeeName: 'John Doe' };
+    return { fullName: 'John Doe' };
   }
 
 }

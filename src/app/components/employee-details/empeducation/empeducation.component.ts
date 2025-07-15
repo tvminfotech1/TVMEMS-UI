@@ -20,6 +20,7 @@ export class EmpeducationComponent implements OnInit {
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
+    this.employeeId = id;
     const sharedData = this.empDataService.getEmployeeData();
 
     if (sharedData) {
