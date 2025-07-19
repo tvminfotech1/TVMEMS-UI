@@ -1,84 +1,19 @@
-
-
-
-// import { Injectable } from '@angular/core';
-// import { HttpClient } from '@angular/common/http';
-// import { Observable, of } from 'rxjs';
-// import { jwtDecode } from 'jwt-decode';
-
-// @Injectable({
-//   providedIn: 'root'
-// })
-// export class AuthService {
-//   private baseUrl = 'http://localhost:8080';
-
-//   constructor(private http: HttpClient) {}
-
-//   // Admin Login
-//   loginAdmin(data: any): Observable<any> {
-//     return this.http.post(`${this.baseUrl}/adminlogin`, data);
-//   }
-
-//   // User Login
-//   loginUser(data: any): Observable<any> {
-//     return this.http.post(`${this.baseUrl}/userlogin`, data);
-//   }
-
-//   // Registration (Admin creating user)
-//   register(data: any): Observable<any> {
-//     return this.http.post(`${this.baseUrl}/admin/newuser`, data, {
-//       responseType: 'text'
-//     });
-//   }
-
-//   // Get JWT token from localStorage
-//   getToken(): string | null {
-//     return localStorage.getItem('token');
-//   }
-
-//   // Decode Role from JWT token
-//   getUserRole(): string | null {
-//     const token = this.getToken();
-//     if (!token) return null;
-
-//     try {
-//       const decoded: any = jwtDecode(token);
-//       const roles = decoded.roles;
-//       return Array.isArray(roles) ? roles[0] : roles;
-//     } catch (error) {
-//       return null;
-//     }
-//   }
-
-//   // ✅ Check if Admin
-//   isAdmin(): boolean {
-//     return this.getUserRole() === 'ROLE_ADMIN';
-//   }
-
-//   // ✅ Check if User
-//   isUser(): boolean {
-//     return this.getUserRole() === 'ROLE_USER';
-//   }
-
-//   // ✅ For Guard – Get Role in Observable
-//   checkRole(): Observable<any> {
-//     const token = this.getToken();
-//     if (!token) return of({ role: null });
-
-//     try {
-//       const decoded: any = jwtDecode(token);
-//       const roles = decoded.roles;
-//       return of({ role: Array.isArray(roles) ? roles[0] : roles });
-//     } catch (e) {
-//       return of({ role: null });
-//     }
-//   }
-// }
-
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { HttpClient, HttpResponse } from '@angular/common/http';
+import { Observable, of, throwError } from 'rxjs';
+import { map, catchError, tap } from 'rxjs/operators';
 import { jwtDecode } from 'jwt-decode';
+import { Router } from '@angular/router';
+
+interface DecodedToken {
+  sub: string;
+  roles: string | string[];
+  empId?: string;
+  fullName?: string;
+  name?: string;
+  exp: number;
+  iat: number;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -86,75 +21,129 @@ import { jwtDecode } from 'jwt-decode';
 export class AuthService {
   private baseUrl = 'http://localhost:8080';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
-  // Admin Login
+  private saveToken(token: string): void {
+    localStorage.setItem('token', token);
+  }
+
   loginAdmin(data: any): Observable<any> {
-    return this.http.post(`${this.baseUrl}/adminlogin`, data);
+    return this.http.post(`${this.baseUrl}/adminlogin`, data, { observe: 'response' }).pipe(
+      tap((response: HttpResponse<any>) => {
+        const token = response.headers.get('Authorization') || response.body?.token;
+        if (token) {
+          this.saveToken(token.startsWith('Bearer ') ? token.substring(7) : token);
+        } else {
+          console.warn('Login Admin: Token not found in response header or body.');
+          throw new Error('Authentication failed: Token not received.');
+        }
+      }),
+      map(response => response.body),
+      catchError(error => {
+        console.error('Login Admin failed:', error);
+        return throwError(() => new Error('Admin login failed. Please check credentials.'));
+      })
+    );
   }
 
-  // User Login
   loginUser(data: any): Observable<any> {
-    return this.http.post(`${this.baseUrl}/userlogin`, data);
+    return this.http.post(`${this.baseUrl}/userlogin`, data, { observe: 'response' }).pipe(
+      tap((response: HttpResponse<any>) => {
+        const token = response.headers.get('Authorization') || response.body?.token;
+        if (token) {
+          this.saveToken(token.startsWith('Bearer ') ? token.substring(7) : token);
+        } else {
+          console.warn('Login User: Token not found in response header or body.');
+          throw new Error('Authentication failed: Token not received.');
+        }
+      }),
+      map(response => response.body),
+      catchError(error => {
+        console.error('Login User failed:', error);
+        return throwError(() => new Error('User login failed. Please check credentials.'));
+      })
+    );
   }
 
-  // Registration
-  register(data: any): Observable<any> {
+  register(data: any): Observable<string> {
     return this.http.post(`${this.baseUrl}/admin/newuser`, data, {
       responseType: 'text'
-    });
+    }).pipe(
+      catchError(error => {
+        console.error('Registration failed:', error);
+        return throwError(() => new Error('Registration failed. Please try again.'));
+      })
+    );
   }
 
-  // Get JWT token from localStorage
   getToken(): string | null {
-    return localStorage.getItem('token');
+    const token = localStorage.getItem('token');
+    if (token && this.isTokenExpired(token)) {
+        console.warn('JWT token is expired. Logging out.');
+        this.logout();
+        return null;
+    }
+    return token;
   }
 
-  //  Decode JWT safely
-  getDecodedToken(): any | null {
+  getDecodedToken(): DecodedToken | null {
     const token = this.getToken();
     if (!token) return null;
 
     try {
-      return jwtDecode(token);
+      return jwtDecode<DecodedToken>(token);
     } catch (err) {
       console.error('JWT decode error:', err);
       return null;
     }
   }
 
-  // Get Role from Token
+  private isTokenExpired(token: string): boolean {
+    try {
+      const decoded: DecodedToken = jwtDecode(token);
+      if (decoded.exp === undefined) {
+        return false;
+      }
+      const currentTime = Date.now() / 1000;
+      return decoded.exp < currentTime;
+    } catch (e) {
+      console.error('Error checking token expiry:', e);
+      return true;
+    }
+  }
+
   getUserRole(): string | null {
     const decoded = this.getDecodedToken();
     const roles = decoded?.roles;
     return Array.isArray(roles) ? roles[0] : roles || null;
   }
 
-  // Get Employee ID
   getEmployeeId(): string | null {
     const decoded = this.getDecodedToken();
     return decoded?.empId || null;
   }
 
-  // Get Employee Name
   getfullName(): string | null {
     const decoded = this.getDecodedToken();
-    return decoded?.sub || null;
+    return decoded?.fullName || decoded?.name || decoded?.sub || null;
   }
 
-  //Is Admin?
   isAdmin(): boolean {
     return this.getUserRole() === 'ROLE_ADMIN';
   }
 
-  //Is User?
   isUser(): boolean {
     return this.getUserRole() === 'ROLE_USER';
   }
 
-  //Guard Access – Observable
   checkRole(): Observable<any> {
     const role = this.getUserRole();
     return of({ role: role });
+  }
+
+  logout(): void {
+    localStorage.removeItem('token');
+    sessionStorage.clear();
+    this.router.navigateByUrl('/adminLogin');
   }
 }

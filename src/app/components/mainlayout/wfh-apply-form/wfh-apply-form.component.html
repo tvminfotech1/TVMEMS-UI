@@ -1,0 +1,53 @@
+<div class="wfh-form-overlay">
+  <div class="wfh-form-container">
+    <h2>Apply for Work From Home</h2>
+    <form [formGroup]="wfhForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="employeeName">Employee Name:</label>
+        <input type="text" id="employeeName" [value]="employeeName" readonly class="readonly-input">
+      </div>
+
+      <div class="form-group">
+        <label for="fromDate">From Date:</label>
+        <input type="date" id="fromDate" formControlName="fromDate" required>
+        <div *ngIf="wfhForm.controls['fromDate'].invalid && (wfhForm.controls['fromDate'].dirty || wfhForm.controls['fromDate'].touched)" class="error-message">
+          From Date is required.
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="toDate">To Date:</label>
+        <input type="date" id="toDate" formControlName="toDate" required>
+        <div *ngIf="wfhForm.controls['toDate'].invalid && (wfhForm.controls['toDate'].dirty || wfhForm.controls['toDate'].touched)" class="error-message">
+          To Date is required.
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="reason">Reason:</label>
+        <textarea id="reason" formControlName="reason" rows="4" required placeholder="Enter reason for WFH..."></textarea>
+        <div *ngIf="wfhForm.controls['reason'].invalid && (wfhForm.controls['reason'].dirty || wfhForm.controls['reason'].touched)" class="error-message">
+          <span *ngIf="wfhForm.controls['reason'].errors?.['required']">Reason is required.</span>
+          <span *ngIf="wfhForm.controls['reason'].errors?.['minlength']">Reason must be at least 10 characters long.</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="approver">Approver:</label>
+        <input type="text" id="approver" formControlName="approver" required placeholder="Enter approver's name/role">
+        <div *ngIf="wfhForm.controls['approver'].invalid && (wfhForm.controls['approver'].dirty || wfhForm.controls['approver'].touched)" class="error-message">
+          Approver is required.
+        </div>
+      </div>
+
+      <div *ngIf="submissionError" class="submission-error">
+        {{ submissionError }}
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" [disabled]="wfhForm.invalid">Submit Request</button>
+        <button type="button" (click)="onCancel()">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>

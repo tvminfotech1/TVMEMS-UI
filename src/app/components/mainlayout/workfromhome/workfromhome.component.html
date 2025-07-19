@@ -3,13 +3,22 @@
   <a href="mailto:wfm@sensiple.com">wfmsensiple.com</a> for more details.
 </div>
 
+<div class="apply-button">
+  <button (click)="applyWfh()">➕ Apply Work From Home</button>
+</div>
+
+<app-wfh-apply-form
+  *ngIf="showApplyForm"
+  (formSubmitted)="onFormSubmitted()"
+  (formCancelled)="onFormCancelled()"
+></app-wfh-apply-form>
+
 <div class="month-nav">
   <button (click)="prevMonth()">&#60;</button>
   <h2>📅 {{ getMonthName() }} {{ year }}</h2>
   <button (click)="nextMonth()">&#62;</button>
 </div>
 
-<!-- Status Cards -->
 <div class="status-cards">
   <div class="card pending">
     <h3>Pending</h3>
@@ -39,9 +48,10 @@
   </div>
 </div>
 
-<!-- Request Table -->
 <div class="details-table">
   <div class="row header">
+    <div>Employee Name</div>
+    <div>Employee ID</div>
     <div>Date Range</div>
     <div>Days</div>
     <div>Reason</div>
@@ -51,7 +61,7 @@
   </div>
 
   <div class="row" *ngFor="let d of details">
-    <div>{{ d.fromDate }} - {{ d.toDate }}</div>
+    <div>{{ d.employeeName }}</div> <div>{{ d.employeeId }}</div>   <div>{{ d.fromDate }} - {{ d.toDate }}</div>
     <div>{{ d.days }}</div>
     <div>{{ d.reason }}</div>
     <div>{{ d.created }}<br />{{ d.approver }}</div>
