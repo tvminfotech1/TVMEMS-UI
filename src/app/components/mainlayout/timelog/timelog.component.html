@@ -1,5 +1,4 @@
 <div class="timesheet-classic-container">
-  <!-- Year & Month Selectors -->
   <div class="classic-dropdown-section">
     <div class="classic-form-group">
       <label for="year">Year:</label>
@@ -29,7 +28,7 @@
     </div>
 
     <div class="classic-form-group">
-      <label for="weekendDate">Weekend Monday:</label>
+      <label for="weekendDate">Select Week (Monday):</label>
       <select
         id="weekendDate"
         name="weekendDate"
@@ -41,15 +40,16 @@
         <option
           *ngFor="let date of weekendDates"
           [value]="date"
-          [disabled]="isWeekendDateDisabled(date)"
+          [disabled]="isWeekendDateDisabled(date) && !isAdmin"
         >
           {{ date }}
+          <span *ngIf="isWeekendDateDisabled(date) && !isAdmin"> (Past/Future - Not for Submission)</span>
         </option>
       </select>
     </div>
 
     <div class="classic-form-group">
-      <label for="employeeName">Employee Email:</label>
+      <label for="employeeName">Employee Name:</label>
       <input
         type="text"
         id="employeeName"
@@ -58,34 +58,47 @@
         readonly
       />
     </div>
+    <div class="classic-form-group">
+      <label for="employeeId">Employee ID:</label>
+      <input
+        type="text"
+        id="employeeId"
+        name="employeeId"
+        [(ngModel)]="timelog.employeeId"
+        readonly
+      />
+    </div>
   </div>
 
-  <!-- Latest Entry -->
-  <div *ngIf="latestEntry" class="latest-entry-section">
-    <h3>Latest Submitted Entry</h3>
+  <div *ngIf="latestEntry && isUser" class="latest-entry-section">
+    <h3>Latest Submitted Entry (Current Week)</h3>
     <table class="classic-table">
       <thead>
         <tr>
-          <th>Name</th>
           <th>Project</th>
           <th>Total Hrs.</th>
           <th>Description</th>
+          <th>Status</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td>{{ latestEntry.employeeName }}</td>
           <td>{{ latestEntry.project }}</td>
           <td>{{ latestEntry.totalHours }}</td>
           <td>{{ latestEntry.description }}</td>
+          <td>
+            <span [ngClass]="{
+              'status-pending': latestEntry.status === 'Pending',
+              'status-approved': latestEntry.status === 'Approved',
+              'status-rejected': latestEntry.status === 'Rejected'
+            }">{{ latestEntry.status }}</span>
+          </td>
         </tr>
       </tbody>
     </table>
   </div>
 
-  <!-- Accordion -->
   <div class="classic-accordion">
-    <!-- Summary Accordion -->
     <div class="accordion-item">
       <h2 class="accordion-header" (click)="toggleAccordion(0)">
         Timesheet Summary
@@ -94,25 +107,52 @@
         <table class="classic-table">
           <thead>
             <tr>
-              <th>Employee Email</th>
+              <th>Employee Name</th>
+              <th>Employee ID</th>
               <th>Project</th>
+              <th>Week End Date</th>
               <th>Total Hrs.</th>
               <th>Description</th>
-            </tr>
+              <th>Status</th>
+              <th *ngIf="isAdmin">Action</th> </tr>
           </thead>
           <tbody>
             <tr *ngFor="let entry of timelogSummary">
-              <td>{{ timelog.employeeName }}</td>
+              <td>{{ entry.employeeName }}</td>
+              <td>{{ entry.employeeId }}</td>
               <td>{{ entry.project }}</td>
+              <td>{{ entry.weekendDate }}</td>
               <td>{{ entry.totalHours }}</td>
               <td>{{ entry.description }}</td>
+              <td>
+                <span [ngClass]="{
+                  'status-pending': entry.status === 'Pending',
+                  'status-approved': entry.status === 'Approved',
+                  'status-rejected': entry.status === 'Rejected'
+                }">{{ entry.status }}</span>
+              </td>
+              <td *ngIf="isAdmin">
+                <button
+                  *ngIf="entry.status !== 'Approved'"
+                  class="action-btn approve-btn"
+                  (click)="updateTimesheetStatus(entry, 'Approved')"
+                >
+                  Approve
+                </button>
+                <button
+                  *ngIf="entry.status !== 'Rejected'"
+                  class="action-btn reject-btn"
+                  (click)="updateTimesheetStatus(entry, 'Rejected')"
+                >
+                  Reject
+                </button>
+              </td>
             </tr>
           </tbody>
         </table>
       </div>
     </div>
 
-    <!-- Fill Accordion -->
     <div class="accordion-item">
       <h2 class="accordion-header" (click)="toggleAccordion(2)">
         Fill Your Timesheet
@@ -154,6 +194,7 @@
                     (change)="calculateTotalHours()"
                     required
                   >
+                    <option value="">--</option>
                     <option value="WFO">WFO</option>
                     <option value="WFH">WFH</option>
                     <option value="Leave">Leave</option>
@@ -167,6 +208,7 @@
                     (change)="calculateTotalHours()"
                     required
                   >
+                    <option value="">--</option>
                     <option value="WFO">WFO</option>
                     <option value="WFH">WFH</option>
                     <option value="Leave">Leave</option>
@@ -180,6 +222,7 @@
                     (change)="calculateTotalHours()"
                     required
                   >
+                    <option value="">--</option>
                     <option value="WFO">WFO</option>
                     <option value="WFH">WFH</option>
                     <option value="Leave">Leave</option>
@@ -193,7 +236,8 @@
                     (change)="calculateTotalHours()"
                     required
                   >
-                   <option value="WFO">WFO</option>
+                    <option value="">--</option>
+                    <option value="WFO">WFO</option>
                     <option value="WFH">WFH</option>
                     <option value="Leave">Leave</option>
                     <option value="Holiday">Holiday</option>
@@ -206,6 +250,7 @@
                     (change)="calculateTotalHours()"
                     required
                   >
+                    <option value="">--</option>
                     <option value="WFO">WFO</option>
                     <option value="WFH">WFH</option>
                     <option value="Leave">Leave</option>
@@ -235,7 +280,7 @@
           <button
             type="submit"
             class="submit-btn"
-            [disabled]="isFutureOrPastDateSelected"
+            [disabled]="!timelogForm.valid || isFutureOrPastDateSelected"
           >
             Submit
           </button>
