@@ -74,6 +74,7 @@ import { AddEmployeeComponent } from './components/payroll/add-employee/add-empl
 import { AddAnnouncementComponent } from './components/mainlayout/add-announcement/add-announcement.component';
 import { MyProfileComponent } from './components/mainlayout/my-profile/my-profile.component';
 import { AdminAttendanceComponent } from './components/mainlayout/admin-attendance/admin-attendance.component';
+import { WfhApplyFormComponent } from './components/mainlayout/wfh-apply-form/wfh-apply-form.component';
 
 @NgModule({
   declarations: [
@@ -151,6 +152,7 @@ import { AdminAttendanceComponent } from './components/mainlayout/admin-attendan
     AddAnnouncementComponent,
     MyProfileComponent,
     AdminAttendanceComponent,
+    WfhApplyFormComponent,
     
   ],
   imports: [
