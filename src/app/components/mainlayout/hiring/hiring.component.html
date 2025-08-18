@@ -1,29 +1,56 @@
-<div class="container">
-  <div class="card" *ngFor="let job of jobs; let i = index">
-    <div class="ribbon">Hiring</div>
-    <div class="circle">{{ job.positions }}</div>
-    <h3>{{ job.title }}</h3>
-    <p class="qualifications">Qualifications: {{ job.qualifications }}</p>
-    <p>Year of Passout:{{ job.Passout }}</p>
-    <p
-      class="experience"
-      [class.red]="job.experience.toLowerCase().includes('fresher')"
-    >
-      {{ job.experience }}
-    </p>
+<div class="hiring-container">
+  <!-- Loading Spinner -->
+  <div *ngIf="loading" class="loading">
+    <mat-spinner diameter="40"></mat-spinner>
+    <p>Loading jobs...</p>
+  </div>
 
-    <P>Location: {{ job.location }}</P>
+  <!-- Error Message -->
+  <div *ngIf="errorMessage" class="error">
+    ⚠️ {{ errorMessage }}
+  </div>
 
-    <p
-      class="details"
-      (click)="toggleDescription(i)"
-      style="cursor: pointer; font-size: 12px"
-    >
-      {{
-        expandedIndex === i
-          ? job.description
-          : (job.description | slice : 0 : 30) + "..."
-      }}
-    </p>
+  <!-- Job Grid -->
+  <div class="job-grid" *ngIf="!loading && jobs?.length">
+    <mat-card *ngFor="let job of jobs; let i = index" class="job-card">
+      
+      <!-- Ribbon -->
+      <div class="ribbon">🚀 Hiring</div>
+
+      <!-- Circle Badge -->
+      <div class="circle" [class.red]="job?.positions === 0">
+        {{ job?.positions }}
+      </div>
+
+      <mat-card-header>
+        <mat-card-title>{{ job?.title }}</mat-card-title>
+        <mat-card-subtitle>{{ job?.location }}</mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+        <p><strong>🎓 Qualification:</strong> {{ job?.qualifications }}</p>
+        <p><strong>📅 Passout:</strong> {{ job?.yearOfPassout  }}</p>
+
+        <p class="experience"
+           [class.red]="job?.experience?.toLowerCase().includes('fresher')">
+           👨‍💻 {{ job?.experience }}
+        </p>
+
+        <!-- Expandable Description -->
+        <mat-expansion-panel class="description-panel">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              📄 Job Details
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <p>{{ job?.description || 'No description available' }}</p>
+        </mat-expansion-panel>
+      </mat-card-content>
+
+      <!-- <mat-card-actions align="end">
+        <button mat-raised-button color="primary">Apply Now ✨</button>
+      </mat-card-actions> -->
+
+    </mat-card>
   </div>
 </div>

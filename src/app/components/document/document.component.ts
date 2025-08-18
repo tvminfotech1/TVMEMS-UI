@@ -9,8 +9,12 @@ import { Router } from '@angular/router';
   styleUrls: ['./document.component.css'],
 })
 export class DocumentComponent {
-  fileErrors: { [key: string]: string } = {};
   documentForm!: FormGroup;
+  fileErrors: Record<string, string> = {};
+
+  private readonly MAX_FILE_SIZE_MB = 1;
+  private readonly ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png'];
+  private readonly ALLOWED_PDF_TYPE = 'application/pdf';
 
   constructor(
     private fb: FormBuilder,
@@ -30,40 +34,75 @@ export class DocumentComponent {
     });
   }
 
-  onFileChange(event: any, controlName: string) {
-    const file = event.target.files[0];
-    if (file) {
-      const maxSizeInMB = 1;
-      const maxSizeInBytes = maxSizeInMB * 1024 * 1024;
-      if (file.size > maxSizeInBytes) {
-        this.fileErrors[controlName] = 'File size must be less than 1 MB';
-        event.target.value = '';
-        this.documentForm.get(controlName)?.setValue(null);
-        return;
-      } else {
-        this.fileErrors[controlName] = '';
-        this.documentForm.get(controlName)?.setValue(file);
+  onFileChange(event: Event, controlName: string) {
+    const input = event.target as HTMLInputElement;
+    if (!input.files || input.files.length === 0) return;
+
+    const file = input.files[0];
+    this.fileErrors[controlName] = ''; // reset error
+
+    // Validate size
+    const maxSizeInBytes = this.MAX_FILE_SIZE_MB * 1024 * 1024;
+    if (file.size > maxSizeInBytes) {
+      this.fileErrors[controlName] = `File size must be less than ${this.MAX_FILE_SIZE_MB} MB`;
+      input.value = '';
+      this.documentForm.get(controlName)?.setValue(null);
+      return;
+    }
+
+    // Validate type based on field
+    let isValidType = true;
+    if (['matric', 'intermediate', 'graduationMarksheet', 'postGraduation'].includes(controlName)) {
+      // PDF expected
+      if (file.type !== this.ALLOWED_PDF_TYPE) {
+        isValidType = false;
+      }
+    } else {
+      // Image expected
+      if (!this.ALLOWED_IMAGE_TYPES.includes(file.type)) {
+        isValidType = false;
       }
     }
+
+    if (!isValidType) {
+      this.fileErrors[controlName] = `Invalid file type for ${controlName}`;
+      input.value = '';
+      this.documentForm.get(controlName)?.setValue(null);
+      return;
+    }
+
+    // Valid file
+    this.documentForm.get(controlName)?.setValue(file);
   }
 
   submitForm() {
     if (this.documentForm.valid) {
       const formData = new FormData();
-      const documentFiles: any = {};
-
       Object.keys(this.documentForm.controls).forEach((key) => {
         const file = this.documentForm.get(key)?.value;
         if (file) {
           formData.append(key, file);
-          documentFiles[key] = file.name; // store file name
         }
       });
 
-      this.userService.setFormData('documents', documentFiles); // for display
-      this.userService.setFormData('uploadedFiles', formData); // actual files
+      // Get JWT token stored on login
+      const token = localStorage.getItem('token'); 
+      if (!token) {
+        alert('User not authenticated. Please log in again.');
+        return;
+      }
 
-      this.router.navigate(['/mainlayout/resume']);
+      // Use userService method designed for KYC upload (no userId in URL)
+      this.userService.uploadKycDocuments(formData).subscribe({
+        next: (res) => {
+          alert('Documents uploaded successfully!');
+          this.router.navigate(['/mainlayout/resume']);
+        },
+        error: (err) => {
+          console.error(err);
+          alert('Failed to upload documents.');
+        }
+      });
     } else {
       this.documentForm.markAllAsTouched();
       alert('Please fill all required documents.');

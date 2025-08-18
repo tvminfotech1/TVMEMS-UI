@@ -14,7 +14,7 @@
     <!-- Mobile -->
     <div class="form-group">
       <label>Mobile Number</label>
-      <input type="number" formControlName="mobile" placeholder="9876543210" />
+      <input type="text" formControlName="mobile" placeholder="9876543210" maxlength="10"/>
       <div *ngIf="signupForm.get('mobile')?.touched && signupForm.get('mobile')?.invalid" class="error">
         10-digit mobile number required
       </div>
@@ -69,7 +69,7 @@
     <input [type]="showPassword ? 'text' : 'password'" id="password" formControlName="password" />
     <span class="toggle-password" (click)="togglePassword()">
       {{ showPassword ? 'Hide' : 'Show' }}
-    </span>
+    </span> 
   </div>
 
  <!-- Invalid Password Pattern Error -->

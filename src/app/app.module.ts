@@ -75,6 +75,16 @@ import { AddAnnouncementComponent } from './components/mainlayout/add-announceme
 import { MyProfileComponent } from './components/mainlayout/my-profile/my-profile.component';
 import { AdminAttendanceComponent } from './components/mainlayout/admin-attendance/admin-attendance.component';
 import { WfhApplyFormComponent } from './components/mainlayout/wfh-apply-form/wfh-apply-form.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatCardModule } from '@angular/material/card';
+import { MatExpansionModule } from '@angular/material/expansion';
+
+
+
+
 
 @NgModule({
   declarations: [
@@ -161,11 +171,17 @@ import { WfhApplyFormComponent } from './components/mainlayout/wfh-apply-form/wf
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    MatIconModule,
+    BrowserAnimationsModule,
+    MatButtonModule,
+    MatProgressSpinnerModule,
+    MatCardModule,
+    MatExpansionModule
   ],
   providers: [
     {
-      provide: HTTP_INTERCEPTORS,
-      useClass: AuthInterceptor,
+      provide:HTTP_INTERCEPTORS,
+      useClass:AuthInterceptor,
       multi: true
     }
   ],

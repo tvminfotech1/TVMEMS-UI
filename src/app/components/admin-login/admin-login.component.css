@@ -62,3 +62,25 @@ input:focus {
 .login-btn:hover {
   background-color: #4338ca;
 }
+.password-wrapper {
+  position: relative;
+}
+
+
+.password-wrapper input {
+  padding-right: 60px; /* Make space for the Show/Hide button */
+}
+
+.toggle-text {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #4f46e5;
+  font-weight: 500;
+  cursor: pointer;
+  font-size: 13px;
+}
+

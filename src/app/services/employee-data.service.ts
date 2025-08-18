@@ -1,35 +1,25 @@
-// import { Injectable } from '@angular/core';
-// import { BehaviorSubject } from 'rxjs';
-
-// @Injectable({
-//   providedIn: 'root'
-// })
-// export class EmployeeDataService {
-//   private employeeSource = new BehaviorSubject<any>(null);
-//   currentEmployee$ = this.employeeSource.asObservable();
-
-//   setEmployeeData(data: any) {
-//     this.employeeSource.next(data);
-//   }
-
-//   getEmployeeData() {
-//     return this.employeeSource.getValue(); // For synchronous access
-//   }
-// }
-
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({
+  providedIn: 'root'
+})
 export class EmployeeDataService {
   private employeeSource = new BehaviorSubject<any>(null);
   currentEmployee$ = this.employeeSource.asObservable();
 
-  setEmployeeData(data: any) {
+  /**
+   * Save the current employee details in memory
+   */
+  setEmployeeData(data: any): void {
     this.employeeSource.next(data);
   }
 
-  getEmployeeData() {
+  /**
+   * Synchronously get the current employee details
+   * (returns null if nothing has been set yet)
+   */
+  getEmployeeData(): any {
     return this.employeeSource.getValue();
   }
 }

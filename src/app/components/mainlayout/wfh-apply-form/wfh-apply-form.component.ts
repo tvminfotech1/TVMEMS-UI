@@ -34,6 +34,8 @@ export class WfhApplyFormComponent implements OnInit {
   }
 
   onSubmit(): void {
+  console.log('Submit clicked, form valid:', this.wfhForm.valid);
+    // debugger
     this.submissionError = null;
     if (this.wfhForm.valid) {
       const formValue = this.wfhForm.value;

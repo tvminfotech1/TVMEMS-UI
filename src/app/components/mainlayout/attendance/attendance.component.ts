@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { UserService } from '../../user-service.service';
-import { HttpClient } from '@angular/common/http';
+import { AttendanceRecord, AttendanceService } from 'src/app/services/attendance.service';
 
 @Component({
   selector: 'app-attendance',
@@ -9,131 +8,96 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./attendance.component.css']
 })
 export class AttendanceComponent implements OnInit {
+  public get attendanceService(): AttendanceService {
+    return this._attendanceService;
+  }
+  public set attendanceService(value: AttendanceService) {
+    this._attendanceService = value;
+  }
   attendanceForm!: FormGroup;
-  attendanceList: any[] = [];
+  attendanceList: AttendanceRecord[] = [];
+
   currentMonthIndex = new Date().getMonth();
   currentYear = new Date().getFullYear();
-  employee: any = {};
 
-  constructor(
-    private fb: FormBuilder,
-    private userService: UserService,
-    private http: HttpClient
-  ) {}
+  employee = {
+    empId: 1001,
+    name: 'Rohit Kumar',
+    department: 'IT',
+    designation: 'Frontend Developer'
+  };
+
+  constructor(private fb: FormBuilder, private _attendanceService: AttendanceService) {}
 
   ngOnInit(): void {
-    this.employee = this.userService.getFormData('personal') || {
-      empId: '1001',
-      name: 'Rohit Kumar',
-      department: 'IT',
-      designation: 'Frontend Developer'
-    };
-
     this.attendanceForm = this.fb.group({
-        empId: [this.employee.empId || 1001, [Validators.required, Validators.pattern(/^\d+$/)]],
+      empId: [this.employee.empId, [Validators.required]],
       name: [this.employee.name, Validators.required],
       department: [this.employee.department, Validators.required],
       designation: [this.employee.designation, Validators.required],
       date: [this.formatDate(new Date()), Validators.required],
       status: ['', Validators.required],
       remarks: [''],
-      entryTime: [''] 
+      entryTime: ['09:30']
     });
 
-    this.fetchMonthlyAttendance();
+    // Subscribe to shared service data
+    this.attendanceService.getAllAttendance().subscribe((data: any[]) => {
+      this.attendanceList = data.filter(
+        r => r.empId === this.employee.empId
+      );
+    });
   }
 
   formatDate(date: Date): string {
-    const d = String(date.getDate()).padStart(2, '0');
-    const m = String(date.getMonth() + 1).padStart(2, '0');
-    const y = date.getFullYear();
-    return `${y}-${m}-${d}`;
+    return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
   }
 
-  submitAttendance() {
-  if (this.attendanceForm.valid) {
+  submitAttendance(): void {
+    if (this.attendanceForm.invalid) {
+      alert('⚠️ Please fill in required fields');
+      return;
+    }
+
     const formValue = this.attendanceForm.value;
-    const data = {
-      ...formValue,
-      empId: Number(formValue.empId),  // 👈 string to number conversion
+    const record: AttendanceRecord = {
+      empId: Number(formValue.empId),
+      name: formValue.name,
+      department: formValue.department,
+      designation: formValue.designation,
+      date: formValue.date,
+      entryTime: formValue.entryTime,
+      status: formValue.status,
+      remarks: formValue.remarks,
       isApproved: false
     };
 
-    console.log("✅ Final Submitted Data:", data); // 👀 Verify in console
+    this.attendanceService.submitAttendance(record);
+    alert('✅ Attendance submitted');
 
-    this.userService.submitAttendance(data).subscribe({
-      next: () => {
-        alert('✅ Attendance submitted');
-        this.attendanceForm.patchValue({
-          status: '',
-          remarks: '',
-          entryTime: '09:30'
-        });
-        this.fetchMonthlyAttendance();
-      },
-      error: () => alert('❌ Failed')
-    });
-  } else {
-    console.warn("⚠️ Form is invalid.");
-  }
-}
-
-
-  fetchMonthlyAttendance() {
-    const month = this.currentMonthIndex + 1;
-    const year = this.currentYear;
-    const empId = this.employee.empId;
-
-    // ✅ Static test data to show in table (without API call)
-    this.attendanceList = [
-  {
-    date: `${year}-${String(month).padStart(2, '0')}-01`,
-    name: this.employee.name,
-    status: 'P',
-    remarks: 'Work from Home',
-    isApproved: true
-  },
-  {
-    date: `${year}-${String(month).padStart(2, '0')}-02`,
-    name: this.employee.name,
-    status: 'A',
-    remarks: 'Sick Leave',
-    isApproved: false
-  },
-  {
-    date: `${year}-${String(month).padStart(2, '0')}-03`,
-    name: this.employee.name,
-    status: 'L',
-    remarks: 'Personal Reason',
-    isApproved: true
-  }
-];
-
+    this.attendanceForm.patchValue({ status: '', remarks: '', entryTime: '09:30' });
   }
 
   get selectedMonthYear(): string {
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-                    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const months = ['Jan', 'Feb', 'Mar', 'Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
     return `${months[this.currentMonthIndex]} ${this.currentYear}`;
   }
 
-  goToPreviousMonth() {
+  goToPreviousMonth(): void {
     if (this.currentMonthIndex === 0) {
       this.currentMonthIndex = 11;
       this.currentYear--;
     } else {
       this.currentMonthIndex--;
     }
-    this.fetchMonthlyAttendance();
   }
 
-  goToNextMonth() {
+  goToNextMonth(): void {
     if (this.currentMonthIndex === 11) {
       this.currentMonthIndex = 0;
       this.currentYear++;
     } else {
       this.currentMonthIndex++;
     }
-    this.fetchMonthlyAttendance();
   }
 }

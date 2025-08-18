@@ -9,7 +9,6 @@ import { EmployeeDataService } from 'src/app/services/employee-data.service';
   styleUrls: ['./empdocument.component.css']
 })
 export class EmpdocumentComponent implements OnInit {
-  employeeId: any;
   employeeDetails: any;
 
   constructor(
@@ -19,16 +18,16 @@ export class EmpdocumentComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id');
+    const id = Number(this.route.snapshot.paramMap.get('id'));
     const sharedData = this.empDataService.getEmployeeData();
 
-    if (sharedData) {
+    if (sharedData && sharedData.id === id) {
       this.employeeDetails = sharedData;
     } else {
       this.empService.getEmployees().subscribe({
         next: (res: any) => {
-          this.employeeDetails = res.body.find((emp: any) => emp.id == id);
-          this.empDataService.setEmployeeData(this.employeeDetails);
+          this.employeeDetails = res;
+          this.empDataService.setEmployeeData(res);
         },
         error: (err: any) => console.error('Error:', err)
       });
@@ -36,14 +35,25 @@ export class EmpdocumentComponent implements OnInit {
   }
 
   getFileUrl(filePath: string): string {
-    return `https://your-server.com/uploads/${filePath}`; // 🔁 Replace with your actual file hosting path
+    return `http://localhost:8080/uploads/${filePath}`;
   }
 
-  downloadFile(filePath: string) {
-    const link = document.createElement('a');
-    link.href = this.getFileUrl(filePath);
-    link.download = filePath.split('/').pop() || 'document';
-    link.target = '_blank';
-    link.click();
+  downloadFile(fileNameOrId: string | number) {
+    if (typeof fileNameOrId === 'number') {
+      this.empService.downloadDocument(fileNameOrId).subscribe(blob => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'document'; 
+        a.click();
+        window.URL.revokeObjectURL(url);
+      });
+    } else {
+      const link = document.createElement('a');
+      link.href = this.getFileUrl(fileNameOrId);
+      link.download = fileNameOrId.split('/').pop() || 'document';
+      link.target = '_blank';
+      link.click();
+    }
   }
 }

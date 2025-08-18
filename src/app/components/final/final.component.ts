@@ -22,7 +22,7 @@ export class FinalComponent {
     });
   }
 
-  submitForm() {
+  submitForm(): void {
     if (this.declarationForm.valid) {
       if (!this.userService.isAllFormsValid()) {
         const incompleteSteps = this.userService.getInvalidSteps();
@@ -47,19 +47,26 @@ export class FinalComponent {
       };
 
       const finalFormData = new FormData();
-      finalFormData.append('jsonData', new Blob([JSON.stringify(allData)], { type: 'application/json' }));
+      finalFormData.append(
+        'jsonData',
+        new Blob([JSON.stringify(allData)], { type: 'application/json' })
+      );
 
       const uploadedFiles = this.userService.getFormData('uploadedFiles') as FormData;
       if (uploadedFiles) {
         uploadedFiles.forEach((value, key) => {
-          finalFormData.append(key, value); // Attach each file
+          finalFormData.append(key, value);
         });
       }
 
-      this.userService.submitFinalData(finalFormData).subscribe((res) => {
-        if (res) {
+      this.userService.submitFinalData(finalFormData).subscribe({
+        next: (res: any) => {
           console.log('Server response:', res);
           this.router.navigate(['/mainlayout/thankYou']);
+        },
+        error: (err) => {
+          console.error('Submission error:', err);
+          alert('Something went wrong while submitting the form.');
         }
       });
 

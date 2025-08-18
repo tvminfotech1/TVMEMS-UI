@@ -26,14 +26,14 @@ export class EmpfamilyComponent implements OnInit {
 
     if (sharedData) {
       this.employeeDetails = sharedData;
-      this.familyDetails = sharedData.family;  // ✅ get nested family object
+      this.familyDetails = sharedData.family; 
     } else {
       this.empService.getEmployees().subscribe({
         next: (res: any) => {
           const found = res.body.find((emp: any) => emp.id == id);
           if (found) {
             this.employeeDetails = found;
-            this.familyDetails = found.family; // ✅ access nested family
+            this.familyDetails = found.family; 
             this.empDataService.setEmployeeData(found);
           }
         },

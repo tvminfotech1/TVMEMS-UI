@@ -1,4 +1,5 @@
 export interface Goal {
+  status: string;
   category: string;
   description: string;
   metrics: string;

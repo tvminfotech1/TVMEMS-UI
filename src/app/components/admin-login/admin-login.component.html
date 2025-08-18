@@ -25,9 +25,26 @@
       </div>
     </div>
 
-    <div class="form-group">
+    <!-- <div class="form-group">
       <label>Password</label>
       <input type="password" formControlName="password" placeholder="*****" />
+       -->
+<div class="form-group password-group">
+  <label>Password</label>
+  <div class="password-wrapper">
+    <input
+      [type]="showPassword ? 'text' : 'password'"
+      formControlName="password"
+      placeholder="*****"
+    />
+    <button
+      type="button"
+      class="toggle-text"
+      (click)="showPassword = !showPassword"
+    >
+      {{ showPassword ? 'Hide' : 'Show' }}
+    </button>
+  </div>
       <div
         *ngIf="
           adminLoginForm.get('password')?.touched &&

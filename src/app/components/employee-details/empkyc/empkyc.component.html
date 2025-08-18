@@ -1,94 +1,51 @@
-<!-- <app-nav-display></app-nav-display>
-
-<div id="container">
-  <div class="form-grid">
-    <div class="form-group">
-      <label>Pan Card Number</label>
-      <input type="text" [value]="employeeDetails?.kyc?.pan" readonly />
-    </div>
-
-    <div class="form-group">
-      <label>Name on Pan Card</label>
-      <input type="text" [value]="employeeDetails?.kyc?.panName" readonly />
-    </div>
-
-    <div class="form-group">
-      <label>Aadhar Number</label>
-      <input type="text" [value]="employeeDetails?.kyc?.aadhar" readonly />
-    </div>
-
-    <div class="form-group">
-      <label>Name on Aadhar Card</label>
-      <input type="text" [value]="employeeDetails?.kyc?.aadharName" readonly />
-    </div>
-
-    <div class="form-group">
-      <label>UAN Number</label>
-      <input type="text" [value]="employeeDetails?.kyc?.uan" readonly />
-    </div>
-
-    <div class="form-group">
-      <label>PF Number</label>
-      <input type="text" [value]="employeeDetails?.kyc?.pf" readonly />
-    </div>
-
-    <div class="form-group full-width">
-      <label>Do you have HDFC Bank Details?</label>
-      <input type="text" [value]="employeeDetails?.kyc?.hdfc" readonly />
-    </div>
-  </div>
-
-  <div class="button-group">
-    <a [routerLink]="['/mainlayout/empdetails', employeeDetails?.id]" class="prev-btn">&laquo; Previous</a>
-    <a [routerLink]="['/mainlayout/emppassport', employeeDetails?.id]" class="prev-btn">Next &raquo;</a>
-  </div>
-</div> -->
-
-
 <app-nav-display></app-nav-display>
 
 <div id="container">
+  <!-- Show KYC if data exists -->
   <div class="form-grid" *ngIf="kyc; else noKyc">
+    
     <div class="form-group">
       <label>Pan Card Number</label>
-      <input type="text" [value]="kyc?.pan" readonly />
+      <input type="text" [value]="kyc?.pan || 'Not Provided'" readonly />
     </div>
 
     <div class="form-group">
       <label>Name on Pan Card</label>
-      <input type="text" [value]="kyc?.panName" readonly />
+      <input type="text" [value]="kyc?.panName || 'Not Provided'" readonly />
     </div>
 
     <div class="form-group">
       <label>Aadhar Number</label>
-      <input type="text" [value]="kyc?.aadhar" readonly />
+      <input type="text" [value]="kyc?.aadhar || 'Not Provided'" readonly />
     </div>
 
     <div class="form-group">
       <label>Name on Aadhar Card</label>
-      <input type="text" [value]="kyc?.aadharName" readonly />
+      <input type="text" [value]="kyc?.aadharName || 'Not Provided'" readonly />
     </div>
 
     <div class="form-group">
       <label>UAN Number</label>
-      <input type="text" [value]="kyc?.uan" readonly />
+      <input type="text" [value]="kyc?.uan || 'Not Provided'" readonly />
     </div>
 
     <div class="form-group">
       <label>PF Number</label>
-      <input type="text" [value]="kyc?.pf" readonly />
+      <input type="text" [value]="kyc?.pf || 'Not Provided'" readonly />
     </div>
 
     <div class="form-group full-width">
       <label>Do you have HDFC Bank Details?</label>
-      <input type="text" [value]="kyc?.hdfc" readonly />
+      <input type="text" [value]="kyc?.hdfc || 'Not Provided'" readonly />
     </div>
   </div>
 
+  <!-- Show this if no KYC exists -->
   <ng-template #noKyc>
     <p>No KYC data available for this employee.</p>
   </ng-template>
 
+  <!-- Navigation -->
   <div class="button-group">
     <a [routerLink]="['/mainlayout/empdetails', employeeId]" class="prev-btn">&laquo; Previous</a>
     <a [routerLink]="['/mainlayout/emppassport', employeeId]" class="prev-btn">Next &raquo;</a>

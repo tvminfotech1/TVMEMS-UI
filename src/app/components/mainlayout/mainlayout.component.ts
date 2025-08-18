@@ -35,7 +35,6 @@ export class MainlayoutComponent implements OnInit {
     this.employeeId = this.authService.getEmployeeId();
     console.log("Employee ID from token:", this.employeeId);
   }
-  // Close all dropdowns if clicked outside
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent) {
     const target = event.target as HTMLElement;
@@ -45,7 +44,6 @@ export class MainlayoutComponent implements OnInit {
     }
   }
 
-  // Close all dropdowns except the one passed
   closeAllDropdowns(except: string = '') {
     this.showHomeDropdown = except === 'home';
     this.showWFHDropdown = except === 'wfh';
@@ -56,7 +54,7 @@ export class MainlayoutComponent implements OnInit {
     this.showOffboardingDropdown = except === 'offboarding';
     this.showOnboardingDropdown = except === 'onboarding';
     this.showAddJobDropdown = except === 'addJob';
-    this.showPayrollDropdown = except === 'payroll'; // ✅ Added
+    this.showPayrollDropdown = except === 'payroll'; 
     this.showSettings = except === 'settings';
   }
 
@@ -65,7 +63,6 @@ export class MainlayoutComponent implements OnInit {
     this.closeAllDropdowns(willShow ? 'home' : '');
   }
   
-
   toggleWFHDropdown() {
     const willShow = !this.showWFHDropdown;
     this.closeAllDropdowns(willShow ? 'wfh' : '');
@@ -95,6 +92,7 @@ export class MainlayoutComponent implements OnInit {
     const willShow = !this.showOffboardingDropdown;
     this.closeAllDropdowns(willShow ? 'offboarding' : '');
   }
+
 
   toggleOnboardingDropdown() {
     const willShow = !this.showOnboardingDropdown;
@@ -129,5 +127,9 @@ export class MainlayoutComponent implements OnInit {
    goToProfile() {
     console.log('Go to profile clicked');
     this.router.navigate(['/mainlayout/myprofile',this.employeeId]);
+  }
+
+  isChildRouteActive(keywords: string[]): boolean {
+    return keywords.some(path => this.router.url.includes(path));
   }
 }

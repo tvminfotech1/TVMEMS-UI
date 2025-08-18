@@ -12,6 +12,8 @@ import { jwtDecode } from "jwt-decode";
 export class AdminLoginComponent {
   public adminLoginForm: FormGroup;
   public loginError: string = "";
+  showPassword: boolean = false;
+
 
   constructor(
     private fb: FormBuilder,
