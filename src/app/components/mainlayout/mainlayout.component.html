@@ -9,6 +9,7 @@
           <li class="dropdown">
             <button
               class="nav-button"
+                [ngClass]="{ 'active-parent-link': isChildRouteActive(['dashboard','holidays','feedbacks','organization' ]) }"
               (click)="toggleHomeDropdown()"
               [attr.aria-expanded]="showHomeDropdown"
               aria-controls="homeDropdown"
@@ -24,27 +25,27 @@
               class="dropdown-content"
               id="homeDropdown"
             >
-              <ul class="dropdown-list" role="menu">
+              <ul class="dropdown-list">
                 <li>
-                  <a routerLink="dashboard" class="nav-link sub"
+                  <a routerLink="dashboard" class="nav-link sub" routerLinkActive="active-sub-link" [routerLinkActiveOptions]="{ exact: true }"
                     ><span class="material-icons">space_dashboard</span>
                     Dashboard</a
                   >
                 </li>
                 <li>
-                  <a routerLink="holidays" class="nav-link sub"
+                  <a routerLink="holidays" class="nav-link sub" routerLinkActive="active-sub-link" [routerLinkActiveOptions]="{ exact: true }"
                     ><span class="material-icons">beach_access</span>
                     Holidays</a
                   >
                 </li>
                 <li>
-                  <a routerLink="feedbacks" class="nav-link sub"
+                  <a routerLink="feedbacks" class="nav-link sub" routerLinkActive="active-sub-link" [routerLinkActiveOptions]="{ exact: true }"
                     ><span class="material-icons">question_answer</span> My
                     Feedbacks</a
                   >
                 </li>
                 <li>
-                  <a routerLink="organization" class="nav-link sub"
+                  <a routerLink="organization" class="nav-link sub" routerLinkActive="active-sub-link" [routerLinkActiveOptions]="{ exact: true }"
                     ><span class="material-icons">account_box</span>
                     Organization Directory</a
                   >
@@ -57,6 +58,7 @@
           <li class="dropdown">
             <button
               class="nav-button"
+                [ngClass]="{ 'active-parent-link': isChildRouteActive(['workfromhome']) }"
               (click)="toggleWFHDropdown()"
               [attr.aria-expanded]="showWFHDropdown"
               aria-controls="wfhDropdown"
@@ -74,7 +76,7 @@
             >
               <ul class="dropdown-list">
                 <li>
-                  <a routerLink="workfromhome" class="nav-link sub"
+                  <a routerLink="workfromhome" class="nav-link sub" routerLinkActive="active-sub-link" [routerLinkActiveOptions]="{ exact: true }"
                     ><span class="material-icons">assignment</span> WFH
                     Request</a
                   >
@@ -87,6 +89,7 @@
           <li class="dropdown">
             <button
               class="nav-button"
+                [ngClass]="{ 'active-parent-link': isChildRouteActive(['myleave','attendance','attendance-approval' ]) }"
               (click)="toggleLeaveDropdown()"
               [attr.aria-expanded]="showLeaveDropdown"
               aria-controls="leaveDropdown"
@@ -104,19 +107,19 @@
             >
               <ul class="dropdown-list">
                 <li>
-                  <a routerLink="myleave" class="nav-link sub"
+                  <a routerLink="myleave" class="nav-link sub" routerLinkActive="active-sub-link" [routerLinkActiveOptions]="{ exact: true }"
                     ><span class="material-icons">calendar_today</span> My
                     Leave</a
                   >
                 </li>
                 <li>
-                  <a routerLink="attendance" class="nav-link sub"
+                  <a routerLink="attendance" class="nav-link sub" routerLinkActive="active-sub-link" [routerLinkActiveOptions]="{ exact: true }"
                     ><span class="material-icons">fact_check</span> My
                     Attendance</a
                   >
                 </li>
                 <li>
-                  <a routerLink="attendance-approval" class="nav-link sub"
+                  <a routerLink="attendance-approval" class="nav-link sub" routerLinkActive="active-sub-link" [routerLinkActiveOptions]="{ exact: true }"
                     ><span class="material-icons">check_circle</span> Attendance Approval</a
                   >
                 </li>
@@ -126,13 +129,14 @@
 
           <!-- Timesheets -->
           <li class="dropdown">
-            <button
-              class="nav-button"
-              (click)="toggleTimesheetDropdown()"
-              [attr.aria-expanded]="showTimesheetDropdown"
-              aria-controls="timesheetDropdown"
-              aria-haspopup="true"
-            >
+           <button
+   class="nav-button"
+  [ngClass]="{ 'active-parent-link': isChildRouteActive(['Timelog']) }"
+  (click)="toggleTimesheetDropdown()"
+  [attr.aria-expanded]="showTimesheetDropdown"
+  aria-controls="timesheetDropdown"
+  aria-haspopup="true"
+>
               <span class="material-icons">schedule</span> Timesheets
               <span class="accordion-icon">
                 {{ showTimesheetDropdown ? "⯆" : "⯈" }}
@@ -145,8 +149,8 @@
             >
               <ul class="dropdown-list">
                 <li>
-                  <a routerLink="Timelog" class="nav-link sub"
-                    ><span class="material-icons">edit_calendar</span> Timesheet
+                  <a routerLink="Timelog" class="nav-link sub" routerLinkActive="active-sub-link" [routerLinkActiveOptions]="{ exact: true }"
+                    ><span class="material-icons" >edit_calendar</span> Timesheet
                     Entry</a
                   >
                 </li>
@@ -158,6 +162,7 @@
           <li class="dropdown">
             <button
               class="nav-button"
+              [ngClass]="{ 'active-parent-link': isChildRouteActive(['task']) }"
               (click)="toggleTaskDropdown()"
               [attr.aria-expanded]="showTaskDropdown"
               aria-controls="taskDropdown"
@@ -175,7 +180,7 @@
             >
               <ul class="dropdown-list">
                 <li>
-                  <a routerLink="task" class="nav-link sub"
+                  <a routerLink="task" class="nav-link sub" routerLinkActive="active-sub-link" [routerLinkActiveOptions]="{ exact: true }"
                     ><span class="material-icons">task</span> My Tasks</a
                   >
                 </li>
@@ -187,6 +192,8 @@
           <li class="dropdown">
             <button
               class="nav-button"
+               [ngClass]="{ 'active-parent-link': isChildRouteActive(['goal']) }"
+
               (click)="toggleOKRDropdown()"
               [attr.aria-expanded]="showOKRDropdown"
               aria-controls="okrDropdown"
@@ -204,7 +211,7 @@
             >
               <ul class="dropdown-list">
                 <li>
-                  <a routerLink="goal" class="nav-link sub"
+                  <a routerLink="goal" class="nav-link sub" routerLinkActive="active-sub-link" [routerLinkActiveOptions]="{ exact: true }"
                     ><span class="material-icons">star_rate</span> My Goal
                     Sheet</a
                   >
@@ -217,6 +224,7 @@
           <li class="dropdown">
             <button
               class="nav-button"
+             [ngClass]="{ 'active-parent-link': isChildRouteActive(['resignation']) }"
               (click)="toggleOffboardingDropdown()"
               [attr.aria-expanded]="showOffboardingDropdown"
               aria-controls="offboardingDropdown"
@@ -234,7 +242,7 @@
             >
               <ul class="dropdown-list">
                 <li>
-                  <a routerLink="resignation" class="nav-link sub"
+                  <a routerLink="resignation" class="nav-link sub" routerLinkActive="active-sub-link" [routerLinkActiveOptions]="{ exact: true }"
                     ><span class="material-icons">exit_to_app</span>
                     Resignation</a
                   >
@@ -247,6 +255,7 @@
 <li class="dropdown">
   <button
     class="nav-button"
+     [ngClass]="{ 'active-parent-link': isChildRouteActive(['signup','personal','pendingUser','admin']) }"
     (click)="toggleOnboardingDropdown()"
     [attr.aria-expanded]="showOnboardingDropdown"
     aria-controls="onboardingDropdown"
@@ -265,22 +274,22 @@
   >
     <ul class="dropdown-list">
       <li>
-        <a routerLink="signup" class="nav-link sub" *ngIf="isAdmin">
+        <a routerLink="signup" class="nav-link sub" routerLinkActive="active-sub-link" [routerLinkActiveOptions]="{ exact: true }" *ngIf="isAdmin">
           <span class="material-icons">person_add</span> Add User
         </a>
       </li>
       <li>
-        <a routerLink="personal" class="nav-link sub">
+        <a routerLink="personal" class="nav-link sub" routerLinkActive="active-sub-link" [routerLinkActiveOptions]="{ exact: true }">
           <span class="material-icons">person</span> Onboarding form
         </a>
       </li>
       <li *ngIf="isAdmin">
-        <a routerLink="pendingUser" class="nav-link sub">
+        <a routerLink="pendingUser" class="nav-link sub" routerLinkActive="active-sub-link" [routerLinkActiveOptions]="{ exact: true }">
           <span class="material-icons">hourglass_empty</span> Pending User
         </a>
       </li>
       <li *ngIf="isAdmin">
-        <a routerLink="admin" class="nav-link sub">
+        <a routerLink="admin" class="nav-link sub" routerLinkActive="active-sub-link" [routerLinkActiveOptions]="{ exact: true }">
           <span class="material-icons">group</span> User List
         </a>
       </li>
@@ -293,6 +302,8 @@
           <li class="dropdown" *ngIf="isAdmin">
             <button
               class="nav-button"
+                   [ngClass]="{ 'active-parent-link': isChildRouteActive(['addopening']) }"
+
               (click)="toggleAddJobDropdown()"
               [attr.aria-expanded]="showAddJobDropdown"
               aria-controls="addJobDropdown"
@@ -310,7 +321,7 @@
             >
               <ul class="dropdown-list">
                 <li>
-                  <a routerLink="addopening" class="nav-link sub"
+                  <a routerLink="addopening" class="nav-link sub" routerLinkActive="active-sub-link" [routerLinkActiveOptions]="{ exact: true }"
                     ><span class="material-icons">add_box</span> Add Opening</a
                   >
                 </li>
@@ -321,6 +332,8 @@
 <li class="dropdown" *ngIf="isAdmin">
   <button
     class="nav-button"
+                       [ngClass]="{ 'active-parent-link': isChildRouteActive(['payroll-dashbord','payroll-employee','/mainlayout/payruns','/mainlayout/reports']) }"
+
     (click)="togglePayrollDropdown()"
     [attr.aria-expanded]="showPayrollDropdown"
     aria-controls="payrollDropdown"
@@ -339,22 +352,22 @@
   >
     <ul class="dropdown-list">
       <li>
-        <a routerLink="payroll-dashbord" class="nav-link sub">
+        <a routerLink="payroll-dashbord" class="nav-link sub" routerLinkActive="active-sub-link" [routerLinkActiveOptions]="{ exact: true }">
           <span class="material-icons">dashboard</span>Payroll  Dashboard
         </a>
       </li>
       <li>
-        <a routerLink="payroll-employee" class="nav-link sub">
+        <a routerLink="payroll-employee" class="nav-link sub" routerLinkActive="active-sub-link" [routerLinkActiveOptions]="{ exact: true }">
           <span class="material-icons">group</span> Employees
         </a>
       </li>
       <li>
-        <a routerLink="/mainlayout/payruns" class="nav-link sub">
+        <a routerLink="/mainlayout/payruns" class="nav-link sub" routerLinkActive="active-sub-link" [routerLinkActiveOptions]="{ exact: true }">
           <span class="material-icons">attach_money</span> Pay Runs
         </a>
       </li>
       <li>
-        <a routerLink="/mainlayout/reports" class="nav-link sub">
+        <a routerLink="/mainlayout/reports" class="nav-link sub" routerLinkActive="active-sub-link" [routerLinkActiveOptions]="{ exact: true }">
           <span class="material-icons">bar_chart</span> Reports
         </a>
       </li>
@@ -390,7 +403,7 @@
         </button>
         <div *ngIf="showSettings" class="settings-dropdown">
           <div class="profile-header">
-            <img src="assets/profile.jpg" alt="Profile" class="profile-img" />
+            <img src="assets/images/profile.jpg" alt="Profile" class="profile-img" />
             <div class="profile-name">{{userName}}</div>
           </div>
           <ul class="settings-menu">

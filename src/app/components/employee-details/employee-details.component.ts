@@ -15,7 +15,7 @@ export class EmployeeDetailsComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private empService: EmployeeService,
-    private empDataService: EmployeeDataService // Inject shared service
+    private empDataService: EmployeeDataService 
   ) {}
 
   // ngOnInit(): void {

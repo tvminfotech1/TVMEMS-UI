@@ -1,7 +1,7 @@
 <!-- Main View -->
 <div *ngIf="currentView === 'main'">
   <div class="header">
-    <div class="logo">TVM Infotech pvt ltd</div>
+    <div class="logo">TVM Infotech Pvt Ltd</div>
   </div>
 
   <div class="container">
@@ -16,20 +16,20 @@
           <p class="goal-overview-header">Goals Overview</p>
           <div class="overview-content">
             <div class="donut-column">
-              <div class="donut">0 of 0</div>
+              <div class="donut">{{ goals.length }} of {{ goals.length }}</div>
             </div>
             <div class="stats-column">
               <ul>
-                <li>🟦 On Track - 0</li>
-                <li>🔷 Behind - 0</li>
-                <li>⬜ Not Started - 0</li>
-                <li>🟩 Completed - 0</li>
-                <li>🟫 Cancelled - 0</li>
-                <li>🟨 Postponed - 0</li>
+                <li>🟦 On Track -{{ onTrackGoalCount }}</li>
+                <li>🔷 Behind - {{ onTrackGoalCount }}</li>
+                <li>⬜ Not Started -{{ onTrackGoalCount }}</li>
+                <li>🟩 Completed - {{ onTrackGoalCount }}</li>
+                <li>🟫 Cancelled - {{ onTrackGoalCount }}</li>
+                <li>🟨 Postponed -{{ onTrackGoalCount }}</li>
               </ul>
             </div>
             <div class="notifications">
-              <p >Notifications You Might Have Missed</p>
+              <p>Notifications You Might Have Missed</p>
               <div class="notification-box">
                 <p>📄</p>
                 <p>No Notifications</p>
@@ -42,35 +42,30 @@
     </div>
 
     <div class="more-info">
-      <div class="info-card"><h4>📁 Archive Goals</h4><p>Add or manage archived goals.</p></div>
-   <!-- Archive Goals Dropdown -->
-<!-- <div class="info-card">
-  <h4>📁 Archive Goals</h4>
-  <p>Add or manage archived goals.</p>
+      <div class="info-card">
+        <h4>📁 Archive Goals</h4>
+        <p>Add or manage archived goals.</p>
 
-  
-  <select [(ngModel)]="selectedMonth" (change)="filterGoalsByMonthYear()">
-    <option value="">-- Select Month --</option>
-    <option value="current">Current Month</option>
-    <option value="last">Last Month</option>
-    <optgroup label="Previous Months">
-      <option *ngFor="let option of previousMonthOptions" [value]="option.value">
-        {{ option.label }}
-      </option>
-    </optgroup>
-  </select>
-</div> 
+        <select [(ngModel)]="selectedMonth" (change)="filterGoalsByMonthYear()">
+          <option value="">-- Select Month --</option>
+          <option value="current">Current Month</option>
+          <option value="last">Last Month</option>
+          <optgroup label="Previous Months">
+            <option *ngFor="let option of previousMonthOptions" [value]="option.value">
+              {{ option.label }}
+            </option>
+          </optgroup>
+        </select>
+      </div>
 
-
-<div class="archive-content" *ngIf="selectedMonth">
-  <p *ngIf="selectedLabel">📌 Showing goals for <strong>{{ selectedLabel }}</strong></p>
-  <ul>
-    <li *ngFor="let goal of filteredGoals">
-      📝 {{ goal.description }} - {{ goal.category }} ({{ goal.startDate | date:'MMM yyyy' }})
-    </li>
-  </ul>
-</div> -->
-
+      <div class="archive-content" *ngIf="selectedMonth">
+        <p *ngIf="selectedLabel">📌 Showing goals for <strong>{{ selectedLabel }}</strong></p>
+        <ul>
+          <li *ngFor="let goal of filteredGoals">
+            📝 {{ goal.description }} - {{ goal.category }} ({{ goal.startDate | date:'MMM yyyy' }})
+          </li>
+        </ul>
+      </div>
 
       <div class="info-card"><h4>📌 Contribute Goals</h4><p>Assign goals you contribute to.</p></div>
       <div class="info-card"><h4>✅ SMART Goals</h4><p>Review and track progress effectively.</p></div>
@@ -85,17 +80,17 @@
     <h2>Choose Goal Type</h2>
     <p>Select what type of goal to add</p>
     <div class="card-container">
-      <div class="goal-card" (click)="move()">
+      <div class="goal-card" (click)="move('personal')">
         <img src="https://img.icons8.com/ios-filled/50/idea.png" alt="Personal Goal" />
         <div class="goal-title">Personal Goal</div>
         <div>Personal Goal allows you to make up your own goal and assign any metrics you want.</div>
       </div>
-      <div class="goal-card">
+      <div class="goal-card" (click)="move('archived')">
         <img src="https://img.icons8.com/ios-filled/50/save-as.png" alt="Archived Goal" />
         <div class="goal-title">Archived Goal</div>
         <div>Archived goals are the goals that have been saved by you for later use.</div>
       </div>
-      <div class="goal-card">
+      <div class="goal-card" (click)="move('move')">
         <img src="https://img.icons8.com/ios-filled/50/track-order.png" alt="Move Goal" />
         <div class="goal-title">Move Goal</div>
         <div>You can bring your goals from last year into the current year and make use of it.</div>
@@ -160,7 +155,7 @@
       End Date is required
     </div>
 
-    <button type="submit">Submit</button>
+    <button type="submit" [disabled]="goalForm.invalid">Submit</button>
     <button type="button" (click)="goBack()">← Back</button>
   </form>
 </div>

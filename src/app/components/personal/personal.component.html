@@ -203,7 +203,7 @@
       <div class="form-group">
         <label for="permanent_pincode">Pincode:</label>
         <input type="number" id="permanent_pincode" name="permanent_pincode" placeholder="ex.808080" formControlName="permanent_pincode">
-        <div *ngIf="userForm.get('permanent pincode')?.touched && userForm.get('permanent pincode')?.hasError('required')" class="error">
+        <div *ngIf="userForm.get('permanent_pincode')?.touched && userForm.get('permanent_pincode')?.hasError('required')" class="error">
    permanent pincode is required
   </div>
       </div>
@@ -315,7 +315,7 @@
           <option value="5">5</option>
           <option value="6">6</option>
         </select>
-        <div *ngIf="userForm.get('year')?.touched && userForm.get('year')?.hasError('required')" class="error">
+        <div *ngIf="userForm.get('exp_year')?.touched && userForm.get('exp_year')?.hasError('required')" class="error">
   year  is required
   </div>
       </div>
@@ -338,22 +338,21 @@
           <option value="11">11</option>
           <option value="12">12</option>
         </select>
-        <div *ngIf="userForm.get('month')?.touched && userForm.get('month')?.hasError('required')" class="error">
+        <div *ngIf="userForm.get('exp_month')?.touched && userForm.get('exp_month')?.hasError('required')" class="error">
   month  is required
   </div>
       </div>
   
       
-  
+  <!-- Submit Button -->
       <div class=" full-width button-group">
         <button type="submit" class="update-button" >Next &raquo;</button>
-
-        <!-- <a routerLink="/kyc" class="next-link">Next &raquo;</a> -->
-      </div>
   
       <!-- <div class="save-warning full-width">
         <strong>Save!</strong> Your data before clicking on next/previous
       </div> -->
+
+      </div>
   
     </form>
   </div>

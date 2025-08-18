@@ -34,7 +34,7 @@ export class PersonalComponent {
       marriegedate: [''],
       current_address: ['', Validators.required],
       current_country: ['', Validators.required],
-      other_country: [''],
+      // other_country: [''],
       current_state: ['', Validators.required],
       current_city: ['', Validators.required],
       current_pincode: ['', [Validators.required, Validators.pattern(/^\d{6}$/)]],
@@ -67,8 +67,9 @@ export class PersonalComponent {
   //     this.userForm.patchValue(data);
   //   });
   // }
-copyCurrentToPermanent(event: any): void {
-  const checked = event.target.checked;
+copyCurrentToPermanent(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const checked = input.checked;
 
   if (checked) {
     this.userForm.patchValue({
@@ -108,7 +109,9 @@ copyCurrentToPermanent(event: any): void {
 }
 
 submitForm() {
+  // debugger
   if (this.userForm.valid) {
+
     const rawFormValue = this.userForm.getRawValue();
 
     const formValue = {
@@ -121,15 +124,14 @@ submitForm() {
       emergency_contact_number: +rawFormValue.emergency_contact_number
     };
 
-    console.log("Submitting data: ", formValue); // ✅ Debug log
+    console.log("Submitting data: ", formValue); 
 
     this.userService.setFormData('personal', formValue);
     this.router.navigate(['/mainlayout/kyc']);
   } else {
-    alert("All fields are mandatory");
-    this.userForm.markAllAsTouched();
+    alert("All fields are mandatory"); 
+    // this.userForm.markAllAsTouched();
   }
 }
-
 
 }

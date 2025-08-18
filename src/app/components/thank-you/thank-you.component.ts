@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-thank-you',
@@ -7,4 +8,10 @@ import { Component } from '@angular/core';
 })
 export class ThankYouComponent {
 
+
+  constructor(private router: Router){}
+//guru
+  goToHome():void{
+   this.router.navigate(['/personal']);
+  }
 }

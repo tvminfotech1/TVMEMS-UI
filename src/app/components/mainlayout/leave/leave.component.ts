@@ -1,229 +1,206 @@
 import { Component, OnInit } from '@angular/core';
+import { LeaveRequest, LeaveService } from 'src/app/services/leave.service';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-leave',
   templateUrl: './leave.component.html',
-  styleUrls: ['./leave.component.css']
+  styleUrls: ['./leave.component.css'],
 })
 export class LeaveComponent implements OnInit {
-  Math = Math;
-  selectedDate: string = '';  
-  isAdmin: boolean = false;
-  isUser: boolean = false;
-  
-  // Modal visibility flags
+  // --- UI state and data ---
+  selectedDate: string = '';
+  isAdmin = false;
+  isUser = false;
+  userId: number = 0; // Get from AuthService
+
   showApplyLeaveModal = false;
   showCompOffModal = false;
-  
-  // Form data
-  newLeave = {
-    type: '',
-    startDate: '',
-    endDate: '',
-    reason: ''
-  };
-  
-  newCompOff = {
-    startDate: '',
-    reason: ''
-  };
-  
-  // Table data and filters
+
+  newLeave = { type: '', startDate: '', endDate: '', reason: '' };
+  newCompOff = { startDate: '', reason: '' };
+
   searchTerm = '';
   statusFilter = '';
   activeTab = 'leave';
   currentPage = 1;
   itemsPerPage = 10;
-  
-  // Sample data
-  leaveCards = [
-    {
-      title: 'Earned Leave',
-      available: 15,
-      requested: 5,
-      icon: 'fas fa-calendar-check',
-      color: 'bg-primary'
-    },
-    {
-      title: 'Casual Leave',
-      available: 0,
-      requested: 0,
-      icon: 'fas fa-calendar-day',
-      color: 'bg-success'
-    },
-    {
-      title: 'Sick Leave',
-      available: 10,
-      requested: 1,
-      icon: 'fas fa-user-injured',
-      color: 'bg-warning'
-    },
-    {
-      title: 'Leave without Pay',
-      available: '10',
-      requested: 0,
-      icon: 'fas fa-calendar-times',
-      color: 'bg-info'
-    }
-  ];
-  
-  allRequests = [
-    {
-      type: 'Earned Leave',
-      duration: '2 Days',
-      status: 'Pending',
-      startDate: '2024-06-10',
-      endDate: '2024-06-11',
-      reason: 'Personal work'
-    },
-    {
-      type: 'Sick Leave',
-      duration: '1 Day',
-      status: 'Approved',
-      startDate: '2024-05-20',
-      endDate: '2024-05-20',
-      reason: 'Medical appointment'
-    }
-  ];
-  
-  filteredRequests = [...this.allRequests];
-  
-  constructor(private authService:AuthService) { }
-  
+
+  leaveCards: any[] = [];
+  allRequests: any[] = [];
+  filteredRequests: any[] = [];
+  leaveTypes: string[] = [];
+
+  constructor(
+    private leaveService: LeaveService,
+    private authService: AuthService
+  ) {}
+
   ngOnInit(): void {
-    this.filterRequests();
     this.isAdmin = this.authService.isAdmin();
     this.isUser = this.authService.isUser();
+    this.userId = this.authService.getUserId();
+
+    this.fetchRequests();
+    this.fetchLeaveTypes(); // ✅ load leave types for dropdown
   }
-  
-  // Modal Methods
-  openApplyLeaveModal(): void {
-    this.showApplyLeaveModal = true;
-    this.resetApplyLeaveForm();
-  }
-  
-  closeApplyLeaveModal(): void {
-    this.showApplyLeaveModal = false;
-    this.resetApplyLeaveForm();
-  }
-  
-  openCompOffModal(): void {
-    this.showCompOffModal = true;
-    this.resetCompOffForm();
-  }
-  
-  closeCompOffModal(): void {
-    this.showCompOffModal = false;
-    this.resetCompOffForm();
-  }
-  
-  // Form Reset Methods
-  resetApplyLeaveForm(): void {
-    this.newLeave = {
-      type: '',
-      startDate: '',
-      endDate: '',
-      reason: ''
-    };
-  }
-  
-  resetCompOffForm(): void {
-    this.newCompOff = {
-      startDate: '',
-      reason: ''
-    };
-  }
-  
-  // Form Submission Methods
-  submitApplyLeave(): void {
-    if (this.newLeave.type && this.newLeave.startDate && this.newLeave.endDate && this.newLeave.reason) {
-      console.log('Submitting leave request:', this.newLeave);
-      // Add your API call here
-      this.closeApplyLeaveModal();
-      // Optionally show success message
+
+  fetchRequests(): void {
+    if (this.isAdmin) {
+      // Admin - all requests
+      this.leaveService.getAllLeaveRequests().subscribe((data) => {
+        this.allRequests = data;
+        this.filteredRequests = [...this.allRequests];
+        this.updateLeaveCards();
+      });
+    } else if (this.isUser) {
+      // User - only their own requests
+      this.leaveService.getUserLeaveRequests(this.userId).subscribe((date) => {
+        this.allRequests = date;
+        this.filteredRequests = [...this.allRequests];
+        this.updateLeaveCards();
+      });
     }
   }
-  
-  submitCompOff(): void {
-    if (this.newCompOff.startDate && this.newCompOff.reason) {
-      console.log('Submitting comp-off request:', this.newCompOff);
-      // Add your API call here
-      this.closeCompOffModal();
-      // Optionally show success message
-    }
+
+  fetchLeaveTypes(): void {
+    this.leaveService.getLeaveTypes().subscribe((types) => {
+      this.leaveTypes = types;
+    });
   }
-  
-  // Table Methods
+
+  updateLeaveCards(): void {
+    const leaveTypes = [
+      'Earned Leave',
+      'Casual Leave',
+      'Sick Leave',
+      'Leave without Pay',
+    ];
+    this.leaveCards = leaveTypes.map((type) => {
+      const typeRequests = this.allRequests.filter((r) => r.type === type);
+      const available =
+        15 - typeRequests.filter((r) => r.status === 'Approved').length;
+      const requested = typeRequests.filter(
+        (r) => r.status === 'Pending'
+      ).length;
+      return {
+        title: type,
+        available,
+        requested,
+        icon: 'fas fa-calendar',
+        color: 'bg-primary',
+      };
+    });
+  }
+
   filterRequests(): void {
-    this.filteredRequests = this.allRequests.filter(request => {
-      const matchesSearch = !this.searchTerm || 
+    this.filteredRequests = this.allRequests.filter((request) => {
+      const matchesSearch =
+        !this.searchTerm ||
         request.type.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-        request.duration.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+        request.duration
+          ?.toLowerCase()
+          .includes(this.searchTerm.toLowerCase()) ||
         request.status.toLowerCase().includes(this.searchTerm.toLowerCase());
-      
-      const matchesStatus = !this.statusFilter || request.status === this.statusFilter;
-      
+      const matchesStatus =
+        !this.statusFilter || request.status === this.statusFilter;
       return matchesSearch && matchesStatus;
     });
-    
-    this.currentPage = 1; // Reset to first page when filtering
+    this.currentPage = 1;
   }
-  
-  switchTab(tab: string): void {
-    this.activeTab = tab;
-    // You can filter data based on tab if needed
+
+  // --- CRUD Actions ---
+
+  submitApplyLeave(): void {
+    if (
+      this.newLeave.type &&
+      this.newLeave.startDate &&
+      this.newLeave.endDate &&
+      this.newLeave.reason
+    ) {
+      const days =
+        Math.ceil(
+          (new Date(this.newLeave.endDate).getTime() -
+            new Date(this.newLeave.startDate).getTime()) /
+            (1000 * 60 * 60 * 24)
+        ) + 1;
+      const newReq: LeaveRequest = {
+        leaveType: this.newLeave.type, // ✅ fixed key
+        startDate: this.newLeave.startDate,
+        endDate: this.newLeave.endDate,
+        reason: this.newLeave.reason,
+        duration: `${days} Days`,
+        status: 'Pending',
+      };
+      // Fixed: use createLeaveRequest
+      this.leaveService.createLeaveRequest(newReq).subscribe(() => {
+        this.fetchRequests();
+        this.closeApplyLeaveModal();
+      });
+    }
   }
-  
-  sortBy(column: string): void {
-    // Implement sorting logic
-    console.log('Sorting by:', column);
+
+  submitCompOff(): void {
+    if (this.newCompOff.startDate && this.newCompOff.reason) {
+      const newReq: LeaveRequest = {
+        leaveType: 'Comp-off',
+        startDate: this.newCompOff.startDate,
+        endDate: this.newCompOff.startDate,
+        reason: this.newCompOff.reason,
+        duration: '1 Day',
+        status: 'Pending',
+      }; // Fixed: use createLeaveRequest
+      this.leaveService.createLeaveRequest(newReq).subscribe(() => {
+        this.fetchRequests();
+        this.closeCompOffModal();
+      });
+    }
   }
-  
-  getSortClass(column: string): string {
-    // Return sort indicator class
-    return '';
+
+  approveRequest(request: any): void {
+    if (!this.isAdmin) return;
+    this.leaveService
+      .updateLeaveRequest(request.id, { ...request, status: 'Approved' })
+      .subscribe(() => this.fetchRequests());
   }
-  
-  // Action Methods
-  viewRequest(request: any): void {
-    console.log('Viewing request:', request);
-    // Implement view logic
+
+  rejectRequest(request: any): void {
+    if (!this.isAdmin) return; // Only admin can reject
+    this.leaveService
+      .updateLeaveRequest(request.id, { ...request, status: 'Rejected' })
+      .subscribe(() => this.fetchRequests());
   }
-  
-  editRequest(request: any): void {
-    console.log('Editing request:', request);
-    // Implement edit logic
-  }
-  
+
   cancelRequest(request: any): void {
-    console.log('Cancelling request:', request);
-    // Implement cancel logic
+    if (
+      this.isAdmin ||
+      (this.isUser &&
+        request.status === 'Pending' &&
+        request.userId === this.userId)
+    ) {
+      this.leaveService
+        .deleteLeaveRequest(request.id)
+        .subscribe(() => this.fetchRequests());
+    }
   }
-  
-  // Utility Methods
-formatDateRange(): string {
-  const currentDate = new Date();
-  const startOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
-  const endOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
 
-  if (this.selectedDate) {
-    return new Date(this.selectedDate).toDateString();
-  } else {
-    return `${startOfMonth.toLocaleDateString()} - ${endOfMonth.toLocaleDateString()}`;
+  // --- Modal handling ---
+  openApplyLeaveModal(): void {
+    this.showApplyLeaveModal = true;
   }
-}
-onDateChange() {
-  console.log('Date selected:', this.selectedDate);
-  // You can do additional logic here if needed
-}
+  closeApplyLeaveModal(): void {
+    this.showApplyLeaveModal = false;
+    this.newLeave = { type: '', startDate: '', endDate: '', reason: '' };
+  }
+  openCompOffModal(): void {
+    this.showCompOffModal = true;
+  }
+  closeCompOffModal(): void {
+    this.showCompOffModal = false;
+    this.newCompOff = { startDate: '', reason: '' };
+  }
 
-  
-  toggleDatePicker(): void {
-    // Implement date picker toggle
-    console.log('Toggling date picker');
-  }
-  
+  // --- Styling helpers ---
   getLeaveTypeBadgeClass(type: string): string {
     switch (type) {
       case 'Earned Leave':
@@ -232,11 +209,13 @@ onDateChange() {
         return 'badge-success';
       case 'Sick Leave':
         return 'badge-warning';
+      case 'Comp-off':
+        return 'badge-info';
       default:
         return 'badge-secondary';
     }
   }
-  
+
   getStatusBadgeClass(status: string): string {
     switch (status) {
       case 'Approved':
@@ -249,21 +228,37 @@ onDateChange() {
         return 'badge-secondary';
     }
   }
-  
-  // Pagination Methods
+
   get totalPages(): number {
     return Math.ceil(this.filteredRequests.length / this.itemsPerPage);
   }
-  
   get paginationEndIndex(): number {
-    return Math.min(this.currentPage * this.itemsPerPage, this.filteredRequests.length);
+    return Math.min(
+      this.currentPage * this.itemsPerPage,
+      this.filteredRequests.length
+    );
   }
-  
   changePage(page: number): void {
-    if (page >= 1 && page <= this.totalPages) {
-      this.currentPage = page;
-    }
+    if (page >= 1 && page <= this.totalPages) this.currentPage = page;
   }
 
+  // --- Unimplemented stubs (avoid UI errors, can later implement sorting etc) ---
+  switchTab(arg0: string) {
+    /* implement if needed */
+  }
+  getSortClass(arg0: string): string {
+    return '';
+  }
+  sortBy(arg0: string) {
+    /* implement if needed */
+  }
+  viewRequest(_t82: any) {
+    /* implement if needed */
+  }
+  formatDateRange() {
+    /* implement if needed */
+  }
+  onDateChange() {
+    /* implement if needed */
+  }
 }
-

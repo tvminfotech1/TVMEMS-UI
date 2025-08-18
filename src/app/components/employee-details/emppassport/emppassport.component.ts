@@ -25,14 +25,14 @@ export class EmppassportComponent implements OnInit {
 
     if (sharedData) {
       this.employeeDetails = sharedData;
-      this.passportDetails = sharedData.passport; // ✅ access nested passport object
+      this.passportDetails = sharedData.passport; 
     } else {
       this.empService.getEmployees().subscribe({
         next: (res: any) => {
           const found = res.body.find((emp: any) => emp.id == id);
           if (found) {
             this.employeeDetails = found;
-            this.passportDetails = found.passport; // ✅ extract passport
+            this.passportDetails = found.passport; 
             this.empDataService.setEmployeeData(found);
           }
         },

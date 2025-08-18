@@ -123,6 +123,8 @@ export class AuthService {
     return decoded?.empId || null;
   }
 
+  
+
   getfullName(): string | null {
     const decoded = this.getDecodedToken();
     return decoded?.fullName || decoded?.name || decoded?.sub || null;
@@ -145,5 +147,9 @@ export class AuthService {
     localStorage.removeItem('token');
     sessionStorage.clear();
     this.router.navigateByUrl('/adminLogin');
+  }
+    getUserId(): number {
+    // Example: Replace with real logic to get user ID from JWT/session/localStorage
+    return Number(localStorage.getItem('userId') || 0);
   }
 }

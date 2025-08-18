@@ -45,51 +45,51 @@ export class WorkfromhomeComponent implements OnInit {
   }
 
   fetchWfhRequests() {
-    this.wfhService.getWfhRequestsByMonth(this.year, this.currentMonthIndex).subscribe(
-      (response) => {
+    this.wfhService.getWfhRequestsByMonth(this.year, this.currentMonthIndex).subscribe({
+      next: (response) => {
         this.details = response.body || [];
 
         // Updated Static data to include 'employeeName' and 'employeeId'
-        const staticData = [
-          {
-            id: 99991,
-            employeeName: 'John Doe', // Added this
-            employeeId: 'EMP001',     // Added this
-            fromDate: '15 Jul 25',
-            toDate: '15 Jul 25',
-            days: '1 Day',
-            reason: 'Demo Static Entry One',
-            created: '14 Jul 25',
-            approver: 'HR Manager',
-            // employee: 'John Doe', // This 'employee' property seems redundant if you use 'employeeName'
-            status: 'approved'
-          },
-          {
-            id: 99992,
-            employeeName: 'Jane Smith', // Added this
-            employeeId: 'EMP002',       // Added this
-            fromDate: '18 Jul 25',
-            toDate: '19 Jul 25',
-            days: '2 Days',
-            reason: 'Static Example Two',
-            created: '16 Jul 25',
-            approver: 'Team Lead',
-            // employee: 'Jane Smith', // This 'employee' property seems redundant if you use 'employeeName'
-            status: 'pending'
-          }
-        ];
-        this.details = [...this.details, ...staticData];
-        console.log(this.details);
+        // const staticData = [
+        //   {
+        //     id: 99991,
+        //     employeeName: 'John Doe', // Added this
+        //     employeeId: 'EMP001',     // Added this
+        //     fromDate: '15 Jul 25',
+        //     toDate: '15 Jul 25',
+        //     days: '1 Day',
+        //     reason: 'Demo Static Entry One',
+        //     created: '14 Jul 25',
+        //     approver: 'HR Manager',
+        //     // employee: 'John Doe', // This 'employee' property seems redundant if you use 'employeeName'
+        //     status: 'approved'
+        //   },
+        //   {
+        //     id: 99992,
+        //     employeeName: 'Jane Smith', // Added this
+        //     employeeId: 'EMP002',       // Added this
+        //     fromDate: '18 Jul 25',
+        //     toDate: '19 Jul 25',
+        //     days: '2 Days',
+        //     reason: 'Static Example Two',
+        //     created: '16 Jul 25',
+        //     approver: 'Team Lead',
+        //     // employee: 'Jane Smith', // This 'employee' property seems redundant if you use 'employeeName'
+        //     status: 'pending'
+        //   }
+        // ];
+        // this.details = [...this.details, ...staticData];
+        // console.log(this.details);
       },
-      (error) => {
-        console.error('Error fetching WFH requests:', error);
+      error: (error) => {
+        console.error('Error fetching WFH requests:', error); 
         // Error hone par sirf static data dikhana, with emp details
         this.details = [
-          { id: 99991, employeeName: 'John Doe', employeeId: 'EMP001', fromDate: '15 Jul 25', toDate: '15 Jul 25', days: '1 Day', reason: 'Demo Static Entry One', created: '14 Jul 25', approver: 'HR Manager', status: 'approved' },
-          { id: 99992, employeeName: 'Jane Smith', employeeId: 'EMP002', fromDate: '18 Jul 25', toDate: '19 Jul 25', days: '2 Days', reason: 'Static Example Two', created: '16 Jul 25', approver: 'Team Lead', status: 'pending' }
+          // { id: 99991, employeeName: 'John Doe', employeeId: 'EMP001', fromDate: '15 Jul 25', toDate: '15 Jul 25', days: '1 Day', reason: 'Demo Static Entry One', created: '14 Jul 25', approver: 'HR Manager', status: 'approved' },
+          // { id: 99992, employeeName: 'Jane Smith', employeeId: 'EMP002', fromDate: '18 Jul 25', toDate: '19 Jul 25', days: '2 Days', reason: 'Static Example Two', created: '16 Jul 25', approver: 'Team Lead', status: 'pending' }
         ];
       }
-    );
+    });
   }
 
   updateStatus(request: any, newStatus: 'approved' | 'rejected' | 'pending') {

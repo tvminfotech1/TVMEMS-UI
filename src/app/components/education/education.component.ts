@@ -35,7 +35,6 @@ export class EducationComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // If you want to retrieve previously saved data from the service:
     const savedData = this.userService.getFormData("educationList");
     if (savedData) {
       this.educationList = savedData;

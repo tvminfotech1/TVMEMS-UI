@@ -11,7 +11,8 @@ import { Router } from '@angular/router';
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
   errorMessage: string = '';
-  showPassword = false;
+  // showPassword = false;
+  showPassword: boolean = false;
 
   constructor(
     private fb: FormBuilder,

@@ -1,4 +1,5 @@
 <div class="timesheet-classic-container">
+  <!-- Dropdown Section -->
   <div class="classic-dropdown-section">
     <div class="classic-form-group">
       <label for="year">Year:</label>
@@ -42,8 +43,7 @@
           [value]="date"
           [disabled]="isWeekendDateDisabled(date) && !isAdmin"
         >
-          {{ date }}
-          <span *ngIf="isWeekendDateDisabled(date) && !isAdmin"> (Past/Future - Not for Submission)</span>
+          {{ date }} <span *ngIf="isWeekendDateDisabled(date) && !isAdmin">(Not available)</span>
         </option>
       </select>
     </div>
@@ -58,6 +58,7 @@
         readonly
       />
     </div>
+
     <div class="classic-form-group">
       <label for="employeeId">Employee ID:</label>
       <input
@@ -70,6 +71,7 @@
     </div>
   </div>
 
+  <!-- Latest Entry -->
   <div *ngIf="latestEntry && isUser" class="latest-entry-section">
     <h3>Latest Submitted Entry (Current Week)</h3>
     <table class="classic-table">
@@ -84,7 +86,7 @@
       <tbody>
         <tr>
           <td>{{ latestEntry.project }}</td>
-          <td>{{ latestEntry.totalHours }}</td>
+          <td>{{ latestEntry.totalhours }}</td>
           <td>{{ latestEntry.description }}</td>
           <td>
             <span [ngClass]="{
@@ -98,11 +100,11 @@
     </table>
   </div>
 
+  <!-- Accordion -->
   <div class="classic-accordion">
+    <!-- Timesheet Summary -->
     <div class="accordion-item">
-      <h2 class="accordion-header" (click)="toggleAccordion(0)">
-        Timesheet Summary
-      </h2>
+      <h2 class="accordion-header" (click)="toggleAccordion(0)">Timesheet Summary</h2>
       <div class="accordion-content" *ngIf="accordionState[0]">
         <table class="classic-table">
           <thead>
@@ -114,7 +116,8 @@
               <th>Total Hrs.</th>
               <th>Description</th>
               <th>Status</th>
-              <th *ngIf="isAdmin">Action</th> </tr>
+              <th *ngIf="isAdmin">Action</th>
+            </tr>
           </thead>
           <tbody>
             <tr *ngFor="let entry of timelogSummary">
@@ -122,7 +125,7 @@
               <td>{{ entry.employeeId }}</td>
               <td>{{ entry.project }}</td>
               <td>{{ entry.weekendDate }}</td>
-              <td>{{ entry.totalHours }}</td>
+              <td>{{ entry.totalhours }}</td>
               <td>{{ entry.description }}</td>
               <td>
                 <span [ngClass]="{
@@ -153,10 +156,9 @@
       </div>
     </div>
 
+    <!-- Fill Your Timesheet -->
     <div class="accordion-item">
-      <h2 class="accordion-header" (click)="toggleAccordion(2)">
-        Fill Your Timesheet
-      </h2>
+      <h2 class="accordion-header" (click)="toggleAccordion(2)">Fill Your Timesheet</h2>
       <div class="accordion-content" *ngIf="accordionState[2]">
         <form #timelogForm="ngForm" (ngSubmit)="onSubmit(timelogForm)">
           <table class="classic-table">
@@ -187,66 +189,10 @@
                     <option>Project 2</option>
                   </select>
                 </td>
-                <td>
+                <td *ngFor="let day of ['Monday','Tuesday','Wednesday','Thursday','Friday']">
                   <select
-                    name="hoursMonday"
-                    [(ngModel)]="timelogEntry.hours.Monday"
-                    (change)="calculateTotalHours()"
-                    required
-                  >
-                    <option value="">--</option>
-                    <option value="WFO">WFO</option>
-                    <option value="WFH">WFH</option>
-                    <option value="Leave">Leave</option>
-                    <option value="Holiday">Holiday</option>
-                  </select>
-                </td>
-                <td>
-                  <select
-                    name="hoursTuesday"
-                    [(ngModel)]="timelogEntry.hours.Tuesday"
-                    (change)="calculateTotalHours()"
-                    required
-                  >
-                    <option value="">--</option>
-                    <option value="WFO">WFO</option>
-                    <option value="WFH">WFH</option>
-                    <option value="Leave">Leave</option>
-                    <option value="Holiday">Holiday</option>
-                  </select>
-                </td>
-                <td>
-                  <select
-                    name="hoursWednesday"
-                    [(ngModel)]="timelogEntry.hours.Wednesday"
-                    (change)="calculateTotalHours()"
-                    required
-                  >
-                    <option value="">--</option>
-                    <option value="WFO">WFO</option>
-                    <option value="WFH">WFH</option>
-                    <option value="Leave">Leave</option>
-                    <option value="Holiday">Holiday</option>
-                  </select>
-                </td>
-                <td>
-                  <select
-                    name="hoursThursday"
-                    [(ngModel)]="timelogEntry.hours.Thursday"
-                    (change)="calculateTotalHours()"
-                    required
-                  >
-                    <option value="">--</option>
-                    <option value="WFO">WFO</option>
-                    <option value="WFH">WFH</option>
-                    <option value="Leave">Leave</option>
-                    <option value="Holiday">Holiday</option>
-                  </select>
-                </td>
-                <td>
-                  <select
-                    name="hoursFriday"
-                    [(ngModel)]="timelogEntry.hours.Friday"
+                    [name]="'hours' + day"
+                    [(ngModel)]="timelogEntry.hours![day]"
                     (change)="calculateTotalHours()"
                     required
                   >
@@ -261,7 +207,7 @@
                   <input
                     type="text"
                     name="totalHours"
-                    [value]="timelogEntry.totalHours"
+                    [value]="timelogEntry.totalhours"
                     readonly
                   />
                 </td>

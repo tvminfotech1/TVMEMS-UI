@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService } from '../../user-service.service';
+import { AttendanceRecord, AttendanceService } from 'src/app/services/attendance.service';
 
 @Component({
   selector: 'app-admin-attendance',
@@ -7,48 +7,40 @@ import { UserService } from '../../user-service.service';
   styleUrls: ['./admin-attendance.component.css']
 })
 export class AdminAttendanceComponent implements OnInit {
-  allAttendance: any[] = [];
-  filteredAttendance: any[] = [];
+  allAttendance: AttendanceRecord[] = [];
+  filteredAttendance: AttendanceRecord[] = [];
 
-  filterDate: string = '';
-  filterMonth: string = '';
-  filterEmpId: string = '';
-  filterName: string = '';
+  filterDate = '';
+  filterMonth = '';
+  filterEmpId = '';
+  filterName = '';
 
-  constructor(private userService: UserService) {}
+  constructor(private attendanceService: AttendanceService) {}
 
   ngOnInit(): void {
-    this.fetchAllAttendance();
-  }
-
-  fetchAllAttendance() {
-    this.userService.getAllAttendance().subscribe((data) => {
+    this.attendanceService.getAllAttendance().subscribe((data: AttendanceRecord[]) => {
       this.allAttendance = data;
       this.filteredAttendance = data;
     });
   }
 
   applyFilters() {
-    this.filteredAttendance = this.allAttendance.filter((entry) => {
+    this.filteredAttendance = this.allAttendance.filter(entry => {
       const matchDate = this.filterDate ? entry.date === this.filterDate : true;
       const matchMonth = this.filterMonth ? entry.date.startsWith(this.filterMonth) : true;
-      const matchEmpId = this.filterEmpId ? entry.empId.includes(this.filterEmpId) : true;
+      const matchEmpId = this.filterEmpId ? entry.empId.toString().includes(this.filterEmpId) : true;
       const matchName = this.filterName ? entry.name.toLowerCase().includes(this.filterName.toLowerCase()) : true;
       return matchDate && matchMonth && matchEmpId && matchName;
     });
   }
 
-  approveAttendance(entry: any) {
+  approveAttendance(entry: AttendanceRecord) {
     entry.isApproved = true;
-    this.userService.updateAttendance(entry).subscribe(() => {
-      alert('✅ Approved!');
-    });
+    this.attendanceService.updateAttendance(entry);
   }
 
-  rejectAttendance(entry: any) {
+  rejectAttendance(entry: AttendanceRecord) {
     entry.isApproved = false;
-    this.userService.updateAttendance(entry).subscribe(() => {
-      alert('❌ Rejected!');
-    });
+    this.attendanceService.updateAttendance(entry);
   }
 }
