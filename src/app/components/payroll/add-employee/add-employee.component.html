@@ -1,5 +1,7 @@
-<div class="form-container">
+<div class="form-header">
   <h2>Add New Employee</h2>
+  <button type="button" class="close-btn" (click)="onCancel()">×</button>
+</div>
 
   <form (ngSubmit)="onSubmit()" #empForm="ngForm">
     <div class="form-grid">
@@ -192,4 +194,4 @@
 
     <button type="submit" class="submit-btn">Add Employee</button>
   </form>
-</div>
+

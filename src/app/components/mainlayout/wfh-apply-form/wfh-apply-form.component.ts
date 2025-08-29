@@ -13,7 +13,7 @@ export class WfhApplyFormComponent implements OnInit {
   @Output() formCancelled = new EventEmitter<void>();
 
   wfhForm: FormGroup;
-  employeeName: string = 'Unknown Employee';
+  employeeEmail: string = 'Unknown Employee';
   submissionError: string | null = null;
 
   constructor(
@@ -30,7 +30,7 @@ export class WfhApplyFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.employeeName = this.authService.getfullName() || 'Employee Name';
+    this.employeeEmail = this.authService.getfullName() || 'Employee Name';
   }
 
   onSubmit(): void {
@@ -43,8 +43,8 @@ export class WfhApplyFormComponent implements OnInit {
       
 
       const newWfhRequest = {
-        id: 0,
-        employeeName: this.employeeName,
+        // id: 0,
+        employeeEmail: this.employeeEmail,
         fromDate: formValue.fromDate,
         toDate: formValue.toDate,
         reason: formValue.reason,

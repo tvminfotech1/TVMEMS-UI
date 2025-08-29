@@ -8,6 +8,11 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./wishcard.component.css']
 })
 export class WishcardComponent implements OnInit {
+  // ✅ Define category constants
+  readonly CATEGORY_ONBOARDING = 'WELCOME ON BOARD';
+  readonly CATEGORY_BIRTHDAY = 'BIRTHDAY WISHES';
+  readonly CATEGORY_ANNIVERSARY = 'ANNIVERSARY WISHES';
+
   allWishes: any[] = [];
   today = new Date();
 
@@ -33,14 +38,14 @@ export class WishcardComponent implements OnInit {
     const todayMonth = this.today.toLocaleString('default', { month: 'short' });
 
     this.onboardingWishes = this.allWishes
-      .filter(p => p.category === 'WELCOME ON BOARD')
+      .filter(p => p.category === this.CATEGORY_ONBOARDING)
       .slice(0, 10);
 
     this.birthdayWishes = this.allWishes
       .filter(p => {
-        if (p.category !== 'BIRTHDAY WISHES') return false;
-        const parts = p.date.trim().split(' ');
-        if (parts.length < 2) return false;
+        if (p.category !== this.CATEGORY_BIRTHDAY) return false;
+        const parts = p.date?.trim().split(' ');
+        if (!parts || parts.length < 2) return false;
         const day = parseInt(parts[0]);
         const month = parts[1];
         return day === todayDay && month.toLowerCase() === todayMonth.toLowerCase();
@@ -49,8 +54,8 @@ export class WishcardComponent implements OnInit {
 
     this.anniversaryWishes = this.allWishes
       .filter(p => {
-        if (p.category !== 'ANNIVERSARY WISHES') return false;
-        const match = p.date.match(/(\d{1,2}) (\w{3})/);
+        if (p.category !== this.CATEGORY_ANNIVERSARY) return false;
+        const match = p.date?.match(/(\d{1,2}) (\w{3})/);
         if (!match) return false;
         const day = parseInt(match[1]);
         const month = match[2];
@@ -71,17 +76,17 @@ export class WishcardComponent implements OnInit {
 
   next(category: string) {
     switch (category) {
-      case 'WELCOME ON BOARD':
+      case this.CATEGORY_ONBOARDING:
         if (this.onboardingWishes.length > 0) {
           this.onboardingIndex = (this.onboardingIndex + 1) % this.onboardingWishes.length;
         }
         break;
-      case 'BIRTHDAY WISHES':
+      case this.CATEGORY_BIRTHDAY:
         if (this.birthdayWishes.length > 0) {
           this.birthdayIndex = (this.birthdayIndex + 1) % this.birthdayWishes.length;
         }
         break;
-      case 'ANNIVERSARY WISHES':
+      case this.CATEGORY_ANNIVERSARY:
         if (this.anniversaryWishes.length > 0) {
           this.anniversaryIndex = (this.anniversaryIndex + 1) % this.anniversaryWishes.length;
         }
@@ -91,17 +96,17 @@ export class WishcardComponent implements OnInit {
 
   previous(category: string) {
     switch (category) {
-      case 'WELCOME ON BOARD':
+      case this.CATEGORY_ONBOARDING:
         if (this.onboardingWishes.length > 0) {
           this.onboardingIndex = (this.onboardingIndex - 1 + this.onboardingWishes.length) % this.onboardingWishes.length;
         }
         break;
-      case 'BIRTHDAY WISHES':
+      case this.CATEGORY_BIRTHDAY:
         if (this.birthdayWishes.length > 0) {
           this.birthdayIndex = (this.birthdayIndex - 1 + this.birthdayWishes.length) % this.birthdayWishes.length;
         }
         break;
-      case 'ANNIVERSARY WISHES':
+      case this.CATEGORY_ANNIVERSARY:
         if (this.anniversaryWishes.length > 0) {
           this.anniversaryIndex = (this.anniversaryIndex - 1 + this.anniversaryWishes.length) % this.anniversaryWishes.length;
         }
@@ -111,11 +116,11 @@ export class WishcardComponent implements OnInit {
 
   getCurrentCard(category: string) {
     switch (category) {
-      case 'WELCOME ON BOARD':
+      case this.CATEGORY_ONBOARDING:
         return this.onboardingWishes[this.onboardingIndex];
-      case 'BIRTHDAY WISHES':
+      case this.CATEGORY_BIRTHDAY:
         return this.birthdayWishes[this.birthdayIndex];
-      case 'ANNIVERSARY WISHES':
+      case this.CATEGORY_ANNIVERSARY:
         return this.anniversaryWishes[this.anniversaryIndex];
       default:
         return null;

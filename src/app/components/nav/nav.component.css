@@ -50,6 +50,7 @@ nav #navBar {
 #tvm {
   font-size: 24px;
   font-weight: bold;
+  padding-top: 6px;
 }
 
 #navBar i a {

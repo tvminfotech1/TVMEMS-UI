@@ -148,8 +148,13 @@ export class AuthService {
     sessionStorage.clear();
     this.router.navigateByUrl('/adminLogin');
   }
-    getUserId(): number {
-    // Example: Replace with real logic to get user ID from JWT/session/localStorage
-    return Number(localStorage.getItem('userId') || 0);
-  }
+   getEmailFromToken(): string | null {
+  const decoded = this.getDecodedToken();
+  return decoded?.sub || null;
+}
+
+getUserId(email: string): Observable<number> {
+  return this.http.get<number>(`${this.baseUrl}/WFH/employeeId?email=${email}`);
+}
+
 }

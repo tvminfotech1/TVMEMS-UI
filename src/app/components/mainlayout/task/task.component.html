@@ -16,35 +16,38 @@
 </div>
 
 <div class="card-row" [ngClass]="viewMode">
-  <!-- <div class="card" *ngFor="let card of filteredCards">
-    <strong>{{ card.label }}</strong> | {{ card.title }}
-  <br>
-  <small>Assigned To: {{ card.fullName }}</small>
-    <div>{{ card.description }}</div>
-    <small>Start: {{ card.startDate }} | Due: {{ card.dueDate }}</small><br />
-    <small>Priority: {{ card.priority }} | Status: {{ card.status }}</small>
-  </div> -->
   <div class="card" *ngFor="let card of filteredCards">
-  <strong>{{ card.taskName || '-' }}</strong> | {{ card.taskOwner || '-' }}
-  <br />
-  <small>Assigned To: {{ card.user?.fullName }}</small>
-  <div>{{ card.description }}</div>
-  <small>Start: {{ card.assignedDate }} | Due: {{ card.dueDate }}</small><br />
-  <small>Priority: {{ card.priority }} | Status: {{ card.status }}</small>
-</div>
-
+    <strong>{{ card.taskName || '-' }}</strong> | {{ card.taskOwner || '-' }}
+    <br />
+    <small>Assigned To: {{ card.user?.fullName }}</small>
+    <div>{{ card.description }}</div>
+    <small>Start: {{ card.assignedDate }} | Due: {{ card.dueDate }}</small><br />
+    <small>Priority: {{ card.priority }} | Status: {{ card.status }}</small>
+  </div>
 </div>
 
 <!-- Modal popup form -->
 <div *ngIf="showForm" class="popup-overlay">
   <div class="task-form">
     <h3>Add New Task</h3>
-    <label>Employee Name: <input [(ngModel)]="newTask.fullName" /></label>
-    <label>Task Name: <input [(ngModel)]="newTask.title" /></label>
-    <label>Label: <input [(ngModel)]="newTask.label" /></label>
-    <label>Description: <textarea [(ngModel)]="newTask.description"></textarea></label>
-    <label>Start Date: <input type="date" [(ngModel)]="newTask.startDate" /></label>
-    <label>Due Date: <input type="date" [(ngModel)]="newTask.dueDate" /></label>
+    <label>Employee Name:
+      <input [(ngModel)]="newTask.fullName" />
+    </label>
+    <label>Task Name:
+      <input [(ngModel)]="newTask.title" />
+    </label>
+    <label>Label:
+      <input [(ngModel)]="newTask.label" />
+    </label>
+    <label>Description:
+      <textarea [(ngModel)]="newTask.description"></textarea>
+    </label>
+    <label>Start Date:
+      <input type="date" [(ngModel)]="newTask.startDate" />
+    </label>
+    <label>Due Date:
+      <input type="date" [(ngModel)]="newTask.dueDate" />
+    </label>
     <label>Priority:
       <select [(ngModel)]="newTask.priority">
         <option>Low</option>
@@ -59,7 +62,9 @@
         <option>Completed</option>
       </select>
     </label>
-    <button (click)="submitTask()">Submit</button>
-    <button style="margin-left: 10px;" (click)="toggleForm()">Cancel</button>
+    <div class="form-btn-group">
+      <button (click)="submitTask()">Submit</button>
+      <button type="button" class="cancel-btn" (click)="toggleForm()">Cancel</button>
+    </div>
   </div>
 </div>
