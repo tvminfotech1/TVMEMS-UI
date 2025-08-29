@@ -1,10 +1,18 @@
 <div class="employee-header">
   <h2>Active Employees</h2>
   <div class="emp-right-header">
-    <button class="add-btn" (click)="navigateToAddEmployee()">Add Employee</button>
+    <button class="add-btn" (click)="navigateToAddEmployee()">
+      Add Employee
+    </button>
     <div>
       <input type="file" (change)="onFileChange($event)" accept=".xlsx, .xls" />
-      <button class="btn btn-success" (click)="uploadData()" [disabled]="!excelEmployees.length">Import</button>
+      <button
+        class="btn btn-success"
+        (click)="uploadData()"
+        [disabled]="!excelEmployees.length"
+      >
+        Import
+      </button>
     </div>
   </div>
 </div>
@@ -76,16 +84,30 @@
     <tbody>
       <tr *ngFor="let emp of filteredEmployees">
         <td>
-          <div class="designation text-success" (click)="viewPayRun(emp)" style="cursor:pointer;">
+          <div
+            class="designation text-success"
+            (click)="viewPayRun(emp)"
+            style="cursor: pointer"
+          >
             {{ emp.id }}
           </div>
         </td>
         <td>
           <div class="profile-info">
-            <img [src]="emp.profileImageUrl || 'https://via.placeholder.com/30'" alt="avatar" width="30" height="30" />
-            <div [routerLink]="['/employees/view', emp.id]" style="cursor:pointer;">
+            <img
+              [src]="emp.profileImageUrl || 'https://via.placeholder.com/30'"
+              alt="avatar"
+              width="30"
+              height="30"
+            />
+            <div
+              [routerLink]="['/mainlayout/employees/view', emp.id]"
+              style="cursor: pointer"
+            >
               <div class="name">
-                <b class="text-primary">{{ emp.firstName }} {{ emp.lastName }}</b>
+                <b class="text-primary"
+                  >{{ emp.firstName }} {{ emp.lastName }}</b
+                >
               </div>
             </div>
           </div>
@@ -93,15 +115,22 @@
         <td>{{ emp.designation }}</td>
         <td>{{ emp.email }}</td>
         <td>{{ emp.department }}</td>
-        <td [ngClass]="{
-          'text-success font-weight-bold': emp.status === 'Active',
-          'text-danger font-weight-bold': emp.status === 'Deactivated'
-        }">
+        <td
+          [ngClass]="{
+            'text-success font-weight-bold': emp.status === 'Active',
+            'text-danger font-weight-bold': emp.status === 'Deactivated'
+          }"
+        >
           <b>{{ emp.status }}</b>
         </td>
         <td>{{ emp.location }}</td>
         <td>
-          <button [routerLink]="['/mainlayout/payroll-employee', emp.id]" class="view-btn">View</button>
+          <button
+            [routerLink]="['/mainlayout/payroll-employee', emp.id]"
+            class="view-btn"
+          >
+            View
+          </button>
         </td>
       </tr>
     </tbody>

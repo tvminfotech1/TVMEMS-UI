@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { Employee } from '../models/employee';
-import { map, catchError } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -13,34 +13,40 @@ export class PayrollEmployeeService {
 
   constructor(private http: HttpClient) {}
 
-
+  // ✅ Fetch all employees
   getEmployees(): Observable<Employee[]> {
-    return this.http.get<any>(this.apiUrl).pipe(
-      map(response => response.body as Employee[]),
-      catchError(error => {
-        console.error('Error fetching employee data:', error);
-        return of([]); 
+    return this.http.get<{ body: Employee[] }>(this.apiUrl).pipe(
+      map(res => res.body),
+      catchError(err => {
+        console.error('Error fetching employees', err);
+        return of([]);
       })
     );
   }
 
- getEmployeeById(id: number): Observable<Employee> {
-  return this.http.get<Employee[]>(`${this.apiUrl}/${id}`).pipe(
-    map(response => response[0]),
-    catchError(err => {
-      console.error('Failed to fetch employee by ID', err);
-      return of({} as Employee);
-    })
-  );
-}
+  // ✅ Get single employee by ID
+  getEmployeeById(id: number): Observable<Employee> {
+    return this.http.get<{ body: Employee }>(`${this.apiUrl}/${id}`).pipe(
+      map(res => res.body),
+      catchError(err => {
+        console.error('Error fetching employee by id', err);
+        return of({} as Employee);
+      })
+    );
+  }
 
-
-
+  // ✅ Add new employee
   addEmployee(employee: Employee): Observable<Employee> {
     return this.http.post<Employee>(this.apiUrl, employee);
   }
 
+  // ✅ Update employee (PUT)
+  updateEmployee(id: number, employee: Employee): Observable<Employee> {
+    return this.http.put<Employee>(`${this.apiUrl}/${id}`, employee);
+  }
+
+  // ✅ Update employee status (PATCH)
   updateEmployeeStatus(id: number, status: string): Observable<any> {
-    return this.http.patch(`${this.apiUrl}/${id}`, { status });
+    return this.http.patch(`${this.apiUrl}/${id}/status`, { status });
   }
 }
