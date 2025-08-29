@@ -138,7 +138,6 @@ toggleConfirmPassword() {
   }
 
   onSubmit(): void {
-    debugger
   if (this.signupForm.valid) {
     const formValue = this.signupForm.value;
 

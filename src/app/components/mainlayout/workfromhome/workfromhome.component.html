@@ -19,10 +19,11 @@
   <button (click)="nextMonth()">&#62;</button>
 </div>
 
+<!-- ===== Status Cards Redesigned in Grid ===== -->
 <div class="status-cards">
   <div class="card pending">
     <h3>Pending</h3>
-    <p><span class="color">↑</span> {{ getCount('pending') }} / {{ totalRequests }}</p>
+    <p>{{ getCount('pending') }} / {{ totalRequests }}</p>
     <div class="percent">{{ getProgress('pending') }}%</div>
     <div class="progress-bar">
       <div class="progress pending" [style.width.%]="getProgress('pending')"></div>
@@ -31,7 +32,7 @@
 
   <div class="card approved">
     <h3>Approved</h3>
-    <p><span>↑</span> {{ getCount('approved') }} / {{ totalRequests }}</p>
+    <p>{{ getCount('approved') }} / {{ totalRequests }}</p>
     <div class="percent">{{ getProgress('approved') }}%</div>
     <div class="progress-bar">
       <div class="progress approved" [style.width.%]="getProgress('approved')"></div>
@@ -40,7 +41,7 @@
 
   <div class="card rejected">
     <h3>Rejected</h3>
-    <p><span class="red">↑</span> {{ getCount('rejected') }} / {{ totalRequests }}</p>
+    <p>{{ getCount('rejected') }} / {{ totalRequests }}</p>
     <div class="percent">{{ getProgress('rejected') }}%</div>
     <div class="progress-bar">
       <div class="progress rejected" [style.width.%]="getProgress('rejected')"></div>
@@ -48,10 +49,13 @@
   </div>
 </div>
 
+<!-- ===== Details Table ===== -->
 <div class="details-table">
   <div class="row header">
+    <div>Request Id</div>
+    <div>Employee Id</div>
     <div>Employee Name</div>
-    <div>Employee ID</div>
+    <div>Employee Email</div>
     <div>Date Range</div>
     <div>Days</div>
     <div>Reason</div>
@@ -61,10 +65,14 @@
   </div>
 
   <div class="row" *ngFor="let d of details">
-    <div>{{ d.employeeName }}</div> <div>{{ d.employeeId }}</div>   <div>{{ d.fromDate }} - {{ d.toDate }}</div>
+    <div>{{ d.requestId }}</div>
+    <div>{{ d.employeeId }}</div>
+    <div>{{ d.employeeName }}</div>
+    <div>{{ d.employeeEmail }}</div>
+    <div>{{ d.fromDate }} - {{ d.toDate }}</div>
     <div>{{ d.days }}</div>
     <div>{{ d.reason }}</div>
-    <div>{{ d.created }}<br />{{ d.approver }}</div>
+    <div>{{ d.created }} <br /> {{ d.approver }}</div>
     <div [ngClass]="{
           'approved-status': d.status === 'approved',
           'rejected-status': d.status === 'rejected',
@@ -72,8 +80,8 @@
         }">
       {{ d.status | titlecase }}
     </div>
-    <div *ngIf="isAdmin">
-      <button (click)="updateStatus(d, 'approved')">✔️</button>
+    <div *ngIf="isAdmin" class="actions">
+      <button (click)="updateStatus(d, 'approved')">✔</button>
       <button (click)="updateStatus(d, 'rejected')">❌</button>
       <button (click)="updateStatus(d, 'pending')">🕒</button>
     </div>
