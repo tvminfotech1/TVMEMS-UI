@@ -1,9 +1,8 @@
 .form-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: repeat(2, minmax(240px, 1fr));
   gap: 1.2rem;
   margin: 20px auto;
-  max-width: 800px;
 }
 
 .form-group {
@@ -11,25 +10,16 @@
   flex-direction: column;
 }
 
-.form-group label {
-  font-weight: 600;
-  margin-bottom: 6px;
-  color: #333;
+.form-group-radio {
+  display: flex;
+  flex-direction: row;
+  gap: 0px;
+  align-items: center;
+  margin: 0px !important;
 }
 
-.form-group input,
-.form-group select {
-  padding: 10px;
-  font-size: 0.95rem;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  transition: border-color 0.3s ease;
-}
-
-.form-group input:focus,
-.form-group select:focus {
-  border-color: #007bff;
-  outline: none;
+.radio-group {
+  margin: 0px !important;
 }
 
 .radio-group {
@@ -45,45 +35,19 @@
   align-items: center;
   gap: 5px;
 }
-
-.button-group {
-  margin-top: 30px;
-  display: flex;
-  justify-content: space-around;
-  gap: 12px;
-}
-
-.update-btn {
-  background-color: #007bff;
-  color: white;
-  padding: 10px 22px;
-  border: none;
-  font-weight: 500;
+.form-group input,
+.form-group select {
+  padding: 10px;
+  font-size: 0.95rem;
   border-radius: 6px;
-  text-decoration: none;
-  transition: background-color 0.3s ease;
-  cursor: pointer;
+  border: 1px solid #ccc;
+  transition: border-color 0.3s ease;
 }
 
-.button-group a {
-  text-decoration: none;
-  background-color: #f0f0f0;
-  padding: 10px 20px;
-  border-radius: 8px;
-  color: black;
-  font-weight: bold;
-}
-
-.button-group a:hover,
-.update-button:hover {
-  background-color: #004aad;
-  color: white;
-}
-
-.prev-btn:hover,
-.update-btn:hover,
-.next-btn:hover {
-  background-color: #0056b3;
+.form-group input:focus,
+.form-group select:focus {
+  border-color: #007bff;
+  outline: none;
 }
 
 .nominee-section {
@@ -107,5 +71,53 @@
 }
 
 .add-new-btn:hover {
+  background-color: #0056b3;
+}
+
+.PV-container {
+  max-width: 1200px;
+  margin: 20px;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.input-padding {
+  padding: 0px !important;
+}
+
+.button-group {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 50px;
+  padding: 0px 5px;
+}
+.back-button {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.back-button:hover {
+  background-color: #5a6268;
+}
+button[type="submit"] {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+button[type="submit"]:hover {
   background-color: #0056b3;
 }

@@ -1,9 +1,21 @@
+.PV-container {
+  max-width: 1200px;
+  margin: 20px;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.input-padding {
+  padding: 0px !important;
+}
+
 .form-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 1.2rem;
   margin: 20px auto;
-  max-width: 800px; /* Reduces overall width */
 }
 
 .form-group {
@@ -32,33 +44,6 @@
   border-color: #007bff;
 }
 
-
-
-/* .prev-btn, 
-.next-btn,*/
-.save-btn {
-  background-color: #007bff;
-  color: white;
-  padding: 8px 16px;
-  border: none;
-  text-decoration: none;
-  font-weight: 500;
-  border-radius: 6px;
-  transition: background-color 0.3s ease;
-  cursor: pointer;
-}
-.button-group a {
-  text-decoration: none;
-  color: #004aad;
-  font-weight: bold;
-}
-
-
-.save-btn:hover
- {
-  background-color: #0056b3;
-}
-
 .info-box {
   margin-top: 20px;
   background-color: #fff3cd;
@@ -72,29 +57,42 @@
 }
 
 .button-group {
-  margin-top: 25px;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
-  gap: 50px;
+  margin-top: 50px;
+  padding: 0px 5px;
 }
-
-.button-group a {
-  text-decoration: none;
-  background-color: #f0f0f0;
-  padding: 8px 10px;
-  border-radius: 8px;
-  color: black;
-  font-weight: bold;
-}
-
-.button-group a:hover, .update-button:hover {
-  background-color: #004aad;
+.back-button {
+  background-color: #6c757d;
   color: white;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
 }
 
-.error{
+.back-button:hover {
+  background-color: #5a6268;
+}
+button[type="submit"] {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+button[type="submit"]:hover {
+  background-color: #0056b3;
+}
+
+.error {
   color: red;
-  margin-top:5px ;
+  margin-top: 5px;
   font-size: 14px;
 }

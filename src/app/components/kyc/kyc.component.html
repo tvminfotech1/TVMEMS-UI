@@ -2,128 +2,164 @@
 <div id="container">
   <form [formGroup]="kycForm" (ngSubmit)="submitForm()">
     <div class="form-grid">
-      <div class="form-group">
-        <label for="pan">Pan Card Number</label>
+      <mat-form-field appearance="outline" class="custom-form-field">
+        <mat-label>PAN Card Number</mat-label>
         <input
+          matInput
           type="text"
-          id="pan"
-          placeholder="ABCDE1234F"
           formControlName="pan"
+          placeholder="ABCDE1234F"
+          (input)="onPanInput($event)"
+          class="input-padding"
+          maxlength="10"
         />
-        <div
-          *ngIf="kycForm.get('pan')?.touched && kycForm.get('pan')?.invalid"
-          class="error"
-        >
-          Invalid PAN format (e.g., ABCDE1234F)
-        </div>
-      </div>
 
-      <div class="form-group">
-        <label for="pan-name">Name on Pan Card</label>
+        <mat-error *ngIf="kycForm.get('pan')?.touched">
+          <span *ngIf="kycForm.get('pan')?.hasError('required')"
+            >PAN is required</span
+          >
+          <span *ngIf="kycForm.get('pan')?.hasError('pattern')"
+            >Invalid PAN format (ABCDE1234F)</span
+          >
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="custom-form-field">
+        <mat-label>Name on PAN</mat-label>
         <input
+          matInput
           type="text"
-          id="pan-name"
-          placeholder="name on PAN"
           formControlName="panName"
+          placeholder="Name on PAN"
+          class="input-padding"
         />
-        <div
-          *ngIf="
-            kycForm.get('panName')?.touched && kycForm.get('panName')?.invalid
-          "
-          class="error"
-        >
-          Name on PAN is required
-        </div>
-      </div>
 
-      <div class="form-group">
-        <label for="aadhar">Aadhar Number</label>
+        <mat-error *ngIf="kycForm.get('panName')?.touched">
+          <span *ngIf="kycForm.get('panName')?.hasError('required')"
+            >Name on PAN is required</span
+          >
+          <span *ngIf="kycForm.get('panName')?.hasError('minlength')"
+            >Name should be at least 3 characters long</span
+          >
+          <span *ngIf="kycForm.get('panName')?.hasError('pattern')"
+            >Name should contain only letters and spaces</span
+          >
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="custom-form-field">
+        <mat-label>Aadhar Number</mat-label>
         <input
+          matInput
           type="text"
-          id="aadhar"
-          placeholder="1111 2222 3333"
           formControlName="aadhar"
+          placeholder="1111 2222 3333"
+          class="input-padding"
+          maxlength="12"
         />
-        <div
-          *ngIf="
-            kycForm.get('aadhar')?.touched && kycForm.get('aadhar')?.invalid
-          "
-          class="error"
-        >
-          Aadhar must be a 12-digit number
-        </div>
-      </div>
 
-      <div class="form-group">
-        <label for="aadhar-name">Name on Aadhar Card</label>
+        <mat-error *ngIf="kycForm.get('aadhar')?.touched">
+          <span *ngIf="kycForm.get('aadhar')?.hasError('required')"
+            >Aadhar Number is required</span
+          >
+          <span *ngIf="kycForm.get('aadhar')?.hasError('pattern')"
+            >Aadhar must be exactly 12 digits</span
+          >
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="custom-form-field">
+        <mat-label>Name on Aadhar</mat-label>
         <input
+          matInput
           type="text"
-          id="aadhar-name"
-          placeholder="name on aadhar"
           formControlName="aadharName"
+          placeholder="Name on Aadhar"
+          class="input-padding"
         />
-        <div
-          *ngIf="
-            kycForm.get('aadharName')?.touched &&
-            kycForm.get('aadharName')?.invalid
-          "
-          class="error"
-        >
-          Name on Aadhar is required
-        </div>
-      </div>
 
-      <div class="form-group">
-        <label for="uan">UAN Number</label>
+        <mat-error *ngIf="kycForm.get('aadharName')?.touched">
+          <span *ngIf="kycForm.get('aadharName')?.hasError('required')"
+            >Name on Aadhar is required</span
+          >
+          <span *ngIf="kycForm.get('aadharName')?.hasError('minlength')"
+            >Name should be at least 3 characters long</span
+          >
+          <span *ngIf="kycForm.get('aadharName')?.hasError('pattern')"
+            >Name should contain only letters and spaces</span
+          >
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="custom-form-field">
+        <mat-label>UAN Number</mat-label>
         <input
+          matInput
           type="text"
-          id="uan"
-          placeholder="100234567890"
           formControlName="uan"
+          placeholder="100234567890"
+          class="input-padding"
+          maxlength="12"
         />
-        <div
-          *ngIf="kycForm.get('uan')?.touched && kycForm.get('uan')?.invalid"
-          class="error"
-        >
-          UAN must be a 12-digit number
-        </div>
-      </div>
 
-      <div class="form-group">
-        <label for="pf">PF Number</label>
+        <mat-error *ngIf="kycForm.get('uan')?.touched">
+          <span *ngIf="kycForm.get('uan')?.hasError('required')"
+            >UAN Number is required</span
+          >
+          <span *ngIf="kycForm.get('uan')?.hasError('pattern')"
+            >UAN must be exactly 12 digits</span
+          >
+        </mat-error>
+      </mat-form-field>
+
+      <!-- PF Number -->
+      <mat-form-field appearance="outline">
+        <mat-label>PF Number</mat-label>
         <input
+          matInput
           type="text"
-          id="pf"
-          placeholder="TNMAS1234567000001234567"
           formControlName="pf"
+          placeholder="TNMAS1234567000001234567"
+          class="input-padding"
+          maxlength="22"
         />
-        <div
-          *ngIf="kycForm.get('pf')?.touched && kycForm.get('pf')?.invalid"
-          class="error"
-        >
-          PF Number is required
-        </div>
-      </div>
 
-      <div class="form-group full-width">
-        <label for="hdfc">Do you have HDFC Bank Details?</label>
-        <select id="hdfc" formControlName="hdfc">
-          <option value="">Select</option>
-          <option value="yes">Yes</option>
-          <option value="no">No</option>
-        </select>
-        <div
-          *ngIf="kycForm.get('hdfc')?.touched && kycForm.get('hdfc')?.invalid"
-          class="error"
-        >
-          Please select an option
-        </div>
-      </div>
+        <mat-error *ngIf="kycForm.get('pf')?.touched">
+          <span *ngIf="kycForm.get('pf')?.hasError('required')"
+            >PF Number is required</span
+          >
+          <span *ngIf="kycForm.get('pf')?.hasError('pattern')"
+            >Enter a valid PF Number</span
+          >
+        </mat-error>
+      </mat-form-field>
+
+      <!-- HDFC Bank Details -->
+      <mat-form-field appearance="outline" class="full-width custom-form-field">
+        <mat-label>Do you have HDFC Bank Details?</mat-label>
+        <mat-select formControlName="hdfc" class="input-padding">
+          <mat-option value="">Select</mat-option>
+          <mat-option value="yes">Yes</mat-option>
+          <mat-option value="no">No</mat-option>
+        </mat-select>
+
+        <mat-error *ngIf="kycForm.get('hdfc')?.touched">
+          <span *ngIf="kycForm.get('hdfc')?.hasError('required')"
+            >Please select an option</span
+          >
+        </mat-error>
+      </mat-form-field>
     </div>
-
     <div class="button-group">
-      <a routerLink="/personal">&laquo; Previous</a>
-      <button class="update-button" type="submit">Next &raquo;</button>
+      <div>
+        <button class="back-button" type="button" (click)="back()">
+          &laquo; Back
+        </button>
+      </div>
+
+      <div>
+        <button type="submit">Next &raquo;</button>
+      </div>
     </div>
   </form>
 </div>

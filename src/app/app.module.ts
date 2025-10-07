@@ -81,10 +81,21 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatCardModule } from '@angular/material/card';
 import { MatExpansionModule } from '@angular/material/expansion';
-
-
-
-
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatOptionModule } from '@angular/material/core';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatRadioModule } from '@angular/material/radio';
+import { A11yModule } from '@angular/cdk/a11y';
+import {
+  MAT_DATE_FORMATS,
+  MatNativeDateModule,
+  MAT_DATE_LOCALE,
+} from '@angular/material/core';
+import { MY_DATE_FORMATS } from './components/date-formats';
 
 @NgModule({
   declarations: [
@@ -112,7 +123,6 @@ import { MatExpansionModule } from '@angular/material/expansion';
     OnboardingComponent,
     PendingUserComponent,
 
-
     EmployeeDetailsComponent,
     NavDisplayComponent,
     EmpkycComponent,
@@ -125,7 +135,6 @@ import { MatExpansionModule } from '@angular/material/expansion';
     EmpdocumentComponent,
     EmpresumeComponent,
     EmpfinalComponent,
-   
 
     TimeSheetComponent,
     TimeSheetComponent,
@@ -163,7 +172,6 @@ import { MatExpansionModule } from '@angular/material/expansion';
     MyProfileComponent,
     AdminAttendanceComponent,
     WfhApplyFormComponent,
-    
   ],
   imports: [
     BrowserModule,
@@ -176,15 +184,27 @@ import { MatExpansionModule } from '@angular/material/expansion';
     MatButtonModule,
     MatProgressSpinnerModule,
     MatCardModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatOptionModule,
+    MatCheckboxModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatSnackBarModule,
+    MatRadioModule,
+    A11yModule,
   ],
   providers: [
     {
-      provide:HTTP_INTERCEPTORS,
-      useClass:AuthInterceptor,
-      multi: true
-    }
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    },
+    { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
+    { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
