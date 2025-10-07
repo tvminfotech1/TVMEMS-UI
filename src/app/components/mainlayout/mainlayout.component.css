@@ -144,7 +144,7 @@ main {
 .top-bar-icons {
   position: absolute;
   top: 20px;
-  right: 20px;
+  right: 40px;
   display: flex;
   gap: 15px;
   align-items: center;

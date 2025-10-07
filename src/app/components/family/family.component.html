@@ -1,168 +1,264 @@
 <app-nav-details></app-nav-details>
-<form [formGroup]="familyForm" (ngSubmit)="submitForm()">
-  <div class="form-grid">
-    <!-- Father Name -->
-    <div class="form-group">
-      <label>Father Name</label>
-      <input
-        type="text"
-        name="fatherName"
-        placeholder="father name"
-        formControlName="fatherName"
-      />
-      <div
-        class="error"
-        *ngIf="
-          familyForm.get('fatherName')?.touched &&
-          familyForm.get('fatherName')?.invalid
-        "
-      >
-        Father Name is required
-      </div>
-    </div>
+<div class="PV-container">
+  <form [formGroup]="familyForm" (ngSubmit)="submitForm()">
+    <div class="form-grid">
+      <!-- Father Name -->
+      <mat-form-field appearance="outline">
+        <mat-label>Father Name</mat-label>
+        <input
+          matInput
+          type="text"
+          formControlName="fatherName"
+          placeholder="Enter Father Name"
+          class="input-padding"
+        />
+        <mat-error
+          *ngIf="
+            familyForm.get('fatherName')?.hasError('required') &&
+            familyForm.get('fatherName')?.touched
+          "
+        >
+          Father Name is required
+        </mat-error>
+        <mat-error
+          *ngIf="
+            familyForm.get('fatherName')?.hasError('minlength') &&
+            familyForm.get('fatherName')?.touched
+          "
+        >
+          Father Name must be at least 3 characters long
+        </mat-error>
+        <mat-error
+          *ngIf="
+            familyForm.get('fatherName')?.hasError('pattern') &&
+            familyForm.get('fatherName')?.touched
+          "
+        >
+          Only alphabets and spaces are allowed
+        </mat-error>
+      </mat-form-field>
 
-    <!-- Father DOB -->
-    <div class="form-group">
-      <label>Father DOB</label>
-      <input type="date" name="fatherDOB" formControlName="fatherDOB" />
-      <div
-        class="error"
-        *ngIf="
-          familyForm.get('fatherDOB')?.touched &&
-          familyForm.get('fatherDOB')?.invalid
-        "
-      >
-        Father DOB is required
-      </div>
-    </div>
+      <!-- Father DOB -->
+      <mat-form-field appearance="outline" class="custom-form-field">
+        <mat-label>Father DOB</mat-label>
+        <input
+          matInput
+          [matDatepicker]="fatherPicker"
+          formControlName="fatherDOB"
+          placeholder="DD-MM-YYYY"
+          (focus)="fatherPicker.open()"
+          readonly
+          class="input-padding"
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="fatherPicker"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #fatherPicker></mat-datepicker>
 
-    <!-- Mother Name -->
-    <div class="form-group">
-      <label>Mother Name</label>
-      <input
-        type="text"
-        name="motherName"
-        placeholder="mother name"
-        formControlName="motherName"
-      />
-      <div
-        class="error"
-        *ngIf="
-          familyForm.get('motherName')?.touched &&
-          familyForm.get('motherName')?.invalid
-        "
-      >
-        Mother Name is required
-      </div>
-    </div>
+        <mat-error *ngIf="familyForm.get('fatherDOB')?.touched">
+          <span *ngIf="familyForm.get('fatherDOB')?.hasError('required')"
+            >DOB is required</span
+          >
+          <span
+            *ngIf="familyForm.get('fatherDOB')?.hasError('minimumAgeValidator')"
+          >
+            Invalid age. Your father age is
+            {{ familyForm.get('fatherDOB')?.errors?.['minimumAgeValidator'].actualAge
+            }}.
+          </span>
+        </mat-error>
+      </mat-form-field>
 
-    <!-- Mother DOB -->
-    <div class="form-group">
-      <label>Mother DOB</label>
-      <input type="date" name="motherDOB" formControlName="motherDOB" />
-      <div
-        class="error"
-        *ngIf="
-          familyForm.get('motherDOB')?.touched &&
-          familyForm.get('motherDOB')?.invalid
-        "
-      >
-        Mother DOB is required
-      </div>
-    </div>
+      <!-- Mother Name -->
+      <mat-form-field appearance="outline">
+        <mat-label>Mother Name</mat-label>
+        <input
+          matInput
+          type="text"
+          formControlName="motherName"
+          placeholder="Enter Mother Name"
+          class="input-padding"
+        />
+        <mat-error
+          *ngIf="
+            familyForm.get('motherName')?.hasError('required') &&
+            familyForm.get('motherName')?.touched
+          "
+        >
+          Mother Name is required
+        </mat-error>
+        <mat-error
+          *ngIf="
+            familyForm.get('motherName')?.hasError('minlength') &&
+            familyForm.get('motherName')?.touched
+          "
+        >
+          Mother Name must be at least 3 characters long
+        </mat-error>
+        <mat-error
+          *ngIf="
+            familyForm.get('motherName')?.hasError('pattern') &&
+            familyForm.get('motherName')?.touched
+          "
+        >
+          Only alphabets and spaces are allowed
+        </mat-error>
+      </mat-form-field>
 
-    <!-- Spouse Name -->
-    <div class="form-group">
-      <label>Spouse Name</label>
-      <input
-        type="text"
-        name="spouseName"
-        placeholder="spouse name"
-        formControlName="spouseName"
-      />
-      <div
-        class="error"
-        *ngIf="
-          familyForm.get('spouseName')?.touched &&
-          familyForm.get('spouseName')?.invalid
-        "
-      >
-        Spouse Name is required
-      </div>
-    </div>
+      <!-- Mother DOB -->
+      <mat-form-field appearance="outline" class="custom-form-field">
+        <mat-label>Mother DOB</mat-label>
+        <input
+          matInput
+          [matDatepicker]="motherPicker"
+          formControlName="motherDOB"
+          placeholder="DD-MM-YYYY"
+          (focus)="motherPicker.open()"
+          readonly
+          class="input-padding"
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="motherPicker"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #motherPicker></mat-datepicker>
 
-    <!-- Spouse DOB -->
-    <div class="form-group">
-      <label>Spouse DOB</label>
-      <input type="date" name="spouseDOB" formControlName="spouseDOB" />
-      <div
-        class="error"
-        *ngIf="
-          familyForm.get('spouseDOB')?.touched &&
-          familyForm.get('spouseDOB')?.invalid
-        "
-      >
-        Spouse DOB is required
-      </div>
-    </div>
+        <mat-error *ngIf="familyForm.get('motherDOB')?.touched">
+          <span *ngIf="familyForm.get('motherDOB')?.hasError('required')"
+            >DOB is required</span
+          >
+          <span
+            *ngIf="familyForm.get('motherDOB')?.hasError('minimumAgeValidator')"
+          >
+            Invalid age. Your mother age is
+            {{ familyForm.get('motherDOB')?.errors?.['minimumAgeValidator'].actualAge
+            }}.
+          </span>
+        </mat-error>
+      </mat-form-field>
 
-    <!-- Spouse Gender -->
-    <div class="form-group">
-      <label>Spouse Gender</label>
-      <select name="spouseGender" formControlName="spouseGender">
-        <option value="">Select Gender</option>
-        <option value="Male">Male</option>
-        <option value="Female">Female</option>
-        <option value="Other">Other</option>
-      </select>
-      <div
-        class="error"
-        *ngIf="
-          familyForm.get('spouseGender')?.touched &&
-          familyForm.get('spouseGender')?.invalid
-        "
-      >
-        Spouse Gender is required
-      </div>
-    </div>
+      <!-- Spouse Name -->
+      <mat-form-field appearance="outline">
+        <mat-label>Spouse Name</mat-label>
+        <input
+          matInput
+          type="text"
+          formControlName="spouseName"
+          placeholder="Enter Spouse Name"
+          class="input-padding"
+        />
+        <mat-error
+          *ngIf="
+            familyForm.get('spouseName')?.hasError('required') &&
+            familyForm.get('spouseName')?.touched
+          "
+        >
+          Spouse Name is required
+        </mat-error>
+        <mat-error
+          *ngIf="
+            familyForm.get('spouseName')?.hasError('minlength') &&
+            familyForm.get('spouseName')?.touched
+          "
+        >
+          Spouse Name must be at least 3 characters long
+        </mat-error>
+        <mat-error
+          *ngIf="
+            familyForm.get('spouseName')?.hasError('pattern') &&
+            familyForm.get('spouseName')?.touched
+          "
+        >
+          Only alphabets and spaces are allowed
+        </mat-error>
+      </mat-form-field>
 
-    <!-- Children -->
-    <div class="form-group form-grid">
-      <label>Do you have children:</label>
-      <div class="radio-group">
-        <label>
-          <input
-            type="radio"
-            value="Yes"
+      <!-- Spouse DOB -->
+      <mat-form-field appearance="outline" class="custom-form-field">
+        <mat-label>Spouse DOB</mat-label>
+        <input
+          matInput
+          [matDatepicker]="spousePicker"
+          formControlName="spouseDOB"
+          placeholder="DD-MM-YYYY"
+          (focus)="spousePicker.open()"
+          readonly
+          class="input-padding"
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="spousePicker"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #spousePicker></mat-datepicker>
+
+        <mat-error *ngIf="familyForm.get('spouseDOB')?.touched">
+          <span *ngIf="familyForm.get('spouseDOB')?.hasError('required')"
+            >DOB is required</span
+          >
+          <span
+            *ngIf="familyForm.get('spouseDOB')?.hasError('minimumAgeValidator')"
+          >
+            Invalid age. Your spouse age is
+            {{ familyForm.get('spouseDOB')?.errors?.['minimumAgeValidator'].actualAge
+            }}.
+          </span>
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Spouse Gender -->
+      <mat-form-field appearance="outline" class="form-group" color="primary">
+        <mat-label>Spouse Gender</mat-label>
+        <mat-select formControlName="spouseGender">
+          <mat-option value="">Select Gender</mat-option>
+          <mat-option value="Male">Male</mat-option>
+          <mat-option value="Female">Female</mat-option>
+          <mat-option value="Other">Other</mat-option>
+        </mat-select>
+        <mat-error
+          *ngIf="
+            familyForm.get('spouseGender')?.touched &&
+            familyForm.get('spouseGender')?.hasError('required')
+          "
+        >
+          Spouse Gender is required
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Children -->
+      <div>
+        <div class="form-group-radio">
+          <label class="mat-label">Do you have children:</label>
+
+          <mat-radio-group
             formControlName="children"
-            name="children"
-          />
-          Yes
-        </label>
-        <label>
-          <input
-            type="radio"
-            value="No"
-            formControlName="children"
-            name="children"
-          />
-          No
-        </label>
-      </div>
-      <div
-        class="error"
-        *ngIf="
-          familyForm.get('children')?.touched &&
-          familyForm.get('children')?.invalid
-        "
-      >
-        Please select an option
+            class="radio-group"
+            aria-label="Do you have children"
+          >
+            <mat-radio-button value="Yes">Yes</mat-radio-button>
+            <mat-radio-button value="No">No</mat-radio-button>
+          </mat-radio-group>
+        </div>
+        <mat-error
+          *ngIf="
+            familyForm.get('children')?.touched &&
+            familyForm.get('children')?.hasError('required')
+          "
+        >
+          Please select an option
+        </mat-error>
       </div>
     </div>
-  </div>
+    <div class="button-group">
+      <div>
+        <button class="back-button" type="button" (click)="back()">
+          &laquo; Back
+        </button>
+      </div>
 
-  <div class="button-group">
-    <a routerLink="/passport" class="prev-btn">&laquo; Previous</a>
-    <button type="submit" class="update-btn">Next &raquo;</button>
-  </div>
-</form>
+      <div>
+        <button type="submit">Next &raquo;</button>
+      </div>
+    </div>
+  </form>
+</div>

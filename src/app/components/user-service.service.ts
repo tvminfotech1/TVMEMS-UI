@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -16,12 +16,15 @@ export class UserService {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token || ''}`,
     });
-    return this.http.post(`${this.BASE_URL}/documents/kycdocument`, formData, {
+    return this.http.post(`${this.BASE_URL}/documentsupload`, formData, {
       headers,
     });
   }
 
-  downloadKycDocument(documentType: string, documentId: number): Observable<Blob> {
+  downloadKycDocument(
+    documentType: string,
+    documentId: number
+  ): Observable<Blob> {
     const token = localStorage.getItem('token');
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token || ''}`,
@@ -36,9 +39,10 @@ export class UserService {
       Authorization: `Bearer ${token || ''}`,
     });
 
-    return this.http.post(`${this.BASE_URL}/final/submit`, finalFormData, { headers });
+    return this.http.post(`${this.BASE_URL}/final/submit`, finalFormData, {
+      headers,
+    });
   }
-
 
   private formData: Record<string, any> = {};
   private formGroups: Record<string, FormGroup> = {};
@@ -65,6 +69,15 @@ export class UserService {
   }
 
   getInvalidSteps(): string[] {
-    return Object.keys(this.formGroups).filter((k) => !this.formGroups[k].valid);
+    return Object.keys(this.formGroups).filter(
+      (k) => !this.formGroups[k].valid
+    );
+  }
+
+  private maritalStatusSubject = new BehaviorSubject<string>('');
+  maritalStatus$ = this.maritalStatusSubject.asObservable();
+
+  setMaritalStatus(status: string): void {
+    this.maritalStatusSubject.next(status);
   }
 }

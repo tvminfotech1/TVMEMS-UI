@@ -1,113 +1,270 @@
 <app-nav-details></app-nav-details>
 
-<div class="employment-section">
-  <button class="add-btn" (click)="openPopup()">Add</button>
+<div class="PV-container">
+  <div class="header">
+    <button type="submit" mat-raised-button (click)="openPopup()">
+      <mat-icon>add</mat-icon> Add
+    </button>
+  </div>
 
-  <div *ngIf="employmentList.length === 0">
+  <div *ngIf="employmentList.length === 0" class="no-data">
     <p>No Employment data added.</p>
   </div>
 
-  <ul *ngIf="employmentList.length > 0">
-    <li *ngFor="let emp of employmentList; let i = index">
-      <strong>{{ emp.companyName }}</strong> — {{ emp.designation }} ({{ emp.employmentType }})<br />
-      From: {{ emp.startDate }} To: {{ emp.endDate }}
-      <button (click)="deleteEmployment(i)" class="delete-btn">Delete</button>
-    </li>
-  </ul>
-</div>
-
-<!-- Popup Modal -->
-<div class="popup" *ngIf="showPopup">
-  <div class="popup-content">
-    <span class="close" (click)="closePopup()">&times;</span>
-    <form [formGroup]="employmentForm" (ngSubmit)="saveEmployment()">
-      <div class="form-grid">
-        <!-- Company Name -->
-        <div class="form-group">
-          <label>Company name</label>
-          <input type="text" placeholder="ABC Company" formControlName="companyName" />
-          <div *ngIf="employmentForm.get('companyName')?.touched && employmentForm.get('companyName')?.invalid" class="error">
-            Company name is required
+  <mat-card
+    class="employment-card"
+    *ngFor="let emp of employmentList; let i = index"
+  >
+    <div class="employment-header">
+      <div class="employment-info">
+        <h3 class="company-name">{{ emp.companyName }}</h3>
+        <p class="role-line">
+          <span class="designation">{{
+            formatDesignation(emp.designation)
+          }}</span>
+          <span class="employment-type">({{ emp.employmentType }})</span>
+        </p>
+        <div class="date-range">
+          <mat-icon class="calendar-icon">event</mat-icon>
+          <div class="dates">
+            {{ emp.startDate | date : "dd/MM/yyyy" }} —
+            {{ emp.endDate | date : "dd/MM/yyyy" }}
           </div>
-        </div>
-
-        <!-- Designation -->
-        <div class="form-group">
-          <label>Designation</label>
-          <select formControlName="designation">
-            <option value="">Select</option>
-            <option value="developer">Developer</option>
-            <option value="tester">Tester</option>
-            <option value="designer">Designer</option>
-            <option value="frontend_developer">Frontend Developer</option>
-            <option value="backend_developer">Backend Developer</option>
-            <option value="fullstack_developer">Full Stack Developer</option>
-            <option value="devops_engineer">DevOps Engineer</option>
-            <option value="data_engineer">Data Engineer</option>
-            <option value="data_scientist">Data Scientist</option>
-            <option value="machine_learning_engineer">Machine Learning Engineer</option>
-            <option value="qa_engineer">QA Engineer</option>
-            <option value="ui_ux_designer">UI/UX Designer</option>
-            <option value="business_analyst">Business Analyst</option>
-            <option value="project_manager">Project Manager</option>
-            <option value="product_manager">Product Manager</option>
-            <option value="scrum_master">Scrum Master</option>
-            <option value="system_admin">System Administrator</option>
-            <option value="network_engineer">Network Engineer</option>
-            <option value="technical_writer">Technical Writer</option>
-            <option value="support_engineer">Support Engineer</option>
-          </select>
-          <div *ngIf="employmentForm.get('designation')?.touched && employmentForm.get('designation')?.invalid" class="error">
-            Designation is required
-          </div>
-        </div>
-
-        <!-- Employment Type -->
-        <div class="form-group">
-          <label>Employment type</label>
-          <select formControlName="employmentType">
-            <option value="">Select Employment Type</option>
-            <option value="full_time">Full-time</option>
-            <option value="part_time">Part-time</option>
-            <option value="contractual">Contractual</option>
-            <option value="freelance">Freelance</option>
-            <option value="intern">Intern</option>
-            <option value="consultant">Consultant</option>
-          </select>
-          <div *ngIf="employmentForm.get('employmentType')?.touched && employmentForm.get('employmentType')?.invalid" class="error">
-            Employment type is required
-          </div>
-        </div>
-
-        <!-- Start Date -->
-        <div class="form-group">
-          <label>Start date</label>
-          <input type="date" formControlName="startDate" />
-          <div *ngIf="employmentForm.get('startDate')?.touched && employmentForm.get('startDate')?.invalid" class="error">
-            Start date is required
-          </div>
-        </div>
-
-        <!-- End Date -->
-        <div class="form-group">
-          <label>Exit date</label>
-          <input type="date" formControlName="endDate" />
-          <div *ngIf="employmentForm.get('endDate')?.touched && employmentForm.get('endDate')?.invalid" class="error">
-            Exit date is required
-          </div>
-        </div>
-
-        <!-- Submit -->
-        <div class="form-group full-width">
-          <button id="save-btn" type="submit">Save</button>
         </div>
       </div>
-    </form>
-  </div>
-</div>
 
-<!-- Navigation Buttons -->
-<div class="button-group">
-  <a routerLink="/family">&laquo; Previous</a>
-  <button class="update-button" type="submit" (click)="finalSave()">Next</button>
+      <div class="employment-actions">
+        <button
+          mat-icon-button
+          color="warn"
+          (click)="deleteEmployment(i)"
+          aria-label="Delete"
+        >
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+    </div>
+  </mat-card>
+
+  <!-- Popup Modal -->
+  <div class="popup" *ngIf="showPopup">
+    <div class="popup-content">
+      <span class="close" (click)="closePopup()">&times;</span>
+      <form [formGroup]="employmentForm" (ngSubmit)="saveEmployment()">
+        <div class="form-grid">
+          <!-- Company Name -->
+          <mat-form-field
+            appearance="outline"
+            class="custom-form-field full-width"
+          >
+            <mat-label>Company name:</mat-label>
+            <input
+              matInput
+              type="text"
+              formControlName="companyName"
+              class="input-padding"
+            />
+
+            <!-- Error: Required -->
+            <mat-error
+              *ngIf="
+                employmentForm.get('companyName')?.hasError('required') &&
+                employmentForm.get('companyName')?.touched
+              "
+            >
+              Company name is required
+            </mat-error>
+
+            <!-- Error: Minimum Length -->
+            <mat-error
+              *ngIf="
+                employmentForm.get('companyName')?.hasError('minlength') &&
+                employmentForm.get('companyName')?.touched
+              "
+            >
+              Company name must be at least 2 characters
+            </mat-error>
+
+            <!-- Error: Pattern -->
+            <mat-error
+              *ngIf="
+                employmentForm.get('companyName')?.hasError('pattern') &&
+                employmentForm.get('companyName')?.touched
+              "
+            >
+              Company name can only contain letters, numbers, spaces, and common
+              symbols (.,-&')
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Designation -->
+          <mat-form-field
+            appearance="outline"
+            class="custom-form-field full-width"
+          >
+            <mat-label>Designation</mat-label>
+            <mat-select formControlName="designation" placeholder="Select">
+              <mat-option value="">Select</mat-option>
+              <mat-option value="developer">Developer</mat-option>
+              <mat-option value="tester">Tester</mat-option>
+              <mat-option value="designer">Designer</mat-option>
+              <mat-option value="frontend_developer"
+                >Frontend Developer</mat-option
+              >
+              <mat-option value="backend_developer"
+                >Backend Developer</mat-option
+              >
+              <mat-option value="fullstack_developer"
+                >Full Stack Developer</mat-option
+              >
+              <mat-option value="devops_engineer">DevOps Engineer</mat-option>
+              <mat-option value="data_engineer">Data Engineer</mat-option>
+              <mat-option value="data_scientist">Data Scientist</mat-option>
+              <mat-option value="machine_learning_engineer"
+                >Machine Learning Engineer</mat-option
+              >
+              <mat-option value="qa_engineer">QA Engineer</mat-option>
+              <mat-option value="ui_ux_designer">UI/UX Designer</mat-option>
+              <mat-option value="business_analyst">Business Analyst</mat-option>
+              <mat-option value="project_manager">Project Manager</mat-option>
+              <mat-option value="product_manager">Product Manager</mat-option>
+              <mat-option value="scrum_master">Scrum Master</mat-option>
+              <mat-option value="system_admin">System Administrator</mat-option>
+              <mat-option value="network_engineer">Network Engineer</mat-option>
+              <mat-option value="technical_writer">Technical Writer</mat-option>
+              <mat-option value="support_engineer">Support Engineer</mat-option>
+            </mat-select>
+
+            <!-- Error Message -->
+            <mat-error
+              *ngIf="
+                employmentForm.get('designation')?.hasError('required') &&
+                employmentForm.get('designation')?.touched
+              "
+            >
+              Designation is required
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Employment Type -->
+          <mat-form-field
+            appearance="outline"
+            class="custom-form-field full-width"
+          >
+            <mat-label>Employment Type</mat-label>
+            <mat-select
+              formControlName="employmentType"
+              placeholder="Select Employment Type"
+              class="input-padding"
+            >
+              <mat-option value="">Select Employment Type</mat-option>
+              <mat-option value="full_time">Full-time</mat-option>
+              <mat-option value="part_time">Part-time</mat-option>
+              <mat-option value="contractual">Contractual</mat-option>
+              <mat-option value="freelance">Freelance</mat-option>
+              <mat-option value="intern">Intern</mat-option>
+              <mat-option value="consultant">Consultant</mat-option>
+            </mat-select>
+
+            <!-- Validation Error -->
+            <mat-error
+              *ngIf="
+                employmentForm.get('employmentType')?.hasError('required') &&
+                employmentForm.get('employmentType')?.touched
+              "
+            >
+              Employment type is required
+            </mat-error>
+          </mat-form-field>
+
+          <div class="date-fields">
+            <!-- Start Date -->
+            <mat-form-field appearance="outline" class="custom-form-field">
+              <mat-label>Start Date:</mat-label>
+              <input
+                matInput
+                [matDatepicker]="startPicker"
+                formControlName="startDate"
+                placeholder="DD-MM-YYYY"
+                class="input-padding"
+                (focus)="startPicker.open()"
+                [matDatepickerFilter]="startDateFilter"
+                readonly
+              />
+              <mat-datepicker-toggle
+                matSuffix
+                [for]="startPicker"
+              ></mat-datepicker-toggle>
+              <mat-datepicker #startPicker></mat-datepicker>
+
+              <mat-error *ngIf="employmentForm.get('startDate')?.touched">
+                <span
+                  *ngIf="employmentForm.get('startDate')?.hasError('required')"
+                  >Start date is required</span
+                >
+                <span
+                  *ngIf="
+                    employmentForm
+                      .get('startDate')
+                      ?.hasError('invalidStartDate')
+                  "
+                  >Start date cannot be today or in the future</span
+                >
+              </mat-error>
+            </mat-form-field>
+
+            <!-- End Date -->
+            <mat-form-field appearance="outline" class="custom-form-field">
+              <mat-label>Exit Date:</mat-label>
+              <input
+                matInput
+                [matDatepicker]="endPicker"
+                formControlName="endDate"
+                placeholder="DD-MM-YYYY"
+                class="input-padding"
+                (focus)="endPicker.open()"
+                [matDatepickerFilter]="endDateFilter"
+                readonly
+              />
+              <mat-datepicker-toggle
+                matSuffix
+                [for]="endPicker"
+              ></mat-datepicker-toggle>
+              <mat-datepicker #endPicker></mat-datepicker>
+
+              <mat-error *ngIf="employmentForm.get('endDate')?.touched">
+                <span
+                  *ngIf="employmentForm.get('endDate')?.hasError('required')"
+                  >Exit date is required</span
+                >
+                <span
+                  *ngIf="
+                    employmentForm.get('endDate')?.hasError('invalidEndDate')
+                  "
+                  >Exit date cannot be before Start date</span
+                >
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <!-- Submit -->
+          <div class="form-group full-width">
+            <button id="save-btn" type="submit">Save</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="button-group">
+    <div>
+      <button class="back-button" type="button" (click)="back()">
+        &laquo; Back
+      </button>
+    </div>
+
+    <div>
+      <button type="submit" (click)="finalSave()">Next &raquo;</button>
+    </div>
+  </div>
 </div>

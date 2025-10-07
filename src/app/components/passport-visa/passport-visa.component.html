@@ -1,53 +1,95 @@
 <app-nav-details></app-nav-details>
-<form #form="ngForm" [formGroup]="userForm" (ngSubmit)="submitForm()">
-  <div class="form-grid">
+<div class="PV-container">
+  <form #form="ngForm" [formGroup]="userForm" (ngSubmit)="submitForm()">
+    <div class="form-grid">
+      <!-- Nationality -->
+      <mat-form-field appearance="outline">
+        <mat-label>Nationality</mat-label>
+        <mat-select formControlName="nationality" class="input-padding">
+          <mat-option value="">Select</mat-option>
+          <mat-option value="Indian">Indian</mat-option>
+          <mat-option value="Other">Other</mat-option>
+        </mat-select>
 
-    <!-- Nationality -->
-    <div class="form-group">
-      <label for="nationality">Nationality:</label>
-      <select id="nationality" name="nationality" ngModel formControlName="nationality">
-        <option value="">Select</option>
-        <option value="Indian">Indian</option>
-        <option value="Other">Other</option>
-      </select>
-      <div *ngIf="userForm.get('nationality')?.touched && userForm.get('nationality')?.hasError('required')" class="error">
-        Nationality is required
+        <mat-error
+          *ngIf="
+            userForm.get('nationality')?.touched &&
+            userForm.get('nationality')?.hasError('required')
+          "
+        >
+          Nationality is required
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Passport Number -->
+      <!-- Passport dropdown -->
+      <mat-form-field appearance="outline">
+        <mat-label>Do you have passport?</mat-label>
+        <mat-select formControlName="ifPassport" class="input-padding">
+          <mat-option value="">Select</mat-option>
+          <mat-option value="Yes">Yes</mat-option>
+          <mat-option value="No">No</mat-option>
+        </mat-select>
+        <mat-error
+          *ngIf="
+            userForm.get('ifPassport')?.touched &&
+            userForm.get('ifPassport')?.hasError('required')
+          "
+        >
+          Please select if you have a passport
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Passport Number (conditionally visible) -->
+      <div *ngIf="userForm.get('ifPassport')?.value === 'Yes'">
+        <mat-form-field appearance="outline" style="width: 100%">
+          <mat-label>Enter Passport Number</mat-label>
+          <input
+            matInput
+            formControlName="passportNumber"
+            placeholder="Passport Number"
+            class="input-padding"
+          />
+          <mat-error
+            *ngIf="
+              userForm.get('passportNumber')?.touched &&
+              userForm.get('passportNumber')?.hasError('required')
+            "
+          >
+            Passport Number is required
+          </mat-error>
+
+          <mat-error
+            *ngIf="userForm.get('passportNumber')?.hasError('required')"
+          >
+            Passport Number is required
+          </mat-error>
+          <mat-error
+            *ngIf="userForm.get('passportNumber')?.hasError('pattern')"
+          >
+            Only alphanumeric characters allowed
+          </mat-error>
+          <mat-error
+            *ngIf="
+              userForm.get('passportNumber')?.hasError('minlength') ||
+              userForm.get('passportNumber')?.hasError('maxlength')
+            "
+          >
+            Passport Number must be exactly 8 characters
+          </mat-error>
+        </mat-form-field>
       </div>
     </div>
 
-    <!-- Passport -->
-    <div class="form-group">
-      <label for="passport">Do you have passport:</label>
-      <select id="passport" name="ifPassport" [(ngModel)]="passportValue" formControlName="ifPassport">
-        <option value="">Select</option>
-        <option value="Yes">Yes</option>
-        <option value="No">No</option>
-      </select>
-      <div *ngIf="userForm.get('ifPassport')?.touched && userForm.get('ifPassport')?.hasError('required')" class="error">
-        Please select if you have a passport
+    <div class="button-group">
+      <div>
+        <button class="back-button" type="button" (click)="back()">
+          &laquo; Back
+        </button>
+      </div>
+      <div>
+        <button type="submit">Next &raquo;</button>
       </div>
     </div>
-
-    <!-- Passport Number -->
-    <div class="form-group" *ngIf="passportValue === 'Yes'">
-      <label for="passportNumber">Enter Passport Number:</label>
-      <input
-        type="text"
-        id="passportNumber"
-        name="passportNumber"
-        ngModel
-        placeholder="Passport Number"
-        formControlName="passportNumber"
-      />
-      <div *ngIf="userForm.get('passportNumber')?.touched && userForm.get('passportNumber')?.hasError('required')" class="error">
-        Passport Number is required
-      </div>
-    </div>
-
-  </div>
-
-  <div class="button-group">
-    <a routerLink="/kyc" class="prev-btn">&laquo; Previous</a>
-    <button type="submit" class="save-btn">Next &raquo;</button>
-  </div>
-</form>
+  </form>
+</div>
