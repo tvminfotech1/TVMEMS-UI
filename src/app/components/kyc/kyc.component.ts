@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserService } from '../user-service.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MainlayoutService } from 'src/app/services/main-layout.service';
+
 
 @Component({
   selector: 'app-kyc',
@@ -16,7 +18,8 @@ export class KycComponent implements OnInit {
     private fb: FormBuilder,
     private userService: UserService,
     private router: Router,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private mainlayoutService: MainlayoutService
   ) {}
 
   ngOnInit(): void {
@@ -68,6 +71,8 @@ export class KycComponent implements OnInit {
     if (this.kycForm.valid) {
       this.userService.setFormData('kyc', this.kycForm.value);
       this.router.navigate(['/mainlayout/passport']);
+      this.mainlayoutService.markTabCompleted('kyc', true);
+
       console.log(this.kycForm.value);
     } else {
       this.snackBar.open('Please fill all required fields', 'Close', {

@@ -16,3 +16,11 @@
   color: blue;
   border-bottom: 2px solid blue;
 }
+
+
+.tabs a.disabled {
+  pointer-events:stroke;  
+  opacity: 0.5;          
+  cursor: not-allowed;   
+  text-decoration: none;
+}

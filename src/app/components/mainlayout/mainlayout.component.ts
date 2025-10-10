@@ -1,6 +1,7 @@
 import { Component, HostListener,OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
+import { MainlayoutService } from 'src/app/services/main-layout.service';  
 
 @Component({
   selector: 'app-mainlayout',
@@ -26,9 +27,17 @@ export class MainlayoutComponent implements OnInit {
   userName: string = '';
   employeeId!: string | null; 
 
-  constructor(private router: Router,private authService: AuthService) {}
+  completedTabs: any = {};
+
+  constructor(private router: Router,private authService: AuthService ,  private mainLayoutService: MainlayoutService
+) {}
 
   ngOnInit() {
+
+    this.mainLayoutService.completedTabs$.subscribe(tabs => {
+      this.completedTabs = tabs;
+    });
+
     this.isAdmin = this.authService.isAdmin();
     this.isUser = this.authService.isUser();
     this.userName = this.authService.getfullName() || 'User';

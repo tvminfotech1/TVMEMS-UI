@@ -1,5 +1,12 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  FormControl,
+  AbstractControl,
+  ValidationErrors,
+} from '@angular/forms';
 import { UserService } from '../user-service.service';
 import { Router } from '@angular/router';
 
@@ -9,6 +16,8 @@ import { Router } from '@angular/router';
 })
 export class FinalComponent {
   declarationForm: FormGroup;
+  myForm!: FormGroup;
+  currentDate: string = new Date().toISOString().substring(0, 10);
 
   constructor(
     private fb: FormBuilder,
@@ -17,60 +26,59 @@ export class FinalComponent {
   ) {
     this.declarationForm = this.fb.group({
       checked: [false, Validators.requiredTrue],
-      signature: ['', Validators.required],
+      signature: this.fb.control('', {
+        validators: [Validators.required, this.nameValidator],
+        updateOn: 'change',
+      }),
       date: ['', Validators.required],
     });
+  }
+  back(): void {
+    this.router.navigate(['/mainlayout/resume']);
+  }
+
+  nameValidator(control: AbstractControl): ValidationErrors | null {
+    const value = control.value;
+
+    if (!value) return null;
+
+    const isTooShort = value.length < 3;
+    const hasNumber = /\d/.test(value);
+    const hasSpecialChar = /[^a-zA-Z]/.test(value);
+
+    if (hasNumber || hasSpecialChar) return { invalidChars: true };
+    if (isTooShort) return { minLength: true };
+    return null;
   }
 
   submitForm(): void {
     if (this.declarationForm.valid) {
+      this.userService.setFormData('final', this.declarationForm.value);
+            console.log("this is failed formData1",this.userService.getAllFormData());
+
       if (!this.userService.isAllFormsValid()) {
         const incompleteSteps = this.userService.getInvalidSteps();
-        alert('Please complete the following steps: ' + incompleteSteps.join(', '));
+              console.log("this is failed formData2",this.userService.getAllFormData());
+        alert(
+          'Please complete these required steps: ' + incompleteSteps.join(', ')
+        );
         return;
       }
-
-      this.userService.setFormData('aFinal', this.declarationForm.value);
-
-      const allData = {
-        ...this.userService.getFormData('personal'),
-        kyc: this.userService.getFormData('kyc'),
-        passport: this.userService.getFormData('passport'),
-        family: this.userService.getFormData('family'),
-        previousEmployment: this.userService.getFormData('previousEmployment'),
-        education: this.userService.getFormData('education'),
-        skills: this.userService.getFormData('skills'),
-        certification: this.userService.getFormData('certification'),
-        documents: this.userService.getFormData('documents'),
-        resume: this.userService.getFormData('resume'),
-        aFinal: this.userService.getFormData('aFinal'),
-      };
-
-      const finalFormData = new FormData();
-      finalFormData.append(
-        'jsonData',
-        new Blob([JSON.stringify(allData)], { type: 'application/json' })
-      );
-
-      const uploadedFiles = this.userService.getFormData('uploadedFiles') as FormData;
-      if (uploadedFiles) {
-        uploadedFiles.forEach((value, key) => {
-          finalFormData.append(key, value);
-        });
-      }
-
-      this.userService.submitFinalData(finalFormData).subscribe({
-        next: (res: any) => {
-          console.log('Server response:', res);
+      
+      this.userService.submitFinalData().subscribe({
+        next: (res) => {
+          console.log('Submission success:', res);
+          this.userService.clearFormData();
           this.router.navigate(['/mainlayout/thankYou']);
         },
         error: (err) => {
           console.error('Submission error:', err);
-          alert('Something went wrong while submitting the form.');
-        }
-      });
-
+          alert('Something went wrong during submission.');
+        },
+      });      
     } else {
+      console.log("this is failed formData3",this.userService.getAllFormData());
+      console.log('Form is invalid', this.declarationForm.value);
       this.declarationForm.markAllAsTouched();
     }
   }

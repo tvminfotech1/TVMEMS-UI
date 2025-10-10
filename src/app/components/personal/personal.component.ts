@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { Subscription } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MainlayoutService } from 'src/app/services/main-layout.service';
 
 export function minimumAgeValidator(minAge: number) {
   return (control: AbstractControl): ValidationErrors | null => {
@@ -48,7 +49,9 @@ export class PersonalComponent implements OnInit {
     private formBuilder: FormBuilder,
     private userService: UserService,
     private router: Router,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+        private mainLayoutService: MainlayoutService
+
   ) {
     this.userForm = this.formBuilder.group({
       fname: [
@@ -246,6 +249,7 @@ export class PersonalComponent implements OnInit {
 
       console.log('Submitting data: ', formValue);
       this.userService.setFormData('personal', formValue);
+      this.mainLayoutService.markTabCompleted('personal', true);
       this.router.navigate(['/mainlayout/kyc']);
     } else {
       this.snackBar.open('Please fill all required fields', 'Close', {

@@ -1,9 +1,34 @@
-<div class="thank-you-container">
-    <div class="icon">✅</div>
-    <h1>Submission Successful!</h1>
-    <p>Your onboarding form has been successfully submitted.</p>
-    <p>Thank you for providing your information. Our HR team will review your documents and reach out to you if needed.</p>
-    
-    <button routerLink="personal" class="home-btn" (click)="goToHome()">Go to Home</button>
+<div class="PV-container">
+  <!-- thank-you.component.html -->
+  <div fxLayout="column" fxLayoutAlign="center center">
+    <mat-card class="thank-you-card" appearance="outlined">
+      <div class="card-header">
+        <mat-card-header>
+          <div mat-card-avatar class="success-icon">
+            <mat-icon color="green">check_circle</mat-icon>
+          </div>
+          <mat-card-title>Submission Successful!</mat-card-title>
+        </mat-card-header>
+      </div>
+      <mat-card-content>
+        <p>Your onboarding form has been successfully submitted.</p>
+        <p>
+          Thank you for providing your information. Our HR team will review your
+          documents and reach out to you if needed.
+        </p>
+      </mat-card-content>
+
+      <mat-card-actions>
+        <button
+          mat-raised-button
+          color="primary"
+          routerLink="/personal"
+          (click)="goToHome()"
+        >
+          <mat-icon class="button-icon">home</mat-icon>
+          Go to Home
+        </button>
+      </mat-card-actions>
+    </mat-card>
   </div>
-  
+</div>

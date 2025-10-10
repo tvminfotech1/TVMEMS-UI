@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '../user-service.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MainlayoutService } from 'src/app/services/main-layout.service';
+
 
 @Component({
   selector: 'app-passport-visa',
@@ -17,7 +19,8 @@ export class PassportVisaComponent implements OnInit {
     private formBuilder: FormBuilder,
     private userService: UserService,
     private router: Router,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private mainlayoutService: MainlayoutService
   ) {}
 
   ngOnInit(): void {
@@ -56,6 +59,7 @@ export class PassportVisaComponent implements OnInit {
     if (this.userForm.valid) {
       this.userService.setFormData('passport', this.userForm.value);
       this.router.navigate(['/mainlayout/family']);
+      this.mainlayoutService.markTabCompleted('passport', true);
       console.log(this.userForm.value);
     } else {
       this.snackBar.open('Please fill all required fields', 'Close', {
