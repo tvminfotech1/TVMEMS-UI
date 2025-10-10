@@ -1,185 +1,409 @@
 <app-nav-details></app-nav-details>
-<form [formGroup]="documentForm" (ngSubmit)="submitForm()">
-  <div class="borderLine">
-    <h3>KYC Documents</h3>
-    <p style="margin: 10px">Upload images in less size (Max 1 MB)</p>
-    <div class="form-grid">
-      <div class="form-group">
-        <label>Pan card Image</label>
-        <input type="file" (change)="onFileChange($event, 'panCard')" />
-        <div
-          class="error"
-          *ngIf="
-            documentForm.get('panCard')?.touched &&
-            documentForm.get('panCard')?.invalid
-          "
-        >
-          Pan card is required.
+<div class="PV-container">
+  <form [formGroup]="documentForm" (ngSubmit)="submitForm()">
+    <div class="sub-container">
+      <div class="borderLine">
+        <div class="header">
+          <h3>KYC Documents</h3>
+          <p>Upload images in less size (Max 1 MB)</p>
         </div>
-        <div class="error" *ngIf="fileErrors['panCard']">
-          {{ fileErrors["panCard"] }}
+        <div class="form-grid">
+          <div class="form-group">
+            <label>
+              Pan Card *
+              <span class="file-type">(.jpg, .jpeg, .png)</span> :
+            </label>
+
+            <input
+              type="file"
+              #panCardInput
+              style="display: none"
+              (change)="onFileChange($event, 'panCard')"
+            />
+
+            <button
+              mat-raised-button
+              color="primary"
+              type="button"
+              (click)="triggerFileInput(panCardInput)"
+            >
+              <mat-icon>upload</mat-icon>
+              Upload
+            </button>
+
+            <span class="file-name" *ngIf="documentForm.get('panCard')?.value">
+              {{ documentForm.get("panCard")?.value?.name }}
+            </span>
+
+            <div class="error" *ngIf="fileErrors['panCard']">
+              {{ fileErrors["panCard"] }}
+            </div>
+
+            <div
+              class="error"
+              *ngIf="!fileErrors['panCard'] && documentForm.get('panCard')?.errors?.['required'] && documentForm.get('panCard')?.touched"
+            >
+              Pan card is required.
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>
+              Aadhar Card *
+              <span class="file-type">(.jpg, .jpeg, .png)</span> :
+            </label>
+
+            <input
+              type="file"
+              #AadharCardInput
+              style="display: none"
+              (change)="onFileChange($event, 'aadharCard')"
+            />
+
+            <button
+              mat-raised-button
+              color="primary"
+              type="button"
+              (click)="triggerFileInput(AadharCardInput)"
+            >
+              <mat-icon>upload</mat-icon>
+              Upload
+            </button>
+
+            <span
+              class="file-name"
+              *ngIf="documentForm.get('aadharCard')?.value"
+            >
+              {{ documentForm.get("aadharCard")?.value?.name }}
+            </span>
+
+            <div class="error" *ngIf="fileErrors['aadharCard']">
+              {{ fileErrors["aadharCard"] }}
+            </div>
+
+            <div
+              class="error"
+              *ngIf="!fileErrors['aadharCard'] && documentForm.get('aadharCard')?.errors?.['required'] && documentForm.get('aadharCard')?.touched"
+            >
+              Aadhar card is required.
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>
+              Passport size Image *
+              <span class="file-type">(.jpg, .jpeg, .png)</span> :
+            </label>
+
+            <input
+              type="file"
+              #pSizePhotoInput
+              style="display: none"
+              (change)="onFileChange($event, 'pSizePhoto')"
+            />
+
+            <button
+              mat-raised-button
+              color="primary"
+              type="button"
+              (click)="triggerFileInput(pSizePhotoInput)"
+            >
+              <mat-icon>upload</mat-icon>
+              Upload
+            </button>
+
+            <span
+              class="file-name"
+              *ngIf="documentForm.get('pSizePhoto')?.value"
+            >
+              {{ documentForm.get("pSizePhoto")?.value?.name }}
+            </span>
+
+            <div class="error" *ngIf="fileErrors['pSizePhoto']">
+              {{ fileErrors["pSizePhoto"] }}
+            </div>
+
+            <div
+              class="error"
+              *ngIf="!fileErrors['pSizePhoto'] && documentForm.get('pSizePhoto')?.errors?.['required'] && documentForm.get('pSizePhoto')?.touched"
+            >
+              Passport size Image is required.
+            </div>
+          </div>
         </div>
       </div>
 
-      <div class="form-group">
-        <label>Aadhar card Image</label>
-        <input type="file" (change)="onFileChange($event, 'aadharCard')" />
-        <div
-          class="error"
-          *ngIf="
-            documentForm.get('aadharCard')?.touched &&
-            documentForm.get('aadharCard')?.invalid
-          "
-        >
-          Aadhar card is required.
+      <div class="borderLine">
+        <div class="header">
+          <h3>Education Documents</h3>
+          <p>Supported file type: .pdf (Max 1 MB)</p>
         </div>
-        <div class="error" *ngIf="fileErrors['aadharCard']">
-          {{ fileErrors["aadharCard"] }}
+        <div class="form-grid">
+          <div class="form-group">
+            <label>
+              10th document *
+              <span class="file-type">(.pdf)</span> :
+            </label>
+
+            <input
+              type="file"
+              #MatricInput
+              style="display: none"
+              (change)="onFileChange($event, 'matric')"
+            />
+
+            <button
+              mat-raised-button
+              color="primary"
+              type="button"
+              (click)="triggerFileInput(MatricInput)"
+            >
+              <mat-icon>upload</mat-icon>
+              Upload
+            </button>
+
+            <span class="file-name" *ngIf="documentForm.get('matric')?.value">
+              {{ documentForm.get("matric")?.value?.name }}
+            </span>
+
+            <div class="error" *ngIf="fileErrors['matric']">
+              {{ fileErrors["matric"] }}
+            </div>
+
+            <div
+              class="error"
+              *ngIf="!fileErrors['matric'] && documentForm.get('matric')?.errors?.['required'] && documentForm.get('matric')?.touched"
+            >
+              10th document is required.
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>
+              12th document *
+              <span class="file-type">(.pdf)</span> :
+            </label>
+
+            <input
+              type="file"
+              #intermediate
+              style="display: none"
+              (change)="onFileChange($event, 'intermediate')"
+            />
+
+            <button
+              mat-raised-button
+              color="primary"
+              type="button"
+              (click)="triggerFileInput(intermediate)"
+            >
+              <mat-icon>upload</mat-icon>
+              Upload
+            </button>
+
+            <span
+              class="file-name"
+              *ngIf="documentForm.get('intermediate')?.value"
+            >
+              {{ documentForm.get("intermediate")?.value?.name }}
+            </span>
+
+            <div class="error" *ngIf="fileErrors['intermediate']">
+              {{ fileErrors["intermediate"] }}
+            </div>
+
+            <div
+              class="error"
+              *ngIf="!fileErrors['intermediate'] && documentForm.get('intermediate')?.errors?.['required'] && documentForm.get('intermediate')?.touched"
+            >
+              12th document is required.
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>
+              Graduation document *
+              <span class="file-type">(.pdf)</span> :
+            </label>
+
+            <input
+              type="file"
+              #graduationMarksheet
+              style="display: none"
+              (change)="onFileChange($event, 'graduationMarksheet')"
+            />
+
+            <button
+              mat-raised-button
+              color="primary"
+              type="button"
+              (click)="triggerFileInput(graduationMarksheet)"
+            >
+              <mat-icon>upload</mat-icon>
+              Upload
+            </button>
+
+            <span
+              class="file-name"
+              *ngIf="documentForm.get('graduationMarksheet')?.value"
+            >
+              {{ documentForm.get("graduationMarksheet")?.value?.name }}
+            </span>
+
+            <div class="error" *ngIf="fileErrors['graduationMarksheet']">
+              {{ fileErrors["graduationMarksheet"] }}
+            </div>
+
+            <div
+              class="error"
+              *ngIf="!fileErrors['graduationMarksheet'] && documentForm.get('graduationMarksheet')?.errors?.['required'] && documentForm.get('graduationMarksheet')?.touched"
+            >
+              Graduation document is required.
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>
+              Post Graduation document *
+              <span class="file-type">(.pdf)</span> :
+            </label>
+
+            <input
+              type="file"
+              #postGraduation
+              style="display: none"
+              (change)="onFileChange($event, 'postGraduation')"
+            />
+
+            <button
+              mat-raised-button
+              color="primary"
+              type="button"
+              (click)="triggerFileInput(postGraduation)"
+            >
+              <mat-icon>upload</mat-icon>
+              Upload
+            </button>
+
+            <span
+              class="file-name"
+              *ngIf="documentForm.get('postGraduation')?.value"
+            >
+              {{ documentForm.get("postGraduation")?.value?.name }}
+            </span>
+
+            <div class="error" *ngIf="fileErrors['postGraduation']">
+              {{ fileErrors["postGraduation"] }}
+            </div>
+
+            <div
+              class="error"
+              *ngIf="!fileErrors['postGraduation'] && documentForm.get('postGraduation')?.errors?.['required'] && documentForm.get('postGraduation')?.touched"
+            >
+              Post Graduation document is required.
+            </div>
+          </div>
         </div>
       </div>
 
-      <div class="form-group">
-        <label>Passport size Image</label>
-        <input type="file" (change)="onFileChange($event, 'pSizePhoto')" />
-        <div
-          class="error"
-          *ngIf="
-            documentForm.get('pSizePhoto')?.touched &&
-            documentForm.get('pSizePhoto')?.invalid
-          "
-        >
-          Passport size photo is required.
+      <div class="borderLine">
+        <div class="header">
+          <h3>Bank Details</h3>
+          <p>Upload clear image of Check Leaf and Passbook (Max 1 MB)</p>
         </div>
-        <div class="error" *ngIf="fileErrors['pSizePhoto']">
-          {{ fileErrors["pSizePhoto"] }}
+        <div class="form-grid">
+          <div class="form-group">
+            <label>
+              Check Leaf *
+              <span class="file-type">(.jpg, .jpeg, .png)</span> :
+            </label>
+
+            <input
+              type="file"
+              #checkLeaf
+              style="display: none"
+              (change)="onFileChange($event, 'checkLeaf')"
+            />
+
+            <button
+              mat-raised-button
+              color="primary"
+              type="button"
+              (click)="triggerFileInput(checkLeaf)"
+            >
+              <mat-icon>upload</mat-icon>
+              Upload
+            </button>
+
+            <span
+              class="file-name"
+              *ngIf="documentForm.get('checkLeaf')?.value"
+            >
+              {{ documentForm.get("checkLeaf")?.value?.name }}
+            </span>
+
+            <div class="error" *ngIf="fileErrors['checkLeaf']">
+              {{ fileErrors["checkLeaf"] }}
+            </div>
+
+            <div
+              class="error"
+              *ngIf="!fileErrors['checkLeaf'] && documentForm.get('checkLeaf')?.errors?.['required'] && documentForm.get('checkLeaf')?.touched"
+            >
+              Upload Check Leaf is required.
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>
+              Bank Passbook *
+              <span class="file-type">(.jpg, .jpeg, .png)</span> :
+            </label>
+
+            <input
+              type="file"
+              #passbook
+              style="display: none"
+              (change)="onFileChange($event, 'passbook')"
+            />
+
+            <button
+              mat-raised-button
+              color="primary"
+              type="button"
+              (click)="triggerFileInput(passbook)"
+            >
+              <mat-icon>upload</mat-icon>
+              Upload
+            </button>
+
+            <span class="file-name" *ngIf="documentForm.get('passbook')?.value">
+              {{ documentForm.get("passbook")?.value?.name }}
+            </span>
+
+            <div class="error" *ngIf="fileErrors['passbook']">
+              {{ fileErrors["passbook"] }}
+            </div>
+
+            <div
+              class="error"
+              *ngIf="!fileErrors['passbook'] && documentForm.get('passbook')?.errors?.['required'] && documentForm.get('passbook')?.touched"
+            >
+              Passbook is required.
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-
-  <div class="borderLine">
-    <h3>Education Documents</h3>
-    <p style="margin: 10px">Supported file type: .pdf (Max 1 MB)</p>
-    <div class="form-grid">
-      <div class="form-group">
-        <label>10th document</label>
-        <input type="file" (change)="onFileChange($event, 'matric')" />
-        <div
-          class="error"
-          *ngIf="
-            documentForm.get('matric')?.touched &&
-            documentForm.get('matric')?.invalid
-          "
-        >
-          10th document is required.
-        </div>
-        <div class="error" *ngIf="fileErrors['matric']">
-          {{ fileErrors["matric"] }}
-        </div>
+    <div class="button-group">
+      <div>
+        <button class="back-button" type="button" (click)="back()">
+          &laquo; Back
+        </button>
       </div>
-
-      <div class="form-group">
-        <label>12th document</label>
-        <input type="file" (change)="onFileChange($event, 'intermediate')" />
-        <div
-          class="error"
-          *ngIf="
-            documentForm.get('intermediate')?.touched &&
-            documentForm.get('intermediate')?.invalid
-          "
-        >
-          12th document is required.
-        </div>
-        <div class="error" *ngIf="fileErrors['intermediate']">
-          {{ fileErrors["intermediate"] }}
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label>Graduation document</label>
-        <input
-          type="file"
-          (change)="onFileChange($event, 'graduationMarksheet')"
-        />
-        <div
-          class="error"
-          *ngIf="
-            documentForm.get('graduationMarksheet')?.touched &&
-            documentForm.get('graduationMarksheet')?.invalid
-          "
-        >
-          Graduation document is required.
-        </div>
-        <div class="error" *ngIf="fileErrors['graduationMarksheet']">
-          {{ fileErrors["graduationMarksheet"] }}
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label>Post Graduation document</label>
-        <input type="file" (change)="onFileChange($event, 'postGraduation')" />
-        <div
-          class="error"
-          *ngIf="
-            documentForm.get('postGraduation')?.touched &&
-            documentForm.get('postGraduation')?.invalid
-          "
-        >
-          Post Graduation document is required.
-        </div>
-        <div class="error" *ngIf="fileErrors['postGraduation']">
-          {{ fileErrors["postGraduation"] }}
-        </div>
+      <div>
+        <button type="submit">Next &raquo;</button>
       </div>
     </div>
-  </div>
-
-  <div class="borderLine">
-    <div class="leftBox">
-      <h3>Bank Details</h3>
-      <p>Upload clear image of Check Leaf and Passbook (Max 1 MB)</p>
-
-      <div class="form-group">
-        <label>Upload Check Leaf</label>
-        <input type="file" (change)="onFileChange($event, 'checkLeaf')" />
-        <div
-          class="error"
-          *ngIf="
-            documentForm.get('checkLeaf')?.touched &&
-            documentForm.get('checkLeaf')?.invalid
-          "
-        >
-          Check Leaf is required.
-        </div>
-        <div class="error" *ngIf="fileErrors['checkLeaf']">
-          {{ fileErrors["checkLeaf"] }}
-        </div>
-      </div>
-    </div>
-
-    <div class="rightBox">
-      <div class="form-group">
-        <label>Upload Bank Passbook</label>
-        <input type="file" (change)="onFileChange($event, 'passbook')" />
-        <div
-          class="error"
-          *ngIf="
-            documentForm.get('passbook')?.touched &&
-            documentForm.get('passbook')?.invalid
-          "
-        >
-          Bank Passbook is required.
-        </div>
-        <div class="error" *ngIf="fileErrors['passbook']">
-          {{ fileErrors["passbook"] }}
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <br />
-  <div class="button-group">
-    <a routerLink="/certificate">&laquo; Previous</a>
-    <button class="update-button" type="submit">Next &raquo;</button>
-  </div>
-</form>
+  </form>
+</div>

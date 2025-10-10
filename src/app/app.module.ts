@@ -96,6 +96,7 @@ import {
   MAT_DATE_LOCALE,
 } from '@angular/material/core';
 import { MY_DATE_FORMATS } from './components/date-formats';
+import { ThankYouComponent } from './components/thank-you/thank-you.component';
 
 @NgModule({
   declarations: [
@@ -122,6 +123,7 @@ import { MY_DATE_FORMATS } from './components/date-formats';
     LoginByNumberComponent,
     OnboardingComponent,
     PendingUserComponent,
+    ThankYouComponent,
 
     EmployeeDetailsComponent,
     NavDisplayComponent,

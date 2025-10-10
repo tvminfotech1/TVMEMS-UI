@@ -25,8 +25,8 @@ export class PendingUserComponent {
           ...user,
           // status: this.checkIfFormSubmitted(user) 'Pending'
         }));
-      });
-  }
+      });
+  }
 
   checkIfFormSubmitted(user: any): boolean {
     return user.fullName && user.mobile && user.aadhar && user.dob && user.gender;

@@ -3,21 +3,24 @@ import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { UserService } from '../user-service.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MainlayoutService } from 'src/app/services/main-layout.service';
 
 @Component({
   selector: 'app-resume',
   templateUrl: './resume.component.html',
-  styleUrls: ['./resume.component.css']
+  styleUrls: ['./resume.component.css'],
 })
 export class ResumeComponent implements OnInit {
-
   resumeForm!: FormGroup;
 
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
     private http: HttpClient,
-    private userService: UserService
+    private userService: UserService,
+    private snackBar: MatSnackBar,
+    private mainlayoutService: MainlayoutService
   ) {}
 
   ngOnInit(): void {
@@ -26,22 +29,28 @@ export class ResumeComponent implements OnInit {
       resumeCate: ['', Validators.required],
     });
 
-    // this.http.get<any>('assets/resume-data.json').subscribe(data => {
-    //   this.resumeForm.patchValue({
-    //     achievements: data.achievements,
-    //     resumeCate: data.resumeCate
-    //   });
-    // });
+     const savedData = this.userService.getFormData('resume');
+  if (savedData) {
+    this.resumeForm.patchValue(savedData);
+  }
+  }
 
-    // this.userService.setFormData("resume", this.resumeForm.value); 
+  back() {
+    this.router.navigate(['/mainlayout/document']);
   }
 
   submitForm() {
     if (this.resumeForm.valid) {
       this.userService.setFormData('resume', this.resumeForm.value);
       this.router.navigate(['/mainlayout/final']);
+      this.mainlayoutService.markTabCompleted('resume', true);
     } else {
-      alert('All fields are mandatory');
+      this.snackBar.open('Please fill all required fields', 'Close', {
+        duration: 3000,
+        horizontalPosition: 'center',
+        verticalPosition: 'top',
+        panelClass: ['error-snackbar'],
+      });
       this.resumeForm.markAllAsTouched();
     }
   }
