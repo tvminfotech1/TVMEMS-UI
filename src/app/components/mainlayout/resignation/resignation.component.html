@@ -1,17 +1,22 @@
 <div class="resignation-container">
   <!-- Top bar with card effect -->
-<div class="top-bar-card">
+<div class="top-bar-card" *ngIf="isUser">
   <div class="top-bar-info">
     <div>
       <h1 class="resignation-title">Resignation Requests</h1>
       <div class="resignation-desc">
-        View your past resignation submissions, track their review status, or apply for a new resignation below.
+        View your past resignation submissions, track their review status.
       </div>
     </div>
     <button class="apply-btn" (click)="openForm()">+ Apply Resignation</button>
   </div>
 </div>
 
+ <!-- Admin view title only -->
+  <div class="admin-header" *ngIf="isAdmin">
+    <h1 class="resignation-title">Resignation Details</h1>
+  </div>
+  
   <!-- Table in rounded card -->
   <div class="table-card">
     <table>
@@ -23,13 +28,14 @@
           <th>SUBMITTED DATE</th>
           <th>COMMENTS</th>
           <th>STATUS</th>
+          <th *ngIf="isAdmin" class="action-col">ACTION</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngIf="submittedData.length === 0">
-          <td colspan="6">No Data available!</td>
+          <td colspan="7" class="nodata">No Data available!</td>
         </tr>
-        <tr *ngFor="let data of submittedData">
+        <tr *ngFor="let data of submittedData" class="center">
           <td>{{ data.name }}</td>
           <td>{{ data.employeeId }}</td>
           <td>{{ data.reason }}</td>
@@ -39,10 +45,15 @@
             <span class="status-chip" [ngClass]="{
               'submitted': data.status==='Submitted',
               'pending': data.status==='Pending',
-              'rejected': data.status==='Rejected'
+              'rejected': data.status==='Rejected',
+              'approved': data.status==='Approved'
             }">
               {{ data.status }}
             </span>
+          </td>
+          <td *ngIf="isAdmin" class="actions">
+            <button class="btn approve" (click)="updateStatus(data, 'Approved')" title="Approve">Approve</button>
+            <button class="btn reject" (click)="updateStatus(data, 'Rejected')" title="Reject">Rejected</button>
           </td>
         </tr>
       </tbody>

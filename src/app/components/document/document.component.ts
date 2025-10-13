@@ -10,7 +10,6 @@ import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MainlayoutService } from 'src/app/services/main-layout.service';
 
-
 export function fileRequired(
   control: AbstractControl
 ): ValidationErrors | null {
@@ -59,26 +58,6 @@ export class DocumentComponent {
       });
     }
   }
-previewUrls: any = {}; // store active preview URLs
-
-viewFile(field: string): void {
-  const file = this.documentForm.get(field)?.value;
-  if (file && file.type.startsWith('image/')) {
-    this.previewUrls[field] = URL.createObjectURL(file);
-  }
-}
-viewPdf(field: string): void {
-  const file = this.documentForm.get(field)?.value;
-  if (file && file.type === 'application/pdf') {
-    this.previewUrls[field] = URL.createObjectURL(file);
-  }
-}
-
-closePreview(field: string): void {
-  this.previewUrls[field] = null;
-}
-
-
 
   private getAllowedTypes(controlName: string): string[] {
     const pdfFields = [
@@ -149,19 +128,15 @@ closePreview(field: string): void {
 
   submitForm() {
     if (this.documentForm.valid) {
-      const files: Record<string, File> = {};
+      const formData = new FormData();
       Object.keys(this.documentForm.controls).forEach((key) => {
         const file = this.documentForm.get(key)?.value;
-        if (file) files[key] = file;
+        if (file) {
+          formData.append(key, file);
+          console.log(`Appended ${key}:`, file);
+        }
       });
-
-      this.userService.setFormData('documents', files);
-      console.log(
-        'All form data in service:',
-        this.userService.getAllFormData()
-      );
-      console.log('All form data in servicePurushoth:', this.userService.getFormData('documents'));
-
+      this.userService.setUploadDoc('documents', formData);
       this.router.navigate(['/mainlayout/resume']);
       this.mainlayoutService.markTabCompleted('document', true);
     } else {
