@@ -53,12 +53,10 @@ export class FinalComponent {
 
   submitForm(): void {
     if (this.declarationForm.valid) {
-      this.userService.setFormData('final', this.declarationForm.value);
-            console.log("this is failed formData1",this.userService.getAllFormData());
+      this.userService.setFormData('aFinal', this.declarationForm.value);
 
       if (!this.userService.isAllFormsValid()) {
         const incompleteSteps = this.userService.getInvalidSteps();
-              console.log("this is failed formData2",this.userService.getAllFormData());
         alert(
           'Please complete these required steps: ' + incompleteSteps.join(', ')
         );
@@ -77,8 +75,6 @@ export class FinalComponent {
         },
       });      
     } else {
-      console.log("this is failed formData3",this.userService.getAllFormData());
-      console.log('Form is invalid', this.declarationForm.value);
       this.declarationForm.markAllAsTouched();
     }
   }

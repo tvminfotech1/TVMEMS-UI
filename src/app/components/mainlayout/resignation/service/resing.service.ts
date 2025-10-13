@@ -11,14 +11,24 @@ export class ResingService {
 
   constructor(private http: HttpClient) {}
 
-  // Fetch all resignation records
   getResignations(): Observable<any[]> {
     return this.http.get<any[]>(this.apiUrl);
   }
 
-  // Submit a new resignation
+  getResignationsByEmployeeId(employeeId: string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/employee/${employeeId}`);
+  }
+
   submitResignation(data: any): Observable<any> {
     return this.http.post<any>(this.apiUrl, data);
   }
+
+  updateResignationStatus(data: any) {
+    return this.http.put<any>(`${this.apiUrl}/${data.id}`, data);
+  }
+
+  deleteOffboarding(data: any) {
+  return this.http.delete<any>(`${this.apiUrl}/${data.id}`);
+}
 
 }
