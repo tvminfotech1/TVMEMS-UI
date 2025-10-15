@@ -9,6 +9,7 @@ import {
 } from '@angular/forms';
 import { UserService } from '../user-service.service';
 import { Router } from '@angular/router';
+import { forkJoin } from 'rxjs';
 
 @Component({
   templateUrl: './final.component.html',
@@ -52,30 +53,29 @@ export class FinalComponent {
   }
 
   submitForm(): void {
-    if (this.declarationForm.valid) {
-      this.userService.setFormData('aFinal', this.declarationForm.value);
+    this.userService.setFormData('aFinal', this.declarationForm.value);
 
-      if (!this.userService.isAllFormsValid()) {
-        const incompleteSteps = this.userService.getInvalidSteps();
-        alert(
-          'Please complete these required steps: ' + incompleteSteps.join(', ')
-        );
-        return;
-      }
-      
-      this.userService.submitFinalData().subscribe({
-        next: (res) => {
-          console.log('Submission success:', res);
-          this.userService.clearFormData();
-          this.router.navigate(['/mainlayout/thankYou']);
-        },
-        error: (err) => {
-          console.error('Submission error:', err);
-          alert('Something went wrong during submission.');
-        },
-      });      
-    } else {
-      this.declarationForm.markAllAsTouched();
+    if (!this.userService.isAllFormsValid()) {
+      const incompleteSteps = this.userService.getInvalidSteps();
+      alert(
+        'Please complete these required steps: ' + incompleteSteps.join(', ')
+      );
+      return;
     }
+
+    forkJoin([
+      this.userService.uploadDocuments(),
+      this.userService.submitJsonData(),
+    ]).subscribe({
+      next: ([res, document]) => {
+        console.log('Submission success:', res);
+        this.userService.clearFormData();
+        this.router.navigate(['/mainlayout/thankYou']);
+      },
+      error: (err) => {
+        console.error('Submission error:', err);
+        alert('Something went wrong during submission.');
+      },
+    });
   }
 }
