@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { BehaviorSubject, forkJoin, Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -13,6 +13,7 @@ export class UserService {
 
   private formData: Record<string, any> = {};
   private formGroups: Record<string, FormGroup> = {};
+  private documentData: FormData = new FormData();
 
   setFormData(step: string, data: any): void {
     this.formData[step] = data;
@@ -22,14 +23,26 @@ export class UserService {
     return this.formData[key];
   }
 
-  setUploadDoc(step: string, formData: FormData): void {
-    this.formData[step] = formData;
+  setUploadDoc(key: string, formData: FormData): void {
+    if (!this.documentData) {
+      this.documentData = new FormData();
+    }
+
+    for (const [name, value] of (formData as any).entries()) {
+      this.documentData.append(name, value);
+    }
+  }
+
+  getUploadDoc(): FormData {
+    return this.documentData;
   }
 
   clearFormData(): void {
     this.formData = {};
     this.formGroups = {};
+    this.documentData = new FormData();
   }
+
   getAllFormData(): Record<string, any> {
     return this.formData;
   }
@@ -37,6 +50,12 @@ export class UserService {
   setFormGroup(step: string, formGroup: FormGroup): void {
     this.formGroups[step] = formGroup;
   }
+
+  private optionalSteps: string[] = [
+    'previousEmployee',
+    'skills',
+    'certification',
+  ];
 
   isAllFormsValid(): boolean {
     return Object.keys(this.formGroups)
@@ -56,25 +75,23 @@ export class UserService {
   setMaritalStatus(status: string): void {
     this.maritalStatusSubject.next(status);
   }
-  private optionalSteps: string[] = [
-    'previousEmployee',
-    'skills',
-    'certification',
-  ];
 
-  submitAllForms(): FormData {
-    const allData = this.formData;
-    const formData = new FormData();
-    Object.keys(allData).forEach((step) => {
-      const stepData = allData[step];
-      if (step !== 'documents') {
-        formData.append(step, JSON.stringify(stepData));
-      }
+  submitJsonData(): Observable<any> {
+    const token = localStorage.getItem('token');
+    if (!token) throw new Error('Token not found');
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
     });
 
-    return formData;
+    const jsonBody = this.getAllFormData();
+    return this.http.post(`${this.BASE_URL}/personal/savejson`, jsonBody, {
+      headers,
+    });
   }
-  submitFinalData(): Observable<any> {
+
+  uploadDocuments(): Observable<any> {
     const token = localStorage.getItem('token');
     if (!token) throw new Error('Token not found');
 
@@ -82,27 +99,10 @@ export class UserService {
       Authorization: `Bearer ${token}`,
     });
 
-    const allData = this.getAllFormData();
-
-    const uploadFormData = allData['documents'];
-
-    const finalFormData = this.submitAllForms();
-
-    const upload$ = this.http.post(
+    return this.http.post(
       `${this.BASE_URL}/documents/upload`,
-      uploadFormData,
+      this.documentData,
       { headers }
     );
-
-    const submit$ = this.http.post(
-      `${this.BASE_URL}/personal/savejson`,
-      finalFormData,
-      { headers }
-    );
-
-    return forkJoin({
-      upload: upload$,
-      submit: submit$,
-    });
   }
 }
