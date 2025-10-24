@@ -1,34 +1,80 @@
 <app-nav></app-nav>
-<div class="login-container">
-    <h2><i class="ri-user-line"></i> Login</h2>
+<div class="spacer">
+  <div class="login-container">
+    <h2>USER LOGIN</h2>
     <form [formGroup]="mobileLoginForm" (ngSubmit)="onSubmit()">
       <div class="form-group">
-        <label>Mobile Number</label>
-        <input
-          type="text"
-          formControlName="mobile"
-          placeholder="Enter your mobile number"
-        />
-        <div *ngIf="mobileLoginForm.get('mobile')?.touched && mobileLoginForm.get('mobile')?.invalid" class="error">
-          Valid mobile number is required
-        </div>
+        <mat-form-field appearance="outline" class="custom-form-field">
+          <mat-label>Mobile Number</mat-label>
+
+          <input
+            matInput
+            type="text"
+            formControlName="mobile"
+            placeholder="Enter mobile number"
+            maxlength="10"
+            pattern="[0-9]*"
+            inputmode="numeric"
+            class="input-padding"
+            (keypress)="allowOnlyDigits($event)"
+          />
+          <mat-error
+            *ngIf="
+              mobileLoginForm.get('mobile')?.touched &&
+              mobileLoginForm.get('mobile')?.hasError('required')
+            "
+          >
+            Valid mobile is required
+          </mat-error>
+          <mat-error
+            *ngIf="
+              mobileLoginForm.get('mobile')?.touched &&
+              mobileLoginForm.get('mobile')?.hasError('pattern')
+            "
+          >
+            Valid mobile is required
+          </mat-error>
+        </mat-form-field>
       </div>
-  
-      <div class="form-group">
-        <label>Password</label>
-        <input type="password" formControlName="password" placeholder="*****" />
-        <div *ngIf="mobileLoginForm.get('password')?.touched && mobileLoginForm.get('password')?.invalid" class="error">
-          Password is required
-        </div>
+
+      <div class="form-group password-group">
+        <mat-form-field appearance="outline" class="custom-form-field">
+          <mat-label>Password</mat-label>
+          <div class="password-wrapper">
+            <input
+              matInput
+              [type]="showPassword ? 'text' : 'password'"
+              formControlName="password"
+              placeholder="Enter your password"
+              class="input-padding"
+            />
+            <button
+              type="button"
+              class="toggle-text"
+              (click)="showPassword = !showPassword"
+            >
+              {{ showPassword ? "Hide" : "Show" }}
+            </button>
+          </div>
+          <mat-error
+            *ngIf="
+              mobileLoginForm.get('password')?.touched &&
+              mobileLoginForm.get('password')?.hasError('required')
+            "
+          >
+            Password is required
+          </mat-error>
+        </mat-form-field>
       </div>
-  
-      <button type="submit" class="login-btn">Login</button>
-  
-      <div class="register-link">
-        <!-- <a routerLink="/signup">Don't have an account? Register</a> -->
-        <br />
-        <a routerLink="/login">Login using email</a>
+
+      <div class="button-group">
+        <button class="back-btn" (click)="back()">Back</button>
+        <button type="submit" class="login-btn">Login</button>
       </div>
     </form>
+
+    <div class="register-link">
+      <a routerLink="/login">Login by Email Number</a>
+    </div>
   </div>
-  
+</div>

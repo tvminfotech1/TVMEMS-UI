@@ -111,7 +111,7 @@ export class SkillsComponent implements OnInit {
       this.mainlayoutService.markTabCompleted('skills', true);
       console.log('skill', this.skillList);
     } else {
-      this.snackBar.open('Minimum 3 skills is required', 'Close', {
+      this.snackBar.open('Minimum 1 skill is required', 'Close', {
         duration: 3000,
         horizontalPosition: 'center',
         verticalPosition: 'top',

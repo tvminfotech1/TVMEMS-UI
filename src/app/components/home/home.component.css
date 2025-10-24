@@ -4,8 +4,8 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  height: calc(100vh - 60px); /* Adjust according to <app-nav> height */
-  padding: 40px 60px;
+  height: calc(100vh - 60px); 
+  padding: 40px 40px;
   background: linear-gradient(135deg, #e0f7fa, #ffffff);
   gap: 40px;
   flex-wrap: wrap;
@@ -29,7 +29,7 @@
 
 
 .text-section {
-  max-width: 500px;
+  max-width:max-content;
   text-align: left;
 }
 
@@ -55,7 +55,7 @@ p {
   color: #fff;
   font-size: 16px;
   border: none;
-  border-radius: 10px;
+  border-radius: 50px;
   text-decoration: none;
   transition: all 0.4s ease;
   box-shadow: 0 4px 12px rgba(98, 0, 234, 0.4);
@@ -64,7 +64,6 @@ p {
 .onboard-btn:hover {
   background-color: #3700b3;
   transform: scale(1.05);
-  box-shadow: 0 6px 16px rgba(55, 0, 179, 0.5);
 }
 
 
@@ -78,6 +77,10 @@ p {
   opacity: 0;
 }
 
+.button-group{
+  display: flex;
+  justify-content: space-around;
+}
 
 @keyframes fadeIn {
   0% {
@@ -87,24 +90,5 @@ p {
   100% {
     transform: scale(1);
     opacity: 1;
-  }
-}
-
-
-@media (max-width: 768px) {
-  .home-container {
-    flex-direction: column;
-    text-align: center;
-    padding: 20px;
-    height: auto;
-  }
-
-  .text-section {
-    text-align: center;
-  }
-
-  .image-section img {
-    max-width: 90%;
-    max-height: 300px;
   }
 }

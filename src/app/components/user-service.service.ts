@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { AuthService } from 'src/app/services/auth.service';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
@@ -9,53 +10,37 @@ import { BehaviorSubject, Observable } from 'rxjs';
 export class UserService {
   private readonly BASE_URL = 'http://localhost:8080';
 
-  constructor(private http: HttpClient) {}
+  EmployeeId: number | null;
 
   private formData: Record<string, any> = {};
   private formGroups: Record<string, FormGroup> = {};
   private documentData: FormData = new FormData();
-
-  setFormData(step: string, data: any): void {
-    this.formData[step] = data;
-  }
-
-  getFormData(key: string): any {
-    return this.formData[key];
-  }
-
-  setUploadDoc(key: string, formData: FormData): void {
-    if (!this.documentData) {
-      this.documentData = new FormData();
-    }
-
-    for (const [name, value] of (formData as any).entries()) {
-      this.documentData.append(name, value);
-    }
-  }
-
-  getUploadDoc(): FormData {
-    return this.documentData;
-  }
-
-  clearFormData(): void {
-    this.formData = {};
-    this.formGroups = {};
-    this.documentData = new FormData();
-  }
-
-  getAllFormData(): Record<string, any> {
-    return this.formData;
-  }
-
-  setFormGroup(step: string, formGroup: FormGroup): void {
-    this.formGroups[step] = formGroup;
-  }
 
   private optionalSteps: string[] = [
     'previousEmployee',
     'skills',
     'certification',
   ];
+
+  private maritalStatusSubject = new BehaviorSubject<string>('');
+  maritalStatus$ = this.maritalStatusSubject.asObservable();
+
+  constructor(private http: HttpClient, private authService: AuthService) {
+    const empIdStr = this.authService.getEmployeeId();
+    this.EmployeeId = empIdStr ? Number(empIdStr) : null;
+  }
+
+  setFormData(step: string, data: any): void {
+    this.formData[step] = data;
+  }
+
+  getFormData(step: string): any {
+    return this.formData[step];
+  }
+
+  setFormGroup(step: string, formGroup: FormGroup): void {
+    this.formGroups[step] = formGroup;
+  }
 
   isAllFormsValid(): boolean {
     return Object.keys(this.formGroups)
@@ -69,11 +54,31 @@ export class UserService {
       .filter((step) => !this.formGroups[step].valid);
   }
 
-  private maritalStatusSubject = new BehaviorSubject<string>('');
-  maritalStatus$ = this.maritalStatusSubject.asObservable();
-
   setMaritalStatus(status: string): void {
     this.maritalStatusSubject.next(status);
+  }
+
+  clearFormData(): void {
+    this.formData = {};
+    this.formGroups = {};
+    this.documentData = new FormData();
+  }
+
+  getAllFormData(): Record<string, any> {
+    return this.formData;
+  }
+
+  setUploadDoc(key: string, formData: FormData): void {
+    if (!this.documentData) {
+      this.documentData = new FormData();
+    }
+    for (const [name, value] of (formData as any).entries()) {
+      this.documentData.append(name, value);
+    }
+  }
+
+  getUploadDoc(): FormData {
+    return this.documentData;
   }
 
   submitJsonData(): Observable<any> {
@@ -85,7 +90,8 @@ export class UserService {
       'Content-Type': 'application/json',
     });
 
-    const jsonBody = this.getAllFormData();
+    const jsonBody = { employeeId: this.EmployeeId, ...this.getAllFormData() };
+
     return this.http.post(`${this.BASE_URL}/personal/savejson`, jsonBody, {
       headers,
     });
@@ -94,6 +100,10 @@ export class UserService {
   uploadDocuments(): Observable<any> {
     const token = localStorage.getItem('token');
     if (!token) throw new Error('Token not found');
+
+    if (this.EmployeeId) {
+      this.documentData.append('employeeId', this.EmployeeId.toString());
+    }
 
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`,

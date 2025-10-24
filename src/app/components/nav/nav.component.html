@@ -1,29 +1,4 @@
-<!-- nav.component.html -->
-<nav>
     <div id="navBar">
-      <h1 id="tvm">TVM Infotech</h1>
-      <i class="ri-home-4-fill"><a routerLink="/">Home</a></i>
-  
-      <!-- Onboarding dropdown -->
-     <!-- <div class="dropdown" (click)="toggleDropdown()" tabindex="0">
-         <button class="dropbtn">Onboarding</button>
-        <div class="dropdown-content" *ngIf="dropdownOpen">
-          <a routerLink="/pendingUser" (click)="closeDropdown()"  (click)="toggleDropdown()">Pending User</a>
-          <a routerLink="/timesheet" (click)="closeDropdown()"  (click)="toggleDropdown()">Time-Sheet</a>
-          <a routerLink="/admin" (click)="closeDropdown()" (click)="toggleDropdown()">User List</a>
-          <a routerLink="/timesheet-view" (click)="closeDropdown()" (click)="toggleDropdown()">Time-Sheet-view</a>
-        </div>
-      </div> -->
+      <h1 id="tvm" routerLink="/">TVM Infotech</h1>
     </div>
-  
-    <i class="login">
-      <button *ngIf="!isLoggedIn" routerLink="/adminLogin">
-        <i class="ri-admin-line"></i> Admin
-      </button>
-      <button *ngIf="!isLoggedIn" routerLink="/login">
-        <i class="ri-admin-line"></i> User
-      </button>
-      
-    </i>
-  </nav>
   

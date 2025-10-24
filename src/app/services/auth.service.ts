@@ -65,13 +65,13 @@ export class AuthService {
     );
   }
 
-  register(data: any): Observable<string> {
+  register(data: any): Observable<any> {
     return this.http.post(`${this.baseUrl}/admin/newuser`, data, {
-      responseType: 'text'
+      responseType: 'json'
     }).pipe(
       catchError(error => {
         console.error('Registration failed:', error);
-        return throwError(() => new Error('Registration failed. Please try again.'));
+        return throwError(() => error);
       })
     );
   }
@@ -91,7 +91,7 @@ export class AuthService {
     if (!token) return null;
 
     try {
-      return jwtDecode<DecodedToken>(token);
+      return jwtDecode<DecodedToken>(token);      
     } catch (err) {
       console.error('JWT decode error:', err);
       return null;
