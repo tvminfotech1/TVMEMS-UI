@@ -18,9 +18,6 @@ export const userAuthGuard: CanActivateFn = (route, state) => {
     const decoded: any = jwtDecode(token);
     const roles = decoded.roles;
 
-    console.log('Decoded Token:', decoded); // 👈 Debug line
-
-    // ✅ Accept both ROLE_USER and ROLE_ADMIN
     if (
       (Array.isArray(roles) && (roles.includes('ROLE_USER') || roles.includes('ROLE_ADMIN'))) ||
       (typeof roles === 'string' && (roles === 'ROLE_USER' || roles === 'ROLE_ADMIN'))

@@ -1,115 +1,309 @@
 <div class="signup-container">
   <h2><i class="ri-user-add-fill"></i> Create User</h2>
-  <form [formGroup]="signupForm" (ngSubmit)="onSubmit()" class="form-grid">
+  <!-- <div *ngIf="successMessage" class="success">
+    {{ successMessage }}
+  </div> -->
+  <form
+    [formGroup]="signupForm"
+    (ngSubmit)="onSubmit()"
+    id="form"
+    class="form-grid"
+  >
+    <!-- First Name -->
+    <mat-form-field appearance="outline" class="custom-form-field">
+      <mat-label>Full Name</mat-label>
+      <input
+        matInput
+        type="text"
+        name="firstName"
+        formControlName="firstName"
+        placeholder="First name"
+        class="input-padding"
+        (keydown)="blockFullNameInput($event)"
+      />
 
-    <!-- Full Name -->
-    <div class="form-group">
-      <label>Full Name</label>
-      <input type="text" formControlName="fullName" placeholder="Full name" />
-      <div *ngIf="signupForm.get('fullName')?.touched && signupForm.get('fullName')?.invalid" class="error">
-        Required
-      </div>
-    </div>
+      <mat-error
+        *ngIf="
+          signupForm.get('firstName')?.touched &&
+          signupForm.get('firstName')?.invalid
+        "
+      >
+        <!-- Required Error -->
+        <ng-container *ngIf="signupForm.get('firstName')?.errors?.['required']">
+          First Name is required.
+        </ng-container>
+        <ng-container
+          *ngIf="signupForm.get('firstName')?.errors?.['minlength']"
+        >
+          Name must be at least 3 characters.
+        </ng-container>
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Last Name -->
+    <mat-form-field appearance="outline" class="custom-form-field">
+      <mat-label>Last Name</mat-label>
+      <input
+        matInput
+        type="text"
+        name="lastName"
+        formControlName="lastName"
+        placeholder="Last name"
+        class="input-padding"
+        (keydown)="blockFullNameInput($event)"
+      />
+
+      <mat-error
+        *ngIf="
+          signupForm.get('lastName')?.touched &&
+          signupForm.get('lastName')?.invalid
+        "
+      >
+        <!-- Required Error -->
+        <ng-container *ngIf="signupForm.get('lastName')?.errors?.['required']">
+          Last Name is required.
+        </ng-container>
+        <ng-container *ngIf="signupForm.get('lastName')?.errors?.['minlength']">
+          Name must be at least 3 characters.
+        </ng-container>
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="custom-form-field">
+      <mat-label>Employee ID</mat-label>
+      <input
+        matInput
+        type="text"
+        formControlName="empId"
+        placeholder="120001"
+        (keydown)="validateEmpId($event)"
+        class="input-padding"
+      />
+      <mat-error
+        *ngIf="
+          signupForm.get('empId')?.touched && signupForm.get('empId')?.invalid
+        "
+      >
+        <ng-container *ngIf="signupForm.get('empId')?.errors?.['required']"
+          >Employee ID is required.</ng-container
+        >
+      </mat-error>
+    </mat-form-field>
 
     <!-- Mobile -->
-    <div class="form-group">
-      <label>Mobile Number</label>
-      <input type="text" formControlName="mobile" placeholder="9876543210" maxlength="10"/>
-      <div *ngIf="signupForm.get('mobile')?.touched && signupForm.get('mobile')?.invalid" class="error">
-        10-digit mobile number required
-      </div>
-    </div>
+    <mat-form-field appearance="outline" class="custom-form-field">
+      <mat-label>Mobile Number</mat-label>
+      <input
+        matInput
+        type="text"
+        name="mobile"
+        formControlName="mobile"
+        placeholder="9876543210"
+        maxlength="10"
+        (keydown)="blockMobileInput($event)"
+        class="input-padding"
+      />
+
+      <mat-error
+        *ngIf="
+          signupForm.get('mobile')?.touched && signupForm.get('mobile')?.invalid
+        "
+        class="error"
+      >
+        <!-- Frontend validator -->
+        <ng-container *ngIf="signupForm.get('mobile')?.errors?.['required']">
+          Mobile number is required.
+        </ng-container>
+        <ng-container *ngIf="signupForm.get('mobile')?.errors?.['pattern']">
+          10-digit mobile number required.
+        </ng-container>
+        <!-- Backend duplicate error -->
+        <ng-container
+          *ngIf="signupForm.get('mobile')?.errors?.['duplicate'] && mobileError"
+        >
+          {{ mobileError }}
+        </ng-container>
+      </mat-error>
+    </mat-form-field>
 
     <!-- Email -->
-    <div class="form-group">
-      <label>Email</label>
-      <input type="email" formControlName="email" placeholder="example@gmail.com" />
-      <div *ngIf="signupForm.get('email')?.touched && signupForm.get('email')?.invalid" class="error">
-        Please enter a valid Gmail address (example@gmail.com).
-      </div>
-      
-    </div>
+    <mat-form-field appearance="outline" class="custom-form-field">
+      <mat-label>Email</mat-label>
+      <input
+        matInput
+        type="email"
+        name="email"
+        formControlName="email"
+        placeholder="example@gmail.com"
+        class="input-padding"
+      />
+
+      <mat-error
+        *ngIf="
+          signupForm.get('email')?.touched && signupForm.get('email')?.invalid
+        "
+        class="error"
+      >
+        <!-- Frontend Validators -->
+        <ng-container *ngIf="signupForm.get('email')?.errors?.['required']">
+          Email is required.
+        </ng-container>
+        <ng-container *ngIf="signupForm.get('email')?.errors?.['pattern']">
+          Please enter a valid Gmail address (example@gmail.com).
+        </ng-container>
+        <!-- Backend Duplicate Error -->
+        <ng-container
+          *ngIf="signupForm.get('email')?.errors?.['duplicate'] && emailError"
+        >
+          {{ emailError }}
+        </ng-container>
+      </mat-error>
+    </mat-form-field>
 
     <!-- Aadhar -->
-    <div class="form-group">
-      <label>Aadhar Number</label>
-      <input type="text" formControlName="aadhar" placeholder="12-digit Aadhar" />
-      <div *ngIf="signupForm.get('aadhar')?.touched && signupForm.get('aadhar')?.invalid" class="error">
+    <mat-form-field appearance="outline" class="custom-form-field">
+      <mat-label>Aadhar Number</mat-label>
+      <input
+        matInput
+        type="text"
+        name="aadhar"
+        formControlName="aadhar"
+        placeholder="12-digit Aadhar"
+        (keydown)="blockAadharInput($event)"
+        class="input-padding"
+      />
+      <mat-error
+        *ngIf="
+          signupForm.get('aadhar')?.touched && signupForm.get('aadhar')?.invalid
+        "
+        class="error"
+      >
         Valid Aadhar required
-      </div>
-    </div>
+      </mat-error>
+    </mat-form-field>
 
     <!-- DOB -->
-    <div class="form-group">
-      <label>Date of Birth</label>
-      <input type="date" formControlName="dob" />
-      <div *ngIf="signupForm.get('dob')?.touched && signupForm.get('dob')?.invalid" class="error">
-        DOB required
-      </div>
-    </div>
+    <mat-form-field appearance="outline" class="custom-form-field">
+      <mat-label>Date of Birth</mat-label>
+      <input
+        matInput
+        [matDatepicker]="picker"
+        formControlName="dob"
+        name="dob"
+        [max]="today"
+        (click)="picker.open()"
+        class="input-padding"
+      />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+
+      <mat-error *ngIf="signupForm.get('dob')?.touched">
+        <ng-container *ngIf="signupForm.get('dob')?.errors?.['required']">
+          Date of Birth is required.
+        </ng-container>
+        <ng-container
+          *ngIf="!signupForm.get('dob')?.errors?.['required'] && signupForm.get('dob')?.errors?.['invalidDOB']"
+        >
+          Date of Birth cannot be today or in the future.
+        </ng-container>
+      </mat-error>
+    </mat-form-field>
 
     <!-- Gender -->
-    <div class="form-group">
-      <label>Gender</label>
-      <select formControlName="gender">
-        <option value="" disabled>Select</option>
-        <option value="Male">Male</option>
-        <option value="Female">Female</option>
-        <option value="Other">Other</option>
-      </select>
-      <div *ngIf="signupForm.get('gender')?.touched && signupForm.get('gender')?.invalid" class="error">
+    <mat-form-field appearance="outline" class="custom-form-field">
+      <mat-label>Gender</mat-label>
+      <mat-select formControlName="gender">
+        <mat-option value="" disabled>Select</mat-option>
+        <mat-option value="Male">Male</mat-option>
+        <mat-option value="Female">Female</mat-option>
+        <mat-option value="Other">Other</mat-option>
+      </mat-select>
+      <mat-error
+        *ngIf="
+          signupForm.get('gender')?.touched && signupForm.get('gender')?.invalid
+        "
+        class="error"
+      >
         Gender required
-      </div>
-    </div>
+      </mat-error>
+    </mat-form-field>
 
     <!-- Password -->
-    <div class="form-group password-field">
-  <label for="password">Password</label>
-  <div class="password-input-wrapper">
-    <input [type]="showPassword ? 'text' : 'password'" id="password" formControlName="password" />
-    <span class="toggle-password" (click)="togglePassword()">
-      {{ showPassword ? 'Hide' : 'Show' }}
-    </span> 
-  </div>
+    <mat-form-field appearance="outline" class="custom-form-field">
+      <mat-label for="password">Password</mat-label>
+      <div class="password-input-wrapper">
+        <input
+          matInput
+          [type]="showPassword ? 'text' : 'password'"
+          id="password"
+          name="password"
+          formControlName="password"
+          class="input-padding"
+        />
+        <span class="toggle-password" (click)="togglePassword()">
+          {{ showPassword ? "Hide" : "Show" }}
+        </span>
+      </div>
 
- <!-- Invalid Password Pattern Error -->
-  <div class="error" *ngIf="signupForm.get('password')?.touched && signupForm.get('password')?.errors?.['pattern']">
-    Password must start with a capital letter, include digits, and one special character (@, #, $, &), and be at least 8 characters long.
-  </div>
-
-  <!-- Required Field Error -->
-  <div class="error" *ngIf="signupForm.get('password')?.touched && signupForm.get('password')?.errors?.['required']">
-    Password is required.
-  </div>
-</div>
-
+      <mat-error *ngIf="signupForm.get('password')?.touched">
+        <ng-container *ngIf="signupForm.get('password')?.errors?.['required']">
+          Password is required.
+        </ng-container>
+        <ng-container
+          *ngIf="
+        !signupForm.get('password')?.errors?.['required'] &&
+        signupForm.get('password')?.errors?.['minLength']
+      "
+        >
+          Password must atleast 8 characters.
+        </ng-container>
+      </mat-error>
+    </mat-form-field>
 
     <!-- Confirm Password -->
-   <div class="form-group password-field">
-  <label for="confirmPassword">Confirm Password</label>
-  <div class="password-input-wrapper">
-    <input [type]="showConfirmPassword ? 'text' : 'password'" id="confirmPassword" formControlName="confirmPassword" />
-    <span class="toggle-password" (click)="toggleConfirmPassword()">
-      {{ showConfirmPassword ? 'Hide' : 'Show' }}
-    </span>
-  </div>
-   <!-- Required Field Error -->
-  <div class="error" *ngIf="signupForm.get('confirmPassword')?.touched && signupForm.get('confirmPassword')?.errors?.['required']">
-    Confirm password is required.
-  </div>
+    <mat-form-field appearance="outline" class="custom-form-field">
+      <mat-label for="confirmPassword">Confirm Password</mat-label>
+      <div class="password-input-wrapper">
+        <input
+          matInput
+          [type]="showConfirmPassword ? 'text' : 'password'"
+          id="confirmPassword"
+          name="confirmPassword"
+          formControlName="confirmPassword"
+          autocomplete="off"
+          class="input-padding"
+        />
+        <span class="toggle-password" (click)="toggleConfirmPassword()">
+          {{ showConfirmPassword ? "Hide" : "Show" }}
+        </span>
+      </div>
 
-  <!-- Password Mismatch Error -->
-  <div class="error" *ngIf="signupForm.errors?.['passwordMismatch'] && signupForm.get('confirmPassword')?.touched">
-    Password and Confirm Password do not match.
-  </div>
-</div>
+      <!-- Required Field Error -->
+      <mat-error *ngIf="signupForm.get('confirmPassword')?.touched">
+        <ng-container
+          *ngIf="signupForm.get('confirmPassword')?.errors?.['required']"
+        >
+          Confirm password is required.
+        </ng-container>
+        <ng-container
+          *ngIf="
+        !signupForm.get('confirmPassword')?.errors?.['required'] &&
+        signupForm.errors?.['mismatch']
+      "
+        >
+          Password and Confirm Password do not match.
+        </ng-container>
+      </mat-error>
+    </mat-form-field>
 
     <!-- Submit Button (Full Width) -->
-    <div class=" full-width">
-      <button type="submit" [disabled]="signupForm.invalid">Create</button>
-    </div>
-    <div class="back-button">
-      <button (click)="goBack()">cancel</button>
+    <div class="button-group">
+      <div class="back-button">
+        <button (click)="goBack()">cancel</button>
+      </div>
+      <div>
+        <button type="submit" [disabled]="signupForm.invalid">Create</button>
+      </div>
     </div>
   </form>
 

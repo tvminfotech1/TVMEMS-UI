@@ -1,41 +1,133 @@
-<div class="profile-wrapper" *ngIf="userData">
-  <div class="profile-header">
-    <img src="assets/profile.jpg" alt="Profile" class="profile-img" />
-    <div class="profile-info">
-      <h2>{{ userData.fname }} {{ userData.mname }} {{ userData.lname }}</h2>
-      <p><strong>Email:</strong> {{ userData.email }}</p>
-      <p><strong>Employee ID:</strong> {{ userData.id }}</p>
+  <div class="PV-container" *ngIf="userData">
+    <h1>PROFILE INFORMATION</h1>
+
+    <div class="profile-header">
+      <div class="profile-image">
+        <img src="assets/images/profile.jpg" alt="Profile" class="profile-img" />
+      </div>
+
+      <div class="profile-info">
+        <h2>{{ fullName }}</h2>
+        <p><span>E-mail:</span> {{ email }}</p>
+        <p><span>EmpID:</span> {{ employeeId }}</p>
+      </div>
     </div>
-  </div>
 
-  <section class="profile-section">
-    <h3>🧾 Basic Information</h3>
-    <ul>
-      <li><strong>Gender:</strong> {{ userData.gender }}</li>
-      <li><strong>DOB:</strong> {{ userData.dob }}</li>
-      <li><strong>Blood Group:</strong> {{ userData.bloodGroup }}</li>
-      <li><strong>Marital Status:</strong> {{ userData.merital }}</li>
-      <li><strong>Marriage Date:</strong> {{ userData.marriegedate }}</li>
-    </ul>
-  </section>
+  <div *ngIf="userDetails ; else noInfo">
+<h3>Personal Details</h3>
+  <table class="profile-table">
+    <tr><th>Field</th><th>Value</th></tr>
+    <tr><td>First Name</td><td>{{ userDetails.value.personal.fname }}</td></tr>
+    <tr><td>Middle Name</td><td>{{ userDetails.value.personal.mname }}</td></tr>
+    <tr><td>Last Name</td><td>{{ userDetails.value.personal.lname }}</td></tr>
+    <tr><td>Gender</td><td>{{ userDetails.value.personal.gender }}</td></tr>
+    <tr><td>Blood Group</td><td>{{ userDetails.value.personal.bloodGroup }}</td></tr>
+    <tr><td>DOB</td><td>{{ userDetails.value.personal.dob | date }}</td></tr>
+    <tr><td>Marital Status</td><td>{{ userDetails.value.personal.marital }}</td></tr>
+    <tr><td>Marriage Date</td><td>{{ userDetails.value.personal.marriegedate | date }}</td></tr>
+    <tr><td>Current Address</td><td>{{ userDetails.value.personal.current_address }}, {{ userDetails.value.personal.current_city }}, {{ userDetails.value.personal.current_state }}, {{ userDetails.value.personal.current_country }} - {{ userDetails.value.personal.current_pincode }}</td></tr>
+    <tr><td>Permanent Address</td><td>{{ userDetails.value.personal.permanent_address }}, {{ userDetails.value.personal.permanent_city }}, {{ userDetails.value.personal.permanent_state }}, {{ userDetails.value.personal.permanent_country }} - {{ userDetails.value.personal.permanent_pincode }}</td></tr>
+    <tr><td>BCP Address</td><td>{{ userDetails.value.personal.bcp_addrewss }}, {{ userDetails.value.personal.bcp_city }}, {{ userDetails.value.personal.bcp_state }}, {{ userDetails.value.personal.bcp_country }} - {{ userDetails.value.personal.bcp_pincode }}</td></tr>
+    <tr><td>Emergency Contact</td><td>{{ userDetails.value.personal.emergency_contact_name }} ({{ userDetails.value.personal.emergency_relationship }}) - {{ userDetails.value.personal.emergency_contact_number }}</td></tr>
+    <tr><td>Experience</td><td>{{ userDetails.value.personal.exp_year }} years {{ userDetails.value.personal.exp_month }} months</td></tr>
+  </table>
 
-  <section class="profile-section">
-    <h3>📞 Contact Details</h3>
-    <ul>
-      <li><strong>Current Address:</strong> {{ userData.current_address }}, {{ userData.current_city }}, {{ userData.current_state }} - {{ userData.current_pincode }}</li>
-      <li><strong>Permanent Address:</strong> {{ userData.permanent_address }}, {{ userData.permanentCity }}, {{ userData.permanent_state }}</li>
-      <li><strong>Contact Number:</strong> {{ userData.current_contact }}</li>
-      <li><strong>Emergency Contact:</strong> {{ userData.emergency_contact_name }} ({{ userData.emergency_relationship }}) - {{ userData.emergency_contact_number }}</li>
-    </ul>
-  </section>
+  <!-- KYC DETAILS -->
+  <h3>KYC Details</h3>
+  <table class="profile-table">
+    <tr><th>Field</th><th>Value</th></tr>
+    <tr><td>PAN</td><td>{{ userDetails.value.kyc.pan }} ({{ userDetails.value.kyc.panName }})</td></tr>
+    <tr><td>Aadhar</td><td>{{ userDetails.value.kyc.aadhar }} ({{ userDetails.value.kyc.aadharName }})</td></tr>
+    <tr><td>UAN</td><td>{{ userDetails.value.kyc.uan }}</td></tr>
+    <tr><td>PF</td><td>{{ userDetails.value.kyc.pf }}</td></tr>
+    <tr><td>HDFC</td><td>{{ userDetails.value.kyc.hdfc }}</td></tr>
+  </table>
 
-  <section class="profile-section">
-    <h3>💼 Employment Details</h3>
-    <ul>
-      <li><strong>Total Experience:</strong> {{ userData.exp_year }} years {{ userData.exp_month }} months</li>
-      <li><strong>Relevant Experience:</strong> {{ userData.relevantYear }} years</li>
-    </ul>
-  </section>
+  <!-- PASSPORT DETAILS -->
+  <h3>Passport Details</h3>
+  <table class="profile-table">
+    <tr><th>Field</th><th>Value</th></tr>
+    <tr><td>Nationality</td><td>{{ userDetails.value.passport.nationality }}</td></tr>
+    <tr><td>Has Passport</td><td>{{ userDetails.value.passport.ifPassport }}</td></tr>
+    <tr><td>Passport Number</td><td>{{ userDetails.value.passport.passportNumber }}</td></tr>
+  </table>
+
+  <!-- FAMILY DETAILS -->
+  <h3>Family Details</h3>
+  <table class="profile-table">
+    <tr><th>Field</th><th>Value</th></tr>
+    <tr><td>Father Name</td><td>{{ userDetails.value.family.fatherName }} ({{ userDetails.value.family.fatherDOB | date }})</td></tr>
+    <tr><td>Mother Name</td><td>{{ userDetails.value.family.motherName }} ({{ userDetails.value.family.motherDOB | date }})</td></tr>
+    <tr><td>Spouse Name</td><td>{{ userDetails.value.family.spouseName }} ({{ userDetails.value.family.spouseDOB | date }}) - {{ userDetails.value.family.spouseGender }}</td></tr>
+    <tr><td>Children</td><td>{{ userDetails.value.family.children }}</td></tr>
+  </table>
+
+  <!-- PREVIOUS EMPLOYMENT -->
+  <h3>Previous Employment</h3>
+  <table class="profile-table" *ngIf="userDetails.value.previousEmployment?.length">
+    <tr><th>Company</th><th>Designation</th><th>Type</th><th>Start</th><th>End</th></tr>
+    <tr *ngFor="let job of userDetails.value.previousEmployment">
+      <td>{{ job.companyName }}</td>
+      <td>{{ job.designation }}</td>
+      <td>{{ job.employmentType }}</td>
+      <td>{{ job.startDate | date }}</td>
+      <td>{{ job.endDate | date }}</td>
+    </tr>
+  </table>
+
+  <!-- EDUCATION -->
+  <h3>Education</h3>
+  <table class="profile-table">
+    <tr><th>Qualification</th><th>Specialization</th><th>Institute</th><th>University</th><th>Type</th><th>From</th><th>To</th><th>%</th><th>Roll No</th></tr>
+    <tr>
+      <td>{{ userDetails.value.education.qualification }}</td>
+      <td>{{ userDetails.value.education.specilization }}</td>
+      <td>{{ userDetails.value.education.instituteName }}</td>
+      <td>{{ userDetails.value.education.universityName }}</td>
+      <td>{{ userDetails.value.education.educationType }}</td>
+      <td>{{ userDetails.value.education.fromDate | date }}</td>
+      <td>{{ userDetails.value.education.toDate | date }}</td>
+      <td>{{ userDetails.value.education.percentage }}</td>
+      <td>{{ userDetails.value.education.rollNo }}</td>
+    </tr>
+  </table>
+
+  <!-- SKILLS -->
+  <h3>Skills</h3>
+  <table class="profile-table" *ngIf="userDetails.value.skills?.length">
+    <tr><th>Skill</th><th>Category</th><th>Version</th><th>Experience (Years)</th><th>Self Rate</th></tr>
+    <tr *ngFor="let skill of userDetails.value.skills">
+      <td>{{ skill.skillName }}</td>
+      <td>{{ skill.skillCategories }}</td>
+      <td>{{ skill.versionNum }}</td>
+      <td>{{ skill.experience_year }}y {{ skill.experience_month }}m</td>
+      <td>{{ skill.selfRate }}</td>
+    </tr>
+  </table>
+
+  <!-- CERTIFICATIONS -->
+  <h3>Certifications</h3>
+  <table class="profile-table" *ngIf="userDetails.value.certification?.length">
+    <tr><th>Certificate</th><th>Certified By</th><th>Completion Date</th><th>Marks</th></tr>
+    <tr *ngFor="let cert of userDetails.value.certification">
+      <td>{{ cert.certificateName }}</td>
+      <td>{{ cert.certifiedBy }}</td>
+      <td>{{ cert.completionDate | date }}</td>
+      <td>{{ cert.marks }}</td>
+    </tr>
+  </table>
+
+  <!-- RESUME -->
+  <h3>Resume</h3>
+  <table class="profile-table">
+    <tr><th>Achievements</th><td>{{ userDetails.value.resume.achievements }}</td></tr>
+    <tr><th>Category</th><td>{{ userDetails.value.resume.resumeCate }}</td></tr>
+  </table>
 </div>
 
-<div *ngIf="!userData" class="loading-msg">Loading employee profile...</div>
+<ng-template #noInfo>
+  <div class="no-info">
+    <h3>There is no information</h3>
+    <p>Please fill the onboarding form details to view your details.</p>
+  </div>
+</ng-template>

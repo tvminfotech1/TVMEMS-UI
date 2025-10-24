@@ -8,6 +8,15 @@
   height: auto;
 }
 
+.profile-info{
+  display: flex;
+  flex-direction: column;
+  margin-left: 10px;
+}
+.profile-Id{
+  font-size: 12px;
+  color: #d1d1d1;
+}
 
 /* Sidebar */
 .sidebar {
@@ -23,6 +32,7 @@
 
   scrollbar-width: none;
   -ms-overflow-style: none;
+  flex: 0 0 20%;
 }
 
 .sidebar::-webkit-scrollbar {
@@ -50,8 +60,8 @@
 
 .sidebar-list {
   flex: 1 1 auto;
-  margin-top: 2rem;
-  padding: 0 1rem 1rem 1rem; /* side/bottom padding for content only */
+  margin-top: 1rem;
+  padding: 0px 2px; /* side/bottom padding for content only */
 }
 
 .sidebar ul,
@@ -106,7 +116,7 @@
 
 .dropdown-content {
   margin-left: 1.5rem;
-  margin-top: 0.5rem;
+  /* margin-top: 0.5rem; */
 }
 
 .nav-link {
@@ -114,7 +124,7 @@
   align-items: center;
   color: white;
   text-decoration: none;
-  padding: 0.3rem 0;
+  padding: 0.4rem;
   font-size: 1.1rem;
   border-radius: 4px;
 }
@@ -314,7 +324,7 @@ main {
   color: #ffffff !important;
   font-weight: 600;
   border-radius: 5px;
-  display: block;
+  /* display: block; */
   padding: 8px 12px;
 }
 
@@ -397,8 +407,8 @@ main {
 
 .sidebar-list {
   flex: 1 1 auto;
-  margin-top: 2rem;
-  padding: 0 1rem 1rem 1rem;
+  margin-top: 1rem;
+  padding:0px 2px;
 }
 
 .sidebar ul,
@@ -441,7 +451,7 @@ main {
 
 .dropdown-content {
   margin-left: 1.5rem;
-  margin-top: 0.5rem;
+  /* margin-top: 0.5rem; */
 }
 
 .nav-link {
@@ -709,5 +719,124 @@ main {
   display: none;
 }
 }
+  }
+}
+/* ===== MOBILE TOGGLE + SIDEBAR FIXES (clean final version) ===== */
+
+/* hidden on desktop */
+.mobile-toggle {
+  display: none;
+}
+/* hide close (X) button on desktop by default */
+.sidebar-close-btn {
+  display: none;
+}
+
+
+/* mobile-only rules */
+@media (max-width: 768px) {
+
+  /* 🔹 Hamburger toggle styled same as .icon-btn (search/settings/notify) */
+  .mobile-toggle {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    cursor: pointer;
+    color: #0a0f3c;
+    background: transparent;
+    border: none;
+    border-radius: 50%;
+    padding: 6px;
+    transition: color 0.2s ease, background-color 0.2s ease;
+    z-index: 1300;
+    position: relative;
+    margin-left: 6px;
+  }
+
+  .mobile-toggle:hover {
+    color: #000;
+    background-color: #ffffff;
+  }
+
+  /* 🔹 Top bar layout (hamburger left, icons right) */
+  .top-bar-icons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 10px;
+    left: 0;
+    right: 0;
+    position: absolute;
+    top: 8px;
+    z-index: 1199;
+  }
+
+  .top-right-icons {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+
+  /* 🔹 Sidebar overlay behavior */
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 260px;
+    max-width: 80%;
+    height: 100vh;
+    transform: translateX(-110%);
+    transition: transform 0.22s ease;
+    z-index: 1250;
+    box-shadow: 2px 0 12px rgba(0, 0, 0, 0.28);
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  .sidebar-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.34);
+    z-index: 1200;
+  }
+
+  main {
+    margin-left: 0 !important;
+    padding-top: 64px;
+  }
+
+  .sidebar .logo {
+    max-width: 140px;
+    margin: 14px auto;
+    display: block;
+  }
+
+  /* 🔹 Internal close (X) button inside sidebar */
+  .sidebar-close-btn {
+    display: inline-flex;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 1400;
+    pointer-events: auto;
+    background: transparent;
+    color: #fff;
+    border-radius: 50%;
+    padding: 6px;
+    border: none;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  .sidebar-close-btn:hover {
+    background: #ffffff;
+    color: #0a0f3c;
+  }
+
+  /* hide close button when sidebar is not open */
+  .sidebar:not(.open) .sidebar-close-btn {
+    display: none;
   }
 }

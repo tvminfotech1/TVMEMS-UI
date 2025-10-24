@@ -1,58 +1,94 @@
-.profile-wrapper {
+.PV-container {
+  max-width: 1200px;
+  margin: 20px;
+  background: white;
   padding: 20px;
-  background: #f7f9fb;
   border-radius: 10px;
-  box-shadow: 0 0 10px #ccc;
-  max-width: 800px;
-  margin: 0 auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
-
-.profile-header {
+.profile-header{
   display: flex;
   align-items: center;
-  border-bottom: 2px solid #ccc;
-  padding-bottom: 15px;
-  margin-bottom: 20px;
+  gap: 100px;
+  justify-content: center;
+    margin-bottom: 20px;}
+h1{
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 50px;
+  font-family:'Times New Roman', Times, serif;
+  font-weight: bold;
 }
-
-.profile-img {
-  width: 80px;
-  height: 80px;
+.profile-img{
+  width: 10rem;
+  height: 10rem;
   border-radius: 50%;
   object-fit: cover;
-  margin-right: 20px;
-  border: 2px solid #007bff;
+}
+.profile-details{
+  display: flex;
+}
+.profile-info p{
+  font-size: 1.2rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: 100px;
+}
+.profile-info p span{
+  color: grey;
+  font-size: 1.2rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: 100px;
+}
+.profile-image{
+  display: flex;
+  justify-content: center;
 }
 
-.profile-info h2 {
-  margin: 0;
+h2{
+  font-family:"Font Name", fallback-font, generic-family;;
+  margin-bottom: 10px;
 }
 
-.profile-section {
-  margin-bottom: 20px;
-  padding: 15px;
-  background: white;
-  border-left: 4px solid #007bff;
-  border-radius: 5px;
+.profile-card {
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  margin: 20px auto;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  font-family: 'Poppins', sans-serif;
 }
 
-.profile-section h3 {
-  margin-top: 0;
-  color: #007bff;
+.profile-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid #e5e7eb;
 }
 
-.profile-section ul {
-  list-style: none;
-  padding: 0;
+.profile-row:last-child {
+  border-bottom: none;
 }
 
-.profile-section li {
-  padding: 4px 0;
-  font-size: 15px;
+.field {
+  font-weight: 600;
+  color: #374151;
+}
+
+.value {
+  color: #111827;
+  font-weight: 500;
 }
 
 .loading-msg {
   text-align: center;
-  font-size: 18px;
-  color: gray;
+  color: #6b7280;
+  font-family: 'Poppins', sans-serif;
+  margin-top: 50px;
+}
+
+.no-info{
+  text-align: center;
+  color: #6b7280;
+  font-family: 'Poppins', sans-serif;
+  margin-top: 50px;
 }

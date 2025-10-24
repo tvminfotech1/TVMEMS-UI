@@ -25,7 +25,7 @@ export class MainlayoutComponent implements OnInit {
   isAdmin: boolean = false;
   isUser: boolean = false;
   userName: string = '';
-  employeeId!: string | null; 
+  employeeId: string | null = null;
 
   completedTabs: any = {};
 
@@ -42,7 +42,6 @@ export class MainlayoutComponent implements OnInit {
     this.isUser = this.authService.isUser();
     this.userName = this.authService.getfullName() || 'User';
     this.employeeId = this.authService.getEmployeeId();
-    console.log("Employee ID from token:", this.employeeId);
   }
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent) {
@@ -65,6 +64,19 @@ export class MainlayoutComponent implements OnInit {
     this.showAddJobDropdown = except === 'addJob';
     this.showPayrollDropdown = except === 'payroll'; 
     this.showSettings = except === 'settings';
+  }
+
+  sidebarOpen = false;
+
+  toggleSidebar() {
+    this.sidebarOpen = !this.sidebarOpen;
+
+    // optional: prevent background scrolling when open
+    if (this.sidebarOpen) {
+      document.body.classList.add('noscroll');
+    } else {
+      document.body.classList.remove('noscroll');
+    }
   }
 
   toggleHomeDropdown() {

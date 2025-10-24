@@ -1,7 +1,14 @@
 <div class="container">
   <!-- Sidebar -->
-  <aside class="sidebar" > 
+  <aside class="sidebar" [class.open]="sidebarOpen">
     <img src="assets/images/TVM Infotech Logo.jpg" class="logo" />
+    <button
+      class="sidebar-close-btn"
+      aria-label="Close menu"
+      (click)="toggleSidebar()"
+    >
+      <span class="material-icons">close</span>
+    </button>
     <div class="sidebar-list">
       <nav class="nav" aria-label="Primary navigation">
         <ul>
@@ -9,7 +16,14 @@
           <li class="dropdown">
             <button
               class="nav-button"
-                [ngClass]="{ 'active-parent-link': isChildRouteActive(['dashboard','holidays','feedbacks','organization' ]) }"
+              [ngClass]="{
+                'active-parent-link': isChildRouteActive([
+                  'dashboard',
+                  'holidays',
+                  'feedbacks',
+                  'organization'
+                ])
+              }"
               (click)="toggleHomeDropdown()"
               [attr.aria-expanded]="showHomeDropdown"
               aria-controls="homeDropdown"
@@ -27,25 +41,41 @@
             >
               <ul class="dropdown-list">
                 <li>
-                  <a routerLink="dashboard" class="nav-link sub" routerLinkActive="active-sub-link" [routerLinkActiveOptions]="{ exact: true }"
+                  <a
+                    routerLink="dashboard"
+                    class="nav-link sub"
+                    routerLinkActive="active-sub-link"
+                    [routerLinkActiveOptions]="{ exact: true }"
                     ><span class="material-icons">space_dashboard</span>
                     Dashboard</a
                   >
                 </li>
                 <li>
-                  <a routerLink="holidays" class="nav-link sub" routerLinkActive="active-sub-link" [routerLinkActiveOptions]="{ exact: true }"
+                  <a
+                    routerLink="holidays"
+                    class="nav-link sub"
+                    routerLinkActive="active-sub-link"
+                    [routerLinkActiveOptions]="{ exact: true }"
                     ><span class="material-icons">beach_access</span>
                     Holidays</a
                   >
                 </li>
                 <li>
-                  <a routerLink="feedbacks" class="nav-link sub" routerLinkActive="active-sub-link" [routerLinkActiveOptions]="{ exact: true }"
+                  <a
+                    routerLink="feedbacks"
+                    class="nav-link sub"
+                    routerLinkActive="active-sub-link"
+                    [routerLinkActiveOptions]="{ exact: true }"
                     ><span class="material-icons">question_answer</span> My
                     Feedbacks</a
                   >
                 </li>
                 <li>
-                  <a routerLink="organization" class="nav-link sub" routerLinkActive="active-sub-link" [routerLinkActiveOptions]="{ exact: true }"
+                  <a
+                    routerLink="organization"
+                    class="nav-link sub"
+                    routerLinkActive="active-sub-link"
+                    [routerLinkActiveOptions]="{ exact: true }"
                     ><span class="material-icons">account_box</span>
                     Organization Directory</a
                   >
@@ -58,7 +88,9 @@
           <li class="dropdown">
             <button
               class="nav-button"
-                [ngClass]="{ 'active-parent-link': isChildRouteActive(['workfromhome']) }"
+              [ngClass]="{
+                'active-parent-link': isChildRouteActive(['workfromhome'])
+              }"
               (click)="toggleWFHDropdown()"
               [attr.aria-expanded]="showWFHDropdown"
               aria-controls="wfhDropdown"
@@ -76,7 +108,11 @@
             >
               <ul class="dropdown-list">
                 <li>
-                  <a routerLink="workfromhome" class="nav-link sub" routerLinkActive="active-sub-link" [routerLinkActiveOptions]="{ exact: true }"
+                  <a
+                    routerLink="workfromhome"
+                    class="nav-link sub"
+                    routerLinkActive="active-sub-link"
+                    [routerLinkActiveOptions]="{ exact: true }"
                     ><span class="material-icons">assignment</span> WFH
                     Request</a
                   >
@@ -89,7 +125,13 @@
           <li class="dropdown">
             <button
               class="nav-button"
-                [ngClass]="{ 'active-parent-link': isChildRouteActive(['myleave','attendance','attendance-approval' ]) }"
+              [ngClass]="{
+                'active-parent-link': isChildRouteActive([
+                  'myleave',
+                  'attendance',
+                  'attendance-approval'
+                ])
+              }"
               (click)="toggleLeaveDropdown()"
               [attr.aria-expanded]="showLeaveDropdown"
               aria-controls="leaveDropdown"
@@ -107,20 +149,33 @@
             >
               <ul class="dropdown-list">
                 <li>
-                  <a routerLink="myleave" class="nav-link sub" routerLinkActive="active-sub-link" [routerLinkActiveOptions]="{ exact: true }"
+                  <a
+                    routerLink="myleave"
+                    class="nav-link sub"
+                    routerLinkActive="active-sub-link"
+                    [routerLinkActiveOptions]="{ exact: true }"
                     ><span class="material-icons">calendar_today</span> My
                     Leave</a
                   >
                 </li>
                 <li>
-                  <a routerLink="attendance" class="nav-link sub" routerLinkActive="active-sub-link" [routerLinkActiveOptions]="{ exact: true }"
+                  <a
+                    routerLink="attendance"
+                    class="nav-link sub"
+                    routerLinkActive="active-sub-link"
+                    [routerLinkActiveOptions]="{ exact: true }"
                     ><span class="material-icons">fact_check</span> My
                     Attendance</a
                   >
                 </li>
                 <li>
-                  <a routerLink="attendance-approval" class="nav-link sub" routerLinkActive="active-sub-link" [routerLinkActiveOptions]="{ exact: true }"
-                    ><span class="material-icons">check_circle</span> Attendance Approval</a
+                  <a
+                    routerLink="attendance-approval"
+                    class="nav-link sub"
+                    routerLinkActive="active-sub-link"
+                    [routerLinkActiveOptions]="{ exact: true }"
+                    ><span class="material-icons">check_circle</span> Attendance
+                    Approval</a
                   >
                 </li>
               </ul>
@@ -129,14 +184,16 @@
 
           <!-- Timesheets -->
           <li class="dropdown">
-           <button
-   class="nav-button"
-  [ngClass]="{ 'active-parent-link': isChildRouteActive(['Timelog']) }"
-  (click)="toggleTimesheetDropdown()"
-  [attr.aria-expanded]="showTimesheetDropdown"
-  aria-controls="timesheetDropdown"
-  aria-haspopup="true"
->
+            <button
+              class="nav-button"
+              [ngClass]="{
+                'active-parent-link': isChildRouteActive(['Timelog'])
+              }"
+              (click)="toggleTimesheetDropdown()"
+              [attr.aria-expanded]="showTimesheetDropdown"
+              aria-controls="timesheetDropdown"
+              aria-haspopup="true"
+            >
               <span class="material-icons">schedule</span> Timesheets
               <span class="accordion-icon">
                 {{ showTimesheetDropdown ? "⯆" : "⯈" }}
@@ -149,8 +206,12 @@
             >
               <ul class="dropdown-list">
                 <li>
-                  <a routerLink="Timelog" class="nav-link sub" routerLinkActive="active-sub-link" [routerLinkActiveOptions]="{ exact: true }"
-                    ><span class="material-icons" >edit_calendar</span> Timesheet
+                  <a
+                    routerLink="Timelog"
+                    class="nav-link sub"
+                    routerLinkActive="active-sub-link"
+                    [routerLinkActiveOptions]="{ exact: true }"
+                    ><span class="material-icons">edit_calendar</span> Timesheet
                     Entry</a
                   >
                 </li>
@@ -180,7 +241,11 @@
             >
               <ul class="dropdown-list">
                 <li>
-                  <a routerLink="task" class="nav-link sub" routerLinkActive="active-sub-link" [routerLinkActiveOptions]="{ exact: true }"
+                  <a
+                    routerLink="task"
+                    class="nav-link sub"
+                    routerLinkActive="active-sub-link"
+                    [routerLinkActiveOptions]="{ exact: true }"
                     ><span class="material-icons">task</span> My Tasks</a
                   >
                 </li>
@@ -192,8 +257,7 @@
           <li class="dropdown">
             <button
               class="nav-button"
-               [ngClass]="{ 'active-parent-link': isChildRouteActive(['goal']) }"
-
+              [ngClass]="{ 'active-parent-link': isChildRouteActive(['goal']) }"
               (click)="toggleOKRDropdown()"
               [attr.aria-expanded]="showOKRDropdown"
               aria-controls="okrDropdown"
@@ -211,7 +275,11 @@
             >
               <ul class="dropdown-list">
                 <li>
-                  <a routerLink="goal" class="nav-link sub" routerLinkActive="active-sub-link" [routerLinkActiveOptions]="{ exact: true }"
+                  <a
+                    routerLink="goal"
+                    class="nav-link sub"
+                    routerLinkActive="active-sub-link"
+                    [routerLinkActiveOptions]="{ exact: true }"
                     ><span class="material-icons">star_rate</span> My Goal
                     Sheet</a
                   >
@@ -224,7 +292,9 @@
           <li class="dropdown">
             <button
               class="nav-button"
-             [ngClass]="{ 'active-parent-link': isChildRouteActive(['resignation']) }"
+              [ngClass]="{
+                'active-parent-link': isChildRouteActive(['resignation'])
+              }"
               (click)="toggleOffboardingDropdown()"
               [attr.aria-expanded]="showOffboardingDropdown"
               aria-controls="offboardingDropdown"
@@ -242,7 +312,11 @@
             >
               <ul class="dropdown-list">
                 <li>
-                  <a routerLink="resignation" class="nav-link sub" routerLinkActive="active-sub-link" [routerLinkActiveOptions]="{ exact: true }"
+                  <a
+                    routerLink="resignation"
+                    class="nav-link sub"
+                    routerLinkActive="active-sub-link"
+                    [routerLinkActiveOptions]="{ exact: true }"
                     ><span class="material-icons">exit_to_app</span>
                     Resignation</a
                   >
@@ -252,58 +326,87 @@
           </li>
 
           <!-- Onboarding -->
-<li class="dropdown">
-  <button
-    class="nav-button"
-     [ngClass]="{ 'active-parent-link': isChildRouteActive(['signup','personal','pendingUser','admin']) }"
-    (click)="toggleOnboardingDropdown()"
-    [attr.aria-expanded]="showOnboardingDropdown"
-    aria-controls="onboardingDropdown"
-    aria-haspopup="true"
-  >
-    <span class="material-icons">how_to_reg</span> OnBoarding
-    <span class="accordion-icon">
-      {{ showOnboardingDropdown ? "⯆" : "⯈" }}
-    </span>
-  </button>
+          <li class="dropdown">
+            <button
+              class="nav-button"
+              [ngClass]="{
+                'active-parent-link': isChildRouteActive([
+                  'signup',
+                  'personal',
+                  'pendingUser',
+                  'admin'
+                ])
+              }"
+              (click)="toggleOnboardingDropdown()"
+              [attr.aria-expanded]="showOnboardingDropdown"
+              aria-controls="onboardingDropdown"
+              aria-haspopup="true"
+            >
+              <span class="material-icons">how_to_reg</span> OnBoarding
+              <span class="accordion-icon">
+                {{ showOnboardingDropdown ? "⯆" : "⯈" }}
+              </span>
+            </button>
 
-  <div
-    *ngIf="showOnboardingDropdown"
-    class="dropdown-content"
-    id="onboardingDropdown"
-  >
-    <ul class="dropdown-list">
-      <li>
-        <a routerLink="signup" class="nav-link sub" routerLinkActive="active-sub-link" [routerLinkActiveOptions]="{ exact: true }" *ngIf="isAdmin">
-          <span class="material-icons">person_add</span> Add User
-        </a>
-      </li>
-      <li>
-        <a routerLink="personal" class="nav-link sub" routerLinkActive="active-sub-link" [routerLinkActiveOptions]="{ exact: true }">
-          <span class="material-icons">person</span> Onboarding form
-        </a>
-      </li>
-      <li *ngIf="isAdmin">
-        <a routerLink="pendingUser" class="nav-link sub" routerLinkActive="active-sub-link" [routerLinkActiveOptions]="{ exact: true }">
-          <span class="material-icons">hourglass_empty</span> Pending User
-        </a>
-      </li>
-      <li *ngIf="isAdmin">
-        <a routerLink="admin" class="nav-link sub" routerLinkActive="active-sub-link" [routerLinkActiveOptions]="{ exact: true }">
-          <span class="material-icons">group</span> User List
-        </a>
-      </li>
-    </ul>
-  </div>
-</li>
-
+            <div
+              *ngIf="showOnboardingDropdown"
+              class="dropdown-content"
+              id="onboardingDropdown"
+            >
+              <ul class="dropdown-list">
+                <li>
+                  <a
+                    routerLink="signup"
+                    class="nav-link sub"
+                    routerLinkActive="active-sub-link"
+                    [routerLinkActiveOptions]="{ exact: true }"
+                    *ngIf="isAdmin"
+                  >
+                    <span class="material-icons">person_add</span> Add User
+                  </a>
+                </li>
+                <li>
+                  <a
+                    routerLink="personal"
+                    class="nav-link sub"
+                    routerLinkActive="active-sub-link"
+                    [routerLinkActiveOptions]="{ exact: true }"
+                  >
+                    <span class="material-icons">person</span> Onboarding form
+                  </a>
+                </li>
+                <li *ngIf="isAdmin">
+                  <a
+                    routerLink="pendingUser"
+                    class="nav-link sub"
+                    routerLinkActive="active-sub-link"
+                    [routerLinkActiveOptions]="{ exact: true }"
+                  >
+                    <span class="material-icons">hourglass_empty</span> Pending
+                    User
+                  </a>
+                </li>
+                <li *ngIf="isAdmin">
+                  <a
+                    routerLink="admin"
+                    class="nav-link sub"
+                    routerLinkActive="active-sub-link"
+                    [routerLinkActiveOptions]="{ exact: true }"
+                  >
+                    <span class="material-icons">group</span> User List
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </li>
 
           <!-- Add Job Opening -->
           <li class="dropdown" *ngIf="isAdmin">
             <button
               class="nav-button"
-                   [ngClass]="{ 'active-parent-link': isChildRouteActive(['addopening']) }"
-
+              [ngClass]="{
+                'active-parent-link': isChildRouteActive(['addopening'])
+              }"
               (click)="toggleAddJobDropdown()"
               [attr.aria-expanded]="showAddJobDropdown"
               aria-controls="addJobDropdown"
@@ -321,107 +424,163 @@
             >
               <ul class="dropdown-list">
                 <li>
-                  <a routerLink="addopening" class="nav-link sub" routerLinkActive="active-sub-link" [routerLinkActiveOptions]="{ exact: true }"
+                  <a
+                    routerLink="addopening"
+                    class="nav-link sub"
+                    routerLinkActive="active-sub-link"
+                    [routerLinkActiveOptions]="{ exact: true }"
                     ><span class="material-icons">add_box</span> Add Opening</a
                   >
                 </li>
               </ul>
             </div>
           </li>
-                    <!-- Payroll -->
-<li class="dropdown" *ngIf="isAdmin">
-  <button
-    class="nav-button"
-                       [ngClass]="{ 'active-parent-link': isChildRouteActive(['payroll-dashbord','payroll-employee','/mainlayout/payruns','/mainlayout/reports']) }"
+          <!-- Payroll -->
+          <li class="dropdown" *ngIf="isAdmin">
+            <button
+              class="nav-button"
+              [ngClass]="{
+                'active-parent-link': isChildRouteActive([
+                  'payroll-dashbord',
+                  'payroll-employee',
+                  '/mainlayout/payruns',
+                  '/mainlayout/reports'
+                ])
+              }"
+              (click)="togglePayrollDropdown()"
+              [attr.aria-expanded]="showPayrollDropdown"
+              aria-controls="payrollDropdown"
+              aria-haspopup="true"
+            >
+              <span class="material-icons">request_quote</span> Payroll
+              <span class="accordion-icon">
+                {{ showPayrollDropdown ? "⯆" : "⯈" }}
+              </span>
+            </button>
 
-    (click)="togglePayrollDropdown()"
-    [attr.aria-expanded]="showPayrollDropdown"
-    aria-controls="payrollDropdown"
-    aria-haspopup="true"
-  >
-    <span class="material-icons">request_quote</span> Payroll
-    <span class="accordion-icon">
-      {{ showPayrollDropdown ? "⯆" : "⯈" }}
-    </span>
-  </button>
-
-  <div
-    *ngIf="showPayrollDropdown"
-    class="dropdown-content"
-    id="payrollDropdown"
-  >
-    <ul class="dropdown-list">
-      <li>
-        <a routerLink="payroll-dashbord" class="nav-link sub" routerLinkActive="active-sub-link" [routerLinkActiveOptions]="{ exact: true }">
-          <span class="material-icons">dashboard</span>Payroll  Dashboard
-        </a>
-      </li>
-      <li>
-        <a routerLink="payroll-employee" class="nav-link sub" routerLinkActive="active-sub-link" [routerLinkActiveOptions]="{ exact: true }">
-          <span class="material-icons">group</span> Employees
-        </a>
-      </li>
-      <li>
-        <a routerLink="/mainlayout/payruns" class="nav-link sub" routerLinkActive="active-sub-link" [routerLinkActiveOptions]="{ exact: true }">
-          <span class="material-icons">attach_money</span> Pay Runs
-        </a>
-      </li>
-      <li>
-        <a routerLink="/mainlayout/reports" class="nav-link sub" routerLinkActive="active-sub-link" [routerLinkActiveOptions]="{ exact: true }">
-          <span class="material-icons">bar_chart</span> Reports
-        </a>
-      </li>
-    </ul>
-  </div>
-</li>
+            <div
+              *ngIf="showPayrollDropdown"
+              class="dropdown-content"
+              id="payrollDropdown"
+            >
+              <ul class="dropdown-list">
+                <li>
+                  <a
+                    routerLink="payroll-dashbord"
+                    class="nav-link sub"
+                    routerLinkActive="active-sub-link"
+                    [routerLinkActiveOptions]="{ exact: true }"
+                  >
+                    <span class="material-icons">dashboard</span>Payroll
+                    Dashboard
+                  </a>
+                </li>
+                <li>
+                  <a
+                    routerLink="payroll-employee"
+                    class="nav-link sub"
+                    routerLinkActive="active-sub-link"
+                    [routerLinkActiveOptions]="{ exact: true }"
+                  >
+                    <span class="material-icons">group</span> Employees
+                  </a>
+                </li>
+                <li>
+                  <a
+                    routerLink="/mainlayout/payruns"
+                    class="nav-link sub"
+                    routerLinkActive="active-sub-link"
+                    [routerLinkActiveOptions]="{ exact: true }"
+                  >
+                    <span class="material-icons">attach_money</span> Pay Runs
+                  </a>
+                </li>
+                <li>
+                  <a
+                    routerLink="/mainlayout/reports"
+                    class="nav-link sub"
+                    routerLinkActive="active-sub-link"
+                    [routerLinkActiveOptions]="{ exact: true }"
+                  >
+                    <span class="material-icons">bar_chart</span> Reports
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </li>
         </ul>
       </nav>
     </div>
   </aside>
+  <!-- Backdrop - closes sidebar on click -->
+  <div
+    class="sidebar-backdrop"
+    *ngIf="sidebarOpen"
+    (click)="toggleSidebar()"
+  ></div>
   <!-- Main Content -->
   <main>
     <div class="top-bar-icons">
-      <button class="icon-btn" (click)="toggleSearch()">
-        <span class="material-icons">{{
-          showSearch ? "close" : "search"
-        }}</span>
+      <button
+        class="mobile-toggle"
+        aria-label="Toggle sidebar"
+        (click)="toggleSidebar()"
+        [attr.aria-expanded]="sidebarOpen"
+      >
+        <span class="material-icons">menu</span>
       </button>
-      <input
-        *ngIf="showSearch"
-        type="text"
-        placeholder="Search..."
-        class="search-input"
-      />
-
-      <button class="icon-btn">
-        <span class="material-icons">notifications</span>
-      </button>
-
-      <div class="settings-wrapper">
-        <button class="icon-btn" (click)="toggleSettings()">
-          <span class="material-icons">settings</span>
+      <div class="top-right-icons">
+        <button class="icon-btn" (click)="toggleSearch()">
+          <span class="material-icons">{{
+            showSearch ? "close" : "search"
+          }}</span>
         </button>
-        <div *ngIf="showSettings" class="settings-dropdown">
-          <div class="profile-header">
-            <img src="assets/images/profile.jpg" alt="Profile" class="profile-img" />
-            <div class="profile-name">{{userName}}</div>
+        <input
+          *ngIf="showSearch"
+          type="text"
+          placeholder="Search..."
+          class="search-input"
+        />
+
+        <button class="icon-btn">
+          <span class="material-icons">notifications</span>
+        </button>
+
+        <span class="settings-wrapper">
+          <button class="icon-btn" (click)="toggleSettings()">
+            <span class="material-icons">settings</span>
+          </button>
+          <div *ngIf="showSettings" class="settings-dropdown">
+            <div class="profile-header">
+              <img
+                src="assets/images/profile.jpg"
+                alt="Profile"
+                class="profile-img"
+              />
+              <div class="profile-info">
+              <div class="profile-name">{{userName}}</div>
+              <div class="profile-Id">Employee ID: {{employeeId}}</div>
+              </div>
+            </div>
+            <ul class="settings-menu">
+              <li (click)="goToProfile()">
+                <span class="material-icons">person</span> My Profile
+              </li>
+              <li>
+                <span class="material-icons">campaign</span> My Announcements
+              </li>
+              <li>
+                <span class="material-icons">notifications</span> My
+                Notifications
+              </li>
+              <li><span class="material-icons">event</span> Holidays</li>
+              <!-- <li><span class="material-icons">logout</span> Logout</li> -->
+              <li (click)="onLogout()">
+                <span class="material-icons">logout</span> Logout
+              </li>
+            </ul>
           </div>
-          <ul class="settings-menu">
-            <li (click)="goToProfile()"><span class="material-icons">person</span> My Profile</li>
-            <li>
-              <span class="material-icons">campaign</span> My Announcements
-            </li>
-            <li>
-              <span class="material-icons">notifications</span> My Notifications
-            </li>
-            <li><span class="material-icons">event</span> Holidays</li>
-            <!-- <li><span class="material-icons">logout</span> Logout</li> -->
-             <li (click)="onLogout()">
-             <span class="material-icons">logout</span> Logout
-             </li>
-      
-          </ul>
-        </div>
+        </span>
       </div>
     </div>
 
