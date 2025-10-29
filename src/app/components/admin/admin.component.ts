@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { EmployeeService } from '../../services/employee.service';
-import { Router } from '@angular/router';
-import { EmployeeDataService } from 'src/app/services/employee-data.service';
+import { UserlistService } from 'src/app/services/admin.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-admin',
@@ -11,82 +10,64 @@ import { EmployeeDataService } from 'src/app/services/employee-data.service';
 export class AdminComponent implements OnInit {
   public employees: any[] = [];
   public filteredEmployees: any[] = [];
-  public selectedEmployee: any = null;
   public searchText: string = '';
+  public isAdmin:boolean =false;
+
+
 
   constructor(
-  private empService: EmployeeService,
-  private router: Router,
-  private empDataService: EmployeeDataService
+  private userlistService:UserlistService,
+  private authService: AuthService
 ) {}
 
-  // ngOnInit(): void {
-  //   this.empService.getEmployees().subscribe({
-  //     next: (res) => {
-  //       this.employees = res.map((data, index) => ({
-  //         index: index + 1,
-  //         name: data.fname + ' ' + data.lname,
-  //         email: data.email,
-  //         contact: data.current_contact,
-  //         gender: data.gender,
-  //         details: data
-  //       }));
-  //       this.filteredEmployees = [...this.employees];
-  //     },
-  //     error: (err) => {
-  //       console.error("Error fetching employees", err);
-  //     }
-  //   });
-  // }
-  ngOnInit(): void {
-    // alert("sss")
-    // debugger
-    this.empService.getEmployees().subscribe({
-      next: (d:any) => {
-       let a= d.body[0]
-        console.log("Response:", a);
-        
-    this.employees = d.body.map((data: any) => {
-  console.log('permanentContact:', data.permanentContact);
-  console.log('permanentCity:', data.permanentCity);
+ ngOnInit(): void {
+     this.isAdmin=this.authService.isAdmin();
+     if(this.isAdmin){
+      this.allUser();
+     }
+    }
 
-  return {
-    index: data.id,
-    name: data.fname + ' ' + data.lname,
-    email: data.email,
-    contact: data.permanentContact || 'N/A',
-    city: data.permanentCity || 'N/A',
-    details: data
-  };
-});
-
-
-        
+     allUser(): void{
+      this.userlistService.getAllUser().subscribe({
+        next:(response) => {
+          this.employees=response.body || [];
+  this.filteredEmployees = [...this.employees];
+          console.log(this.employees);          
+        },
+        error:(err)=>{
+            console.error("❌ Error fetching users", err);
+      this.employees = [];
+      this.filteredEmployees = [];
+        }
+      });
+     }
   
-        this.filteredEmployees = [...this.employees];
+
+  onSearch(): void {
+  const term = this.searchText.trim().toLowerCase();
+  this.filteredEmployees = this.employees.filter(emp =>
+    emp.employeeId?.toString().toLowerCase().includes(term) ||
+    emp.fullName?.toLowerCase().includes(term) ||
+    emp.mobile?.toString().toLowerCase().includes(term) ||
+    emp.email?.toLowerCase().includes(term)
+  );
+}
+
+
+  deleteEmployee(employeeId: number): void {
+    if (!confirm('Are you sure you want to delete this user?')) return;
+
+    this.userlistService.deleteUser(employeeId).subscribe({
+      next: (res) => {
+        console.log('🗑 User deleted successfully:', res);
+        alert('User deleted successfully!');
+        this.filteredEmployees = this.filteredEmployees.filter(emp => emp.employeeId !== employeeId);
+        this.employees = this.employees.filter(emp => emp.employeeId !== employeeId);
       },
       error: (err) => {
-        console.error("Error fetching employees", err);
+        console.error('❌ Error deleting user:', err);
+        alert('Failed to delete user');
       }
     });
   }
-  
-  onSearch() {
-    const term = this.searchText.trim().toLowerCase();
-  
-    this.filteredEmployees = this.employees.filter(emp =>
-      emp.name?.toLowerCase().includes(term) ||
-      emp.details.permanentCity?.toLowerCase().includes(term) ||
-      emp.contact?.toString().toLowerCase().includes(term)||
-      emp.index?.toLowerCase().includes(term)
-    );
-  }
-  
-  
-
-  viewDetails(employee: any) {
-    this.selectedEmployee = employee;
-    this.empDataService.setEmployeeData(employee.details); // Set the full object
-  // this.router.navigate(['/admin/empresume', employee.details.id]); // Navigate with ID (optional)
-  }
-}
+ }

@@ -1,62 +1,108 @@
-<div class="wfh-form-overlay">
-  <div class="wfh-form-container animate-in">
+<div class="wfh-form-overlay" (click)="onOverlayClick($event)">
+  <div class="wfh-form-container animate-in" (wheel)="$event.stopPropagation()">
+
     <button type="button" class="close-btn" (click)="onCancel()">✖</button>
 
-    <h2>Apply for Work From Home</h2>
-    <form [formGroup]="wfhForm" (ngSubmit)="onSubmit()">
-      
-      <!-- Employee Email -->
-      <div class="form-group">
-        <label for="employeeName">Employee E-Mail</label>
-        <input type="text" id="employeeName" [value]="employeeEmail" readonly class="readonly-input">
-      </div>
+    <h3>Apply for Work From Home</h3>
 
-      <!-- From Date -->
-      <div class="form-group">
-        <label for="fromDate">From Date</label>
-        <input type="date" id="fromDate" formControlName="fromDate" required>
-        <div *ngIf="wfhForm.controls['fromDate'].invalid && (wfhForm.controls['fromDate'].dirty || wfhForm.controls['fromDate'].touched)" class="error-message">
-          From Date is required.
-        </div>
-      </div>
 
-      <!-- To Date -->
-      <div class="form-group">
-        <label for="toDate">To Date</label>
-        <input type="date" id="toDate" formControlName="toDate" required>
-        <div *ngIf="wfhForm.controls['toDate'].invalid && (wfhForm.controls['toDate'].dirty || wfhForm.controls['toDate'].touched)" class="error-message">
-          To Date is required.
-        </div>
-      </div>
+    <!-- WFH Form Popup -->
 
-      <!-- Reason -->
-      <div class="form-group">
-        <label for="reason">Reason</label>
-        <textarea id="reason" formControlName="reason" rows="4" required placeholder="Enter reason for WFH..."></textarea>
-        <div *ngIf="wfhForm.controls['reason'].invalid && (wfhForm.controls['reason'].dirty || wfhForm.controls['reason'].touched)" class="error-message">
-          <span *ngIf="wfhForm.controls['reason'].errors?.['required']">Reason is required.</span>
-          <span *ngIf="wfhForm.controls['reason'].errors?.['minlength']">Reason must be at least 10 characters long.</span>
-        </div>
-      </div>
+    <div class="popup">
+      <div class="popup-content">
+        <form class="form-grid" [formGroup]="wfhForm" (ngSubmit)="onSubmit()">
 
-      <!-- Approver -->
-      <div class="form-group">
-        <label for="approver">Approver</label>
-        <input type="text" id="approver" formControlName="approver" required placeholder="Enter approver's name/role">
-        <div *ngIf="wfhForm.controls['approver'].invalid && (wfhForm.controls['approver'].dirty || wfhForm.controls['approver'].touched)" class="error-message">
-          Approver is required.
-        </div>
-      </div>
+          <!-- Employee Id -->
+          <mat-form-field appearance="outline" class="custom-form-field full-width">
+            <mat-label>Employee ID</mat-label>
+            <input matInput [value]="employeeId" readonly class="disabled-look" />
+          </mat-form-field>
 
-      <!-- Submission Error -->
-      <div *ngIf="submissionError" class="submission-error">
-        {{ submissionError }}
-      </div>
+          <!-- Employee Name -->
+          <mat-form-field appearance="outline" class="custom-form-field full-width">
+            <mat-label>Employee Name</mat-label>
+            <input matInput [value]="employeeName" readonly class="disabled-look" />
+          </mat-form-field>
 
-      <!-- Form Actions -->
-      <div class="form-actions">
-        <button type="submit" [disabled]="wfhForm.invalid">Submit Request</button>
+          <!-- From Date -->
+          <mat-form-field appearance="outline" class="custom-form-field full-width">
+            <mat-label>From Date</mat-label>
+            <input matInput [matDatepicker]="fromPicker" formControlName="fromDate" [min]="today"
+              placeholder="DD-MM-YYYY" required (click)="fromPicker.open()" readonly />
+            <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
+            <mat-datepicker #fromPicker></mat-datepicker>
+
+            <mat-error *ngIf="wfhForm.get('fromDate')?.hasError('required')">
+              From Date is required.
+            </mat-error>
+            <mat-error *ngIf="wfhForm.errors?.['fromDatePast']">
+              From Date cannot be in the past.
+            </mat-error>
+          </mat-form-field>
+
+          <!-- To Date -->
+          <mat-form-field appearance="outline" class="custom-form-field full-width">
+            <mat-label>To Date</mat-label>
+            <input matInput [matDatepicker]="toPicker" formControlName="toDate"
+              [min]="wfhForm.get('fromDate')?.value || today" placeholder="DD-MM-YYYY" required
+              (click)="toPicker.open()" readonly />
+            <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
+            <mat-datepicker #toPicker></mat-datepicker>
+
+            <mat-error *ngIf="wfhForm.get('toDate')?.hasError('required')">
+              To Date is required.
+            </mat-error>
+            <mat-error *ngIf="wfhForm.errors?.['toBeforeFrom']">
+              To Date cannot be before From Date.
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Reason -->
+          <mat-form-field appearance="outline" class="custom-form-field full-width">
+            <mat-label>Reason</mat-label>
+            <textarea matInput rows="4" formControlName="reason" placeholder="Enter reason for WFH..."
+              required></textarea>
+
+            <mat-error *ngIf="wfhForm.get('reason')?.hasError('required')">
+              Reason is required.
+            </mat-error>
+            <mat-error *ngIf="wfhForm.get('reason')?.hasError('minlength')">
+              Reason must be at least 10 characters.
+            </mat-error>
+            <mat-error *ngIf="wfhForm.get('reason')?.hasError('maxlength')">
+              Reason should not exceed 30 characters.
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Approver -->
+          <mat-form-field appearance="outline" class="custom-form-field full-width">
+            <mat-label>Approver</mat-label>
+            <input matInput type="text" formControlName="approver" placeholder="Enter approver's name"
+              class="input-padding" (keydown)="blockApproverInput($event)" required />
+            <mat-error *ngIf="wfhForm.get('approver')?.hasError('required')">
+              Approver is required.
+            </mat-error>
+            <mat-error *ngIf="wfhForm.get('approver')?.hasError('pattern')">
+              Only letters are allowed (no numbers or symbols).
+            </mat-error>
+
+          </mat-form-field>
+
+          <!-- Submission Error -->
+          <div *ngIf="submissionError" class="submission-error">
+            {{ submissionError }}
+          </div>
+
+          <!-- Form Actions -->
+          <div class="full-width">
+            <button type="submit" class="update-button" color="accent" [disabled]="wfhForm.invalid">
+              Submit
+            </button>
+          </div>
+        </form>
+
       </div>
-    </form>
+    </div>
+
   </div>
 </div>

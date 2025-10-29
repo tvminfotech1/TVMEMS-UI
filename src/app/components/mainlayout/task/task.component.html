@@ -1,70 +1,270 @@
-<div class="topbar">
-  <div class="spacer"></div>
+<div class="container2">
 
-  <div class="center-date">
-    <span class="material-icons icon-btn" (click)="goToPreviousDate()" title="Previous Date">chevron_left</span>
-    <span class="calendar-icon material-icons">calendar_today</span>
-    {{ dateRange }}
-    <span class="material-icons icon-btn" (click)="goToNextDate()" title="Next Date">chevron_right</span>
+  <div class="topbar" >
+
+    <div></div>
+
+    <div class="center-date">
+      <span class="material-icons icon-btn" (click)="goToPreviousDate()" title="Previous Date">chevron_left</span>
+      <span class="calendar-icon material-icons">calendar_today</span>
+      {{ dateRange }}
+      <span class="material-icons icon-btn" (click)="goToNextDate()" title="Next Date">chevron_right</span>
+    </div>
+
+    <div class="right-icons">
+      <span class="material-icons icon-btn" [class.active]="viewMode === 'list'" (click)="setViewMode('list')"
+        title="List View">view_list</span>
+      <span class="material-icons icon-btn" [class.active]="viewMode === 'grid'" (click)="setViewMode('grid')"
+        title="Grid View">grid_view</span>
+
+      <div class="searchBox" *ngIf="isAdmin">
+        <i class="ri-user-search-fill"></i>
+        <input *ngIf="isAdmin" type="text" placeholder="Search by name, id or project" [(ngModel)]="searchText"
+          (input)="filterTasksBySearch()" />
+      </div>
+
+      <button *ngIf="isUser" mat-raised-button color="primary" (click)="openPopup()">
+        <mat-icon>add</mat-icon> Add Task
+      </button>
+    </div>
+
   </div>
 
-  <div class="right-icons">
-    <span class="material-icons icon-btn" [class.active]="viewMode === 'list'" (click)="setViewMode('list')" title="List View">view_list</span>
-    <span class="material-icons icon-btn" [class.active]="viewMode === 'grid'" (click)="setViewMode('grid')" title="Grid View">grid_view</span>
-    <button class="add-task-btn" (click)="toggleForm()">+ Add Task</button>
+  <!-- ------------List---------- -->
+
+  <div class="container">
+    <div *ngIf="filteredCards.length === 0" class="no-data">
+      <p>No tasks assigned.</p>
+    </div>
+    <div class="task-list" [class.list]="viewMode === 'list'" [class.grid]="viewMode === 'grid'">
+      <mat-card class="task-card" *ngFor="let task of filteredCards; let i = index">
+        <div class="task-card-header">
+          <div class="card-details">
+            <h3 class="taskname">{{ task.project}}</h3>
+            <p class="emp">
+              <span><b>Task :</b> {{ task.title}}</span>
+              <span class="person" *ngIf="isAdmin"> <b>Assigned to : </b> {{ task.fullName}}<b>
+                  (</b>{{ task.employeeId}}<b>)</b></span>
+              <span class="description"><b>Description : </b> {{ task.description}}</span>
+            </p>
+           
+            <div *ngIf="viewMode== 'list'" class="newline">
+  <div class="info-col" style="color: #5a6b86; font-size: 0.98em;">
+    <p><span class="info-item"><b>Start:</b> {{ task.assignedDate | date }}</span></p>
+  </div>
+
+  <div class="info-col" style="color: #5a6b86; font-size: 0.98em;">
+    <p><span class="info-item"><b>Due:</b> {{ task.dueDate | date }}</span></p>
+  </div>
+
+  <div class="info-col" *ngIf="isAdmin" style="color: #5a6b86; font-size: 0.98em;">
+    <p><span class="info-item"><b>Priority:</b> {{ task.priority }}</span></p>
+  </div>
+
+  <div class="info-col" *ngIf="isAdmin" style="color: #5a6b86; font-size: 0.98em;">
+    <p><span class="info-item"><b>Status:</b> {{ task.status }}</span></p>
   </div>
 </div>
 
-<div class="card-row" [ngClass]="viewMode">
-  <div class="card" *ngFor="let card of filteredCards">
-    <strong>{{ card.taskName || '-' }}</strong> | {{ card.taskOwner || '-' }}
-    <br />
-    <small>Assigned To: {{ card.user?.fullName }}</small>
-    <div>{{ card.description }}</div>
-    <small>Start: {{ card.assignedDate }} | Due: {{ card.dueDate }}</small><br />
-    <small>Priority: {{ card.priority }} | Status: {{ card.status }}</small>
-  </div>
-</div>
 
-<!-- Modal popup form -->
-<div *ngIf="showForm" class="popup-overlay">
-  <div class="task-form">
-    <h3>Add New Task</h3>
-    <label>Employee Name:
-      <input [(ngModel)]="newTask.fullName" />
-    </label>
-    <label>Task Name:
-      <input [(ngModel)]="newTask.title" />
-    </label>
-    <label>Label:
-      <input [(ngModel)]="newTask.label" />
-    </label>
-    <label>Description:
-      <textarea [(ngModel)]="newTask.description"></textarea>
-    </label>
-    <label>Start Date:
-      <input type="date" [(ngModel)]="newTask.startDate" />
-    </label>
-    <label>Due Date:
-      <input type="date" [(ngModel)]="newTask.dueDate" />
-    </label>
-    <label>Priority:
-      <select [(ngModel)]="newTask.priority">
-        <option>Low</option>
-        <option>Medium</option>
-        <option>High</option>
-      </select>
-    </label>
-    <label>Status:
-      <select [(ngModel)]="newTask.status">
-        <option>Not Started</option>
-        <option>In Progress</option>
-        <option>Completed</option>
-      </select>
-    </label>
-    <div class="form-btn-group">
-      <button (click)="submitTask()">Submit</button>
-      <button type="button" class="cancel-btn" (click)="toggleForm()">Cancel</button>
+            <div *ngIf="viewMode === 'grid' && isAdmin" class="grid-details">
+              <div>
+                <p>
+                  <span style="color: #5a6b86; font-size: 0.98em;"><b>Start:</b> {{ task.assignedDate | date }}</span>
+                </p>
+              </div>
+              <div>
+                <p>
+                  <span style="color: #5a6b86; font-size: 0.98em;"><b>Due:</b> {{ task.dueDate | date }}</span>
+                </p>
+              </div>
+              <div>
+                <p>
+                  <span style="color: #5a6b86; font-size: 0.98em;"><b>Priority:</b> {{ task.priority }} </span> 
+                </p> 
+              </div> 
+              <div>
+                <p><span style="color: #5a6b86; font-size: 0.98em;"><b>Status:</b> {{ task.status }}</span></p>
+              </div>
+            </div>
+
+            <div class="inline-container" *ngIf="isUser && viewMode=='list'">
+              <span class="inline-dropdown">
+                <b>Priority:</b>
+                <mat-form-field appearance="fill" class="compact-field">
+                  <mat-select [(value)]="task.priority" (selectionChange)="updateTask(task)">
+                    <mat-option value="Low">Low</mat-option>
+                    <mat-option value="Medium">Medium</mat-option>
+                    <mat-option value="High">High</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </span>
+
+              <span class="inline-dropdown">
+                <b>Status:</b>
+                <mat-form-field appearance="fill" class="compact-field">
+                  <mat-select [(value)]="task.status" (selectionChange)="updateTask(task)">
+                    <mat-option value="To do">To do</mat-option>
+                    <mat-option value="In Progress">In Progress</mat-option>
+                    <mat-option value="Code Review">Code Review</mat-option>
+                    <mat-option value="Completed">Completed</mat-option>
+                    <mat-option value="Reopened">Reopened</mat-option>
+                    <mat-option value="Cancelled">Cancelled</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </span>
+            </div>
+
+            <div class="inline-container" *ngIf="isUser && viewMode=='grid'">
+              
+                  <span style="color: #5a6b86; font-size: 0.98em;"><b>Start:</b> {{ task.assignedDate | date }}</span>
+                
+                  <span style="color: #5a6b86; font-size: 0.98em;"><b>Due:</b> {{ task.dueDate | date }}</span>
+                
+            
+              <span class="inline-dropdown">
+                <b>Priority:</b>
+                <mat-form-field appearance="fill" class="compact-field" style="width: 300px;">
+                  <mat-select [(value)]="task.priority" (selectionChange)="updateTask(task)">
+                    <mat-option value="Low">Low</mat-option>
+                    <mat-option value="Medium">Medium</mat-option>
+                    <mat-option value="High">High</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </span>
+
+              <span class="inline-dropdown">
+                <b>Status:</b>
+                <mat-form-field appearance="fill" class="compact-field" style="width: 300px;">
+                  <mat-select [(value)]="task.status" (selectionChange)="updateTask(task)">
+                    <mat-option value="To do">To do</mat-option>
+                    <mat-option value="In Progress">In Progress</mat-option>
+                    <mat-option value="Code Review">Code Review</mat-option>
+                    <mat-option value="Completed">Completed</mat-option>
+                    <mat-option value="Reopened">Reopened</mat-option>
+                    <mat-option value="Cancelled">Cancelled</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </span>
+            </div>
+            <br>
+            <div>
+            <span class="task-timestamp bottom-right">
+              Posted on: {{ task.todayDate | date: 'dd-MM-yyyy, hh:mm a' }}
+            </span>
+            </div>
+          </div>
+          <span class="task-actions" *ngIf="isUser && viewMode=='list'">
+            <button mat-icon-button color="warn" (click)="deleteTask(task.id)" title="Delete Task">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </span>
+          <span class="task-actions-grid" *ngIf="isUser && viewMode=='grid'">
+            <button mat-icon-button color="warn" (click)="deleteTask(task.id)" title="Delete Task">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </span>
+        </div>
+      </mat-card>
+    </div>
+
+    <!-- -----------------------Popup--------------------------- -->
+
+    <div class="popup" *ngIf="showPopup"  (click)="onOverlayClick($event)">
+      <div class="popup-content" >
+        <form [formGroup]="taskForm" (ngSubmit)="addTask()">
+          <div class="form-grid">
+            <h3>Add New Task</h3>
+
+            <!-- Project Name -->
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Project Name</mat-label>
+              <input matInput formControlName="project" />
+              <mat-error *ngIf="taskForm.get('project')?.hasError('required')">
+                Project Name is required
+              </mat-error>
+            </mat-form-field>
+
+            <!-- Task Name -->
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Task Name</mat-label>
+              <input matInput formControlName="title" />
+              <mat-error *ngIf="taskForm.get('title')?.hasError('required')">
+                Task Name is required
+              </mat-error>
+            </mat-form-field>
+
+            <!-- Description -->
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Description</mat-label>
+              <textarea matInput formControlName="description" rows="1"></textarea>
+              <mat-error *ngIf="taskForm.get('description')?.hasError('required')">
+                Description is required
+              </mat-error>
+            </mat-form-field>
+
+            <!-- Start Date -->
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Start Date</mat-label>
+              <input matInput [matDatepicker]="startPicker" formControlName="startDate" (focus)="startPicker.open()" />
+              <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+              <mat-datepicker #startPicker></mat-datepicker>
+              <mat-error *ngIf="taskForm.get('startDate')?.hasError('required')">
+                Start Date is required
+              </mat-error>
+            </mat-form-field>
+
+            <!-- End Date -->
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>End Date</mat-label>
+              <input matInput [matDatepicker]="endPicker" formControlName="dueDate" (focus)="endPicker.open()" />
+              <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+              <mat-datepicker #endPicker></mat-datepicker>
+              <mat-error *ngIf="taskForm.get('dueDate')?.hasError('required')">
+                End Date is required
+              </mat-error>
+            </mat-form-field>
+
+            <!-- Priority -->
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Priority</mat-label>
+              <mat-select formControlName="priority">
+                <mat-option value="Low">Low</mat-option>
+                <mat-option value="Medium">Medium</mat-option>
+                <mat-option value="High">High</mat-option>
+              </mat-select>
+              <mat-error *ngIf="taskForm.get('priority')?.hasError('required')">
+                Priority is required
+              </mat-error>
+            </mat-form-field>
+
+            <!-- Status -->
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Status</mat-label>
+              <mat-select formControlName="status">
+                <mat-option value="To do">To do</mat-option>
+                <mat-option value="In Progress">In Progress</mat-option>
+                <mat-option value="Code Review">Code Review</mat-option>
+                <mat-option value="Completed">Completed</mat-option>
+                <mat-option value="Reopened">Reopened</mat-option>
+                <mat-option value="Cancelled">Cancelled</mat-option>
+              </mat-select>
+              <mat-error *ngIf="taskForm.get('status')?.hasError('required')">
+                Status is required
+              </mat-error>
+            </mat-form-field>
+
+            <div class="form-btn-group">
+              <button mat-raised-button color="primary" type="submit" class="cancel-btn">
+                Submit
+              </button>
+              <button mat-raised-button color="primary" type="button" class="cancel-btn" (click)="closePopup()">
+                Cancel
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 </div>

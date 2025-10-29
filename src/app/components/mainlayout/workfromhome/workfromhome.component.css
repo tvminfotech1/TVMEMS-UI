@@ -1,6 +1,23 @@
+html, body {
+  height: auto;
+  min-height: 100%;
+  overflow-y: auto !important;
+  overflow-x: hidden;
+}
+
+.WFH-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  height: auto;
+  overflow-y: auto !important;
+  overflow-x: hidden;
+  padding-bottom: 50px;
+}
+
 /* ===== Banner ===== */
 .banner {
-  background: linear-gradient(90deg, #0a0f3c, #1c2b6c);
+  background-color: #0a0f3c;
   padding: 12px;
   text-align: center;
   margin-bottom: 20px;
@@ -9,30 +26,292 @@
   font-size: 14px;
   animation: slideDown 0.6s ease-out;
 }
+
 @keyframes slideDown {
-  from { transform: translateY(-40px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+  from {
+    transform: translateY(-40px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
-/* ===== Apply Button ===== */
-.apply-button {
-  text-align: right;
-  margin-bottom: 15px;
+.banner h2 {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0;
+  text-align: center;
 }
-.apply-button button {
-  padding: 10px 18px;
-  font-size: 14px;
-  background: linear-gradient(135deg, #2f67f6, #1e4bd0);
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
+
+/* ===== Modern Status Cards ===== */
+.status-cards-modern {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.2rem;
+  margin-bottom: 25px;
+}
+
+.status-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: #fff;
+  border-radius: 16px;
+  padding: 18px 20px;
+  position: relative;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
   transition: all 0.3s ease;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+  border-left: 5px solid transparent;
+  animation: fadeInUp 0.6s ease-in-out;
 }
-.apply-button button:hover {
+
+.status-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 14px rgba(0, 0, 0, 0.15);
+}
+
+.status-card .icon {
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 50%;
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  transition: 0.3s ease;
+}
+
+.status-card:hover .icon {
+  transform: scale(1.1);
+}
+
+.status-card .content h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.status-card .content p {
+  margin: 3px 0 8px;
+  color: #555;
+  font-size: 14px;
+}
+
+.status-card .percent {
+  font-size: 14px;
+  font-weight: 700;
+  color: #333;
+}
+
+.progress-container {
+  width: 100%;
+  height: 8px;
+  background: #e0e0e0;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 5px;
+}
+
+.progress-container .progress {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.8s ease-in-out;
+}
+
+/* ===== Card Themes ===== */
+.status-card.pending {
+  border-left-color: #ffca28;
+}
+
+.status-card.pending .icon {
+  background: rgba(255, 202, 40, 0.15);
+  color: #f9a825;
+}
+
+.status-card.pending .progress {
+  background: linear-gradient(90deg, #fbc02d, #f9a825);
+}
+
+.status-card.approved {
+  border-left-color: #4caf50;
+}
+
+.status-card.approved .icon {
+  background: rgba(76, 175, 80, 0.15);
+  color: #388e3c;
+}
+
+.status-card.approved .progress {
+  background: linear-gradient(90deg, #66bb6a, #43a047);
+}
+
+.status-card.rejected {
+  border-left-color: #f44336;
+}
+
+.status-card.rejected .icon {
+  background: rgba(244, 67, 54, 0.15);
+  color: #d32f2f;
+}
+
+.status-card.rejected .progress {
+  background: linear-gradient(90deg, #ef5350, #e53935);
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.status-card {
+  animation: fadeInUp 0.6s ease-in-out;
+}
+
+/* ===== Table Container ===== */
+.table-container {
+  width: 100%;
+  margin: 20px auto;
+  overflow-x: auto;
+}
+
+/* ===== Default Table Styling ===== */
+.details-table,
+.approval-details-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+  margin-bottom: 30px;
+}
+
+/* Center the "no data" row properly */
+.details-table tbody tr td.no-data,
+.approval-details-table tbody tr td.no-data {
+  text-align: center;
+  vertical-align: middle;
+  height: 200px;
+  background-color: #f9f9f9;
+  border: none;
+}
+
+/* ===== Header ===== */
+.details-table th,
+.approval-details-table th {
+  background-color: #bebdbd;
+  font-weight: 600;
+  color: #0a0f3c;
+  text-align: center;
+  padding: 12px 8px;
+  white-space: nowrap;
+}
+
+/* ===== Unified Font Styling for Both Tables ===== */
+.details-table,
+.approval-details-table {
+  font-size: 14px;
+  color: #333;
+  font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+.details-table th,
+.approval-details-table th {
+  font-size: 14px;
+}
+
+.details-table td,
+.approval-details-table td {
+  font-size: 14px;
+}
+
+/* ===== Cells ===== */
+.details-table td,
+.approval-details-table td {
+  padding: 10px 8px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+/*  Wrap text in Reason column */
+.details-table td[data-label="Reason"],
+.approval-details-table td[data-label="Reason"] {
+  white-space: normal !important;
+  word-wrap: break-word;
+  word-break: break-word;
+  text-align: center;
+  max-width: 220px;
+}
+
+/* ===== Zebra Rows ===== */
+.details-table tbody tr:nth-child(even),
+.approval-details-table tbody tr:nth-child(even) {
+  background-color: #f7f7f7;
+}
+
+/* ===== Status Coloring ===== */
+.approved-status {
+  color: #2e7d32;
+  font-weight: 600;
+}
+
+.rejected-status {
+  color: #c62828;
+  font-weight: 600;
+}
+
+.pending-status {
+  color: #ff8f00;
+  font-weight: 600;
+}
+
+/* ===== Action Buttons ===== */
+.actions button {
+  padding: 6px 12px;
+  font-size: 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: wrap;
+
+  flex: 0 0 auto;
+  min-width: 60px;
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.actions button:hover {
   transform: scale(1.05);
-  box-shadow: 0 5px 12px rgba(0,0,0,0.25);
+}
+
+.actions button:first-child {
+  background: #d4edda;
+  color: #155724;
+}
+
+.actions button:nth-child(2) {
+  background: #f8d7da;
+  color: #721c24;
 }
 
 /* ===== Month Navigation ===== */
@@ -40,140 +319,340 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 18px;
-  margin-bottom: 20px;
-}
-.month-nav h2 { font-size: 20px; font-weight: bold; }
-.month-nav button {
-  padding: 8px 14px;
-  font-size: 15px;
-  cursor: pointer;
-  background: #f7f7f7;
-  border: 1px solid #bbb;
-  border-radius: 6px;
-  transition: all 0.3s ease;
-}
-.month-nav button:hover {
-  background-color: #ddd;
-  transform: translateY(-2px);
-}
-
-/* ===== Status Cards Grid ===== */
-.status-cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 1rem;
-  margin-bottom: 25px;
-}
-.card {
-  padding: 18px;
-  border-radius: 14px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  animation: fadeUp 0.7s ease-in-out;
-  text-align: center;
-}
-.card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 6px 16px rgba(0,0,0,0.15);
-}
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-.card h3 { margin: 0 0 8px; }
-.percent { font-weight: bold; font-size: 18px; margin-top: 6px; }
-
-/* Card Colors */
-.card.pending { background: #fff8e1; border-left: 5px solid #f9a825; }
-.card.approved { background: #e8f5e9; border-left: 5px solid #4caf50; }
-.card.rejected { background: #ffebee; border-left: 5px solid #f44336; }
-
-/* Progress Bar */
-.progress-bar {
-  height: 8px;
-  background: #e0e0e0;
-  border-radius: 4px;
-  overflow: hidden;
-  margin-top: 10px;
-}
-.progress {
-  height: 100%;
-  transition: width 0.8s ease-in-out;
-}
-.pending .progress { background: #f9a825; }
-.approved .progress { background: #4caf50; }
-.rejected .progress { background: #f44336; }
-
-/* ===== Table ===== */
-.details-table {
-  margin-top: 30px;
-  width: 100%;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin: 25px 0;
+  padding: 12px 20px;
+  background-color: #0a0f3c;
+  color: #fff;
   border-radius: 10px;
-  overflow-x: auto;
-  background: #fff;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+  animation: fadeSlideIn 0.6s ease-out;
 }
-.details-table .header {
-  display: grid;
-  grid-template-columns: 0.7fr 0.8fr 1.2fr 1.6fr 1.2fr 0.6fr 1fr 1fr 0.8fr 1fr;
-  padding: 12px;
-  font-weight: bold;
-  font-size: 14px;
-  background: #f7f9fc;
-  border-bottom: 2px solid #e2e6ef;
-  text-align: center;
-}
-.details-table .row {
-  display: grid;
-  grid-template-columns: 0.7fr 0.8fr 1.2fr 1.6fr 1.2fr 0.6fr 1fr 1fr 0.8fr 1fr;
-  padding: 12px;
-  font-size: 13.5px;
-  border-bottom: 1px solid #e6e9f0;
-  align-items: center;
-  transition: background 0.2s ease;
-}
-.details-table .row:hover { background: #f9fbff; }
-.details-table .row > div { text-align: center; padding: 6px 4px; }
 
-/* Status Colors */
-.approved-status { color: #22bb33; font-weight: 600; }
-.rejected-status { color: #d11a2a; font-weight: 600; }
-.pending-status { color: #f0ad4e; font-weight: 600; }
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
 
-/* Action Buttons */
-.actions button {
-  margin: 0 2px;
-  padding: 5px 8px;
-  font-size: 12px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-.actions button:hover { transform: scale(1.1); }
-.actions button:first-child { background: #d4edda; color: #155724; }
-.actions button:nth-child(2) { background: #f8d7da; color: #721c24; }
-.actions button:nth-child(3) { background: #fff3cd; color: #856404; }
-
-/* ===== Responsive ===== */
-@media (max-width: 992px) {
-  .details-table .header,
-  .details-table .row {
-    grid-template-columns: repeat(6, 1fr);
-    font-size: 12.5px;
+  to {
+    transform: translateY(0);
+    opacity: 1;
   }
 }
-@media (max-width: 768px) {
-  .details-table .header,
-  .details-table .row {
+
+.month-nav h2 {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0;
+  text-align: center;
+}
+
+.month-nav button {
+  padding: 10px 14px;
+  font-size: 16px;
+  background: #fff;
+  color: #0a0f3c;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.month-nav button:hover {
+  background: #e7ecff;
+}
+
+/* ===== Miscellaneous ===== */
+.approved-table {
+  margin-top: 30px;
+  background-color: #f9fffa;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+}
+
+.approved-table h3 {
+  color: #2e7d32;
+  margin-bottom: 10px;
+  font-weight: 700;
+  font-size: 18px;
+}
+
+/* Empty state styling */
+.no-data {
+  text-align: center;
+  font-weight: 600;
+  color: hsl(0, 1%, 67%);
+  background-color: #fff;
+  font-size: 1rem;
+  height: 60px;
+  vertical-align: middle;
+}
+
+/* Smooth fade-in animation */
+.no-data {
+  animation: fadeInEmpty 0.4s ease-in;
+}
+
+@keyframes fadeInEmpty {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ==============================
+   RESPONSIVE DESIGN
+=================================*/
+
+@media (min-width: 1400px) {
+  .status-cards-modern {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .details-table td,
+  .details-table th {
+    font-size: 14px;
+    padding: 10px 8px;
+  }
+}
+
+@media (max-width: 1399px) and (min-width: 1140px) {
+  .status-cards-modern {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .details-table,
+  .approval-details-table {
+    width: 100%;
+  }
+
+  .no-data {
+    font-size: 0.95rem;
+    height: 120px;
+    padding: 20px;
+  }
+
+}
+
+/* =========================================
+   Fix for Medium Screens (768px–1140px)
+========================================= */
+@media (min-width: 975px) and (max-width: 1140px) {
+
+  /* Adjust grid layout */
+  .status-cards-modern {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+
+  .actions {
+    gap: 6px;
+  }
+
+  .actions button {
+    font-size: 13px;
+    padding: 6px 10px;
+    min-width: 70px;
+    gap: 10px;
+  }
+
+  .details-table th,
+  .details-table td,
+  .approval-details-table th,
+  .approval-details-table td {
+    font-size: 13px;
+    padding: 8px 6px;
+    white-space: normal;
+  }
+
+  .details-table td[data-label="Reason"],
+  .approval-details-table td[data-label="Reason"] {
+    max-width: 180px;
+    word-wrap: break-word;
+    word-break: break-word;
+    white-space: normal;
+  }
+
+  .no-data {
+    font-size: 0.95rem;
+    height: 120px;
+    padding: 20px;
+  }
+
+  .month-nav h2 {
+    font-size: 18px;
+  }
+
+  .month-nav button {
+    font-size: 14px;
+    padding: 8px 12px;
+  }
+
+  .status-card {
+    padding: 14px 16px;
+  }
+
+  .status-card .icon {
+    width: 48px;
+    height: 48px;
+    font-size: 26px;
+  }
+}
+
+
+/* Mobiles (<768px) */
+@media (max-width: 974px) {
+
+  .details-table,
+  .approval-details-table {
+    border: none;
+    box-shadow: none;
+    background: transparent;
+    width: 100%;
+  }
+
+  .details-table thead,
+  .approval-details-table thead {
+    display: none;
+  }
+
+  .no-data {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    text-align: center;
+    height: 180px !important;
+    width: 100%;
+    padding: 20px;
+    margin: 0 auto;
+    font-size: 0.95rem;
+    white-space: normal!important;
+    word-wrap: break-word!important;
+    overflow-wrap: break-word !important;
+  }
+
+  .table-container table {
+    width: 100%;
+  }
+
+  .table-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .details-table tbody tr,
+  .approval-details-table tbody tr {
+    display: block;
+    margin-bottom: 18px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    padding: 10px 0;
+  }
+
+  .details-table tbody td,
+  .approval-details-table tbody td {
     display: block;
     text-align: left;
-    font-size: 12px;
-    padding: 10px;
+    padding: 10px 14px;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 14px;
+    word-wrap: break-word;
+    word-break: break-word;
   }
-  .details-table .row > div {
-    padding: 4px 0;
-    border-bottom: 1px dotted #e6e9f0;
+
+  .details-table tbody td::before,
+  .approval-details-table tbody td::before {
+    content: attr(data-label);
+    display: block;
+    font-weight: 600;
+    color: #0a0f3c;
+    margin-bottom: 4px;
+    text-transform: capitalize;
   }
+
+  .details-table tbody td:last-child,
+  .approval-details-table tbody td:last-child {
+    border-bottom: none;
+  }
+
+  .details-table td[data-label="Reason"],
+  .approval-details-table td[data-label="Reason"] {
+    max-width: 100%;
+    white-space: normal;
+  }
+
+  .actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    padding: 8px 14px;
+  }
+
+  .actions button {
+    flex: 1 1 auto;
+    margin: 5px 0;
+    font-size: 14px;
+    padding: 8px 12px;
+  }
+
+    .status-cards-modern {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+  }
+    .status-card {
+    padding: 10px 12px;
+  }
+
+  .status-card .icon {
+    width: 28px;
+    height: 28px;
+    font-size: 6px;
+  }
+}
+
+@media (max-width: 480px) {
+  .no-data {
+    font-size: 0.85rem;
+    height: 80px;
+    padding: 20px 8px;
+  }
+    .status-cards-modern {
+    grid-template-columns: repeat(1, 1fr);
+    gap: 0.5rem;
+  }
+    .status-card {
+    padding: 5px 7px;
+  }
+
+  .status-card .icon {
+    width: 20px;
+    height: 20px;
+    font-size: 6px;
+  }
+}
+
+.success-snackbar {
+  background-color: #4caf50 !important;
+  color: #fff !important;
+  font-weight: 500;
+}
+
+.error-snackbar {
+  background-color: #f44336 !important;
+  color: #fff !important;
+  font-weight: 500;
 }

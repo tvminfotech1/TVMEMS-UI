@@ -1,3 +1,4 @@
+
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, Observer, throwError } from 'rxjs';
@@ -30,6 +31,13 @@ export class WorkFromHomeService {
   getWfhRequests(): Observable<any>{
     return this.http.get(
       `${this.baseUrl}/all`,
+      {headers: this.getAuthHeaders()}
+    )
+  }
+
+    getWfhAllApprovalRequests(): Observable<any>{
+    return this.http.get(
+      `${this.baseUrl}/approvalallrequests`,
       {headers: this.getAuthHeaders()}
     )
   }
@@ -83,4 +91,17 @@ getRequestByMonthAndYear(employeeId: number, month: number, year: number): Obser
     );
   }
   //user only
+  getUserRequests(email: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}/user/${email}`, { headers: this.getAuthHeaders() });
+  }
+
+  // Delete a WFH request by ID
+  deleteWfhRequest(id: number): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/${id}`, { headers: this.getAuthHeaders() });
+  }
+
+//   getAllRequests(): Observable<any> {
+//   return this.http.get(${this.apiUrl}/getAllRequests, { observe: 'response' });
+// }
+ 
 }

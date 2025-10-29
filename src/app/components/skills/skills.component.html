@@ -1,6 +1,7 @@
 <app-nav-details></app-nav-details>
 
 <div class="container">
+
   <!-- Add Skill Button -->
   <div class="header">
     <button type="submit" mat-raised-button (click)="openPopup()">
@@ -18,32 +19,22 @@
     <mat-card class="skill-card" *ngFor="let skill of skillList; let i = index">
       <div class="skill-card-header">
         <div class="skill-details">
-          <h3 class="skillname">
-            {{ skill.skillName }} - {{ skill.versionNum }}
-          </h3>
+          <h3 class="skillname">{{ skill.skillName }} - {{ skill.versionNum }} </h3>
           <p class="skill-line">
-            <span class="category">Category: {{ skill.skillCategories }}</span
-            ><br />
-            <span
-              >Experience: {{ skill.experience_year }}y
-              {{ skill.experience_month }}m</span
-            ><br />
+            <span class="category">Category: {{ skill.skillCategories }}</span><br>
+            <span>Experience: {{ skill.experience_year }}y {{ skill.experience_month }}m</span><br>
             <span>Rating: {{ skill.selfRate }}/5</span>
           </p>
         </div>
         <div class="skill-actions">
-          <button
-            mat-icon-button
-            color="warn"
-            (click)="deleteSkill(i)"
-            aria-label="Delete"
-          >
+          <button mat-icon-button color="warn" (click)="deleteSkill(i)" aria-label="Delete">
             <mat-icon>delete</mat-icon>
           </button>
         </div>
       </div>
     </mat-card>
   </div>
+
 
   <!-- Popup Form -->
   <div class="popup" *ngIf="showPopup">
@@ -52,16 +43,15 @@
 
       <form [formGroup]="skillForm" (ngSubmit)="addSkill()">
         <div class="form-grid">
+
           <!-- Skill Name -->
           <mat-form-field appearance="outline" class="full-width">
             <mat-label>Skill Name</mat-label>
-            <input matInput formControlName="skillName" />
+            <input matInput formControlName="skillName">
             <mat-error *ngIf="skillForm.get('skillName')?.hasError('required')">
               Skill name is required
             </mat-error>
-            <mat-error
-              *ngIf="skillForm.get('skillName')?.hasError('minlength') && !skillForm.get('skillName')?.hasError('pattern')"
-            >
+            <mat-error *ngIf="skillForm.get('skillName')?.hasError('minlength')">
               Skill name must contain 3 or more letters
             </mat-error>
             <mat-error *ngIf="skillForm.get('skillName')?.hasError('pattern')">
@@ -72,20 +62,14 @@
           <!-- Skill Category -->
           <mat-form-field appearance="outline" class="full-width">
             <mat-label>Skill Category</mat-label>
-            <input matInput formControlName="skillCategories" />
-            <mat-error
-              *ngIf="skillForm.get('skillCategories')?.hasError('required')"
-            >
+            <input matInput formControlName="skillCategories">
+            <mat-error *ngIf="skillForm.get('skillCategories')?.hasError('required')">
               Skill category is required
             </mat-error>
-            <mat-error
-              *ngIf="skillForm.get('skillCategories')?.hasError('pattern')"
-            >
+            <mat-error *ngIf="skillForm.get('skillCategories')?.hasError('pattern')">
               Skill category contains only characters
             </mat-error>
-            <mat-error
-              *ngIf="skillForm.get('skillCategories')?.hasError('minlength') && !skillForm.get('skillCategories')?.hasError('pattern')"
-            >
+            <mat-error *ngIf="skillForm.get('skillName')?.hasError('minlength')">
               Skill category must contain 3 or more letters
             </mat-error>
           </mat-form-field>
@@ -93,14 +77,8 @@
           <!-- Version -->
           <mat-form-field appearance="outline">
             <mat-label>Version</mat-label>
-            <input
-              matInput
-              formControlName="versionNum"
-              (keydown)="preventInvalidInput($event)"
-            />
-            <mat-error
-              *ngIf="skillForm.get('versionNum')?.hasError('required')"
-            >
+            <input matInput formControlName="versionNum" (keydown)="preventInvalidInput($event)">
+            <mat-error *ngIf="skillForm.get('versionNum')?.hasError('required')">
               Version is required
             </mat-error>
             <mat-error *ngIf="skillForm.get('versionNum')?.hasError('pattern')">
@@ -112,9 +90,7 @@
           <mat-form-field appearance="outline" class="custom-form-field">
             <mat-label>Self Rating</mat-label>
             <mat-select formControlName="selfRate">
-              <mat-option *ngFor="let rate of [1, 2, 3, 4, 5]" [value]="rate">{{
-                rate
-              }}</mat-option>
+              <mat-option *ngFor="let rate of [1,2,3,4,5]" [value]="rate">{{ rate }}</mat-option>
             </mat-select>
             <mat-error *ngIf="skillForm.get('selfRate')?.hasError('required')">
               Self rating is required
@@ -124,26 +100,15 @@
           <!-- Experience Years -->
           <mat-form-field appearance="outline">
             <mat-label>Years of Experience</mat-label>
-            <input
-              matInput
-              type="number"
-              formControlName="experience_year"
-              (keydown)="preventInvalidInput($event)"
-              min="0"
-            />
-            <mat-error
-              *ngIf="skillForm.get('experience_year')?.hasError('required')"
-            >
+            <input matInput type="number" formControlName="experience_year" (keydown)="preventInvalidInput($event)"
+              min="0">
+            <mat-error *ngIf="skillForm.get('experience_year')?.hasError('required')">
               Years of experience is required
             </mat-error>
-            <mat-error
-              *ngIf="skillForm.get('experience_year')?.hasError('min')"
-            >
+             <mat-error *ngIf="skillForm.get('experience_year')?.hasError('min')">
               Years must not be 0
             </mat-error>
-            <mat-error
-              *ngIf="skillForm.get('experience_year')?.hasError('max')"
-            >
+            <mat-error *ngIf="skillForm.get('experience_year')?.hasError('max')">
               Years must be less than 15
             </mat-error>
           </mat-form-field>
@@ -151,23 +116,18 @@
           <!-- Experience Months -->
           <mat-form-field appearance="outline">
             <mat-label>Additional Months</mat-label>
-            <input
-              matInput
-              type="number"
-              formControlName="experience_month"
-              (keydown)="preventInvalidInput($event)"
-            />
-            <mat-error
-              *ngIf="skillForm.get('experience_month')?.hasError('required')"
-            >
+            <input matInput type="number" formControlName="experience_month" (keydown)="preventInvalidInput($event)"
+              >
+            <mat-error *ngIf="skillForm.get('experience_month')?.hasError('required')">
               Months of experience is required
             </mat-error>
-            <mat-error
-              *ngIf="skillForm.get('experience_month')?.hasError('max')"
-            >
+            <mat-error *ngIf="skillForm.get('experience_month')?.hasError('max')">
               Months must be less than 12
             </mat-error>
+            
           </mat-form-field>
+
+
 
           <!-- Submit -->
           <div class="full-width">
@@ -175,6 +135,7 @@
               Save Skill
             </button>
           </div>
+
         </div>
       </form>
     </div>
@@ -190,4 +151,5 @@
       <button type="submit" (click)="finalSubmit()">Next &raquo;</button>
     </div>
   </div>
+
 </div>

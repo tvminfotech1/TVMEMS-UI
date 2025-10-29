@@ -3,87 +3,180 @@
   <a href="mailto:wfm@sensiple.com">wfmsensiple.com</a> for more details.
 </div>
 
-<div class="apply-button">
-  <button (click)="applyWfh()">➕ Apply Work From Home</button>
+<div class="WFH-container">
+  <div class="header" *ngIf="isUser">
+    <button class="addwfh" type="submit" mat-raised-button color="primary" (click)="applyWfh()">
+      <mat-icon>add</mat-icon> Apply Work From Home
+    </button>
+  </div>
+
+    <div *ngIf="showApplyForm" class="overlay" (click)="onFormCancelled()">
+  <div class="popup-content" (click)="$event.stopPropagation()">
+    <app-wfh-apply-form
+      (formSubmitted)="onFormSubmitted($event)"
+      (formCancelled)="onFormCancelled()">
+    </app-wfh-apply-form>
+  </div>
 </div>
 
-<app-wfh-apply-form
-  *ngIf="showApplyForm"
-  (formSubmitted)="onFormSubmitted()"
-  (formCancelled)="onFormCancelled()"
-></app-wfh-apply-form>
+  <div *ngIf="isUser" class="month-nav">
+    <button (click)="prevMonth()">&#60;</button>
+    <span class="calendar-icon material-icons">calendar_today</span>
+    <h2> {{ getMonthName() }} {{ year }}</h2>
 
-<div class="month-nav">
+    <button (click)="nextMonth()">&#62;</button>
+  </div>
+
+  <!-- ===== Modern Status Cards ===== -->
+  <div class="status-cards-modern" *ngIf="!isAdmin">
+    <div class="status-card pending">
+      <div class="icon"><mat-icon>hourglass_empty</mat-icon></div>
+      <div class="content">
+        <h3>Pending</h3>
+        <p>{{ getCount('pending') }} / {{ totalRequests }}</p>
+        <div class="progress-container">
+          <div class="progress" [style.width.%]="getProgress('pending')"></div>
+        </div>
+        <span class="percent">{{ getProgress('pending') }}%</span>
+      </div>
+    </div>
+
+    <div class="status-card approved">
+      <div class="icon"><mat-icon>check_circle</mat-icon></div>
+      <div class="content">
+        <h3>Approved</h3>
+        <p>{{ getCount('approved') }} / {{ totalRequests }}</p>
+        <div class="progress-container">
+          <div class="progress" [style.width.%]="getProgress('approved')"></div>
+        </div>
+        <span class="percent">{{ getProgress('approved') }}%</span>
+      </div>
+    </div>
+
+    <div class="status-card rejected">
+      <div class="icon"><mat-icon>cancel</mat-icon></div>
+      <div class="content">
+        <h3>Rejected</h3>
+        <p>{{ getCount('rejected') }} / {{ totalRequests }}</p>
+        <div class="progress-container">
+          <div class="progress" [style.width.%]="getProgress('rejected')"></div>
+        </div>
+        <span class="percent">{{ getProgress('rejected') }}%</span>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ===== Details Table ===== -->
+  <!-- ===== Banner ===== -->
+<div class="banner">
+  <h2>Work From Home Details</h2>
+</div>
+
+<!-- ===== WFH Details Table ===== -->
+<div class="table-container">
+  <table class="details-table">
+    <thead>
+      <tr>
+        <th>Request Id</th>
+        <th>Employee Id</th>
+        <th>Employee Name</th>
+        <th>Employee Email</th>
+        <th>Date Range</th>
+        <th>Days</th>
+        <th>Reason</th>
+        <th>Approver</th>
+        <th>Status</th>
+        <th *ngIf="isAdmin">Action</th>
+      </tr>
+    </thead>
+    <tbody *ngIf="approvalDetails && approvalDetails.length > 0; else noRequests">
+      <tr *ngFor="let d of approvalDetails">
+        <td data-label="Request Id">{{ d.requestId }}</td>
+        <td data-label="Employee Id">{{ d.employeeId }}</td>
+        <td data-label="Employee Name">{{ d.employeeName }}</td>
+        <td data-label="Employee Email">{{ d.employeeEmail }}</td>
+        <td data-label="Date Range">{{ d.fromDate | date:'dd/MM/yyyy' }} - {{ d.toDate | date:'dd/MM/yyyy' }}</td>
+        <td data-label="Days">{{ d.days }}</td>
+        <td data-label="Reason">{{ d.reason }}</td>
+        <td data-label="Approver">{{ d.approver }}</td>
+        <td data-label="Status" 
+            [ngClass]="{
+              'approved-status': d.status === 'approved',
+              'rejected-status': d.status === 'rejected',
+              'pending-status': d.status === 'pending'
+            }">
+          {{ d.status | titlecase }}
+        </td>
+        <td *ngIf="isAdmin" data-label="Action" class="actions">
+          <button (click)="updateStatus(d, 'approved')">✔</button>
+          <button (click)="updateStatus(d, 'rejected')">❌</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ===== Month Navigation ===== -->
+<div *ngIf="isAdmin" class="month-nav">
   <button (click)="prevMonth()">&#60;</button>
-  <h2>📅 {{ getMonthName() }} {{ year }}</h2>
+  <span class="calendar-icon material-icons">calendar_today</span>
+  <h2>{{ getMonthName() }} {{ year }}</h2>
   <button (click)="nextMonth()">&#62;</button>
 </div>
 
-<!-- ===== Status Cards Redesigned in Grid ===== -->
-<div class="status-cards">
-  <div class="card pending">
-    <h3>Pending</h3>
-    <p>{{ getCount('pending') }} / {{ totalRequests }}</p>
-    <div class="percent">{{ getProgress('pending') }}%</div>
-    <div class="progress-bar">
-      <div class="progress pending" [style.width.%]="getProgress('pending')"></div>
-    </div>
-  </div>
+<!-- ===== Approved Requests Table (Admin Only) ===== -->
+<div *ngIf="isAdmin" class="approved-table">
+  <h3>Approved Work From Home Requests</h3>
 
-  <div class="card approved">
-    <h3>Approved</h3>
-    <p>{{ getCount('approved') }} / {{ totalRequests }}</p>
-    <div class="percent">{{ getProgress('approved') }}%</div>
-    <div class="progress-bar">
-      <div class="progress approved" [style.width.%]="getProgress('approved')"></div>
-    </div>
-  </div>
-
-  <div class="card rejected">
-    <h3>Rejected</h3>
-    <p>{{ getCount('rejected') }} / {{ totalRequests }}</p>
-    <div class="percent">{{ getProgress('rejected') }}%</div>
-    <div class="progress-bar">
-      <div class="progress rejected" [style.width.%]="getProgress('rejected')"></div>
-    </div>
-  </div>
+  <table class="approval-details-table">
+    <thead>
+      <tr>
+        <th>Request Id</th>
+        <th>Employee Id</th>
+        <th>Employee Name</th>
+        <th>Employee Email</th>
+        <th>Date Range</th>
+        <th>Days</th>
+        <th>Reason</th>
+        <th>Approver</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody *ngIf="approvedRequests && approvedRequests.length > 0; else noApproved">
+      <tr *ngFor="let d of approvedRequests">
+        <td data-label="Request Id">{{ d.requestId }}</td>
+        <td data-label="Employee Id">{{ d.employeeId }}</td>
+        <td data-label="Employee Name">{{ d.employeeName }}</td>
+        <td data-label="Employee Email">{{ d.employeeEmail }}</td>
+        <td data-label="Date Range">{{ d.fromDate | date:'dd/MM/yyyy' }} - {{ d.toDate | date:'dd/MM/yyyy' }}</td>
+        <td data-label="Days">{{ d.days }}</td>
+        <td data-label="Reason">{{ d.reason }}</td>
+        <td data-label="Approver">{{ d.approver }}</td>
+        <td data-label="Status" class="approved-status">{{ d.status | titlecase }}</td>
+      </tr>
+    </tbody>
+  </table>
 </div>
 
-<!-- ===== Details Table ===== -->
-<div class="details-table">
-  <div class="row header">
-    <div>Request Id</div>
-    <div>Employee Id</div>
-    <div>Employee Name</div>
-    <div>Employee Email</div>
-    <div>Date Range</div>
-    <div>Days</div>
-    <div>Reason</div>
-    <div>Created At / Approver</div>
-    <div>Status</div>
-    <div *ngIf="isAdmin">Action</div>
-  </div>
+<!-- ===== Templates ===== -->
+<!-- ===== Empty State Templates ===== -->
+<ng-template #noRequests>
+  <tbody>
+    <tr>
+      <td [attr.colspan]="isAdmin ? 10 : 9" class="no-data">
+        No requests available.
+      </td>
+    </tr>
+  </tbody>
+</ng-template>
 
-  <div class="row" *ngFor="let d of details">
-    <div>{{ d.requestId }}</div>
-    <div>{{ d.employeeId }}</div>
-    <div>{{ d.employeeName }}</div>
-    <div>{{ d.employeeEmail }}</div>
-    <div>{{ d.fromDate }} - {{ d.toDate }}</div>
-    <div>{{ d.days }}</div>
-    <div>{{ d.reason }}</div>
-    <div>{{ d.created }} <br /> {{ d.approver }}</div>
-    <div [ngClass]="{
-          'approved-status': d.status === 'approved',
-          'rejected-status': d.status === 'rejected',
-          'pending-status': d.status === 'pending'
-        }">
-      {{ d.status | titlecase }}
-    </div>
-    <div *ngIf="isAdmin" class="actions">
-      <button (click)="updateStatus(d, 'approved')">✔</button>
-      <button (click)="updateStatus(d, 'rejected')">❌</button>
-      <button (click)="updateStatus(d, 'pending')">🕒</button>
-    </div>
-  </div>
-</div>
+<ng-template #noApproved>
+  <tbody>
+    <tr>
+      <td [attr.colspan]="isAdmin ? 10 : 9" class="no-data">
+        No approved requests available.
+      </td>
+    </tr>
+  </tbody>
+</ng-template>

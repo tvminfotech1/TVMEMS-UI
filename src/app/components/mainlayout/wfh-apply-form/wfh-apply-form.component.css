@@ -1,41 +1,43 @@
-/* ===== Overlay with Fade Animation ===== */
+/* Background overlay */
 .wfh-form-overlay {
   position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background-color: rgba(0, 0, 0, 0.6);
-  display: flex; justify-content: center; align-items: center;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   z-index: 1000;
-  animation: fadeIn 0.4s ease;
+  backdrop-filter: blur(4px);
+  overflow-y: auto;
 }
 
-/* ===== Container (Zoom-in effect) ===== */
+/* Popup container */
 .wfh-form-container {
-  position: relative;
-  background: #fff;
+  background: #ffffff;
+  width: 600px;
+  max-width: 500px;
+    max-height: 100vh;
   padding: 30px;
   border-radius: 14px;
-  box-shadow: 0 10px 28px rgba(0,0,0,0.25);
-  width: 90%;
-  max-width: 500px;
-  max-height: 90vh;
-  overflow-y: auto;
-  transform: scale(0.9);
-  opacity: 0;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  position: relative;
   animation: zoomIn 0.4s ease forwards;
 }
-@keyframes zoomIn {
-  to { transform: scale(1); opacity: 1; }
-}
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+
+/* Heading */
+.wfh-form-container h3 {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #0a0a0a;
+  margin-bottom: 1.2rem;
+  text-align: center;
 }
 
-/* ===== Close Button ===== */
+/* Close button */
 .close-btn {
   position: absolute;
-  top: 12px; right: 12px;
+  top: 15px;
+  right: 12px;
   background: none;
   border: none;
   font-size: 20px;
@@ -43,114 +45,139 @@
   color: #888;
   transition: transform 0.2s ease, color 0.2s ease;
 }
+
+
 .close-btn:hover {
   transform: rotate(90deg);
   color: #ff4d4d;
 }
 
-/* ===== Form Title ===== */
-.wfh-form-container h2 {
-  text-align: center;
-  margin-bottom: 25px;
-  color: #2f3542;
-  font-size: 22px;
-  font-weight: bold;
-}
-
-/* ===== Form Groups with Floating Labels ===== */
-.form-group {
-  position: relative;
-  margin-bottom: 20px;
-}
-.form-group label {
-  display: block;
-  margin-bottom: 6px;
-  font-weight: 600;
-  font-size: 14px;
-  color: #555;
-}
-.form-group input,
-.form-group textarea {
-  width: 100%;
-  padding: 10px 12px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  font-size: 15px;
-  box-sizing: border-box;
-  transition: border-color 0.3s, box-shadow 0.3s;
-}
-.form-group input:focus,
-.form-group textarea:focus {
-  border-color: #2f67f6;
-  box-shadow: 0 0 6px rgba(47, 103, 246, 0.3);
-  outline: none;
-}
-
-/* Readonly Field */
-.readonly-input {
-  background-color: #f4f4f4;
-  color: #777;
-  cursor: not-allowed;
-}
-
-/* ===== Buttons ===== */
-.form-actions {
+/* Popup content */
+.popup-content {
   display: flex;
-  justify-content: center;
-  margin-top: 25px;
+  flex-direction: column;
+  gap: 18px;
 }
-.form-actions button {
-  padding: 12px 22px;
+
+/* Form grid for uniform spacing */
+.form-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0px;
+}
+
+/* Angular Material fields */
+.custom-form-field {
+  width: 100%;
+}
+
+textarea[matInput] {
+  height: 50px;
+}
+
+/* Submit button */
+.update-button {
+  width: 100%;
+  background-color: #3f51b5;
+  color: #fff;
   border: none;
+  padding: 10px 0;
   border-radius: 8px;
-  font-size: 15px;
-  cursor: pointer;
-  background: linear-gradient(135deg, #2f67f6, #1e4bd0);
-  color: white;
+  font-size: 0.95rem;
   font-weight: 600;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-}
-.form-actions button:hover:enabled {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 14px rgba(0,0,0,0.2);
-}
-.form-actions button:disabled {
-  background: #a0c2f7;
-  cursor: not-allowed;
-  transform: none;
-  box-shadow: none;
+  cursor: pointer;
+  margin-top: 1px;
+  box-shadow: 0 3px 10px rgba(33, 150, 243, 0.3);
+  transition: all 0.3s ease;
 }
 
-/* ===== Errors ===== */
-.error-message {
-  color: #d9534f;
-  font-size: 13px;
-  margin-top: 6px;
+.update-button:hover {
+  background-color: #0056b3;
 }
+
+/* Error message styles */
+.mat-error,
 .submission-error {
-  color: #d9534f;
-  background-color: #fdf7f7;
-  border: 1px solid #f5c6cb;
-  padding: 12px;
-  border-radius: 6px;
-  margin-top: 15px;
-  text-align: center;
-  animation: shake 0.4s ease;
-}
-@keyframes shake {
-  0% { transform: translateX(-4px); }
-  25% { transform: translateX(4px); }
-  50% { transform: translateX(-4px); }
-  75% { transform: translateX(4px); }
-  100% { transform: translateX(0); }
+  font-size: 0.85rem;
+  color: #d32f2f;
+  margin-top: -6px;
+  display: block;
 }
 
-/* ===== Responsive ===== */
+/* Responsive design */
 @media (max-width: 600px) {
   .wfh-form-container {
+    width: 95%;
     padding: 20px;
-    max-width: 95%;
   }
-  .wfh-form-container h2 { font-size: 18px; }
-  .form-actions button { width: 100%; }
+
+  .wfh-form-container h3 {
+    font-size: 1.4rem;
+    text-align: center;
+    margin-bottom: 25px;
+    color: #2f3542;
+  }
+}
+
+/* Smooth popup animation */
+@keyframes fadeInUp {
+  0% {
+    transform: translateY(40px);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.form-group {
+  flex: 1 1 45%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Full width fields */
+.full-width {
+  width: 100%;
+  display: block;
+}
+
+/* Labels */
+.form-group label {
+  font-weight: 600;
+  color: #333;
+}
+
+/* Input fields */
+.form-group input {
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+
+/* Input focus effect */
+.form-group input:focus {
+  border-color: blue;
+}
+
+.disabled-look {
+  color: rgba(0, 0, 0, 0.6);
+  cursor: not-allowed;
+}
+
+.success-snackbar {
+  background-color: #4caf50 !important;
+  color: #fff !important;
+  font-weight: 500;
+}
+
+.error-snackbar {
+  background-color: #f44336 !important;
+  color: #fff !important;
+  font-weight: 500;
 }
