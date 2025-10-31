@@ -2,22 +2,27 @@
   <h1>Pending Users</h1>
   <p>Users who have not submitted their full details will appear as "Pending".</p>
 
-  <input type="text" placeholder="Search by name or email..." [(ngModel)]="searchTerm" class="search-box" />
+  <mat-form-field appearance="outline" class="search-box">
+  <mat-label class="search-box">Search</mat-label>
+  <input matInput placeholder="Search by name or email or aadhar" [(ngModel)]="searchText"  />
+</mat-form-field>
+  <!-- <input type="text" placeholder="Search by name or email..." [(ngModel)]="searchTerm" class="search-box" /> -->
 
-  <table class="user-table">
-    <thead>
+  <div class="test-table-div">
+  <table class="user-table" *ngIf="filteredUsers.length>0;else noData">
+    <thead >
       <tr>
-        <th>Full Name</th>
-        <th>Email</th>
-        <th>Mobile</th>
-        <th>Aadhar</th>
-        <th>DOB</th>
-        <th>Gender</th>
-        <th>Status</th>
+        <th class="table-header">Full Name</th>
+        <th class="table-header">Email</th>
+        <th class="table-header">Mobile</th>
+        <th class="table-header">Aadhar</th>
+        <th class="table-header">DOB</th>
+        <th class="table-header">Gender</th>
+        <th class="table-header">Status</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let user of filteredUsers()">
+      <tr *ngFor="let user of filteredUsers ">
         <td>{{ user.fullName || '---' }}</td>
         <td>{{ user.email }}</td>
         <td>{{ user.mobile || '---' }}</td>
@@ -25,7 +30,7 @@
         <td>{{ user.dob || '---' }}</td>
         <td>{{ user.gender || '---' }}</td>
         <td>
-            <span >{{ user.status==0?"Pending":"Submitted" }}</span>
+            <span style="color: orange;">{{ user.status==0?"Pending":"Submitted" }}</span>
           <!-- <span class="status-badge" [ngClass]="{
             'pending': user.status === 'Pending',
             'submitted': user.status === 'Submitted'
@@ -34,9 +39,13 @@
           </span>-->
         </td>
       </tr>
-      <tr *ngIf="filteredUsers().length === 0">
+      <tr *ngIf="filteredUsers.length==0">
         <td colspan="7" class="empty-message">🎉 No pending users at the moment!</td>
       </tr>
     </tbody>
   </table>
+  </div>
+   <ng-template #noData>
+    <p class="no-data">No employee data available.</p>
+  </ng-template>
 </div>

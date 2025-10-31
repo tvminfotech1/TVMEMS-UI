@@ -10,7 +10,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 export class UserService {
   private readonly BASE_URL = 'http://localhost:8080';
 
-  EmployeeId: number | null;
+  // EmployeeId: number | null;
 
   private formData: Record<string, any> = {};
   private formGroups: Record<string, FormGroup> = {};
@@ -26,10 +26,13 @@ export class UserService {
   maritalStatus$ = this.maritalStatusSubject.asObservable();
 
   constructor(private http: HttpClient, private authService: AuthService) {
-    const empIdStr = this.authService.getEmployeeId();
-    this.EmployeeId = empIdStr ? Number(empIdStr) : null;
+    
   }
 
+  private getEmployeeId(): number | null {
+  const empIdStr = localStorage.getItem('employeeId');
+  return empIdStr ? Number(empIdStr) : null;
+}
   setFormData(step: string, data: any): void {
     this.formData[step] = data;
   }
@@ -90,7 +93,8 @@ export class UserService {
       'Content-Type': 'application/json',
     });
 
-    const jsonBody = { employeeId: this.EmployeeId, ...this.getAllFormData() };
+     const employeeId = this.getEmployeeId();
+    const jsonBody = {employeeId: employeeId, ...this.getAllFormData() };
 
     return this.http.post(`${this.BASE_URL}/personal/savejson`, jsonBody, {
       headers,
@@ -101,16 +105,19 @@ export class UserService {
     const token = localStorage.getItem('token');
     if (!token) throw new Error('Token not found');
 
-    if (this.EmployeeId) {
-      this.documentData.append('employeeId', this.EmployeeId.toString());
-    }
+     const employeeId = this.getEmployeeId();
+     if (!employeeId) throw new Error('Employee ID missing in LocalStorage');
+
+    // if (employeeId) {
+    //   this.documentData.append('employeeId', employeeId.toString());
+    // }
 
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`,
     });
 
     return this.http.post(
-      `${this.BASE_URL}/documents/upload`,
+      `${this.BASE_URL}/documents/upload/${employeeId}`,
       this.documentData,
       { headers }
     );

@@ -1,6 +1,8 @@
 .pending-users-container {
   max-width: 1000px;
+  width: 95%;
   margin: 2rem auto;
+  overflow-x: auto;
   padding: 2rem;
   background: #ffffff;
   border-radius: 10px;
@@ -13,24 +15,38 @@ p{
 }
 .search-box {
   width: 100%;
-  padding: 0.6rem;
-  margin: 1rem 0;
+  padding: 0px;
   font-size: 1rem;
-  border: 1px solid #ccc;
   border-radius: 6px;
 }
-
+.test-table-div{
+  width: 100%;
+  overflow-x: auto; 
+  display: block;
+}
 .user-table {
   width: 100%;
   border-collapse: collapse;
+  table-layout: fixed; 
+  word-wrap: break-word;
+  white-space: nowrap;
+ 
 }
 
 .user-table th,
 .user-table td {
-    border: 1px solid rgb(166, 162, 162);
+  min-width: 0 !important; 
+  border: 1px solid rgb(166, 162, 162);
   padding: 0.8rem;
   text-align: left;
   border-bottom: 1px solid #ddd;
+  white-space: normal;
+  word-wrap: break-word;
+}
+tbody tr:nth-child(even) {
+ 
+  background-color: #e5e2e2;
+
 }
 
 .status-badge {
@@ -54,4 +70,72 @@ p{
   padding: 1rem;
   color: #28a745;
   font-weight: bold;
+}
+
+.table-header {
+  background-color: #bebdbd; 
+  color: white;              
+  text-align: center;
+  padding: 8px;
+  font-weight: bold;
+}
+
+@media (max-width: 768px) {
+  .user-table th,
+  .user-table td {
+    font-size: 0.85rem;
+    padding: 0.5rem;
+  }
+}
+
+
+@media (max-width: 480px) {
+
+  .test-table-div {
+    overflow-x: hidden;
+  }
+
+  .user-table,
+  .user-table thead,
+  .user-table tbody,
+  .user-table th,
+  .user-table td,
+  .user-table tr {
+    display: block;
+    width: 100%;
+  }
+
+  .user-table thead {
+    display: none;
+  }
+
+  .user-table tr {
+    margin-bottom: 0.8rem;
+    background: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 0.6rem;
+  }
+
+  .user-table td {
+    border: none;
+    border-bottom: 1px solid #eee;
+    text-align: right;
+    padding-left: 50%;
+    position: relative;
+  }
+
+  .user-table td:before {
+    content: attr(data-label); 
+    position: absolute;
+    left: 8px;
+    top: 6px;
+    font-weight: bold;
+    text-align: left;
+    white-space: nowrap;
+  }
+
+  .user-table td:last-child {
+    border-bottom: none;
+  }
 }

@@ -51,7 +51,17 @@ export class AuthService {
       tap((response: HttpResponse<any>) => {
         const token = response.headers.get('Authorization') || response.body?.token;
         if (token) {
-          this.saveToken(token.startsWith('Bearer ') ? token.substring(7) : token);
+          const pureToken=token.startsWith('Bearer ') ? token.substring(7) : token;
+             this.saveToken(pureToken);
+
+
+          const decoded: DecodedToken = jwtDecode(pureToken);
+          if (decoded?.empId) {
+            localStorage.setItem('employeeId', decoded.empId.toString());
+            console.log("Employee ID stored:", decoded.empId);
+          } else {
+            console.warn("⚠ No employee ID found in token!");
+          }
         } else {
           console.warn('Login User: Token not found in response header or body.');
           throw new Error('Authentication failed: Token not received.');
