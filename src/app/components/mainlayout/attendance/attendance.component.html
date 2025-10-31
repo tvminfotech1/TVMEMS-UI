@@ -44,14 +44,13 @@
 
      <mat-form-field appearance="outline">
       <mat-label>Entry Time</mat-label>
-      <input matInput type="time" formControlName="entryTime" class="input-padding">
+      <input matInput type="time" formControlName="entryTime" class="input-padding" readonly>
     </mat-form-field>
 
     <!-- Date -->
     <mat-form-field appearance="outline">
       <mat-label>Date</mat-label>
-      <input matInput [matDatepicker]="picker" formControlName="date" placeholder="Select Date" class="input-padding"  (click)="picker.open()">
-      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <input matInput [matDatepicker]="picker" formControlName="date" placeholder="Select Date" class="input-padding" readonly>
       <mat-datepicker #picker></mat-datepicker>
       <mat-error *ngIf="attendanceForm.get('date')?.hasError('required')">
         Date is required
