@@ -76,6 +76,15 @@ export class AuthService {
     );
   }
 
+  checkEmailExists(email: string) {
+  return this.http.get<boolean>(`${this.baseUrl}/users/check-email/${email}`);
+}
+
+checkMobileExists(mobile: string) {
+  return this.http.get<boolean>(`${this.baseUrl}/users/check-mobile/${mobile}`);
+}
+
+
   getToken(): string | null {
     const token = localStorage.getItem('token');
     if (token && this.isTokenExpired(token)) {

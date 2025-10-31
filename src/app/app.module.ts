@@ -96,6 +96,8 @@ import {
   MAT_DATE_LOCALE,
 } from '@angular/material/core';
 import { MY_DATE_FORMATS } from './components/date-formats';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatTableModule } from '@angular/material/table';
 import { ThankYouComponent } from './components/thank-you/thank-you.component';
 
 @NgModule({
@@ -196,6 +198,8 @@ import { ThankYouComponent } from './components/thank-you/thank-you.component';
     MatNativeDateModule,
     MatSnackBarModule,
     MatRadioModule,
+    MatDialogModule,
+    MatTableModule,
     A11yModule,
   ],
   providers: [

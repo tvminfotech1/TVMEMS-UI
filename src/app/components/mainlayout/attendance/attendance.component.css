@@ -6,21 +6,36 @@
   font-size: 1.8rem;
 }
 
+/* Outer container for entire section */
+.attendance-container {
+  width: 90%;
+  max-width: 1100px;
+  margin: 30px auto;
+  padding: 25px;
+  background-color: #ffffff;
+  border-radius: 15px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+}
+
 /* ---------- Form Styling ---------- */
 .attendance-form {
-  max-width: 800px;
+  max-width: 1000px;
   margin: 30px auto;
   padding: 25px;
   background-color: #f9fbfd;
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.remarks {
+  grid-column: 1 / -1;
 }
 
-.form-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 15px;
-}
+
 
 .form-flex {
   display: flex;
@@ -62,8 +77,10 @@ input, select, textarea {
 }
 
 .form-actions {
-  text-align: center;
-  margin-top: 20px;
+  grid-column: 1 / -1; /* makes it span all columns */
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
 }
 
 /* ---------- Month Switcher ---------- */
@@ -128,22 +145,9 @@ input, select, textarea {
   font-size: 12px;
 }
 
-.status-P { background-color: #4caf50; } /* Present */
-.status-A { background-color: #f44336; } /* Absent */
-.status-L { background-color: #ff9800; } /* Leave */
-.status-H { background-color: #2196f3; } /* Holiday */
 
-/* ---------- Approval Badges ---------- */
-.badge-approval {
-  display: inline-block;
-  padding: 4px 10px;
-  border-radius: 6px;
-  font-weight: bold;
-  font-size: 12px;
-}
 
-.approved { background-color: #4caf50; color: white; }
-.pending { background-color: #ff9800; color: white; }
+
 
 /* ---------- Responsive ---------- */
 @media (max-width: 768px) {
@@ -156,4 +160,21 @@ input, select, textarea {
   .attendance-form, .monthly-list {
     padding: 15px;
   }
+}
+
+.just{
+padding: 0px !important;
+}
+
+
+.input-padding{
+  padding: 0px !important;
+}
+
+.mat-column-remarks {
+  text-align: center;
+}
+.mat-column-remarks {
+  text-align: center;
+  vertical-align: middle;
 }

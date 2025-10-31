@@ -1,73 +1,77 @@
+<div class="attendance-container">
 <h2 class="page-title">Employee Daily Attendance</h2>
 
 <form [formGroup]="attendanceForm" (ngSubmit)="submitAttendance()" class="attendance-form">
-  <div class="form-grid">
-    <div><label>Employee ID</label><input type="number" formControlName="empId" readonly /></div>
-    <div><label>Name</label><input formControlName="name" readonly /></div>
-    <div><label>Department</label><input formControlName="department" readonly /></div>
-    <div><label>Designation</label><input formControlName="designation" readonly /></div>
-    <div><label>Date</label><input formControlName="date" readonly /></div>
-    <div>
-      <label>Status</label>
-      <select formControlName="status">
-        <option value="">Select</option>
-        <option value="P">Present</option>
-        <option value="A">Absent</option>
-        <option value="L">Leave</option>
-        <option value="H">Holiday</option>
-      </select>
-    </div>
-  </div>
 
-  <div class="form-flex">
-    <div>
-      <label>Entry Time</label>
-      <input formControlName="entryTime" type="time" />
-    </div>
-    <div class="remarks-box">
-      <label>Remarks</label>
-      <textarea formControlName="remarks" rows="3"></textarea>
-    </div>
-  </div>
 
+    
+    <!-- Employee ID -->
+<mat-form-field appearance="outline">
+  <mat-label>Employee ID</mat-label>
+  <input matInput type="text" formControlName="empId" class="input-padding" readonly>
+  <mat-error *ngIf="attendanceForm.get('empId')?.hasError('required')">
+    Employee ID is required
+  </mat-error>
+</mat-form-field>
+
+<!-- Name -->
+<mat-form-field appearance="outline">
+  <mat-label>Name</mat-label>
+  <input matInput type="text" formControlName="fullName" class="input-padding" readonly>
+  <mat-error *ngIf="attendanceForm.get('name')?.hasError('required')">
+    Name is required
+  </mat-error>
+</mat-form-field>
+
+
+    <!-- Department -->
+    <mat-form-field appearance="outline">
+      <mat-label>Department</mat-label>
+      <input matInput formControlName="department" placeholder="Enter Department" class="input-padding">
+      <mat-error *ngIf="attendanceForm.get('department')?.hasError('required')">
+        Department is required
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Designation -->
+    <mat-form-field appearance="outline">
+      <mat-label>Designation</mat-label>
+      <input matInput formControlName="designation" placeholder="Enter Designation" class="input-padding">
+      <mat-error *ngIf="attendanceForm.get('designation')?.hasError('required')">
+        Designation is required
+      </mat-error>
+    </mat-form-field>
+
+     <mat-form-field appearance="outline">
+      <mat-label>Entry Time</mat-label>
+      <input matInput type="time" formControlName="entryTime" class="input-padding">
+    </mat-form-field>
+
+    <!-- Date -->
+    <mat-form-field appearance="outline">
+      <mat-label>Date</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="date" placeholder="Select Date" class="input-padding"  (click)="picker.open()">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+      <mat-error *ngIf="attendanceForm.get('date')?.hasError('required')">
+        Date is required
+      </mat-error>
+    </mat-form-field>
+
+   
+   
+<mat-form-field appearance="outline" class="remarks">
+  <mat-label>Remarks</mat-label>
+  <textarea matInput rows="3" formControlName="remarks" placeholder="Optional remarks" class="input-padding"></textarea>
+</mat-form-field>
+
+<!--   </div>
+ -->
+  <!-- Submit Button -->
   <div class="form-actions">
-    <button type="submit" class="btn-primary">Submit Attendance</button>
+    <button mat-raised-button color="primary" type="submit">
+      Submit Attendance
+    </button>
   </div>
 </form>
-
-<div class="month-switcher">
-  <button (click)="goToPreviousMonth()">⬅️</button>
-  <strong>{{ selectedMonthYear }}</strong>
-  <button (click)="goToNextMonth()">➡️</button>
-</div>
-
-<div class="monthly-list">
-  <h3>Monthly Attendance Log ({{ selectedMonthYear }})</h3>
-  <table *ngIf="attendanceList.length > 0">
-    <thead>
-      <tr>
-        <th>Date</th>
-        <th>Entry</th>
-        <th>Name</th>
-        <th>Status</th>
-        <th>Remarks</th>
-        <th>Approval</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let item of attendanceList">
-        <td>{{ item.date }}</td>
-        <td>{{ item.entryTime || '-' }}</td>
-        <td>{{ item.name }}</td>
-        <td><span class="badge-status" [ngClass]="'status-' + item.status">{{ item.status }}</span></td>
-        <td>{{ item.remarks || '-' }}</td>
-        <td>
-          <span class="badge-approval" [ngClass]="item.isApproved ? 'approved' : 'pending'">
-            {{ item.isApproved ? 'Approved' : 'Pending' }}
-          </span>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-  <p *ngIf="attendanceList.length === 0">No records found.</p>
 </div>

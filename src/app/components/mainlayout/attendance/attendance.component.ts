@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AttendanceRecord, AttendanceService } from 'src/app/services/attendance.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-attendance',
@@ -8,74 +9,83 @@ import { AttendanceRecord, AttendanceService } from 'src/app/services/attendance
   styleUrls: ['./attendance.component.css']
 })
 export class AttendanceComponent implements OnInit {
-  public get attendanceService(): AttendanceService {
-    return this._attendanceService;
-  }
-  public set attendanceService(value: AttendanceService) {
-    this._attendanceService = value;
-  }
   attendanceForm!: FormGroup;
-  attendanceList: AttendanceRecord[] = [];
+  attendanceList: any[] = [];
 
   currentMonthIndex = new Date().getMonth();
   currentYear = new Date().getFullYear();
 
-  employee = {
-    empId: 1001,
-    name: 'Rohit Kumar',
-    department: 'IT',
-    designation: 'Frontend Developer'
-  };
-
-  constructor(private fb: FormBuilder, private _attendanceService: AttendanceService) {}
+  constructor(
+    private fb: FormBuilder,
+    private attendanceService: AttendanceService,
+    private authService: AuthService
+  ) {}
 
   ngOnInit(): void {
+    // Get employee info from JWT via AuthService
+    const empId = this.authService.getEmployeeId();       // returns string or null
+    const fullName = this.authService.getfullName();     // returns string or null
+
+    const currentTime = this.getCurrentTime();
+    const currentDate = new Date();
+
     this.attendanceForm = this.fb.group({
-      empId: [this.employee.empId, [Validators.required]],
-      name: [this.employee.name, Validators.required],
-      department: [this.employee.department, Validators.required],
-      designation: [this.employee.designation, Validators.required],
-      date: [this.formatDate(new Date()), Validators.required],
-      status: ['', Validators.required],
-      remarks: [''],
-      entryTime: ['09:30']
+      empId: [{ value: empId, disabled: true }, Validators.required],
+      fullName: [{ value: fullName, disabled: true }, Validators.required],
+      department: ['', Validators.required],
+      designation: ['', Validators.required],
+      date: [currentDate, Validators.required],
+      entryTime: [currentTime, Validators.required],
+      remarks: [''] // optional
     });
 
-    // Subscribe to shared service data
-    this.attendanceService.getAllAttendance().subscribe((data: any[]) => {
-      this.attendanceList = data.filter(
-        r => r.empId === this.employee.empId
-      );
-    });
+    // this.fetchAllUser(empId);
   }
 
-  formatDate(date: Date): string {
-    return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+  getCurrentTime(): string {
+    const now = new Date();
+    return `${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}`;
   }
 
+  // fetchAllUser(empId: string | null) {
+  //   if (!empId) return;
+  //   this.attendanceService.getAllAttendance().subscribe((data: any[]) => {
+  //     this.attendanceList = data.filter(r => r.empId === Number(empId));
+  //   });
+  // }
+                    
   submitAttendance(): void {
     if (this.attendanceForm.invalid) {
       alert('⚠️ Please fill in required fields');
       return;
     }
 
-    const formValue = this.attendanceForm.value;
+    // getRawValue() includes disabled fields
+    const formValue = this.attendanceForm.getRawValue();
+
     const record: AttendanceRecord = {
       empId: Number(formValue.empId),
-      name: formValue.name,
+      name: formValue.fullName,
       department: formValue.department,
       designation: formValue.designation,
       date: formValue.date,
       entryTime: formValue.entryTime,
-      status: formValue.status,
-      remarks: formValue.remarks,
+      remarks: formValue.remarks || '',
       isApproved: false
     };
 
-    this.attendanceService.submitAttendance(record);
+    this.attendanceService.submitAttendance(record).subscribe({
+  next: (res) => {
+    console.log('Attendance saved:', res); // check here
     alert('✅ Attendance submitted');
+    this.attendanceForm.patchValue({
+      remarks: '',
+      entryTime: this.getCurrentTime()
+    });
+  },
+  error: (err) => console.error('Submit error', err)
+});
 
-    this.attendanceForm.patchValue({ status: '', remarks: '', entryTime: '09:30' });
   }
 
   get selectedMonthYear(): string {

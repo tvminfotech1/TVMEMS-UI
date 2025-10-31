@@ -205,7 +205,7 @@ export class SignupComponent implements OnInit {
         }
         console.log('email error' + this.emailError);
         console.log('mobile exists' + this.mobileError);
-      },
+      }
     });
   }
 
