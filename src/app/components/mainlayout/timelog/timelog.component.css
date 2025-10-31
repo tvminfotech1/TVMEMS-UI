@@ -2,10 +2,10 @@
   font-family: 'Arial', sans-serif;
   color: #2c3e50;
   background-color: #ecf0f1;
-  padding: 2rem;
+  padding: 1.5rem;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  overflow-x: auto; /* Allow horizontal scroll for container on small screens */
+  overflow-x: auto; 
 }
 
 .timesheet-classic-container .classic-header {
@@ -26,8 +26,8 @@
 .timesheet-classic-container .classic-dropdown-section .classic-form-group {
   display: flex;
   flex-direction: column;
-  flex: 1; /* Allows form groups to take equal space */
-  min-width: 180px; /* Minimum width before wrapping */
+  flex: 1; 
+  min-width: 10px; 
 }
 
 .timesheet-classic-container .classic-dropdown-section .classic-form-group label {
@@ -47,7 +47,7 @@
 .timesheet-classic-container .classic-dropdown-section .classic-form-group input:focus {
   outline: none;
   border-color: #1abc9c;
-  box-shadow: 0 0 4px rgba(26, 188, 156, 0.5); /* Soften shadow color */
+  box-shadow: 0 0 4px rgba(26, 188, 156, 0.5); 
 }
 
 .timesheet-classic-container .classic-accordion {
@@ -56,9 +56,9 @@
 
 .timesheet-classic-container .accordion-item {
   margin: 1rem 0;
-  border: 1px solid #ccc; /* Add subtle border for items */
+  border: 1px solid #ccc; 
   border-radius: 6px;
-  overflow: hidden; /* For rounded corners on header */
+  overflow: hidden; 
 }
 
 .timesheet-classic-container .accordion-header {
@@ -66,9 +66,9 @@
   background-color: #34495e;
   color: #ecf0f1;
   padding: 0.8rem 1rem;
-  border-radius: 4px 4px 0 0; /* Only top corners rounded */
+  border-radius: 4px 4px 0 0;
   transition: background-color 0.3s;
-  display: flex; /* For potential icon or expand indicator */
+  display: flex; 
   justify-content: space-between;
   align-items: center;
   font-weight: bold;
@@ -79,19 +79,20 @@
 }
 
 .timesheet-classic-container .accordion-content {
-  margin-top: 0; /* Remove top margin */
+  margin-top: 0; 
   padding: 1rem;
-  background-color: #fcfdfe; /* Lighter background */
-  border-top: 1px solid #eee; /* Separator line */
-  border-radius: 0 0 4px 4px; /* Only bottom corners rounded */
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05); /* Inner shadow */
+  text-align: center;
+  background-color: #fcfdfe; 
+  border-top: 1px solid #eee;
+  border-radius: 0 0 4px 4px; 
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05); 
 }
 
 .timesheet-classic-container .classic-table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 1rem;
-  font-size: 0.95rem; /* Slightly smaller font for tables */
+  font-size: 0.95rem; 
 }
 
 .timesheet-classic-container .classic-table thead {
@@ -101,25 +102,25 @@
 
 .timesheet-classic-container .classic-table th,
 .timesheet-classic-container .classic-table td {
-  padding: 0.6rem 0.8rem; /* Increased padding */
-  text-align: left;
+  padding: 0.6rem 0.8rem; 
+  text-align: center;
   border: 1px solid #bdc3c7;
-  vertical-align: middle; /* Align content vertically */
+  vertical-align: middle; 
 }
 
 .timesheet-classic-container .classic-table tbody tr:nth-child(even) {
-  background-color: #f7f7f7; /* Lighter even row background */
+  background-color: #f7f7f7; 
 }
 
 .timesheet-classic-container .classic-table input,
 .timesheet-classic-container .classic-table select,
 .timesheet-classic-container .classic-table textarea {
-  width: calc(100% - 10px); /* Adjust for padding within cell */
+  width: calc(100% - 10px);
   padding: 0.4rem;
   border: 1px solid #bdc3c7;
   border-radius: 4px;
   font-size: 0.9rem;
-  box-sizing: border-box; /* Include padding in width */
+  box-sizing: border-box;
 }
 
 .timesheet-classic-container .classic-table input:focus,
@@ -130,35 +131,37 @@
   box-shadow: 0 0 4px rgba(26, 188, 156, 0.5);
 }
 
-/* Status Badges */
 .status-pending {
-  color: #f39c12; /* Orange */
+  color: #f39c12;
   font-weight: bold;
 }
 .status-approved {
-  color: #27ae60; /* Green */
+  color: #27ae60 !important; 
   font-weight: bold;
 }
 .status-rejected {
-  color: #e74c3c; /* Red */
+  color: #e74c3c;
   font-weight: bold;
 }
 
-/* Admin Action Buttons */
 .action-btn {
   padding: 6px 10px;
+  width: 80px;
+  margin-bottom: 5px;
+  margin-left: 10px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   font-size: 0.85rem;
   margin-right: 5px;
   transition: background-color 0.2s ease;
-  white-space: nowrap; /* Prevent wrapping */
+  white-space: nowrap;
 }
 
 .approve-btn {
   background-color: #28a745;
   color: white;
+
 }
 .approve-btn:hover {
   background-color: #218838;
@@ -173,14 +176,13 @@
 }
 
 
-/* Latest Entry Section */
 .latest-entry-section {
   background-color: #ffffff;
   padding: 1.5rem;
   border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   margin-bottom: 2rem;
-  border-left: 5px solid #007bff; /* Highlight latest entry */
+  border-left: 5px solid #007bff; 
 }
 .latest-entry-section h3 {
   color: #007bff;
@@ -189,7 +191,6 @@
 }
 
 
-/* Submit Button */
 .submit-btn {
   background-color: #04284f;
   color: white;
@@ -198,7 +199,7 @@
   border-radius: 4px;
   font-weight: bold;
   cursor: pointer;
-  margin-top: 1rem; /* Space from table */
+  margin-top: 1rem; 
   transition: background-color 0.3s ease;
 }
 
@@ -212,7 +213,7 @@
   opacity: 0.7;
 }
 
-/* Responsive adjustments */
+
 @media (max-width: 768px) {
   .timesheet-classic-container {
     padding: 1rem;
@@ -222,23 +223,23 @@
     gap: 1rem;
   }
   .timesheet-classic-container .classic-dropdown-section .classic-form-group {
-    min-width: unset; /* Remove min-width on small screens */
+    min-width: unset; 
   }
   .timesheet-classic-container .classic-table {
-    overflow-x: auto; /* Ensure table scrolls horizontally on small screens */
-    display: block; /* Make table content block to enable overflow */
+    overflow-x: auto;
+    display: block; 
   }
   .timesheet-classic-container .classic-table thead,
   .timesheet-classic-container .classic-table tbody,
   .timesheet-classic-container .classic-table th,
   .timesheet-classic-container .classic-table td,
   .timesheet-classic-container .classic-table tr {
-    display: block; /* Stack table elements on very small screens (less ideal for large tables) */
+    display: block;
   }
   .timesheet-classic-container .classic-table thead tr {
     position: absolute;
     top: -9999px;
-    left: -9999px; /* Hide header on very small screens if stacking */
+    left: -9999px; 
   }
   .timesheet-classic-container .classic-table tr {
     border: 1px solid #ccc;
@@ -258,11 +259,11 @@
     width: 45%;
     padding-right: 10px;
     white-space: nowrap;
-    content: attr(data-label); /* Use data-label for mobile headers */
+    content: attr(data-label); 
     font-weight: bold;
     text-align: left;
   }
-  /* Specific labels for mobile table cells */
+ 
   .timesheet-classic-container .classic-table td:nth-of-type(1):before { content: "Project"; }
   .timesheet-classic-container .classic-table td:nth-of-type(2):before { content: "Monday"; }
   .timesheet-classic-container .classic-table td:nth-of-type(3):before { content: "Tuesday"; }

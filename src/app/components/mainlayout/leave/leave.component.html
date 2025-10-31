@@ -1,180 +1,298 @@
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+/>
+
 <div class="leave-dashboard">
+
   <!-- Header -->
   <div class="header">
     <div class="header-actions">
       <button class="btn apply-leave-btn" (click)="openApplyLeaveModal()">Apply Leave</button>
-      <button class="btn leave-btn" (click)="openCompOffModal()">Comp-off Leave</button>
     </div>
   </div>
 
   <!-- Main Content -->
-  <div class="main-content">
-    <h2 class="page-title">Leave Details</h2>
+  <div class="main-content"[ngClass]="{ 'admin-view': isAdmin, 'employee-view': !isAdmin }">
 
-    <!-- Date Range -->
-    <div class="date-range">
-      <span class="date-text">{{ formatDateRange() }}</span>
-      <input type="date" [(ngModel)]="selectedDate" (change)="onDateChange()" #dateInput style="display: none;" />
-    </div>
+    <!--  Show Leave Details & Summary only for non-admin users -->
+    <ng-container *ngIf="!isAdmin">
+      <h2 class="page-title">Leave Details</h2>
+      <div class="date-range">
+        <span class="date-text">{{ formatDateRange() }}</span>
+        <input
+          type="date"
+          [(ngModel)]="selectedDate"
+          (change)="applyFilters()"
+          #dateInput
+          style="display:none;"
+        />
+      </div>
 
-    <!-- Leave Cards -->
-    <div class="leave-cards-grid">
-      <div class="leave-card" *ngFor="let card of leaveCards">
-        <div class="card-header">
-          <div class="card-icon" [ngClass]="card.color">
-            <i [class]="card.icon"></i>
+      <!-- Leave Summary Cards -->
+      <div class="leave-cards-grid">
+        <div class="leave-card" *ngFor="let card of leaveCards" [ngClass]="card.color">
+          <div class="card-header">
+            <div class="card-icon">
+              <i [class]="getLeaveIcon(card.title)"></i>
+            </div>
+            <h3 class="card-title">{{ card.title }}</h3>
           </div>
-          <h3 class="card-title">{{ card.title }}</h3>
-        </div>
-        <div class="card-stats">
-          <div class="stat-item">
-            <span class="stat-label">Available</span>
-            <span class="stat-value">{{ card.available }}</span>
-          </div>
-          <div class="stat-item">
-            <span class="stat-label">Requested</span>
-            <span class="stat-value">{{ card.requested }}</span>
+
+          <div class="card-stats">
+            <div class="stat-item">
+              <span class="stat-label">Total</span>
+              <span class="stat-value">{{ card.total }}</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Used</span>
+              <span class="stat-value">{{ card.used }}</span>
+            </div>
+            <div class="stat-item highlight">
+              <span class="stat-label">Available</span>
+              <span class="stat-value">{{ card.available }}</span>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </ng-container>
 
-    <!-- Leave Request Table -->
+    <!--  Table Section (visible for everyone) -->
     <div class="table-section">
-      <div class="table-tabs">
-        <button class="tab-button" [class.active]="activeTab === 'leave'" (click)="switchTab('leave')">Leave Request Overview</button>
-        <button class="tab-button" [class.active]="activeTab === 'compoff'" (click)="switchTab('compoff')">Comp-off Overview</button>
-      </div>
+      <div class="table-wrapper">
 
-      <div class="table-container">
-        <div class="table-controls">
-          <div class="search-box">
-            <input type="text" placeholder="Search leave requests..." [(ngModel)]="searchTerm" (input)="filterRequests()" class="search-input">
-          </div>
-          <div class="filter-controls">
-            <select [(ngModel)]="statusFilter" (change)="filterRequests()" class="filter-select">
-              <option value="">All Status</option>
-              <option value="Pending">Pending</option>
-              <option value="Approved">Approved</option>
-              <option value="Rejected">Rejected</option>
-            </select>
-          </div>
+        <!-- Tabs -->
+        <div class="table-tabs">
+          <button
+            class="tab-button"
+            [class.active]="activeTab === 'leave'"
+            (click)="switchTab('leave')"
+          >
+            Leave Requests
+          </button>
         </div>
 
-        <table class="leave-table">
-          <thead>
-            <tr>
-              <th (click)="sortBy('type')" class="sortable">LEAVE TYPE <span class="sort-indicator" [ngClass]="getSortClass('type')">↕</span></th>
-              <th (click)="sortBy('duration')" class="sortable">DURATION (HRS./DAYS) <span class="sort-indicator" [ngClass]="getSortClass('duration')">↕</span></th>
-              <th (click)="sortBy('status')" class="sortable">STATUS <span class="sort-indicator" [ngClass]="getSortClass('status')">↕</span></th>
-              <th *ngIf="isAdmin">ACTION</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="no-data-row" *ngIf="filteredRequests.length === 0">
-              <td colspan="4" class="no-data">{{ searchTerm || statusFilter ? 'No matching records found' : 'No Data Available' }}</td>
-            </tr>
-            <tr *ngFor="let request of filteredRequests">
-              <td>
-                <div class="leave-type-cell">
-                  <span class="leave-type-badge" [ngClass]="getLeaveTypeBadgeClass(request.type)">{{ request.type }}</span>
-                </div>
-              </td>
-              <td>{{ request.duration }}</td>
-              <td>
-                <span class="status-badge" [ngClass]="getStatusBadgeClass(request.status)">{{ request.status }}</span>
-              </td>
-              <td>
-                <div class="action-buttons" *ngIf="isAdmin">
-                  <button class="action-btn view-btn" (click)="viewRequest(request)" title="View Details">👁</button>
-                  <button *ngIf="request.status === 'Pending'" class="action-btn edit-btn" (click)="editRequest(request)" title="Edit Request">✏</button>
-                  <button *ngIf="request.status === 'Pending'" class="action-btn cancel-btn" (click)="cancelRequest(request)" title="Cancel Request">❌</button>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-
-        <div class="table-pagination" *ngIf="filteredRequests.length > 0">
-          <div class="pagination-info">
-            Showing {{ (currentPage - 1) * itemsPerPage + 1 }} to {{ paginationEndIndex }} of {{ filteredRequests.length }} entries
+        <!--  Moved Date Range inside the table controls -->
+        <div class="table-controls top-controls">
+          <div *ngIf="isAdmin" class="date-range-inline">
+            <span  class="date-text">{{ formatDateRange() }}</span>
+            <input
+              type="date"
+              [(ngModel)]="selectedDate"
+              (change)="applyFilters()"
+              #dateInput2
+              style="display:none;"
+            />
           </div>
-          <div class="pagination-controls">
-            <button class="pagination-btn" [disabled]="currentPage === 1" (click)="changePage(currentPage - 1)">Previous</button>
-            <span class="page-info">Page {{ currentPage }} of {{ totalPages }}</span>
-            <button class="pagination-btn" [disabled]="currentPage === totalPages" (click)="changePage(currentPage + 1)">Next</button>
+
+          <input
+            type="text"
+            class="search-input"
+            placeholder="Search..."
+            [(ngModel)]="searchTerm"
+            (input)="applyFilters()"
+          />
+
+          <select class="filter-select" [(ngModel)]="statusFilter" (change)="applyFilters()">
+            <option value="">All Status</option>
+            <option value="Pending">Pending</option>
+            <option value="Approved">Approved</option>
+            <option value="Rejected">Rejected</option>
+          </select>
+        </div>
+
+        <div class="table-container" *ngIf="activeTab === 'leave'">
+          <table class="leave-table">
+            <thead>
+              <tr>
+                <th (click)="sortBy('user.employeeId')" class="sortable">
+                  Employee ID
+                  <!-- <span [ngClass]="getSortClass('user.employeeId')">↕</span> -->
+                </th>
+                <th (click)="sortBy('leaveType')" class="sortable">
+                  Leave Type
+                  <!-- <span [ngClass]="getSortClass('leaveType')">↕</span> -->
+                </th>
+                <th (click)="sortBy('duration')" class="sortable">
+                  Duration
+                  <!-- <span [ngClass]="getSortClass('duration')">↕</span> -->
+                </th>
+                <th>Date</th>
+                <th (click)="sortBy('status')" class="sortable">
+                  Status
+                  <!-- <span [ngClass]="getSortClass('status')">↕</span> -->
+                </th>
+                <th>Reason</th>
+                <th *ngIf="isAdmin">Action</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr *ngIf="paginatedRequests.length === 0" class="no-data-row">
+                <td [attr.colspan]="isAdmin ? 7 : 6">
+                  <div class="no-data">
+                    {{ searchTerm || statusFilter ? 'No matching records found' : 'No Data Available' }}
+                  </div>
+                </td>
+              </tr>
+
+              <tr *ngFor="let request of paginatedRequests">
+                <td data-label="employeeId">{{ (request.user && request.user.employeeId) ? request.user.employeeId : 'N/A' }}</td>
+
+                <td data-label="Leave Type">
+                    {{ request.leaveType }}
+                </td>
+                <td data-label="Duration">{{ request.duration }}</td>
+                <td data-label="Date">{{ request.startDate | date: 'shortDate' }} - {{ request.endDate | date: 'shortDate' }}</td>
+                <td data-label="Status" class="status-badge" [ngClass]="getStatusBadgeClass(request.status)">
+                    {{ request.status }}
+                </td>
+                <td data-label="Reason">{{ request.reason }}</td>
+                <td *ngIf="isAdmin" data-label="Action">
+                  <button
+                    *ngIf="request.status?.toLowerCase() === 'pending'"
+                    class="btn btn-approve"
+                    (click)="approveRequest(request.id)"
+                  >
+                    ✔ Approve
+                  </button>
+                  <button
+                    *ngIf="request.status?.toLowerCase() === 'pending'"
+                    class="btn btn-reject"
+                    (click)="rejectRequest(request.id)"
+                  >
+                    ✖ Reject
+                  </button>
+                </td>
+                
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- Pagination -->
+          <div class="table-pagination" *ngIf="paginatedRequests.length > 0">
+            <button class="pagination-btn" [disabled]="currentPage === 1" (click)="changePage(currentPage - 1)">
+              Previous
+            </button>
+            Page {{ currentPage }} of {{ totalPages }}
+            <button
+              class="pagination-btn"
+              [disabled]="currentPage === totalPages"
+              (click)="changePage(currentPage + 1)"
+            >
+              Next
+            </button>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 
-<!-- Apply Leave Modal -->
-<div class="modal-overlay" *ngIf="showApplyLeaveModal" (click)="closeApplyLeaveModal()">
-  <div class="modal-dialog" (click)="$event.stopPropagation()">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Apply Leave</h5>
-        <button type="button" class="btn-close" (click)="closeApplyLeaveModal()" aria-label="Close">&times;</button>
-      </div>
-      <div class="modal-body">
-        <form #applyLeaveForm="ngForm">
-          <div class="mb-3">
-            <label for="leaveType" class="form-label">Leave Type</label>
-            <select id="leaveType" class="form-select" required [(ngModel)]="newLeave.type" name="leaveType">
-              <option value="">Select Leave Type</option>
-              <option value="Earned Leave">Earned Leave</option>
-              <option value="Casual Leave">Casual Leave</option>
-              <option value="Sick Leave">Sick Leave</option>
-              <option value="Leave without Pay">Leave without Pay</option>
-            </select>
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Start Date</label>
-            <input type="date" class="form-control" required [(ngModel)]="newLeave.startDate" name="startDate">
-          </div>
-          <div class="mb-3">
-            <label class="form-label">End Date</label>
-            <input type="date" class="form-control" required [(ngModel)]="newLeave.endDate" name="endDate">
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Reason</label>
-            <textarea class="form-control" [(ngModel)]="newLeave.reason" name="reason" required rows="3" placeholder="Enter reason for leave"></textarea>
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="closeApplyLeaveModal()">Close</button>
-        <button type="button" class="btn btn-primary" (click)="submitApplyLeave()" [disabled]="!applyLeaveForm.valid">Submit</button>
-      </div>
-    </div>
+  <!-- ✅ Apply Leave Modal -->
+  <div class="modal-overlay" *ngIf="showApplyLeaveModal" (click)="closeApplyLeaveModal()">
+    <div class="modal-dialog" (click)="$event.stopPropagation()">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Apply Leave</h5>
+          <button type="button" class="btn-close" (click)="closeApplyLeaveModal()">&times;</button>
+        </div>
+
+        <div class="modal-body">
+         <form [formGroup]="leaveForm" (ngSubmit)="onSubmit()">
+
+  <div *ngIf="isAdmin">
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Employee ID</mat-label>
+      <input
+        matInput
+        type="text"
+        formControlName="employeeId"
+        placeholder="Enter Employee ID"
+        required
+      />
+      <mat-error *ngIf="leaveForm.get('employeeId')?.hasError('required')">
+        Employee ID is required
+      </mat-error>
+      <mat-error *ngIf="leaveForm.get('employeeId')?.hasError('min')">
+        Invalid Employee ID
+      </mat-error>
+    </mat-form-field>
   </div>
-</div>
 
-<!-- Comp-off Leave Modal -->
-<div class="modal-overlay" *ngIf="showCompOffModal" (click)="closeCompOffModal()">
-  <div class="modal-dialog" (click)="$event.stopPropagation()">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Apply Comp-off Leave</h5>
-        <button type="button" class="btn-close" (click)="closeCompOffModal()" aria-label="Close">&times;</button>
-      </div>
-      <div class="modal-body">
-        <form #compOffForm="ngForm">
-          <div class="mb-3">
-            <label class="form-label">Date</label>
-            <input type="date" class="form-control" [(ngModel)]="newCompOff.startDate" name="compDate" required>
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Reason</label>
-            <textarea class="form-control" [(ngModel)]="newCompOff.reason" name="compReason" required rows="3" placeholder="Enter reason for comp-off"></textarea>
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="closeCompOffModal()">Close</button>
-        <button type="button" class="btn btn-primary" (click)="submitCompOff()" [disabled]="!compOffForm.valid">Submit</button>
+  <mat-form-field appearance="outline" class="w-100">
+    <mat-label>Leave Type</mat-label>
+    <mat-select formControlName="leaveType">
+      <mat-option value="Casual Leave">Casual Leave</mat-option>
+      <mat-option value="Sick Leave">Sick Leave</mat-option>
+      <mat-option value="Leave without Pay">Leave without Pay</mat-option>
+    </mat-select>
+    <mat-error *ngIf="leaveForm.get('leaveType')?.hasError('required')">
+      Leave type is required
+    </mat-error>
+  </mat-form-field>
+
+
+  <mat-form-field appearance="outline" class="w-100">
+    <mat-label>Start Date</mat-label>
+    <input
+      matInput
+      [matDatepickerFilter]="dateFilter"
+      [matDatepicker]="startPicker"
+      formControlName="startDate"
+      (focus)="startPicker.open()"
+    />
+    <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+    <mat-datepicker #startPicker></mat-datepicker>
+    <mat-error *ngIf="leaveForm.get('startDate')?.hasError('required')">
+      Start date is required
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="w-100">
+    <mat-label>End Date</mat-label>
+    <input
+      matInput
+      [matDatepickerFilter]="endDateFilter"
+      [matDatepicker]="endPicker"
+      formControlName="endDate"
+      (focus)="endPicker.open()"
+    />
+    <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+    <mat-datepicker #endPicker></mat-datepicker>
+    <mat-error *ngIf="leaveForm.get('endDate')?.hasError('required')">
+      End date is required
+    </mat-error>
+    <mat-error *ngIf="leaveForm.hasError('invalidDateRange')">
+      End date must be after start date
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="w-100">
+    <mat-label>Reason</mat-label>
+    <textarea matInput rows="3" formControlName="reason"></textarea>
+    <mat-error *ngIf="leaveForm.get('reason')?.hasError('required')">
+      Reason is required
+    </mat-error>
+    <mat-error *ngIf="leaveForm.get('reason')?.hasError('minlength')">
+      Reason must be at least 5 characters
+    </mat-error>
+  </mat-form-field>
+
+
+  <div class="modal-footer">
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+     
+    >
+      Submit
+    </button>
+    <button mat-stroked-button type="button" (click)="closeApplyLeaveModal()">Cancel</button>
+  </div>
+</form>
+
+        </div>
       </div>
     </div>
   </div>

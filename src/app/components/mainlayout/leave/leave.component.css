@@ -1,33 +1,20 @@
+
 .leave-dashboard {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  background-color: #f5f5f5;
+  font-family: "Segoe UI", "Roboto", sans-serif;
+  background-color: #f5f7fb;
   min-height: 100vh;
+  margin: 0;
   padding: 0;
 }
 
 .header {
-  background-color: white;
-  padding: 12px 24px;
+ 
+  padding: 16px 28px;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
-  border-bottom: 1px solid #e0e0e0;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-.breadcrumb {
-  display: flex;
-  align-items: center;
-  color: #666;
-}
-
-.breadcrumb-item {
-  color: #666;
-}
-
-.breadcrumb-separator {
-  margin: 0 8px;
-  color: #999;
+ 
+  margin-bottom: 1px;
 }
 
 .header-actions {
@@ -36,18 +23,15 @@
 }
 
 .btn {
-  padding: 8px 16px;
+  padding: 10px 18px;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
   font-weight: 500;
   transition: all 0.3s ease;
 }
 
-.btn:hover {
-  opacity: 0.9;
-  transform: translateY(-1px);
-}
+
 
 .btn-primary {
   background-color: #007bff;
@@ -62,139 +46,138 @@
   background-color: #6c757d;
   color: white;
 }
-
 .btn-secondary:hover {
   background-color: #545b62;
 }
 
-.main-content {
-  background-color: #0a0f3c;
-  padding: 1rem;
-}
-
-.page-title {
-  font-size: 24px;
-  font-weight: 600;
+.apply-leave-btn {
+  background-color: #04AA6D;
   color: white;
-  margin: 0 0 16px 0;
 }
-
-.date-range {
-  margin-bottom: 24px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.date-picker-btn {
-  background: none;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  padding: 6px 8px;
-  cursor: pointer;
-  font-size: 16px;
-  transition: all 0.3s ease;
-}
-
-.date-picker-btn:hover {
-  background-color: #f8f9fa;
-  border-color: #007bff;
+.apply-leave-btn:hover {
+  background-color: #03784d;
 }
 
 .leave-btn {
   background-color: #0a0f3c;
   color: white;
 }
-
-.apply-leave-btn {
-  background-color: #13ba8a;
+.leave-btn:hover {
+  background-color: #0d1349;
+}
+.btn-approve{
+  background-color: #28a745;
   color: white;
+  margin-right: 5px;
+}
+.btn-approve:hover{
+  background-color: #218838;
+}
+.btn-reject{
+  background-color: #dc3545;
+  color: white;
+  
+}
+.btn-reject:hover{
+  background-color: #c82333;
+}
+
+/* =============================== */
+/* Main Content */
+/* =============================== */
+.main-content {
+  background-color: #0a0f3c;
+  padding: 1.5rem;
+  border-radius: 20px;
+}
+.admin-view {
+   /* darker or different tone */
+  background-color: #f5f7fb ;
+  border: none ;
+  box-shadow: none ;
+  outline: none ;
+  border-radius: 0 ;
+  background-image: none ;
+}
+
+/* Employee-specific style override (optional) */
+.employee-view {
+  background-color: #0a0f3c;
+}
+
+.page-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: white;
+  margin-bottom: 16px;
+}
+
+.date-range {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 32px;
 }
 
 .date-text {
-  color: white;
   background-color: #13ba8a;
-  padding: 6px 12px;
+  color: white;
+  padding: 6px 14px;
   border-radius: 4px;
   display: inline-flex;
   align-items: center;
+  font-weight: 500;
+  letter-spacing: 0.5px;
 }
 
+/* =============================== */
+/* Leave Summary Cards */
+/* =============================== */
 .leave-cards-grid {
   display: flex;
   justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 20px;
   margin-bottom: 32px;
 }
 
 .leave-card {
   background-color: white;
-  border-radius: 8px;
+  border-radius: 12px;
   padding: 20px;
-  width: 20%;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 28%;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   text-align: center;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-.leave-card:nth-child(1){
-  background-color:lightcyan;
-}
-.leave-card:nth-child(2){
-  background-color:lightgreen;
-}
-.leave-card:nth-child(3){
-  background-color:lightcoral;
-}
-.leave-card:nth-child(4){
-  background-color: lightgoldenrodyellow;
+  transition: all 0.3s ease;
 }
 
-.leave-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-}
+
+/* Dynamic card colors */
+.leave-card:nth-child(1) { background-color: #e6f9ff; }
+.leave-card:nth-child(2) { background-color: #e7ffe6; }
+.leave-card:nth-child(3) { background-color: #ffe6e6; }
+.leave-card:nth-child(4) { background-color: #fff9e6; }
 
 .card-header {
   margin-bottom: 16px;
 }
 
 .card-icon {
-  width: 48px;
-  height: 48px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
+  margin: 0 auto 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto 12px;
-  font-size: 24px;
-}
-
-.card-icon.green {
-  background-color: #d4edda;
-  color: #28a745;
-}
-
-.card-icon.red {
-  background-color: #f8d7da;
-  color: #dc3545;
-}
-
-.card-icon.orange {
-  background-color: #fff3cd;
-  color: #ffc107;
-}
-
-.card-icon.blue {
-  background-color: #cce7ff;
+  font-size: 22px;
+  background-color: rgba(0, 123, 255, 0.1);
   color: #007bff;
 }
 
-.card-icon.purple {
-  background-color: #e7d4f7;
-  color: #6f42c1;
-}
-
 .card-title {
-  font-weight: 500;
+  font-weight: 600;
+  font-size: 16px;
   color: #333;
   margin: 0;
 }
@@ -202,6 +185,7 @@
 .card-stats {
   display: flex;
   justify-content: space-between;
+  margin-top: 10px;
 }
 
 .stat-item {
@@ -209,22 +193,23 @@
   flex-direction: column;
   align-items: center;
 }
-
 .stat-label {
-  color: black;
-  margin-bottom: 4px;
+  color: #555;
+  font-size: 14px;
 }
-
 .stat-value {
   font-size: 18px;
   font-weight: 600;
-  color: #333;
+  color: #222;
 }
 
+/* =============================== */
+/* Table Section */
+/* =============================== */
 .table-section {
   background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   overflow: hidden;
 }
 
@@ -234,551 +219,1180 @@
 }
 
 .tab-button {
-  padding: 16px 24px;
+  flex: 1;
+  padding: 16px;
   border: none;
   background: none;
   cursor: pointer;
-  font-weight: bold;
-  border-bottom: 2px solid transparent;
+  font-weight: 600;
+  font-size: 15px;
+  color: #555;
   transition: all 0.3s ease;
 }
-
 .tab-button:hover {
-  color: #007bff;
   background-color: #f8f9fa;
+  color: #007bff;
 }
-
 .tab-button.active {
+  border-bottom: 3px solid #007bff;
   color: #007bff;
-  border-bottom-color: #007bff;
-  background-color: #f8f9fa;
 }
 
-.table-container {
-  overflow-x: auto;
-}
-
+/* ------------------ Table Controls ------------------ */
 .table-controls {
   padding: 16px 24px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 16px;
   border-bottom: 1px solid #e0e0e0;
+  background-color: #fdfdfd;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  border-radius: 8px 8px 0 0;
 }
 
-.search-box {
-  flex: 1;
-  max-width: 300px;
-}
-
+/* Search Input */
 .search-input {
-  width: 100%;
-  padding: 8px 12px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  width: 280px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  transition: all 0.3s ease;
 }
-
 .search-input:focus {
   outline: none;
   border-color: #007bff;
-  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+  box-shadow: 0 0 8px rgba(0, 123, 255, 0.25);
 }
 
-.filter-controls {
-  display: flex;
-  gap: 12px;
-}
-
+/* Filter Dropdown */
 .filter-select {
-  padding: 8px 12px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
   background-color: white;
-}
-
-.filter-select:focus {
-  outline: none;
-  border-color: #007bff;
-}
-
-.leave-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.leave-table th {
-  background-color: #f8f9fa;
-  padding: 16px;
-  text-align: left;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  border-bottom: 1px solid #e0e0e0;
-  position: relative;
-}
-
-.leave-table th.sortable {
-  cursor: pointer;
-  user-select: none;
-}
-
-.leave-table th.sortable:hover {
-  background-color: #e9ecef;
-}
-
-.sort-indicator {
-  margin-left: 8px;
-  opacity: 0.5;
-  font-size: 12px;
-}
-
-.sort-indicator.sort-asc {
-  opacity: 1;
-  color: #007bff;
-}
-
-.sort-indicator.sort-desc {
-  opacity: 1;
-  color: #007bff;
-  transform: rotate(180deg);
-  display: inline-block;
-}
-
-.leave-table td {
-  padding: 16px;
-  font-size: medium;
-  border-bottom: 1px solid #e0e0e0;
-}
-
-.leave-table tr:hover {
-  background-color: #f8f9fa;
-}
-
-.no-data {
-  text-align: center;
-  font-style: italic;
-}
-
-.no-data-row td {
-  padding: 40px 16px;
-}
-
-.leave-type-cell {
-  display: flex;
-  align-items: center;
-}
-
-.leave-type-badge {
-  padding: 4px 8px;
-  border-radius: 12px;
-}
-
-.leave-type-badge.leave-earned {
-  background-color: #d4edda;
-  color: #155724;
-}
-
-.leave-type-badge.leave-casual {
-  background-color: #fff3cd;
-  color: #856404;
-}
-
-.leave-type-badge.leave-sick {
-  background-color: #f8d7da;
-  color: #721c24;
-}
-
-.leave-type-badge.leave-compoff {
-  background-color: #e7d4f7;
-  color: #6f42c1;
-}
-
-.leave-type-badge.leave-default {
-  background-color: #e9ecef;
-  color: #495057;
-}
-
-.status-badge {
-  padding: 4px 12px;
-  border-radius: 12px;
-  text-transform: uppercase;
-}
-
-.status-badge.status-approved {
-  background-color: #d4edda;
-  color: #155724;
-}
-
-.status-badge.status-pending {
-  background-color: #fff3cd;
-  color: #856404;
-}
-
-.status-badge.status-rejected {
-  background-color: #f8d7da;
-  color: #721c24;
-}
-
-.action-buttons {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-}
-
-.action-btn {
-  border: 1px solid #000;
-  border-radius: 4px;
-  padding: 6px 8px;
+  font-size: 14px;
   cursor: pointer;
   transition: all 0.3s ease;
 }
-
-.action-btn:hover {
-  background-color: #f8f9fa;
-}
-
-.view-btn:hover {
+.filter-select:hover {
   border-color: #007bff;
-  color: #007bff;
+  box-shadow: 0 0 8px rgba(0, 123, 255, 0.15);
 }
 
-.edit-btn:hover {
-  border-color: #28a745;
-  color: #28a745;
+
+/* ------------------ Table Wrapper ------------------ */
+.table-wrapper {
+  padding: 0 24px; /* gap on left and right */
+  overflow-x: auto; /* horizontal scroll if table too wide */
 }
 
-.cancel-btn:hover {
-  border-color: #dc3545;
-  color: #dc3545;
+/* ------------------ Table ------------------ */
+.leave-table {
+  width: 100%;
+  max-width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  background-color: #fff;
+  margin: 16px 0; /* vertical spacing from other elements */
+  cursor: pointer;
 }
+
+/* Table Cells */
+.leave-table th,
+.leave-table td {
+  padding: 16px 20px;
+  text-align: center;
+  font-size: 14px;
+}
+
+/* Table Header */
+.leave-table th {
+  background-color: #0a0f3c;
+  color: #fff;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Hover Effect */
+.leave-table tr {
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.leave-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+/* No Data Message */
+.no-data-row td {
+  padding: 0;
+  border: none;
+}
+
+.no-data {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 180px; /* makes it look like 3 rows tall */
+  background-color: #fff;
+  font-style: italic;
+  color: #777;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  text-align: center;
+  font-size: 16px;
+  font-size: 25px;
+}
+
+td .btn-approve,
+td .btn-reject {
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 8px; /* spacing between buttons */
+}
+
+td {
+  white-space: nowrap; /* prevents buttons from wrapping to the next line */
+}
+
+
+
+/* Optional: Status Badge */
+.status-badge {
+  font-size: 12px;
+  text-align: center;
+}
+.status-approved {  color:green; }
+.status-pending {  color: #856404; }
+.status-rejected {  color: red; }
+
+
+.status-badge,
+.leave-type-badge {
+  padding: 5px 10px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+/* Status Badges */
+.status-badge.status-approved { color: green; }
+.status-badge.status-pending {color: #856404; }
+.status-badge.status-rejected {color: red; }
+
+/* Leave Type Badges */
+/* .leave-type-badge.leave-earned { background-color: #d4edda; color: #155724; }
+.leave-type-badge.leave-casual { background-color: #fff3cd; color: #856404; }
+.leave-type-badge.leave-sick { background-color: #f8d7da; color: #721c24; }
+.leave-type-badge.leave-compoff { background-color: #e7d4f7; color: #6f42c1; } */
+
+
 
 .table-pagination {
   padding: 16px 24px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-top: 1px solid #e0e0e0;
   background-color: #f8f9fa;
-}
-
-.pagination-info {
-  color: #666;
-}
-
-.pagination-controls {
-  display: flex;
-  align-items: center;
-  gap: 12px;
+  border-top: 1px solid #ddd;
 }
 
 .pagination-btn {
   padding: 6px 12px;
-  border: 1px solid #ddd;
   border-radius: 4px;
-  background-color: blue;
-  color: white;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.pagination-btn:hover:not(:disabled) {
   background-color: #007bff;
   color: white;
-  border-color: #007bff;
+  border: none;
+  cursor: pointer;
+  width: 80px;
 }
-
 .pagination-btn:disabled {
-  background-color: gray;
-  color: white;
+  background-color: #ccc;
   cursor: not-allowed;
 }
-
-.page-info {
-  margin: 0 8px;
+.pagination-btn:hover:not(:disabled) {
+  background-color: #0056b3;
 }
 
-/* Responsive Design */
-@media (max-width: 1200px) {
-  .leave-cards-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-@media (max-width: 768px) {
-  .leave-cards-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .header {
-    flex-direction: column;
-    gap: 12px;
-    align-items: stretch;
-  }
-
-  .header-actions {
-    justify-content: center;
-  }
-
-  .main-content {
-    padding: 16px;
-  }
-
-  .table-tabs {
-    flex-direction: column;
-  }
-
-  .tab-button {
-    padding: 12px 16px;
-  }
-
-  .table-controls {
-    flex-direction: column;
-    gap: 12px;
-    align-items: stretch;
-  }
-
-  .search-box {
-    max-width: none;
-  }
-
-  .filter-controls {
-    justify-content: center;
-  }
-
-  .action-buttons {
-    flex-direction: column;
-    gap: 4px;
-  }
-
-  .table-pagination {
-    flex-direction: column;
-    gap: 12px;
-    text-align: center;
-  }
-}
-
-@media (max-width: 480px) {
-  .leave-cards-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .header {
-    padding: 8px 16px;
-  }
-
-  .main-content {
-    padding: 12px;
-  }
-
-  .leave-card {
-    padding: 16px;
-  }
-
-  .card-icon {
-    width: 40px;
-    height: 40px;
-    font-size: 20px;
-  }
-
-  .card-title {
-    font-size: 13px;
-  }
-
-  .stat-value {
-    font-size: 16px;
-  }
-}
-/* Custom Modal Styles */
+/* =============================== */
+/* Modal */
+/* =============================== */
 .modal-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1050;
-  animation: fadeIn 0.15s ease-out;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease-in;
 }
 
 .modal-dialog {
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-  max-width: 500px;
-  width: 90%;
-  max-height: 90vh;
-  overflow-y: auto;
-  animation: slideIn 0.15s ease-out;
-}
-
-.modal-content {
-  display: flex;
-  flex-direction: column;
+  background-color: white;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 480px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+  animation: slideIn 0.25s ease-out;
+  z-index: 1010;
 }
 
 .modal-header {
-  padding: 1rem 1.5rem;
-  border-bottom: 1px solid #dee2e6;
+  background-color: #f8f9fa;
+  padding: 16px 20px;
+  border-bottom: 1px solid #ddd;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #f8f9fa;
-  border-radius: 8px 8px 0 0;
+  border-radius: 12px 12px 0 0;
 }
 
 .modal-title {
   margin: 0;
-  font-size: 1.25rem;
-  font-weight: 500;
+  font-size: 18px;
+  font-weight: 600;
 }
 
 .btn-close {
-  background: none;
+  background-color:white;
   border: none;
   font-size: 1.5rem;
   cursor: pointer;
-  padding: 0;
-  width: 24px;
-  height: 24px;
+  color: black; 
+  width: 32px; 
+  height: 32px;
+  padding: 0; 
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 4px;
-  transition: background-color 0.15s ease;
+  transition: background-color 0.3s ease;
 }
-
-.btn-close:hover {
-  background-color: #e9ecef;
-  color: #000;
+.btn-close:hover{
+   background-color: #e63946;
+   color: black;
 }
 
 .modal-body {
-  padding: 1.5rem;
-  flex: 1;
+  padding: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+}
+
+.form-control {
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  transition: 0.3s;
+}
+.form-control:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(0,123,255,0.15);
+}
+
+.text-danger {
+  font-size: 13px;
+  color: #d93025;
 }
 
 .modal-footer {
-  padding: 1rem 1.5rem;
-  border-top: 1px solid #dee2e6;
   display: flex;
   justify-content: flex-end;
-  gap: 0.5rem;
-  background-color: #f8f9fa;
-  border-radius: 0 0 8px 8px;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 0 0 12px 12px;
 }
-
-/* Form Styles */
-.form-label {
-  display: block;
-  margin-bottom: 0.5rem;
-  font-weight: 500;
-}
-
-.form-control,
-.form-select {
-  display: block;
-  width: 100%;
-  padding: 0.75rem;
-  font-size: 1rem;
-  border: 1px solid #ced4da;
-  border-radius: 4px;
-  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-  background-color: #fff;
-}
-
-.form-control:focus,
-.form-select:focus {
-  border-color: #86b7fe;
-  outline: 0;
-  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
-}
-
-.form-select {
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m1 6 7 7 7-7'/%3e%3c/svg%3e");
-  background-repeat: no-repeat;
-  background-position: right 0.75rem center;
-  background-size: 16px 12px;
-  padding-right: 2.5rem;
-}
-
-.mb-3 {
-  margin-bottom: 1rem;
-}
-
-/* Button Styles */
-.btn {
-  display: inline-block;
-  font-weight: 400;
-  text-align: center;
-  text-decoration: none;
-  vertical-align: middle;
+.modal-footer
+.form-btn{
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 8px;
   cursor: pointer;
-  border: 1px solid transparent;
-  padding: 0.5rem 1rem;
-  font-size: 1rem;
-  border-radius: 4px;
-  transition: all 0.15s ease-in-out;
+  font-size: 16px;
+  transition: background-color 0.3s;
 }
-
-.btn-primary {
-  color: #fff;
-  background-color: #0d6efd;
-  border-color: #0d6efd;
+.modal-footer
+.btn-secondary{
+  color: white;
 }
-
-.btn-primary:hover {
-  background-color: #0b5ed7;
-  border-color: #0a58ca;
+.mat-form-field.w-100 {
+  width: 100%;
+  margin-bottom: 16px;
 }
-
-.btn-primary:disabled {
-  border-color: #090b0c;
-  opacity: 0.65;
-  cursor: not-allowed;
-}
-
-.btn-secondary {
-  color: #fff;
-  background-color: #6c757d;
-  border-color: #6c757d;
+.w-100{
+  width: 100%;
 }
 
 
+
+/* =============================== */
 /* Animations */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
+/* =============================== */
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideIn { from { transform: translateY(-25px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+@media (min-width: 2560px) {
+  /* Increase container padding and spacing */
+  .main-content {
+    max-width: 2200px;
+    margin: 0 auto;
+    padding: 3rem;
+    border-radius: 30px;
   }
-  to {
-    opacity: 1;
+  .apply-leave-btn {
+    font-size: 1rem;
+    padding: 10px 20px;
+    height: 46px;
+    border-radius: 10px;
+    min-width: 130px;
+  }
+
+  /* Larger cards and spacing */
+  .leave-card {
+    flex: 1 1 22%;
+    padding: 2rem;
+    font-size: 1.1rem;
+  }
+
+  .page-title {
+    font-size: 2.2rem;
+    letter-spacing: 0.5px;
+  }
+
+  /* Table adjustments for readability */
+  .leave-table th,
+  .leave-table td {
+    padding: 18px 24px;
+    font-size: 1.05rem;
+  }
+
+  .leave-table th {
+    font-size: 1.1rem;
+  }
+
+  .leave-table {
+    max-width: 2200px;
+    margin: 0 auto;
+    border-spacing: 0 8px;
+  }
+
+  /* Buttons scaled proportionally */
+  .btn,
+  .btn-approve,
+  .btn-reject {
+    font-size: 1rem;
+    padding: 10px 20px;
+    border-radius: 10px;
+  }
+
+  /* Title bar and headers */
+  .header {
+    padding: 1.5rem 2rem;
+    font-size: 1.2rem;
+  }
+
+  /* Input & form scaling */
+  input,
+  select,
+  textarea {
+    font-size: 1.05rem;
+    padding: 12px 16px;
+  }
+
+  /* Modal adjustments */
+  .modal-dialog {
+    width: 60%;
+    max-width: 1800px;
   }
 }
 
-@keyframes slideIn {
-  from {
-    transform: translateY(-50px);
-    opacity: 0;
+
+
+@media (max-width: 1600px) {
+  .leave-card {
+    flex: 1 1 32%;
   }
-  to {
-    transform: translateY(0);
-    opacity: 1;
+}
+.apply-leave-btn {
+    font-size: 14px;
+    padding: 8px 16px;
+    height: 40px;
+  }
+
+/* 💻 Large desktops and wide laptops (max-width: 1400px) */
+@media (max-width: 1440px) {
+  .table-wrapper {
+    overflow-x: auto;
+    padding: 0 16px;
+  }
+  .apply-leave-btn {
+    font-size: 13px;
+    padding: 6px 12px;
+    height: 36px;
+    min-width: 100px;
+  }
+
+  .leave-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: auto; /* Let browser auto-adjust width for content */
+  }
+
+  /* Table Header */
+  .leave-table th {
+    background-color: #0b0c39;
+    color: white;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 14px 12px;
+    text-align: center;
+    white-space: nowrap; /* Prevent header text from breaking */
+    vertical-align: middle;
+  }
+
+  /* Table Data Cells */
+  .leave-table td {
+    font-size: 14px;
+    padding: 14px 12px;
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+  }
+
+  /* Allow only reason column to wrap */
+  .leave-table td:last-child {
+    white-space: normal;
+    word-wrap: break-word;
+    max-width: 220px;
+  }
+
+  /* Buttons */
+  .btn-approve,
+  .btn-reject {
+    display: inline-block;
+    font-size: 13px;
+    padding: 6px 12px;
+    min-width: 85px;
+    border-radius: 6px;
+    text-align: center;
+  }
+
+  /*Adjust table spacing */
+  .leave-table th,
+  .leave-table td {
+    border-bottom: 1px solid #e6e6e6;
+  }
+
+  /* Pagination */
+  .table-pagination {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
   }
 }
 
-/* Responsive Design */
-@media (max-width: 576px) {
+
+/* Medium laptops (992px - 1200px) */
+/* Fix: Make table fully visible without scrolling at ~1160px width */
+@media (max-width: 1200px) and (min-width: 1000px) {
+  .leave-card {
+    flex: 1 1 31%;
+    padding: 16px;
+    font-size: 0.95rem;
+  }
+  .apply-leave-btn {
+    font-size: 12px;
+    padding: 5px 10px;
+    height: 34px;
+    min-width: 90px;
+  }
+  .leave-table {
+    table-layout: fixed !important; /* fix layout to distribute space evenly */
+    width: 100%;
+  }
+
+  .leave-table th,
+  .leave-table td {
+    white-space: normal !important;  /* allow wrapping where needed */
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    font-size: 13px;                 /* slightly smaller for better fit */
+    padding: 10px 8px;
+    text-align: center;
+  }
+
+  /* 🔹 Set balanced widths for columns */
+  .leave-table th:nth-child(1),
+  .leave-table td:nth-child(1) { width: 10%; }  /* Employee ID */
+  .leave-table th:nth-child(2),
+  .leave-table td:nth-child(2) { width: 18%; }  /* Leave Type */
+  .leave-table th:nth-child(3),
+  .leave-table td:nth-child(3) { width: 12%; }  /* Duration */
+  .leave-table th:nth-child(4),
+  .leave-table td:nth-child(4) { width: 20%; }  /* Date */
+  .leave-table th:nth-child(5),
+  .leave-table td:nth-child(5) { width: 15%; }  /* Status */
+  .leave-table th:nth-child(6),
+  .leave-table td:nth-child(6) {
+    width: 25%;                     /* Reason column */
+    max-width: 200px;
+  }
+
+  /* 🔹 Compact action/status badges if any */
+  .status-badge {
+    font-size: 12px;
+    padding: 3px 8px;
+  }
+
+  /* 🔹 Buttons inside table */
+  .btn-approve,
+  .btn-reject {
+    font-size: 12px;
+    padding: 5px 10px;
+  }
+}
+/* ✅ Fix for ADMIN Leave Table (7 columns) to fit at ~1170px width */
+@media (max-width: 1250px) and (min-width: 1020px) {
+  /* Only target admin table using .admin-view wrapper */
+  .admin-view .leave-table {
+    table-layout: fixed !important;
+    width: 100%;
+  }
+  .apply-leave-btn {
+    font-size: 12px;
+    padding: 4px 7px;
+    height: 32px;
+    min-width: 85px;
+  }
+
+  .admin-view .leave-table th,
+  .admin-view .leave-table td {
+    white-space: normal !important;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    font-size: 13px;
+    padding: 8px 6px;
+    text-align: center;
+  }
+
+  /* ⚖️ Balanced column widths for 7 columns */
+  .admin-view .leave-table th:nth-child(1),
+  .admin-view .leave-table td:nth-child(1) { width: 8%; }   /* Employee ID */
+  .admin-view .leave-table th:nth-child(2),
+  .admin-view .leave-table td:nth-child(2) { width: 15%; }  /* Leave Type */
+  .admin-view .leave-table th:nth-child(3),
+  .admin-view .leave-table td:nth-child(3) { width: 9%; }   /* Duration */
+  .admin-view .leave-table th:nth-child(4),
+  .admin-view .leave-table td:nth-child(4) { width: 17%; }  /* Date */
+  .admin-view .leave-table th:nth-child(5),
+  .admin-view .leave-table td:nth-child(5) { width: 11%; }  /* Status */
+  .admin-view .leave-table th:nth-child(6),
+  .admin-view .leave-table td:nth-child(6) {
+    width: 23%;
+    max-width: 180px;                                       /* Reason */
+  }
+  .admin-view .leave-table th:nth-child(7),
+  .admin-view .leave-table td:nth-child(7) { width: 17%; }  /* Action */
+
+  /* 🧩 Compact buttons so they fit in Action column */
+  .admin-view .leave-table .btn-approve,
+  .admin-view .leave-table .btn-reject {
+    font-size: 12px;
+    padding: 4px 7px;
+    min-width: 65px;
+    margin: 2px;
+  }
+
+  /* Keep buttons on one line */
+  .admin-view .leave-table td:last-child {
+    white-space: nowrap !important;
+  }
+}
+
+
+
+@media (max-width: 1024px) {
+  /* 🌐 Main content adjustments */
+  .main-content {
+    padding: 1.2rem;
+    border-radius: 15px;
+  }
+    .apply-leave-btn {
+    font-size: 13px;
+    padding: 6px 12px;
+    border-radius: 6px;
+  }
+  
+ .header {
+
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+ 
+  margin-bottom: 1px;
+}
+  /* 🏷️ Page title */
+  .page-title {
+    font-size: 20px;
+  }
+
+  /* 🧩 Cards layout */
+  .leave-cards-grid {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+  }
+
+  .leave-card {
+    flex: 1 1 30%;
+    padding: 1rem;
+    font-size: 0.95rem;
+  }
+
+  /* 📦 Table section */
+  .table-section {
+    width: 100%;
+    background: #ffffff;
+    border-radius: 15px;
+    padding: 15px 18px;
+    box-sizing: border-box;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+    margin-top: 20px;
+  }
+
+  /* 🧾 Wrapper */
+  .table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    border-radius: 12px;
+    background: #fff;
+    padding: 0;
+    margin: 0;
+  }
+
+  /* 📊 Leave Table */
+  .leave-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: auto; /* Important: keeps columns proportional */
+    margin: 0;
+  }
+
+  .leave-table th {
+    background-color: #0a0f3c;
+    color: #fff;
+    font-weight: 600;
+    padding: 12px 10px;
+    font-size: 13px;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  .leave-table td {
+    padding: 10px;
+    font-size: 13px;
+    text-align: center;
+    vertical-align: middle;
+    word-wrap: break-word;
+  }
+
+  /* Make columns consistent for user & admin */
+  .leave-table th:nth-child(1),
+  .leave-table td:nth-child(1) {
+    width: 10%;
+  }
+
+  .leave-table th:nth-child(2),
+  .leave-table td:nth-child(2) {
+    width: 15%;
+  }
+
+  .leave-table th:nth-child(3),
+  .leave-table td:nth-child(3) {
+    width: 10%;
+  }
+
+  .leave-table th:nth-child(4),
+  .leave-table td:nth-child(4) {
+    width: 20%;
+  }
+
+  .leave-table th:nth-child(5),
+  .leave-table td:nth-child(5) {
+    width: 10%;
+  }
+
+  .leave-table th:nth-child(6),
+  .leave-table td:nth-child(6) {
+    width: 25%;
+  }
+
+  /* ✅ Handle missing Action column for user view */
+  .leave-table.employee-view th,
+  .leave-table.employee-view td {
+    width: auto;
+  }
+
+  /* ✅ Buttons inside table */
+  .btn,
+  .btn-approve,
+  .btn-reject {
+    font-size: 13px;
+    padding: 6px 12px;
+    border-radius: 6px;
+  }
+
+  /* 🧭 Header section */
+  /* .header {
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 10px;
+  } */
+
+  /* 🔍 Filters */
+  .table-controls {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .search-input,
+  .filter-select {
+    width: 100%;
+  }
+
+  /* 🪟 Modal */
+  .modal-dialog {
+    width: 100%;
+    margin: 20px auto;
+  }
+
+  /* 📄 Pagination fix */
+  .table-pagination {
+    background: #f8f9fa;
+    border-top: 1px solid #ddd;
+    border-radius: 0 0 12px 12px;
+    padding: 10px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 5px;
+  }
+  
+
+  .table-pagination button {
+    padding: 6px 12px;
+  }
+
+  .table-pagination span {
+    font-size: 13px;
+  }
+}
+/* ✅ Fix Action buttons wrapping for screens between 1250px–1300px */
+@media (min-width: 1250px) and (max-width: 1300px) {
+  .admin-view .leave-table th,
+  .admin-view .leave-table td {
+    font-size: 13px;
+    padding: 10px 8px;
+    text-align: center;
+    vertical-align: middle;
+  }
+  .apply-leave-btn {
+    font-size: 12px;
+    padding: 4px 7px;
+    height: 32px;
+    min-width: 85px;
+  }
+
+  /* Adjust column widths neatly */
+  .admin-view .leave-table th:nth-child(1),
+  .admin-view .leave-table td:nth-child(1) { width: 8%; }
+  .admin-view .leave-table th:nth-child(2),
+  .admin-view .leave-table td:nth-child(2) { width: 15%; }
+  .admin-view .leave-table th:nth-child(3),
+  .admin-view .leave-table td:nth-child(3) { width: 9%; }
+  .admin-view .leave-table th:nth-child(4),
+  .admin-view .leave-table td:nth-child(4) { width: 17%; }
+  .admin-view .leave-table th:nth-child(5),
+  .admin-view .leave-table td:nth-child(5) { width: 10%; }
+  .admin-view .leave-table th:nth-child(6),
+  .admin-view .leave-table td:nth-child(6) { width: 21%; }
+  .admin-view .leave-table th:nth-child(7),
+  .admin-view .leave-table td:nth-child(7) {
+    width: 20%;
+    white-space: nowrap !important;
+  }
+
+  /* Keep Approve & Reject perfectly inline */
+  .admin-view .leave-table .btn-approve,
+  .admin-view .leave-table .btn-reject {
+    font-size: 12.5px;
+    padding: 5px 10px;
+    display: inline-block;
+    min-width: 75px;
+    margin: 2px 4px;
+    vertical-align: middle;
+  }
+}
+/* ✅ Admin view fix for tablet widths (iPad / 820px range) */
+
+
+/* ✅ Fix cramped Action buttons around 1024px width */
+@media (max-width: 1050px) and (min-width: 900px) {
+  .admin-view .leave-table {
+    table-layout: fixed !important;
+    width: 100%;
+  }
+  .apply-leave-btn {
+    font-size: 11px;
+    padding: 3px 6px;
+    min-width: 65px;
+    height: 20px;
+  }
+
+  .admin-view .leave-table th,
+  .admin-view .leave-table td {
+    font-size: 12px;
+    padding: 6px 5px;
+  }
+
+  /* ⚖️ Adjust widths for better fit */
+  .admin-view .leave-table th:nth-child(1),
+  .admin-view .leave-table td:nth-child(1) { width: 7%; }   /* Employee ID */
+  .admin-view .leave-table th:nth-child(2),
+  .admin-view .leave-table td:nth-child(2) { width: 14%; }  /* Leave Type */
+  .admin-view .leave-table th:nth-child(3),
+  .admin-view .leave-table td:nth-child(3) { width: 8%; }   /* Duration */
+  .admin-view .leave-table th:nth-child(4),
+  .admin-view .leave-table td:nth-child(4) { width: 17%; }  /* Date */
+  .admin-view .leave-table th:nth-child(5),
+  .admin-view .leave-table td:nth-child(5) { width: 10%; }  /* Status */
+  .admin-view .leave-table th:nth-child(6),
+  .admin-view .leave-table td:nth-child(6) { width: 22%; }  /* Reason */
+  .admin-view .leave-table th:nth-child(7),
+  .admin-view .leave-table td:nth-child(7) { width: 22%; }  /* Action */
+
+  /* 🧩 Make buttons fit neatly */
+  .admin-view .leave-table .btn-approve,
+  .admin-view .leave-table .btn-reject {
+    font-size: 11px;
+    padding: 3px 6px;
+    min-width: 65px;
+    display: inline-block;
+  }
+
+  /* Add spacing between buttons */
+  .admin-view .leave-table td:last-child .btn-reject {
+    margin-left: 4px;
+  }
+}
+
+
+
+
+
+/* 📱 Tablets and small laptops (768px - 992px) */
+@media (max-width: 992px) {
+  .leave-card {
+    flex: 1 1 25%;
+  }
+
+  .header {
+    
+    display: flex;
+    align-items: flex-end;
+  }
+
+  .table-controls {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .search-input,
+  .filter-select {
+    width: 100%;
+  }
+
+  .page-title {
+    font-size: 20px;
+  }
+
+  .modal-dialog {
+    width: 85%;
+  }
+
+  .leave-table th,
+  .leave-table td {
+    padding: 10px;
+    font-size: 13px;
+  }
+}
+
+/* 📲 Mobile devices (480px - 768px) */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  /* Hide original table headers */
+  .leave-table thead {
+    display: none;
+  }
+
+  /* Display table as block cards */
+  .leave-table,
+  .leave-table tbody,
+  .leave-table tr,
+  .leave-table td {
+    display: block;
+    width: 100%;
+  }
+
+  /* Each row becomes a card */
+  .leave-table tr {
+    background-color: #ffffff;
+    margin-bottom: 16px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    overflow: hidden;
+    padding: 12px 14px;
+  }
+
+  /* Each cell behaves like a labeled line */
+  .leave-table td {
+    text-align: left;
+    padding: 8px 0;
+    border: none;
+    position: relative;
+    font-size: 13px;
+    line-height: 1.4;
+  }
+
+  /* Add pseudo-labels using the header text */
+  .leave-table td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #0a0f3c;
+    display: block;
+    margin-bottom: 4px;
+    font-size: 13px;
+  }
+
+  /* Status color adjustments */
+  .status-approved { color: #28a745; }
+  .status-pending { color: #856404; }
+  .status-rejected { color: #dc3545; }
+
+  /* Buttons stacked neatly */
+  td .btn-approve,
+  td .btn-reject {
+    display: inline-block;
+    margin-right: 6px;
+    margin-top: 6px;
+    font-size: 12px;
+    padding: 6px 10px;
+  }
+
+  /* Compact pagination */
+  .table-pagination {
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+  .apply-leave-btn {
+    width: 100%;
+    max-width: 250px;
+    font-size: 12px;
+    padding: 6px 10px;
+    height: 30px;
+    margin-top: 6px;
+  }
+}
+/* 📱 Tablet-style card layout for admin view between 768px–900px */
+@media (min-width: 768px) and (max-width: 900px) {
+  .admin-view .header {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  /* Hide original table headers */
+  .admin-view .leave-table thead {
+    display: none;
+  }
+
+  /* Display table as block cards */
+  .admin-view .leave-table,
+  .admin-view .leave-table tbody,
+  .admin-view .leave-table tr,
+  .admin-view .leave-table td {
+    display: block;
+    width: 100%;
+  }
+
+  /* Each row becomes a card */
+  .admin-view .leave-table tr {
+    background-color: #ffffff;
+    margin-bottom: 14px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    padding: 12px 14px;
+  }
+
+  /* Each cell behaves like a labeled line */
+  .admin-view .leave-table td {
+    text-align: left;
+    padding: 8px 0;
+    border: none;
+    position: relative;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  /* Add pseudo-labels for clarity */
+  .admin-view .leave-table td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #0a0f3c;
+    display: block;
+    margin-bottom: 4px;
+    font-size: 13px;
+  }
+
+  /* Status color adjustments */
+  .status-approved { color: #28a745; }
+  .status-pending { color: #856404; }
+  .status-rejected { color: #dc3545; }
+
+  /* Buttons neatly aligned */
+  .admin-view .leave-table td:last-child {
+    text-align: center;
+    margin-top: 8px;
+  }
+
+  .admin-view .leave-table .btn-approve,
+  .admin-view .leave-table .btn-reject {
+    display: inline-block;
+    margin: 6px 6px 0 0;
+    font-size: 12px;
+    padding: 6px 12px;
+    min-width: 80px;
+    height: 32px;
+    border-radius: 6px;
+  }
+
+  /* Apply leave button matches the same style */
+  .apply-leave-btn {
+    width: 100%;
+    max-width: 280px;
+    font-size: 12px;
+    padding: 6px 12px;
+    height: 32px;
+    margin-top: 8px;
+    align-self: center;
+  }
+
+  /* Compact pagination alignment */
+  .table-pagination {
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+}
+
+
+/* 📞 Small mobile devices (320px - 480px) */
+@media (max-width: 480px) {
+  .header {
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+   .apply-leave-btn {
+    width: 100%;
+    max-width: 250px;
+    font-size: 11px;
+    padding: 9px 10px;
+    height: 36px;
+  }
+
+  .page-title {
+    font-size: 18px;
+    text-align: center;
+  }
+
+  .date-text {
+    font-size: 12px;
+    padding: 4px 10px;
+  }
+
+  .leave-card {
+    width: 100%;
+    padding: 14px;
+    border-radius: 10px;
+  }
+
+  .leave-table th,
+  .leave-table td {
+    padding: 6px 5px;
+    font-size: 11px;
+  }
+
+  .table-pagination {
+    flex-direction: column;
+    gap: 10px;
+  }
+
   .modal-dialog {
     width: 95%;
-    margin: 1rem;
+    margin: 10px;
   }
 
-  .modal-header,
-  .modal-body,
-  .modal-footer {
-    padding: 1rem;
+  .apply-leave-btn,
+  .btn-approve,
+  .btn-reject {
+    width: 100%;
+    max-width: 250px;
+    font-size: 11px;
+    padding: 9px 10px;
+  }
+
+
+  td {
+    white-space: normal;
   }
 }
+
+/* 🖥️ Ultra-wide screens (≥1600px) */
+@media (min-width: 1600px) {
+  .main-content {
+    max-width: 1600px;
+    margin: auto;
+  }
+
+  .leave-card {
+    flex: 1 1 25%;
+  }
+
+  .page-title {
+    font-size: 26px;
+  }
+}
+
