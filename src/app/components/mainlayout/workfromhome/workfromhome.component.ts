@@ -17,6 +17,8 @@ export class WorkfromhomeComponent implements OnInit {
   showApplyForm: boolean = false;
   approvedRequests: any[] = [];
   approvalDetails: any[] = [];
+  isProcessing: boolean = false;
+loadingStatus: { [key: number]: 'approve' | 'reject' | null } = {};
 
   canApplyWfh: boolean = true;
 
@@ -36,11 +38,14 @@ export class WorkfromhomeComponent implements OnInit {
     console.log(this.approvalDetails)
   }
 
+  // getMonthName(): string {
+  //   return new Date(this.year, this.currentMonthIndex).toLocaleString('default', { month: 'long' });
+  // }
   getMonthName(): string {
-  const monthName = new Date(this.year, this.currentMonthIndex)
-    .toLocaleString('default', { month: 'long' });
-  return monthName.substring(0, 3); 
-}
+    const monthName = new Date(this.year, this.currentMonthIndex)
+      .toLocaleString('default', { month: 'long' })
+    return monthName.substring(0, 3);
+  }
 
 
   nextMonth() {
@@ -89,6 +94,15 @@ export class WorkfromhomeComponent implements OnInit {
         for (const req of requests) {
           const from = new Date(req.fromDate);
           const to = new Date(req.toDate);
+
+             const fromNextDay = new Date(from);
+              fromNextDay.setDate(from.getDate() + 1);
+              req.fromNextDay = fromNextDay;
+
+                const toNextDay = new Date(to);
+              toNextDay.setDate(to.getDate() + 1);
+              req.toNextDay = toNextDay;
+
           const diffTime = to.getTime() - from.getTime();
           const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1; // inclusive count
           req.days = diffDays;
@@ -144,14 +158,23 @@ export class WorkfromhomeComponent implements OnInit {
       .subscribe({
         next: (response) => {
           this.approvalDetails = response?.body || response || [];
-        
+
           for (const req of this.approvalDetails) {
-          const from = new Date(req.fromDate);
-          const to = new Date(req.toDate);
-          const diffTime = to.getTime() - from.getTime();
-          const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1; // inclusive count
-          req.days = diffDays;
-        }
+            const from = new Date(req.fromDate);
+            const to = new Date(req.toDate);
+
+             const fromNextDay = new Date(from);
+              fromNextDay.setDate(from.getDate() + 1);
+              req.fromNextDay = fromNextDay;
+
+                const toNextDay = new Date(to);
+              toNextDay.setDate(to.getDate() + 1);
+              req.toNextDay = toNextDay;
+
+            const diffTime = to.getTime() - from.getTime();
+            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1; // inclusive count
+            req.days = diffDays;
+          }
 
           if (this.isAdmin) {
             this.approvalDetails = this.approvalDetails.filter((r: any) => r.status === 'pending');
@@ -180,6 +203,16 @@ export class WorkfromhomeComponent implements OnInit {
           for (const req of allRequests) {
             const from = new Date(req.fromDate);
             const to = new Date(req.toDate);
+
+             const fromNextDay = new Date(from);
+              fromNextDay.setDate(from.getDate() + 1);
+              req.fromNextDay = fromNextDay;
+
+                const toNextDay = new Date(to);
+              toNextDay.setDate(to.getDate() + 1);
+              req.toNextDay = toNextDay;
+
+
             const diffTime = to.getTime() - from.getTime();
             const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1; // inclusive count
             req.days = diffDays;
@@ -213,8 +246,10 @@ export class WorkfromhomeComponent implements OnInit {
   }
 
 
-  updateStatus(request: any, newStatus: 'approved' | 'rejected' | 'pending'): void {
+  updateStatus(request: any, newStatus: 'approved' | 'rejected' |'pending'): void {
     if (!this.isAdmin) return;
+
+ this.loadingStatus[request.requestId] = newStatus === 'approved' ? 'approve' : 'reject';
 
     const updatedRequest = {
       ...request,
@@ -230,12 +265,14 @@ export class WorkfromhomeComponent implements OnInit {
         this.refreshRequests();
 
         this.snackBar.open(`WFH Request ${request.requestId} status updated to ${newStatus.toUpperCase()}`, 'Close', {
-          duration: 3000,
+          duration: 2000,
           horizontalPosition: 'center',
           verticalPosition: 'top',
           panelClass: ['error-snackbar']
         }
         );
+
+this.loadingStatus[request.requestId] = null;
       },
       error: (error) => {
         console.error('Error updating status:', error);
@@ -245,12 +282,16 @@ export class WorkfromhomeComponent implements OnInit {
           verticalPosition: 'top',
           panelClass: ['error-snackbar']
         });
+          this.loadingStatus[request.requestId] = null;
       }
     });
   }
 
   applyWfh() {
-    
+    //     if (!this.canApplyWfh) {
+    //   alert('You already have an approved WFH period. You can apply again after your current WFH ends.');
+    //   return;
+    // }
     this.showApplyForm = true;
   }
 
