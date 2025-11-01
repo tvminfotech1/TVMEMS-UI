@@ -401,7 +401,7 @@
           </li>
 
           <!-- Add Job Opening -->
-          <li class="dropdown" *ngIf="isAdmin">
+          <li class="dropdown">
             <button
               class="nav-button"
               [ngClass]="{
@@ -412,7 +412,8 @@
               aria-controls="addJobDropdown"
               aria-haspopup="true"
             >
-              <span class="material-icons">add_business</span> Add Job Opening
+              <span *ngIf="isAdmin"><span class="material-icons">add_business</span> Add Job Opening</span>
+              <span *ngIf="isUser"><span class="material-icons">add_business</span> Job Opening Details</span>
               <span class="accordion-icon">
                 {{ showAddJobDropdown ? "⯆" : "⯈" }}
               </span>
@@ -423,13 +424,22 @@
               id="addJobDropdown"
             >
               <ul class="dropdown-list">
-                <li>
+                <li *ngIf="isAdmin">
                   <a
                     routerLink="addopening"
                     class="nav-link sub"
                     routerLinkActive="active-sub-link"
                     [routerLinkActiveOptions]="{ exact: true }"
                     ><span class="material-icons">add_box</span> Add Opening</a
+                  >
+                </li>
+                <li>
+                  <a
+                    routerLink="seeJobOpening"
+                    class="nav-link sub"
+                    routerLinkActive="active-sub-link"
+                    [routerLinkActiveOptions]="{ exact: true }"
+                    ><span class="material-icons">work_outline</span> All Job Openings</a
                   >
                 </li>
               </ul>

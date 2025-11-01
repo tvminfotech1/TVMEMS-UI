@@ -6,15 +6,15 @@
         <th>SL NO</th>
         <th>HOLIDAY NAME</th>
         <th>DATE</th>
-        <th>DAY</th>
+        <th>DESCRIPTION</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let holiday of holidays">
-        <td>{{ holiday.sl }}</td>
+      <tr *ngFor="let holiday of holidays;let i = index">
+        <td>{{ i + 1 }}</td>
         <td>{{ holiday.name }}</td>
         <td>{{ holiday.date }}</td>
-        <td>{{ holiday.day }}</td>
+        <td>{{ holiday.day_Name }}</td>
       </tr>
     </tbody>
   </table>

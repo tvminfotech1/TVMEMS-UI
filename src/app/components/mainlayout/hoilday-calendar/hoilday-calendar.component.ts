@@ -9,10 +9,12 @@ import { HttpClient } from '@angular/common/http';
 export class HoildayCalendarComponent implements OnInit {
   holidays: any[] = [];
 
+  private apiUrl = 'http://localhost:8080/Holiday';
+
   constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
-    this.http.get<any[]>('assets/holidays.json').subscribe(data => {
+    this.http.get<any[]>(this.apiUrl).subscribe(data => {
       this.holidays = data;
     });
   }
