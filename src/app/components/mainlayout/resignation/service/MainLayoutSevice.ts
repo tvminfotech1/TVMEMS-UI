@@ -16,4 +16,16 @@ export class MainLayoutService {
   postJobPostings(job: JobPosting): Observable<JobPosting> {
     return this.http.post<JobPosting>(this.apiUrl, job);
   }
+
+  getJobPosting(): Observable<any>{
+    return this.http.get<any>(this.apiUrl);
+  }
+
+  updateJobPosting(job: any): Observable<any> {
+    return this.http.put<any>(this.apiUrl+`/${job.id}`, job);
+  }
+
+  deleteJobPosting(jobPostId: any): Observable<any> {
+    return this.http.delete<any>(this.apiUrl+`/${jobPostId}`);
+  }
 }

@@ -77,6 +77,7 @@ import { AdminAttendanceComponent } from './components/mainlayout/admin-attendan
 import { AddAnnouncementComponent } from './components/mainlayout/add-announcement/add-announcement.component';
 import { AuthGuard } from './guards/auth.guard';
 import { MyProfileComponent } from './components/mainlayout/my-profile/my-profile.component';
+import { JobOpeningListComponent } from './components/mainlayout/job-opening-list/job-opening-list.component';
 
 
 const routes: Routes = [
@@ -130,6 +131,7 @@ const routes: Routes = [
       {path:'attendance', component:AttendanceComponent,canActivate: [AuthGuard],},
       {path:'attendance-approval',component:AdminAttendanceComponent,canActivate:[AuthGuard]},
       {path:'addopening', component:AddOpeningComponent,canActivate: [adminAuthGuard],},
+      {path:'seeJobOpening', component:JobOpeningListComponent},
       {path:'goal', component:GoalComponent,canActivate: [AuthGuard],},
       { path: 'add-announcement', component: AddAnnouncementComponent,canActivate: [adminAuthGuard], },
 

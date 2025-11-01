@@ -1,0 +1,175 @@
+.page-container {
+  max-width: 1100px;
+  margin: 40px auto;
+  padding: 10px;
+  font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+}
+
+.page-title {
+  text-align: center;
+  font-size: 26px;
+  color: #222;
+  margin-bottom: 25px;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+  gap: 20px;
+  align-items: stretch;
+}
+
+.job-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  transition: all 0.2s ease;
+  padding: 18px;
+  min-height: 420px; /* keeps all cards equal height */
+}
+
+.job-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.12);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 8px;
+  margin-bottom: 12px;
+}
+
+.header h2 {
+  font-size: 18px;
+  color: #007bff;
+  margin: 0;
+}
+
+.status {
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.status.open {
+  background-color: #e6f9ee;
+  color: #2ecc71;
+}
+
+.status.closed {
+  background-color: #fdecea;
+  color: #c0392b;
+}
+
+.details p {
+  margin: 4px 0;
+  font-size: 14px;
+  color: #444;
+}
+
+.section {
+  margin-top: 10px;
+}
+
+.section h3 {
+  color: #333;
+  font-size: 14px;
+  border-left: 3px solid #007bff;
+  padding-left: 8px;
+  margin-bottom: 4px;
+}
+
+.list-text {
+  background: #f7f9fc;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  color: #555;
+  margin: 0;
+}
+
+.desc {
+  background: #f9fafc;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  color: #555;
+  margin: 0;
+}
+
+/* --- Buttons --- */
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: auto;
+  border-top: 1px solid #eee;
+  padding-top: 10px;
+}
+
+button {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  border: none;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: 6px;
+  padding: 6px 10px;
+  transition: background 0.2s ease;
+}
+
+.edit-btn {
+  background: #e8f2ff;
+  color: #007bff;
+}
+
+.edit-btn:hover {
+  background: #007bff;
+  color: #fff;
+}
+
+.delete-btn {
+  background: #fdeaea;
+  color: #c0392b;
+}
+
+.delete-btn:hover {
+  background: #c0392b;
+  color: #fff;
+}
+
+.material-icons {
+  font-size: 16px;
+  vertical-align: middle;
+}
+
+.loader {
+  border: 6px solid #f3f3f3;
+  border-top: 6px solid #007bff;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  margin: 50px auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.no-data {
+  text-align: center;
+  color: #777;
+  font-size: 16px;
+}
