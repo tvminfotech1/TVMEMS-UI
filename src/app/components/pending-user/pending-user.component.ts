@@ -10,7 +10,7 @@ import { PendingUserService } from 'src/app/services/pending-user.service';
   styleUrls: ['./pending-user.component.css']
 })
 export class PendingUserComponent {
-  searchText: string = '';
+  searchText: string = '';  
   details: any[] = [];
   filteredUser:any[]=[];
   isAdmin = false;
@@ -34,7 +34,9 @@ export class PendingUserComponent {
   fetchPendingUsers(){
     this.pendingUserService.getUserPending().subscribe({
       next:(response)=>{
-        this.details= response.body || [];
+       this.details= (response.body || []).filter(
+        (u:any)=> u.role && u.role.includes('ROLE_USER')
+      );
         console.log('pending user request :', this.details);
       },
       error:(err)=>{
@@ -44,7 +46,7 @@ export class PendingUserComponent {
     });
   }
   
-
+ 
   get filteredUsers() {
     if(!this.searchText) return this.details;
     return this.details.filter(req=>
