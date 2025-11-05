@@ -13,8 +13,8 @@ export class SalaryHistoryService {
 
   constructor(private http: HttpClient) {}
 
-  getAllSalaryHistory(): Observable<SalaryHistory[]> {
-    return this.http.get<SalaryHistory[]>(this.apiUrl);
+  getAllSalaryHistory(): Observable<any> {
+    return this.http.get<any>(this.apiUrl);
   }
 
   // getSalaryHistoryByEmployeeId(employeeId: string): Observable<SalaryHistory[]> {
@@ -35,5 +35,12 @@ export class SalaryHistoryService {
 
   deleteSalaryHistory(id: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/${id}`);
+  }
+
+  downloadSalarySlip(id: number,month: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/generate-payslip/${id}`, {
+      params: { month },
+      responseType: 'blob'
+    });
   }
 }

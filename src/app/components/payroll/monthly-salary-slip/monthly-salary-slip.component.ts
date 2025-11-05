@@ -29,7 +29,8 @@ export class MonthlySalarySlipComponent implements OnInit {
 
   if (salaryId && empId !== null) {
     this.salaryService.getAllSalaryHistory().subscribe(salaries => {
-      const record = salaries.find(s => s.salaryId === salaryId && s.id === empId);
+      const recordSalaris:SalaryHistory[] = salaries.body;
+      const record = recordSalaris.find(s => s.salaryId === salaryId && s.id === empId);
       if (record) {
         this.salary = record;
         this.employeeService.getEmployeeById(record.id).subscribe(emp => {

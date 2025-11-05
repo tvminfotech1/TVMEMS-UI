@@ -33,7 +33,8 @@ ngOnInit(): void {
     });
 
     this.salaryService.getAllSalaryHistory().subscribe(salaries => {
-      this.salaryHistory = salaries.filter(s =>
+      const recordSalaris:SalaryHistory[] = salaries.body;
+      this.salaryHistory = recordSalaris.filter(s =>
         s.id === empId &&
         (!selectedYear || s.year.toString() === selectedYear)
       );
