@@ -32,3 +32,11 @@ export interface Employee {
   profileImageUrl: string;
   bankDetails: BankDetails; 
 }
+
+export interface Payruns {
+  employeeId: number;
+  employeeName: string;
+  profileImageUrl: string;
+  accountNumber: string;
+  status: string;
+}

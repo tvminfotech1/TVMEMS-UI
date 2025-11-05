@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { Employee } from '../models/employee';
-import { catchError, map } from 'rxjs/operators';
+import { tap, catchError, map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -48,5 +48,19 @@ export class PayrollEmployeeService {
   // ✅ Update employee status (PATCH)
   updateEmployeeStatus(id: number, status: string): Observable<any> {
     return this.http.patch(`${this.apiUrl}/${id}/status`, { status });
+  }
+
+  getPayRunData(month: string): Observable<any[]> {
+    return this.http
+      .get<any[]>(`${this.apiUrl}/getPayRunData`, {
+        params: { month },
+      })
+      .pipe(
+        tap((data) => console.log('Pay Run Data from API:', data)),
+        catchError((err) => {
+          console.error('Error fetching Pay Run Data', err);
+          return of([]);
+        })
+      );
   }
 }
