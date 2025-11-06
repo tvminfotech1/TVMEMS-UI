@@ -668,6 +668,69 @@
       </mat-error>
     </mat-form-field>
 
+        <!-- Relevant Experience (Years) -->
+    <mat-form-field appearance="outline" class="custom-form-field">
+      <mat-label>Relevant Experience (Years)</mat-label>
+      <mat-select formControlName="relevantYear" class="input-padding">
+        <mat-option value="">Select year</mat-option>
+        <mat-option
+          *ngFor="let y of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]"
+          [value]="y"
+          >{{ y }}</mat-option
+        >
+      </mat-select>
+      <mat-error
+        *ngIf="
+          userForm.get('relevantYear')?.touched &&
+          userForm.get('relevantYear')?.hasError('required')
+        "
+      >
+        Relevant year is required
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Previous Experience (Years) -->
+    <mat-form-field appearance="outline" class="custom-form-field">
+      <mat-label>Previous Experience (Years)</mat-label>
+      <mat-select formControlName="exp_year" class="input-padding">
+        <mat-option value="">Select year</mat-option>
+        <mat-option
+          *ngFor="let y of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]"
+          [value]="y"
+          >{{ y }}</mat-option
+        >
+      </mat-select>
+      <mat-error
+        *ngIf="
+          userForm.get('exp_year')?.touched &&
+          userForm.get('exp_year')?.hasError('required')
+        "
+      >
+        Year is required
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Previous Experience (Months) -->
+    <mat-form-field appearance="outline" class="custom-form-field">
+      <mat-label>Previous Experience (Months)</mat-label>
+      <mat-select formControlName="exp_month" class="input-padding">
+        <mat-option value="">Select month</mat-option>
+        <mat-option
+          *ngFor="let m of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]"
+          [value]="m"
+          >{{ m }}</mat-option
+        >
+      </mat-select>
+      <mat-error
+        *ngIf="
+          userForm.get('exp_month')?.touched &&
+          userForm.get('exp_month')?.hasError('required')
+        "
+      >
+        Month is required
+      </mat-error>
+    </mat-form-field>
+
     <!-- Emergency Contact Name & Address -->
     <mat-form-field appearance="outline" class="full-width custom-form-field">
       <mat-label>Emergency Contact Name & Address</mat-label>
@@ -735,68 +798,7 @@
       </mat-error>
     </mat-form-field>
 
-    <!-- Relevant Experience (Years) -->
-    <mat-form-field appearance="outline" class="custom-form-field">
-      <mat-label>Relevant Experience (Years)</mat-label>
-      <mat-select formControlName="relevantYear" class="input-padding">
-        <mat-option value="">Select year</mat-option>
-        <mat-option
-          *ngFor="let y of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]"
-          [value]="y"
-          >{{ y }}</mat-option
-        >
-      </mat-select>
-      <mat-error
-        *ngIf="
-          userForm.get('relevantYear')?.touched &&
-          userForm.get('relevantYear')?.hasError('required')
-        "
-      >
-        Relevant year is required
-      </mat-error>
-    </mat-form-field>
 
-    <!-- Previous Experience (Years) -->
-    <mat-form-field appearance="outline" class="custom-form-field">
-      <mat-label>Previous Experience (Years)</mat-label>
-      <mat-select formControlName="exp_year" class="input-padding">
-        <mat-option value="">Select year</mat-option>
-        <mat-option
-          *ngFor="let y of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]"
-          [value]="y"
-          >{{ y }}</mat-option
-        >
-      </mat-select>
-      <mat-error
-        *ngIf="
-          userForm.get('exp_year')?.touched &&
-          userForm.get('exp_year')?.hasError('required')
-        "
-      >
-        Year is required
-      </mat-error>
-    </mat-form-field>
-
-    <!-- Previous Experience (Months) -->
-    <mat-form-field appearance="outline" class="custom-form-field">
-      <mat-label>Previous Experience (Months)</mat-label>
-      <mat-select formControlName="exp_month" class="input-padding">
-        <mat-option value="">Select month</mat-option>
-        <mat-option
-          *ngFor="let m of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]"
-          [value]="m"
-          >{{ m }}</mat-option
-        >
-      </mat-select>
-      <mat-error
-        *ngIf="
-          userForm.get('exp_month')?.touched &&
-          userForm.get('exp_month')?.hasError('required')
-        "
-      >
-        Month is required
-      </mat-error>
-    </mat-form-field>
     <div class="full-width button-group">
       <button type="submit" class="update-button">Next &raquo;</button>
     </div>

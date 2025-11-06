@@ -10,9 +10,8 @@
       (input)="onSearch()"
     />
 
-    <input type="month" [(ngModel)]="selectedMonth" />
+    <input type="month" [(ngModel)]="selectedMonth" (change)="onMonthChange()"/>
   </div>
-
   <!-- Salary Table -->
   <div class="table-responsive">
     <table class="salary-table">
@@ -26,32 +25,17 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let emp of filteredEmployees">
-          <td>{{ emp.id }}</td>
+        <tr *ngFor="let emp of payruns">
+          <td>{{ emp.employeeId }}</td>
           <td>
-            <div class="name-photo">
-              <img
-                [src]="emp.profileImageUrl || 'https://via.placeholder.com/40'"
-                class="avatar"
-                alt="Profile"
-              />
-              <span>{{ emp.firstName }} {{ emp.lastName }}</span>
+            <div>
+              <span>{{ emp.employeeName}}</span>
             </div>
           </td>
-          <td>{{ emp.bankDetails.accountNumber }}</td>
+          <td>{{ emp.accountNumber }}</td>
+          <td>{{ emp.status }}</td>
           <td>
-            <span class="status-badge" [ngClass]="isPaid(emp.id) ? 'paid' : 'pending'">
-              {{ isPaid(emp.id) ? 'Paid' : 'Pending' }}
-            </span>
-          </td>
-          <td class="view-slip">
-            <button
-              class="btn-slip"
-              [ngClass]="isSalaryGenerated(emp) ? 'btn-view' : 'btn-generate'"
-              (click)="viewOrGenerateSalary(emp)"
-            >
-              <i class="ri-article-line"></i>
-              {{ isSalaryGenerated(emp) ? "View" : "Generate" }}
+            <button class="btn-slip" (click)="viewOrGenerateSalary(emp)"><i class="ri-download-line"></i>
             </button>
           </td>
         </tr>

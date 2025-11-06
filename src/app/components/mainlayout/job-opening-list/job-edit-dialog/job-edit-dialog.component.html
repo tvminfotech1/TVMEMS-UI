@@ -1,0 +1,40 @@
+<h2 mat-dialog-title>Edit Job</h2>
+
+<div mat-dialog-content>
+  <label>Title</label>
+  <input type="text" [(ngModel)]="editableJob.title">
+
+  <label>Location</label>
+  <input type="text" [(ngModel)]="editableJob.location">
+
+  <label>Experience</label>
+  <input type="text" [(ngModel)]="editableJob.experience">
+
+  <label>Year Of Passout</label>
+  <input type="text" [(ngModel)]="editableJob.yearOfPassout">
+
+  <label>Qualifications (comma separated)</label>
+  <input type="text"
+         [ngModel]="editableJob.qualifications?.join(', ')"
+         (ngModelChange)="onQualificationChange($event)">
+
+  <label>Skills (comma separated)</label>
+  <input type="text"
+         [ngModel]="editableJob.skills?.join(', ')"
+         (ngModelChange)="onSkillChange($event)">
+
+    <label>Status</label>
+    <mat-select [(ngModel)]="editableJob.status">
+        <mat-option value="OPEN">OPEN</mat-option>
+        <mat-option value="CLOSED">CLOSED</mat-option>
+    </mat-select>
+
+
+  <label>Description</label>
+  <textarea [(ngModel)]="editableJob.description"></textarea>
+</div>
+
+<div mat-dialog-actions align="end">
+  <button mat-button (click)="close()">Cancel</button>
+  <button mat-raised-button color="primary" (click)="save()">Save</button>
+</div>

@@ -44,17 +44,29 @@ export class LoginByNumberComponent implements OnInit {
   onSubmit(): void {
     if (this.mobileLoginForm.valid) {
       const loginData = {
-        mobile: +this.mobileLoginForm.value.mobile,
+        mobile: this.mobileLoginForm.value.mobile,
         password: this.mobileLoginForm.value.password,
       };
 
       this.http
-        .post('http://localhost:8080/employee/verifyByPhone', loginData)
+        .post('http://localhost:8080/userlogin/mobile', loginData)
         .subscribe({
           next: (res) => {
             console.log('Login successful:', res);
-            localStorage.setItem('token', 'true');
-            this.router.navigate(['/personal']);
+            const token = (res as any).token;  
+if (token) {
+  localStorage.setItem('token', token); 
+} else {
+  console.error('No token received from server:', res);
+  this.snackBar.open('Login failed: No token received.', 'Close', {
+    duration: 3000,
+    horizontalPosition: 'center',
+    verticalPosition: 'top',
+    panelClass: ['error-snackbar'],
+  });
+}
+
+            this.router.navigate(['/mainlayout/personal']);
           },
           error: (err) => {
             console.error('Login failed:', err);

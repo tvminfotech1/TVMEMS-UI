@@ -29,4 +29,5 @@ export interface SalaryHistory {
 
   nwd: number;
   nol: number;
+  payRoleEmployee: any;
 }

@@ -1,0 +1,86 @@
+:host {
+  display: block;
+  font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+}
+
+.mat-mdc-dialog-surface {
+  border-radius: 16px !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  background: linear-gradient(145deg, #ffffff, #f7f9fc);
+  padding: 25px;
+}
+
+h2 {
+  text-align: center;
+  color: #007bff;
+  font-size: 22px;
+  margin-bottom: 18px;
+  font-weight: 600;
+}
+
+label {
+  display: block;
+  font-weight: 600;
+  margin-top: 12px;
+  margin-bottom: 4px;
+  font-size: 14px;
+  color: #333;
+}
+
+input,
+textarea,
+mat-select {
+  width: 100%;
+  border: 1px solid #d0d7de;
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  background-color: #fefefe;
+  box-shadow: inset 2px 2px 5px rgba(0,0,0,0.05);
+}
+
+input:focus,
+textarea:focus,
+mat-select:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 6px rgba(0,123,255,0.3);
+  outline: none;
+  background-color: #fff;
+}
+
+textarea {
+  resize: none;
+  height: 90px;
+}
+
+.mat-mdc-dialog-actions {
+  margin-top: 20px;
+  padding-top: 10px;
+  border-top: 1px solid #eee;
+}
+
+button[mat-button],
+button[mat-raised-button] {
+  font-weight: 600;
+  border-radius: 6px;
+}
+
+button[mat-raised-button] {
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  color: #fff;
+  box-shadow: 0 3px 6px rgba(0,123,255,0.3);
+}
+
+button[mat-raised-button]:hover {
+  background: linear-gradient(135deg, #0056b3, #004494);
+  box-shadow: 0 5px 10px rgba(0,123,255,0.4);
+}
+
+button[mat-button] {
+  color: #555;
+}
+
+button[mat-button]:hover {
+  color: #000;
+}

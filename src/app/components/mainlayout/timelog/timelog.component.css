@@ -7,6 +7,211 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   overflow-x: auto; 
 }
+/* ===== Overlay background ===== */
+.employee-history-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+.employee-history{
+margin: 1rem 0;
+  border: 1px solid #ccc; 
+  border-radius: 6px;
+  overflow: hidden; 
+  }
+
+/* ===== Overlay modal box ===== */
+.employee-history-section {
+  position: relative;
+  background: #fff;
+  padding: 25px;
+  border-radius: 12px;
+  overflow-y: auto;
+  width: 80%;
+  max-width: 800px;
+  max-height: 80vh;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  animation: fadeIn 0.3s ease-in-out;
+  position: relative;
+}
+.filter-bar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+  
+}
+.filter-bar input{
+  padding: 10px 18px;
+  font-size: 0.90rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: #fff;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  outline: none;
+}
+.filter-bar input:hover,
+.filter-bar input:focus{
+  border-color: #1abc9c;
+  box-shadow: 0 0 4px rgba(26, 188, 156, 0.4);
+}
+
+.filtar-history{
+   display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+
+
+.employee-history-section th {
+  position: sticky;
+  top: 0;
+  background-color: #263bb5 !important;
+  color: #fff;
+  font-weight: 600;
+  text-align: left;
+  padding: 10px 14px;
+  z-index: 20; /* ensures it's above scroll */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* subtle shadow when scrolling */
+
+}
+.employee-header{
+  position: sticky;
+  z-index: 25;
+}
+.employee-body{
+  overflow: hidden;
+}
+/* ===== Overlay header ===== */
+.employee-history-section h3 {
+  text-align: center;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #222;
+  margin-bottom: 1rem;
+}
+
+/* ===== Close button ===== */
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+   background-color:white;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: black; 
+  width: 30px; 
+  height: 30px;
+  padding: 0; 
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
+}
+.close-btn:hover {
+  background-color: #e63946;
+   color: black;
+}
+
+
+/* ===== Table styling ===== */
+.employee-history-section table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+  table-layout: fixed;
+}
+
+.employee-history-section th {
+  background-color: #263bb5; /* blue header */
+  color: #fff;
+  font-weight: 600;
+  text-align: left;
+  padding: 10px 14px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.search-input {
+  padding: 8px;
+  width: 250px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.no-data-row td {
+  text-align: center;
+  padding: 16px;
+  font-weight: 500;
+  color: #666;
+}
+
+.no-data {
+  text-align: center;
+  font-style: italic;  
+  opacity: 0.8;
+}
+
+.employee-history-section td {
+  padding: 10px 14px;
+  border-bottom: 1px solid #eee;
+  background-color: #fff;
+}
+
+/* ===== Status colors ===== */
+.status-approved {
+  color: #2e7d32;
+  font-weight: 600;
+}
+.status-pending {
+  color: #007bff;
+  font-weight: 600;
+}
+.status-rejected {
+  color: #c62828;
+  font-weight: 600;
+}
+.status-holiday {
+  color: #f39c12;
+  font-weight: 600;
+}
+
+/* ===== Animation ===== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+button[mat-raised-button] {
+  font-size: 0.9rem;
+  padding: 0.5rem 1.2rem;
+  border-radius: 6px;
+  background-color: #3f51b5;
+  color: white;
+  transition: background-color 0.3s ease;
+}
+
+button[mat-raised-button]:hover {
+  background-color: #2f3b9e;
+}
 
 .timesheet-classic-container .classic-header {
   text-align: center;
@@ -49,10 +254,10 @@
   border-color: #1abc9c;
   box-shadow: 0 0 4px rgba(26, 188, 156, 0.5); 
 }
-
+/* 
 .timesheet-classic-container .classic-accordion {
   border-top: 1px solid #bdc3c7;
-}
+} */
 
 .timesheet-classic-container .accordion-item {
   margin: 1rem 0;
@@ -72,6 +277,7 @@
   justify-content: space-between;
   align-items: center;
   font-weight: bold;
+
 }
 
 .timesheet-classic-container .accordion-header:hover {
@@ -98,6 +304,7 @@
 .timesheet-classic-container .classic-table thead {
   background-color: #34495e;
   color: #ecf0f1;
+  
 }
 
 .timesheet-classic-container .classic-table th,
@@ -213,22 +420,30 @@
   opacity: 0.7;
 }
 
-
 @media (max-width: 768px) {
+
+  /* Timesheet Container Base  */
+
   .timesheet-classic-container {
     padding: 1rem;
   }
+
   .timesheet-classic-container .classic-dropdown-section {
     flex-direction: column;
     gap: 1rem;
   }
+
   .timesheet-classic-container .classic-dropdown-section .classic-form-group {
-    min-width: unset; 
+    min-width: unset;
   }
+
+  /* Classic Table (Timesheet) */
+
   .timesheet-classic-container .classic-table {
     overflow-x: auto;
-    display: block; 
+    display: block;
   }
+
   .timesheet-classic-container .classic-table thead,
   .timesheet-classic-container .classic-table tbody,
   .timesheet-classic-container .classic-table th,
@@ -236,15 +451,18 @@
   .timesheet-classic-container .classic-table tr {
     display: block;
   }
+
   .timesheet-classic-container .classic-table thead tr {
     position: absolute;
     top: -9999px;
-    left: -9999px; 
+    left: -9999px;
   }
+
   .timesheet-classic-container .classic-table tr {
     border: 1px solid #ccc;
     margin-bottom: 0.5rem;
   }
+
   .timesheet-classic-container .classic-table td {
     border: none;
     border-bottom: 1px solid #eee;
@@ -252,6 +470,7 @@
     padding-left: 50%;
     text-align: right;
   }
+
   .timesheet-classic-container .classic-table td:before {
     position: absolute;
     top: 6px;
@@ -259,11 +478,11 @@
     width: 45%;
     padding-right: 10px;
     white-space: nowrap;
-    content: attr(data-label); 
     font-weight: bold;
     text-align: left;
+    content: attr(data-label);
   }
- 
+
   .timesheet-classic-container .classic-table td:nth-of-type(1):before { content: "Project"; }
   .timesheet-classic-container .classic-table td:nth-of-type(2):before { content: "Monday"; }
   .timesheet-classic-container .classic-table td:nth-of-type(3):before { content: "Tuesday"; }
@@ -274,4 +493,257 @@
   .timesheet-classic-container .classic-table td:nth-of-type(8):before { content: "Description"; }
   .timesheet-classic-container .classic-table td:nth-of-type(9):before { content: "Status"; }
   .timesheet-classic-container .classic-table td:nth-of-type(10):before { content: "Action"; }
+
+  /* Employee History Modal*/
+
+  .employee-history-section {
+    width: 95%;
+    padding: 1rem;
+    max-height: 85vh;
+    overflow-y: auto;
+  }
+
+  .employee-history-section .close-btn {
+    top: 10px;
+    right: 10px;
+    font-size: 1.5rem;
+  }
+
+  .filter-history {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    margin-bottom: 15px;
+    background: #f8f9fa;
+    padding: 10px;
+    border-radius: 6px;
+  }
+
+  .filter-history label {
+    width: 100%;
+    text-align: center;
+    font-size: 0.95rem;
+  }
+
+  .filter-history select {
+    width: 100%;
+    padding: 8px;
+    font-size: 0.9rem;
+  }
+
+  /* Employee History Table */
+
+  .table-wrapper {
+    overflow-x: auto;
+    display: block;
+    max-height: 320px;
+  }
+
+.history-table,
+.history-table thead,
+.history-table tbody,
+.history-table th,
+.history-table td,
+.history-table tr {
+  display: block;
+  width: 100%;
 }
+
+.history-table thead {
+  display: none; /* hide header */
+}
+
+.history-table tr {
+  border: 1px solid #ddd;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  padding: 10px 14px;
+}
+
+/* each cell appears on its own line with proper spacing */
+.history-table td {
+  border: none;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 6px;
+  font-size: 0.95rem;
+  text-align: left;
+}
+
+/* label before each value */
+.history-table td::before {
+  content: attr(data-label);
+  font-weight: 600;
+  color: #34495e;
+  flex: 1 0 45%;
+  text-align: left;
+}
+
+/* value aligned right */
+.history-table td span,
+.history-table td {
+  flex: 1 0 55%;
+  text-align: right;
+  word-wrap: break-word;
+}
+
+/* optional color tweaks */
+.history-table td:last-child {
+  border-bottom: none;
+}
+
+/* status styling */
+.history-table td span {
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+/* no data row */
+.no-data-row td {
+  border: none;
+  text-align: center;
+  padding: 40px 10px;
+}
+
+/* close button fix */
+.employee-history-section .close-btn {
+  top: 10px;
+  right: 10px;
+  font-size: 22px;
+}
+
+  .history-table td:nth-of-type(1):before { content: "Week End Date"; }
+  .history-table td:nth-of-type(2):before { content: "Project"; }
+  .history-table td:nth-of-type(3):before { content: "Total Hours"; }
+  .history-table td:nth-of-type(4):before { content: "Description"; }
+  .history-table td:nth-of-type(5):before { content: "Status"; }
+
+  .no-data-row td {
+    border: none ;
+    text-align: center;
+    padding: 40px 10px;
+  }
+}
+
+.table-wrapper {
+  max-height: 400px;  
+  overflow-y: auto;
+  border: 1px solid #ccc;
+
+}
+
+.history-table {
+  width: 100%;
+  border-collapse: collapse;
+   
+}
+
+.history-table th,
+.history-table td {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+/* Make header sticky */
+.history-table thead th {
+  position: sticky;
+  top: 0;
+  background-color: #f8f8f8;
+  z-index: 2;
+}
+
+
+
+/* Maintain proper table layout */
+.classic-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  margin-top: 10px;
+  border-radius: 6px;
+}
+
+/* Sticky header */
+.classic-table thead th {
+  position: sticky;
+  top: 0;
+  background-color: #34495e;
+  color: #fff;
+  z-index: 2;
+  text-align: center;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+/* Scrollable body */
+.classic-table tbody {
+  display: block;
+  max-height: 229px;
+  overflow-y: auto;
+  width: 100%;
+
+}
+
+
+/* Keep column alignment */
+.classic-table thead,
+.classic-table tbody tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+
+.classic-table td {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+  background-color: #fff;
+}
+.filter-history {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+  gap: 10px;
+  background-color: #f8f9fa;
+  padding: 12px 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Label text */
+.filter-history label {
+  font-weight: 600;
+  font-size: 1rem;
+  color: #34495e;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Dropdown styling */
+.filter-history select {
+  padding: 8px 12px;
+  font-size: 0.95rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: #fff;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  outline: none;
+}
+
+/* Hover + focus styles */
+.filter-history select:hover,
+.filter-history select:focus {
+  border-color: #1abc9c;
+  box-shadow: 0 0 4px rgba(26, 188, 156, 0.4);
+}
+
+
+

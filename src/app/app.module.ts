@@ -99,6 +99,8 @@ import { MY_DATE_FORMATS } from './components/date-formats';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatTableModule } from '@angular/material/table';
 import { ThankYouComponent } from './components/thank-you/thank-you.component';
+import { JobOpeningListComponent } from './components/mainlayout/job-opening-list/job-opening-list.component';
+import { JobEditDialogComponent } from './components/mainlayout/job-opening-list/job-edit-dialog/job-edit-dialog.component';
 
 @NgModule({
   declarations: [
@@ -176,6 +178,8 @@ import { ThankYouComponent } from './components/thank-you/thank-you.component';
     MyProfileComponent,
     AdminAttendanceComponent,
     WfhApplyFormComponent,
+    JobOpeningListComponent,
+    JobEditDialogComponent,
   ],
   imports: [
     BrowserModule,

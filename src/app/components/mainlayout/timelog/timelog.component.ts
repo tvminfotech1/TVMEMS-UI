@@ -14,8 +14,13 @@ type WeekDay = 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday';
 })
 export class TimelogComponent implements OnInit {
 
+
+
   years: number[] = [];
-  months: string[] = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  months: string[] = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
+  ];
   weekendDates: string[] = [];
   weekDays: WeekDay[] = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
 
@@ -23,6 +28,18 @@ export class TimelogComponent implements OnInit {
   timelogEntry: TimelogEntry = this.getEmptyEntry();
   timelogSummary: TimelogEntry[] = [];
   latestEntry: TimelogEntry | null = null;
+
+  allEmployeeTimelogs: TimelogEntry[] = [];
+  filteredAllEmployeeTimelogs: TimelogEntry[] = [];
+
+  // Filters for All Employees table (admin)
+  employeeIdSearch: string = '';
+  employeeMonthFilter: string = '';
+
+  // Filters for Employee History overlay
+  historyMonthFilter: string = '';
+  filteredEmployeeHistory: TimelogEntry[] = [];
+
   accordionState = [false, false, true];
   isFutureOrPastDateSelected = false;
   currentMondayISO = '';
@@ -30,6 +47,11 @@ export class TimelogComponent implements OnInit {
   isAdmin = false;
   isUser = false;
   entryExistsForWeek = false;
+
+  selectedEmployeeId: string | null | undefined = null;
+  selectedEmployeeName: string | null | undefined = null;
+  selectedEmployeeHistory: TimelogEntry[] = [];
+  showEmployeeHistory = false;
 
   constructor(
     private timelogService: TimelogService,
@@ -55,6 +77,40 @@ export class TimelogComponent implements OnInit {
     this.timelog.employeeId = tokenEmpId != null ? String(tokenEmpId) : '';
     this.timelogEntry.employeeName = this.timelog.employeeName;
     this.timelogEntry.employeeId = this.timelog.employeeId;
+  }
+  updateTimesheetStatus(entry: TimelogEntry, status: 'Approved' | 'Rejected'): void {
+    if (!entry?.id) {
+      console.warn('Cannot update timesheet: missing ID');
+      return;
+    }
+
+    this.timelogService.updateTimesheetStatus(entry.id, status).subscribe({
+      next: (res) => {
+        console.log(`[Timelog] Timesheet ${status} successfully:`, res);
+
+        //  Remove that entry from the current admin summary table
+        this.timelogSummary = this.timelogSummary.filter(e => e.id !== entry.id);
+
+        // Optionally show success message
+        this.snackBar.open(`Timesheet ${status} successfully`, 'Close', {
+          duration: 3000,
+          horizontalPosition: 'center',
+          verticalPosition: 'top',
+          panelClass: ['error-snackbar'],
+        });
+
+      },
+      error: (err) => {
+        console.error(`[Timelog] Failed to ${status} timesheet:`, err);
+        this.snackBar.open(`Failed to ${status} timesheet`, 'Close', {
+          duration: 3000,
+          horizontalPosition: 'center',
+          verticalPosition: 'top',
+          panelClass: ['error-snackbar'],
+        });
+
+      }
+    });
   }
 
   initializeYears(): void {
@@ -101,21 +157,21 @@ export class TimelogComponent implements OnInit {
     this.timelogEntry.totalhours = total;
   }
 
-  toggleAccordion(i: number): void { this.accordionState[i] = !this.accordionState[i]; }
+  toggleAccordion(i: number): void {
+    this.accordionState[i] = !this.accordionState[i];
+  }
+
   private extractEmployeeIdFromEntry(e: any): string {
     if (!e || typeof e !== 'object') return '';
-
     if (e.user && typeof e.user === 'object') {
       if (e.user.employeeId != null && e.user.employeeId !== '') return String(e.user.employeeId).trim();
       if (e.user.id != null && e.user.id !== '') return String(e.user.id).trim();
       if (e.user.empId != null && e.user.empId !== '') return String(e.user.empId).trim();
     }
-
     const candidateKeys = ['employeeId', 'employee_id', 'empId', 'emp_id'];
     for (const k of candidateKeys) {
       if (k in e && e[k] != null && e[k] !== '') return String(e[k]).trim();
     }
-
     return '';
   }
 
@@ -144,9 +200,14 @@ export class TimelogComponent implements OnInit {
 
         const normalized: TimelogEntry[] = arr.map((e: any) => {
           const empIdFromExtractor = this.extractEmployeeIdFromEntry(e);
-          const empId = empIdFromExtractor || (e.user && e.user.employeeId != null ? String(e.user.employeeId).trim() : '');
+          const empId =
+            empIdFromExtractor ||
+            (e.user && e.user.employeeId != null
+              ? String(e.user.employeeId).trim()
+              : '');
           const name = this.extractEmployeeName(e) || 'Unknown';
-          const rawWeekend = e.weekendDate ?? e.weekend_date ?? e.weekEndDate ?? '';
+          const rawWeekend =
+            e.weekendDate ?? e.weekend_date ?? e.weekEndDate ?? '';
           const weekendIso = this.toDateOnlyISO(rawWeekend);
 
           return {
@@ -158,53 +219,72 @@ export class TimelogComponent implements OnInit {
             hours: this.normalizeHoursObject(e.hours),
             totalhours: e.totalhours ?? e.totalHours ?? 0,
             description: e.description ?? '',
-            status: (e.status ?? e.Status ?? 'PENDING').toString().trim()
+            status: (e.status ?? e.Status ?? 'PENDING').toString().trim(),
           } as TimelogEntry;
         });
 
-        console.log('[timelog] raw response array length =', arr.length);
-        console.log('[timelog] normalized entries (id, employeeId, weekendDate, status) =',
-          normalized.map(x => ({ id: x.id, employeeId: x.employeeId, weekendDate: x.weekendDate, status: x.status })));
-
         const myEmpIdRaw = this.timelog.employeeId ?? this.authService.getEmployeeId();
         const myEmpId = myEmpIdRaw != null ? String(myEmpIdRaw).trim() : '';
-        console.log('[timelog] myEmpId (from token/component) =', myEmpId);
 
-        let fetchYear: number | undefined;
-        let fetchMonth: string | undefined;
-        if (!this.isAdmin) {
-          if (!this.timelog.year || !this.timelog.month) {
-            this.timelogSummary = [];
-            return;
-          }
-          fetchYear = this.timelog.year;
-          fetchMonth = this.timelog.month;
-        }
-
+        //  ADMIN SECTION
         if (this.isAdmin) {
-          this.timelogSummary = normalized.filter(e => (e.status ?? '').toUpperCase() === 'PENDING');
-          this.timelogSummary.sort((a, b) => (b.weekendDate || '').localeCompare(a.weekendDate || ''));
-          this.latestEntry = null;
-          this.entryExistsForWeek = false;
+          this.timelogSummary = normalized.filter(
+            (e) => (e.status ?? '').toUpperCase() === 'PENDING'
+          );
+          this.timelogSummary.sort((a, b) =>
+            (b.weekendDate || '').localeCompare(a.weekendDate || '')
+          );
+
+          // Keep only one entry per employee (latest weekendDate)
+          
+          const employeeMap = new Map<string, TimelogEntry>();
+
+          for (const e of normalized) {
+            const empKey = String(e.employeeId || '').trim().toLowerCase();
+            if (!empKey) continue;
+            const existing = employeeMap.get(empKey);
+
+            if (!existing) {
+              employeeMap.set(empKey, e);
+            } else {
+              const existingDate = new Date(existing.weekendDate || '').getTime();
+              const newDate = new Date(e.weekendDate || '').getTime();
+              if (newDate > existingDate) {
+                employeeMap.set(empKey, e);
+              }
+            }
+          }
+
+          this.allEmployeeTimelogs = Array.from(employeeMap.values()).sort((a, b) =>
+            (a.employeeName || '').localeCompare(b.employeeName || '')
+          );
+
+          // initialize filtered table
+          this.filteredAllEmployeeTimelogs = [...this.allEmployeeTimelogs];
           return;
-        } else {
-          const sameEmployee = (a?: string, b?: string): boolean => {
-            if (!a || !b) return false;
-            const na = Number(a);
-            const nb = Number(b);
-            if (!isNaN(na) && !isNaN(nb)) return na === nb;
-            return String(a).trim().toLowerCase() === String(b).trim().toLowerCase();
-          };
-          this.timelogSummary = normalized.filter(e => sameEmployee(e.employeeId, myEmpId));
         }
+
+        //  USER SECTION
+        const sameEmployee = (a?: string, b?: string): boolean => {
+          if (!a || !b) return false;
+          const na = Number(a);
+          const nb = Number(b);
+          if (!isNaN(na) && !isNaN(nb)) return na === nb;
+          return String(a).trim().toLowerCase() === String(b).trim().toLowerCase();
+        };
+
+        this.timelogSummary = normalized.filter((e) =>
+          sameEmployee(e.employeeId, myEmpId)
+        );
+
+        // remove duplicates by weekendDate for user
         const dedupeMap = new Map<string, TimelogEntry>();
         for (const e of this.timelogSummary) {
           const key = (e.weekendDate || '').trim();
           if (!key) continue;
           const existing = dedupeMap.get(key);
-          if (!existing) {
-            dedupeMap.set(key, e);
-          } else {
+          if (!existing) dedupeMap.set(key, e);
+          else {
             const existingId = Number(existing.id) || 0;
             const newId = Number(e.id) || 0;
             if (newId > existingId) dedupeMap.set(key, e);
@@ -212,40 +292,135 @@ export class TimelogComponent implements OnInit {
         }
 
         this.timelogSummary = Array.from(dedupeMap.values());
-        this.timelogSummary.sort((a, b) => (b.weekendDate || '').localeCompare(a.weekendDate || ''));
-        const weekIso = this.toDateOnlyISO(this.timelog.weekendDate || this.currentMondayISO);
-        const currentWeekEntry = this.timelogSummary.find(e => this.toDateOnlyISO(e.weekendDate) === weekIso);
-
-        if (currentWeekEntry) {
-          this.latestEntry = { ...currentWeekEntry };
-          console.log('[timelog] latestEntry set to current week entry:', { id: this.latestEntry.id, weekendDate: this.latestEntry.weekendDate });
-        } else {
-          this.latestEntry = null;
-          console.log('[timelog] no entry for current week — latestEntry cleared');
-        }
-
-        this.timelogSummary = normalized.filter(e =>
-          String(e.employeeId || '').trim() === myEmpId
+        this.timelogSummary.sort((a, b) =>
+          (b.weekendDate || '').localeCompare(a.weekendDate || '')
         );
-
-        this.timelogSummary.sort((a, b) => (b.weekendDate || '').localeCompare(a.weekendDate || ''));
-        this.latestEntry = this.timelogSummary[0] || null;
         this.loadTimesheetForSelectedWeek();
         this.resetEntry();
       },
-      error: err => {
+      error: (err) => {
         console.error('[Timelog] getTimelogs failed:', err);
         this.timelogSummary = [];
         this.latestEntry = null;
-      }
+      },
     });
   }
+
+  //  Filter for admin All Employees table
+  applyFilters(): void {
+    const idTerm = (this.employeeIdSearch || '').trim().toLowerCase();
+    const month = (this.employeeMonthFilter || '').trim();
+
+    this.filteredAllEmployeeTimelogs = this.allEmployeeTimelogs.filter(entry => {
+      const employeeId = entry.employeeId ? entry.employeeId.toString().toLowerCase() : '';
+      const employeeName = entry.employeeName ? entry.employeeName.toLowerCase() : '';
+
+      //  Filter by ID or name
+      const matchesIdOrName = !idTerm || employeeId.includes(idTerm) || employeeName.includes(idTerm);
+
+      //  Filter by month (if selected)
+      const entryMonth = entry.weekendDate
+        ? new Date(entry.weekendDate).toLocaleString('default', { month: 'long' })
+        : '';
+      const matchesMonth = !month || entryMonth === month;
+
+      //  Final combined condition
+      return matchesIdOrName && matchesMonth;
+    });
+  }
+
+
+  //  Employee History view
+  viewEmployeeHistory(entry: any): void {
+    if (!entry?.employeeId) return;
+
+    //  Reset first (forces Angular change detection)
+    this.selectedEmployeeHistory = [];
+    this.filteredEmployeeHistory = [];
+    this.historyMonthFilter = '';
+
+    this.selectedEmployeeName = entry.employeeName;
+    this.selectedEmployeeId = entry.employeeId;
+
+    // Fetch latest backend data
+    this.timelogService.getTimelogs(true).subscribe({
+      next: (res: any) => {
+        let arr: any[] = [];
+        if (Array.isArray(res)) arr = res;
+        else if (res?.body && Array.isArray(res.body)) arr = res.body;
+        else if (res?.data && Array.isArray(res.data)) arr = res.data;
+        else {
+          const first = Object.values(res || {}).find(v => Array.isArray(v));
+          arr = Array.isArray(first) ? (first as any[]) : [];
+        }
+
+        // Filter this employee’s full history
+        const filtered = arr.filter(
+          (e: any) =>
+            String(e.user?.employeeId || e.employeeId).trim() ===
+            String(entry.employeeId).trim()
+        );
+
+        // Normalize results
+        this.selectedEmployeeHistory = filtered.map(e => ({
+          weekendDate: e.weekendDate ?? e.weekend_date ?? e.weekEndDate ?? '',
+          project: e.project ?? '',
+          totalhours: e.totalhours ?? e.totalHours ?? 0,
+          description: e.description ?? '',
+          status: (e.status ?? e.Status ?? 'PENDING').toString().trim(),
+        }));
+
+        //  Sort latest first
+        this.selectedEmployeeHistory.sort(
+          (a, b) => (b.weekendDate || '').localeCompare(a.weekendDate || '')
+        );
+
+        //  Set filtered version for display
+        this.filteredEmployeeHistory = [...this.selectedEmployeeHistory];
+      },
+      error: (err) => {
+        console.error('[Timelog] Failed to fetch employee history:', err);
+        this.selectedEmployeeHistory = [];
+        this.filteredEmployeeHistory = [];
+      },
+    });
+  }
+
+
+
+  applyMonthFilter(): void {
+    if (!this.historyMonthFilter) {
+      this.filteredEmployeeHistory = [...this.selectedEmployeeHistory];
+      return;
+    }
+
+    this.filteredEmployeeHistory = this.selectedEmployeeHistory.filter(e => {
+      const monthName = e.weekendDate
+        ? new Date(e.weekendDate).toLocaleString('default', { month: 'long' })
+        : '';
+      return monthName === this.historyMonthFilter;
+    });
+  }
+  applyHistoryMonthFilter(): void {
+    if (!this.selectedEmployeeHistory) return;
+
+    const selectedMonth = this.historyMonthFilter;
+    if (!selectedMonth) {
+      this.filteredEmployeeHistory = [...this.selectedEmployeeHistory];
+      return;
+    }
+
+    this.filteredEmployeeHistory = this.selectedEmployeeHistory.filter(e => {
+      if (!e.weekendDate) return false;
+      const entryMonth = new Date(e.weekendDate).toLocaleString('default', { month: 'long' });
+      return entryMonth === selectedMonth;
+    });
+  }
+
 
   loadTimesheetForSelectedWeek(): void {
     const myEmpId = String(this.timelog.employeeId || '').trim();
     const selectedWeekIso = this.toDateOnlyISO(this.timelog.weekendDate);
-
-    console.log('[timelog] loadTimesheetForSelectedWeek selectedWeekIso=', selectedWeekIso);
 
     const existing = this.timelogSummary.find(e =>
       (this.isAdmin || String(e.employeeId || '').trim() === myEmpId) &&
@@ -253,42 +428,38 @@ export class TimelogComponent implements OnInit {
     );
 
     if (this.isAdmin) {
-
       this.entryExistsForWeek = true;
       this.resetEntry();
       this.timelogEntry.weekendDate = selectedWeekIso;
       this.latestEntry = null;
-      console.log('[timelog] ADMIN mode active. Form disabled and reset.');
       return;
     }
 
     if (existing) {
-      if (!this.isAdmin && String(existing.employeeId || '').trim() === myEmpId) {
-        this.entryExistsForWeek = true;
-        this.latestEntry = existing; // 
-        this.resetEntry();
-        this.timelogEntry.employeeName = this.timelog.employeeName;
-        this.timelogEntry.employeeId = this.timelog.employeeId;
-        this.timelogEntry.weekendDate = this.timelog.weekendDate || this.currentMondayISO;
-        this.timelogEntry.hours = { monday: '', tuesday: '', wednesday: '', thursday: '', friday: '' };
-        this.timelogEntry.totalhours = 0;
-        this.calculateTotalHours();
-        console.log('[timelog] User already submitted — form disabled for USER');
-        return;
+      // If rejected, allow resubmission
+      const status = (existing.status ?? '').trim().toLowerCase();
+      if (status === 'rejected') {
+        this.entryExistsForWeek = false; // User can submit again
+        this.latestEntry = existing; // still show last rejected entry if you want
+      } else {
+        this.entryExistsForWeek = true; // block if pending or approved
+        this.latestEntry = existing;
       }
+
+      this.resetEntry();
+      this.timelogEntry.employeeName = this.timelog.employeeName;
+      this.timelogEntry.employeeId = this.timelog.employeeId;
+      this.timelogEntry.weekendDate = this.timelog.weekendDate || this.currentMondayISO;
+      this.timelogEntry.hours = { monday: '', tuesday: '', wednesday: '', thursday: '', friday: '' };
+      this.timelogEntry.totalhours = 0;
+      this.calculateTotalHours();
     } else {
       this.entryExistsForWeek = false;
       this.resetEntry();
       this.timelogEntry.weekendDate = this.timelog.weekendDate || this.currentMondayISO;
-      console.log('[timelog] no entry found for selected week -> form reset');
     }
-    const currentWeekEntry = this.timelogSummary.find(e =>
-      String(e.employeeId || '').trim() === myEmpId &&
-      this.toDateOnlyISO(e.weekendDate) === this.currentMondayISO
-    ) || null;
-    this.latestEntry = currentWeekEntry;
   }
-  
+
 
   onSubmit(form: NgForm): void {
     if (!form.valid) {
@@ -297,7 +468,8 @@ export class TimelogComponent implements OnInit {
         horizontalPosition: 'center',
         verticalPosition: 'top',
         panelClass: ['error-snackbar'],
-      }); return;
+      });
+      return;
     }
     if (!this.isAdmin && this.entryExistsForWeek) {
       this.snackBar.open('You have already submitted a timesheet', 'Close', {
@@ -319,41 +491,19 @@ export class TimelogComponent implements OnInit {
       status: 'PENDING'
     };
 
-    console.log('[timelog] Submitting payload:', payload);
-
     this.timelogService.addTimelog(payload).subscribe({
       next: (res) => {
-        console.log('[timelog] POST response:', res);
-        this.snackBar.open('Timesheet Submitted Sucessfully', 'Close', {
+        this.snackBar.open('Timesheet Submitted Successfully', 'Close', {
           duration: 3000,
           horizontalPosition: 'center',
           verticalPosition: 'top',
           panelClass: ['error-snackbar'],
         });
-
-        const saved = res && (res.body ?? res) ? (res.body ?? res) : null;
-        if (saved) {
-          const savedEntry = this.normalizeSavedEntry(saved);
-          console.log('[timelog] savedEntry normalized:', savedEntry);
-
-          const selectedWeekIso = this.toDateOnlyISO(this.timelog.weekendDate || this.currentMondayISO);
-          if (this.toDateOnlyISO(savedEntry.weekendDate) === selectedWeekIso &&
-            String(savedEntry.employeeId || '').trim() === String(this.timelog.employeeId || '').trim()) {
-            this.timelogEntry = { ...savedEntry };
-            this.calculateTotalHours();
-          } else {
-            this.resetEntry();
-          }
-        } else {
-          this.resetEntry();
-        }
-
         this.resetEntry();
         this.loadTimelogs();
         form.resetForm(this.timelogEntry);
       },
-      error: err => {
-        console.error('[timelog] Submit failed:', err);
+      error: () => {
         this.snackBar.open('Failed to submit a timesheet.', 'Close', {
           duration: 3000,
           horizontalPosition: 'center',
@@ -364,53 +514,24 @@ export class TimelogComponent implements OnInit {
     });
   }
 
-  updateTimesheetStatus(entry: TimelogEntry, status: 'Approved' | 'Rejected'): void {
-    if (!entry?.id) {
-      this.snackBar.open('Invalid Entry', 'Close', {
-        duration: 3000,
-        horizontalPosition: 'center',
-        verticalPosition: 'top',
-        panelClass: ['error-snackbar'],
-      }); return;
-    }
-
-    const before = [...this.timelogSummary];
-    this.timelogSummary = this.timelogSummary.filter(e => (e.id ?? 0) !== entry.id);
-    if (this.latestEntry?.id === entry.id) this.latestEntry = null;
-
-    const backendStatus = status.toUpperCase();
-
-    this.timelogService.updateTimesheetStatus(entry.id, backendStatus as any).subscribe({
-      next: () => {
-        this.loadTimelogs();
-      },
-      error: (err) => {
-        console.error('Failed to update timesheet status', err);
-        this.snackBar.open('Failed to update timesheet status. Restoring previous state', 'Close', {
-          duration: 3000,
-          horizontalPosition: 'center',
-          verticalPosition: 'top',
-          panelClass: ['error-snackbar'],
-        });
-        this.timelogSummary = before;
-        if (this.timelogSummary.length) this.latestEntry = this.timelogSummary[0];
-      }
-    });
-  }
-
   resetEntry(): void {
     this.timelogEntry = this.getEmptyEntry();
-
     this.timelogEntry.employeeName = this.timelog.employeeName;
     this.timelogEntry.employeeId = this.timelog.employeeId;
     this.timelogEntry.weekendDate = this.timelog.weekendDate || this.currentMondayISO;
-
     this.timelogEntry.project = '';
     this.timelogEntry.hours = { monday: '', tuesday: '', wednesday: '', thursday: '', friday: '' };
     this.timelogEntry.totalhours = 0;
-
     this.calculateTotalHours();
   }
+  closeEmployeeHistory(): void {
+  this.selectedEmployeeHistory = [];
+  this.filteredEmployeeHistory = [];
+  this.selectedEmployeeId = null;
+  this.selectedEmployeeName = null;
+  this.showEmployeeHistory = false;
+}
+
 
   private getEmptyEntry(): TimelogEntry {
     return {
@@ -441,30 +562,8 @@ export class TimelogComponent implements OnInit {
     };
   }
 
-  private normalizeSavedEntry(saved: any): TimelogEntry {
-    return {
-      id: saved.id ?? saved.timesheetId ?? saved.timesheet_id,
-      project: saved.project ?? '',
-      hours: this.normalizeHoursObject(saved.hours),
-      totalhours: saved.totalhours ?? saved.totalHours ?? 0,
-      description: saved.description ?? '',
-      weekendDate: this.toDateOnlyISO(saved.weekendDate ?? saved.weekend_date ?? saved.weekEndDate),
-      employeeId: this.extractEmployeeIdFromEntry(saved) || (saved.user && saved.user.employeeId != null ? String(saved.user.employeeId) : ''),
-      employeeName: this.extractEmployeeName(saved),
-      status: (saved.status ?? saved.Status ?? 'PENDING').toString().trim()
-    } as TimelogEntry;
-  }
-  formatToDDMMYYYY(date: string | Date): string {
-  const d = new Date(date);
-  return ('0' + d.getDate()).slice(-2) + '-' +
-         ('0' + (d.getMonth() + 1)).slice(-2) + '-' +
-         d.getFullYear();
-}
-
-
   private toDateOnlyISO(d?: string | Date | null): string {
     if (!d) return '';
-    if (typeof d === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(d)) return d;
     const dt = new Date(d);
     if (isNaN(dt.getTime())) return '';
     const year = dt.getUTCFullYear();
@@ -472,5 +571,4 @@ export class TimelogComponent implements OnInit {
     const day = String(dt.getUTCDate()).padStart(2, '0');
     return `${year}-${month}-${day}`;
   }
-
 }

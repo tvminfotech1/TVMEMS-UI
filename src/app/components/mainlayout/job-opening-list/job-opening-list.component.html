@@ -1,0 +1,105 @@
+<div class="page-container">
+  <h1 class="page-title">
+    <span class="material-icons page-icon">work_outline</span>
+    Job Openings
+  </h1>
+
+  <div *ngIf="loading" class="loader"></div>
+
+  <div *ngIf="!loading && jobs.length; else noData">
+    <div class="card-grid">
+      <div class="job-card" *ngFor="let data of jobs">
+        <div class="card-content">
+          <div class="header">
+            <h2>{{ data.title }}</h2>
+            <span class="status"
+              [class.open]="data.status === 'OPEN'"
+              [class.closed]="data.status === 'CLOSED'">
+              {{ data.status }}
+            </span>
+          </div>
+
+          <div class="details">
+            <p><strong>Location:</strong> {{ data.location }}</p>
+            <p><strong>Experience:</strong> {{ data.experience }} year(s)</p>
+            <p><strong>Year Of Passout:</strong> {{ data.yearOfPassout }}</p>
+          </div>
+
+          <div class="section">
+            <h3>Qualifications</h3>
+            <p class="list-text">
+              {{ data.qualifications && data.qualifications.length ? data.qualifications.join(', ') : 'N/A' }}
+            </p>
+          </div>
+
+          <div class="section">
+            <h3>Skills</h3>
+            <p class="list-text">
+              {{ data.skills && data.skills.length ? data.skills.join(', ') : 'N/A' }}
+            </p>
+          </div>
+
+          <div class="section">
+            <h3>Description</h3>
+            <p class="desc">{{ data.description || 'N/A' }}</p>
+          </div>
+        </div>
+
+        <div class="actions" *ngIf="isAdmin">
+          <button class="edit-btn" (click)="editJob(data)">
+            <span class="material-icons">edit</span> Edit
+          </button>
+          <button class="delete-btn" (click)="deleteJob(data.id)">
+            <span class="material-icons">delete</span> Delete
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #noData>
+    <p class="no-data">No job openings found.</p>
+  </ng-template>
+</div>
+
+<!-- Modal -->
+<div class="modal" *ngIf="showModal">
+  <div class="modal-content">
+    <h2>Edit Job</h2>
+
+    <label>Title</label>
+    <input type="text" [(ngModel)]="editableJob.title" />
+
+    <label>Location</label>
+    <input type="text" [(ngModel)]="editableJob.location" />
+
+    <label>Experience</label>
+    <input type="text" [(ngModel)]="editableJob.experience" />
+
+    <label>Year Of Passout</label>
+    <input type="text" [(ngModel)]="editableJob.yearOfPassout" />
+
+    <label>Qualifications (comma separated)</label>
+    <input
+      type="text"
+      [ngModel]="editableJob.qualifications?.join(', ')"
+      (ngModelChange)="onQualificationChange($event)"
+    />
+
+    <label>Skills (comma separated)</label>
+    <input
+      type="text"
+      [ngModel]="editableJob.skills?.join(', ')"
+      (ngModelChange)="onSkillChange($event)"
+    />
+
+    <label>Description</label>
+    <textarea [(ngModel)]="editableJob.description"></textarea>
+
+    <div class="modal-actions">
+      <button class="save-btn" (click)="saveJob()">Save</button>
+      <button class="cancel-btn" (click)="closeModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+

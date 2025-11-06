@@ -42,7 +42,8 @@ export class AddSalaryComponent implements OnInit {
   remainingCtc = 0;
 
   nwd: number = 31; // No. of Working Days
-nol: number = 0;  // No. of Leaves
+  nol: number = 0;  // No. of Leaves
+  employeeId: number = 1;
 
 
   constructor(
@@ -156,7 +157,8 @@ addSalary(): void {
       remainingCtc: this.remainingCtc,
 
       nwd: this.nwd,
-      nol: this.nol
+      nol: this.nol,
+      payRoleEmployee : this.employee
     };
 
     this.salaryService.addSalaryHistory(salary).subscribe({
