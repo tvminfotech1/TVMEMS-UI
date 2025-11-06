@@ -1,65 +1,48 @@
 .job-form-container {
-  max-width: 70%;
-  margin: auto;
-  background: #0a0f3c;
+  max-width: 1200px;
+   margin: 20px;
   padding: 20px;
-  color: #ffff;
-  border-radius: 12px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  background-color: #f8f9fa;
+  border-radius: 10px;
+   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-h2 {
+.job-form-container h2 {
   text-align: center;
-  color: #ffff;
+  margin-bottom: 25px;
+  font-weight: 600;
+  font-size: 22px;
 }
-.job-btn{
+
+.form-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.custom-form-field {
+  width: 100%;
+}
+
+.button-group {
   display: flex;
   justify-content: center;
-  align-items: center;
-  button {
-    background-color: blue;
-  }
-}
-form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
+  margin-top: 20px;
 }
 
-label {
-  display: flex;
-  flex-direction: column;
-  font-weight: 500;
-}
-
-input, textarea {
-  padding: 8px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  font-size: 14px;
-}
-
-textarea {
-  resize: vertical;
-  min-height: 80px;
-}
-
-button {
-  background-color: #0a0f3c;
-  color: white;
-  padding: 10px;
-  font-weight: bold;
+.button-group button {
+  background-color: #1976d2;
+  color: #fff;
   border: none;
-  border-radius: 8px;
+  padding: 10px 22px;
+  border-radius: 6px;
   cursor: pointer;
-  transition: background 0.3s ease;
 }
 
-button:hover {
-  background-color: #1f2a72;
+.button-group button:disabled {
+  background-color: #ccc;
 }
 
-.error {
-  color: red;
-  font-size: 12px;
+.back-button button {
+  background-color: #999;
 }

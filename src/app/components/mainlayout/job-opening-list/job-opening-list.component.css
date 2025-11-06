@@ -1,40 +1,4 @@
-.page-container {
-  max-width: 1100px;
-  margin: 40px auto;
-  padding: 10px;
-  font-family: 'Segoe UI', Roboto, Arial, sans-serif;
-}
 
-.page-title {
-  text-align: center;
-  font-size: 26px;
-  color: #222;
-  margin-bottom: 25px;
-}
-
-.card-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
-  gap: 20px;
-  align-items: stretch;
-}
-
-.job-card {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  background: #fff;
-  border-radius: 10px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-  transition: all 0.2s ease;
-  padding: 18px;
-  min-height: 420px; /* keeps all cards equal height */
-}
-
-.job-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 6px 14px rgba(0,0,0,0.12);
-}
 
 .header {
   display: flex;
@@ -43,7 +7,58 @@
   border-bottom: 1px solid #eee;
   padding-bottom: 8px;
   margin-bottom: 12px;
+} 
+
+.page-container {
+  padding: 20px;
+  max-width: 1300px;
+  margin: auto;
 }
+
+.job-container {
+  background-color: #ffffff;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+/* 👇 This part makes exactly 3 cards per row */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 equal columns */
+  gap: 20px; /* space between cards */
+}
+
+.job-card {
+  background: #f9f9f9;
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease;
+}
+
+/* .job-card:hover {
+  transform: translateY(-5px);
+} */
+
+.header h2 {
+  margin: 0;
+}
+
+.status.open {
+  color: green;
+}
+
+.status.closed {
+  color: red;
+}
+
+.no-data {
+  text-align: center;
+  color: #777;
+  padding: 20px;
+}
+
 
 .header h2 {
   font-size: 18px;
@@ -149,8 +164,9 @@ button {
 }
 
 .material-icons {
-  font-size: 16px;
+  font-size: 30px;
   vertical-align: middle;
+  height: 2.2rem;
 }
 
 .loader {
@@ -172,4 +188,7 @@ button {
   text-align: center;
   color: #777;
   font-size: 16px;
+}
+.page-title{
+  font-weight: bolder;
 }

@@ -412,8 +412,8 @@
               aria-controls="addJobDropdown"
               aria-haspopup="true"
             >
-              <span *ngIf="isAdmin"><span class="material-icons">add_business</span> Add Job Opening</span>
-              <span *ngIf="isUser"><span class="material-icons">add_business</span> Job Opening Details</span>
+              <span *ngIf="isAdmin"><span class="material-icons">add_business</span>Job Opening</span>
+              <span *ngIf="isUser"><span class="material-icons">add_business</span> Job Opening</span>
               <span class="accordion-icon">
                 {{ showAddJobDropdown ? "⯆" : "⯈" }}
               </span>
@@ -439,7 +439,7 @@
                     class="nav-link sub"
                     routerLinkActive="active-sub-link"
                     [routerLinkActiveOptions]="{ exact: true }"
-                    ><span class="material-icons">work_outline</span> All Job Openings</a
+                    ><span class="material-icons">work_outline</span> Job Openings</a
                   >
                 </li>
               </ul>

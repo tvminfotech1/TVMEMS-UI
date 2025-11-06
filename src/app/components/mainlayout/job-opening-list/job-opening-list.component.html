@@ -1,9 +1,10 @@
 <div class="page-container">
+  
+<div class="job-container">
   <h1 class="page-title">
     <span class="material-icons page-icon">work_outline</span>
     Job Openings
   </h1>
-
   <div *ngIf="loading" class="loader"></div>
 
   <div *ngIf="!loading && jobs.length; else noData">
@@ -56,7 +57,7 @@
       </div>
     </div>
   </div>
-
+</div>
   <ng-template #noData>
     <p class="no-data">No job openings found.</p>
   </ng-template>

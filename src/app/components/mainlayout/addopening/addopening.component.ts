@@ -71,11 +71,13 @@ export class AddOpeningComponent implements OnInit {
     this.mainLayoutService.postJobPostings(formData).subscribe({
       next: (data: JobPosting) => {
         this.successMessage = '✅ Job Posted Successfully!';
+        alert(this.successMessage);
         this.jobPosted.emit(data);
         this.jobForm.reset();
       },
       error: (err) => {
         this.errorMessage = '❌ Failed to post job. Please try again.';
+        alert(this.errorMessage);
         console.error('Error posting job:', err);
       },
       complete: () => {
