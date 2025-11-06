@@ -147,3 +147,10 @@ button[type="submit"]:hover {
 .input-padding {
   padding: 0px !important;
 }
+@media (max-width: 768px) {
+.form-grid {
+  display: grid;
+  grid-template-columns:1fr;
+  gap: 20px;
+}
+}

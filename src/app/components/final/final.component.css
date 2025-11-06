@@ -132,6 +132,10 @@ button[type="submit"]:hover {
     flex-direction: column;
     gap: 10px;
   }
+  .form-grid {
+  display: grid;
+  grid-template-columns:1fr;
+}
 }
 
 .error {

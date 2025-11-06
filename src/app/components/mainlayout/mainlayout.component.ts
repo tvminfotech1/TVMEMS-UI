@@ -2,6 +2,8 @@ import { Component, HostListener,OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { MainlayoutService } from 'src/app/services/main-layout.service';  
+import { NavigationEnd } from '@angular/router';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-mainlayout',
@@ -42,6 +44,14 @@ export class MainlayoutComponent implements OnInit {
     this.isUser = this.authService.isUser();
     this.userName = this.authService.getfullName() || 'User';
     this.employeeId = this.authService.getEmployeeId();
+    this.router.events
+    .pipe(filter(event => event instanceof NavigationEnd))
+    .subscribe(() => {
+      if (window.innerWidth <= 768) {
+        this.sidebarOpen = false;
+        document.body.classList.remove('noscroll');
+      }
+    });
   }
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent) {
@@ -143,7 +153,17 @@ export class MainlayoutComponent implements OnInit {
     console.log('Logout clicked');
     localStorage.clear();
     sessionStorage.clear();
-    this.router.navigateByUrl('/adminLogin');
+    if ('caches' in window) {
+      caches.keys().then(names => {
+        for (let name of names) caches.delete(name);
+      });
+    }
+
+    document.cookie.split(';').forEach(c => {
+      document.cookie = c.replace(/^ +/, '')
+        .replace(/=.*/, '=;expires=' + new Date(0).toUTCString() + ';path=/');
+    });
+    this.router.navigateByUrl('/');
   }
    goToProfile() {
     console.log('Go to profile clicked');

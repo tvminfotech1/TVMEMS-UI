@@ -121,3 +121,9 @@ button[type="submit"] {
 button[type="submit"]:hover {
   background-color: #0056b3;
 }
+@media (max-width: 768px) {
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+}

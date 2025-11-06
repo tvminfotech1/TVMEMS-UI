@@ -202,3 +202,9 @@ input[type=number]::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
+@media (max-width: 768px) {
+.form-grid {
+  display: grid;
+  grid-template-columns:1fr;
+}
+}

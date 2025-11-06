@@ -1,4 +1,8 @@
-<div class="tabs">
+<div class="tabs-container">
+  <button class="scroll-btn left" (click)="scrollTabs('left')" aria-label="Scroll left">
+    <span class="material-icons">chevron_left</span>
+  </button>
+<div class="tabs"  #tabsContainer>
   <!-- Step 1: Personal -->
   <a
     routerLink="/mainlayout/personal"
@@ -96,4 +100,8 @@
     [routerLinkActiveOptions]="{ exact: true }">
     Final
   </a>
+</div>
+<button class="scroll-btn right" (click)="scrollTabs('right')" aria-label="Scroll right">
+    <span class="material-icons">chevron_right</span>
+  </button>
 </div>

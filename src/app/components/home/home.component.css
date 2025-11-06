@@ -92,3 +92,8 @@ p {
     opacity: 1;
   }
 }
+@media (max-width: 768px) {
+  h1{
+    line-height: 50px;
+  }  
+}
