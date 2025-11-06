@@ -1,7 +1,9 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Goal } from './interface/goalDto';
+import { AuthService } from 'src/app/services/auth.service';
+import { GoalService } from './goal.service';
+import { UserlistService } from 'src/app/services/admin.service';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-goal',
@@ -9,100 +11,149 @@ import { Goal } from './interface/goalDto';
   styleUrls: ['./goal.component.css']
 })
 export class GoalComponent implements OnInit {
-  currentView: 'main' | 'goalType' | 'newGoal' = 'main';
+
+  isAdmin = false;
+  isUser = true;
+  employeeId: string | null = null;
+  fullName: string | null = null;
+  previousDueDate: any = null;
+  currentView: 'main' | 'goalType' | 'newGoal' | 'archived' = 'main';
+  isTableVisible: boolean = true;
+  searchText: string = '';
+  allGoals: any[] = [];
+  goalList: any[] = [];
+  public employees: any[] = [];
+  public filteredEmployees: any[] = [];
+  completedGoals: any[] = [];
   goalForm!: FormGroup;
-  goals: Goal[] = [];
-  filteredGoals: Goal[] = [];
-  selectedMonth: string = '';
-  selectedLabel: string = '';
-  previousMonthOptions: { value: string, label: string }[] = [];
+  archivedGoals: any[] = [];
+  selectedGoal: any;
+  displayedColumns = ['category', 'description', 'weight', 'startDate', 'dueDate', 'progress', 'action'];
+  goalData: any[] = [];
+  showHistoryMap = false;
+  months: string[] = [
+    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'June',
+    'July', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+  ];
+  private currentUserEmail: string | null = null;
+  goals: any[] = [];
+  selectedMonth: string | null = null;
+  selectedMonthGoals: any[] = [];
+  currentYear: number = new Date().getFullYear();
+  monthPoints: { x: number, y: number }[] = [];
+  selectedYear: number = this.currentYear;
+  filteredGoals: any[] = [];
+  showGoalPopup: boolean = false;
+  goalListForPopup: any[] = [];
+  readonly radius = 54;
+  readonly circumference: number = 2 * Math.PI * this.radius;
+  currentDate: Date = new Date();
+  dateRange: string = '';
+  currentPage = 1;
+  itemsPerPage = 5;
 
-  private apiUrl = 'http://localhost:8080/goals';
-
-  constructor(private fb: FormBuilder, private http: HttpClient) {}
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private userlistService: UserlistService,
+    private goalService: GoalService,
+    private dialog: MatDialog
+  ) { }
 
   ngOnInit(): void {
+    this.isAdmin = this.authService.isAdmin();
+    this.isUser = this.authService.isUser();
+    this.employeeId = this.authService.getEmployeeId();
+    this.fullName = this.authService.getfullName();
+    this.currentUserEmail = this.authService.getUserEmail?.();
+
     this.goalForm = this.fb.group({
       category: ['', Validators.required],
       description: ['', [Validators.required, Validators.maxLength(35)]],
-      metrics: ['', Validators.required],
-      outcome: ['', Validators.required],
-      weight: ['', [Validators.required, Validators.min(0), Validators.max(100)]],
-      startDate: ['', Validators.required],
-      endDate: ['', Validators.required],
+      weight: ['', [Validators.required, Validators.min(0), Validators.max(100)]]
     });
-
+    this.loadArchivedGoals();
+    this.allUser();
     this.fetchGoals();
-    this.generatePreviousMonths();
+    this.updateDateRangeLabel();
+    this.filterEmployeesByGoalMonth();
   }
 
-  fetchGoals(): void {
-    const requestBody = {
-      filter: 'all',
-      userId: 1
+  fetchGoals() {
+    this.goalService.getGoals().subscribe((data) => {
+      this.goalList = data;
+      this.filterGoalsByYear();
+    });
+  }
+
+  filterGoalsByYear() {
+    this.filteredGoals = this.goalList.filter((goal: any) => {
+      return new Date(goal.startDate).getFullYear() === this.selectedYear;
+    });
+  }
+
+  previousYear() {
+    this.selectedYear--;
+    this.filterGoalsByYear();
+  }
+
+  nextYear() {
+    if (this.selectedYear < this.currentYear) {
+      this.selectedYear++;
+      this.filterGoalsByYear();
+    }
+  }
+
+  isNextDisabled(): boolean {
+    return this.selectedYear === this.currentYear;
+  }
+
+  getPosition(index: number) {
+    const total = 12;
+    const angle = (index / total) * 2 * Math.PI;
+    const radius = 170;
+    const x = radius * Math.cos(angle - Math.PI / 2);
+    const y = radius * Math.sin(angle - Math.PI / 2);
+
+    return {
+      left: `calc(50% + ${x}px - 32.5px)`,
+      top: `calc(50% + ${y}px - 32.5px)`,
     };
+  }
 
-    this.http.post<Goal[]>(this.apiUrl, requestBody).subscribe({
-      next: (data) => {
-        this.goals = data;
-        this.filteredGoals = data;
+
+  allUser(): void {
+    this.userlistService.getAllUser().subscribe({
+      next: (response) => {
+
+        const allUsers = response.body || [];
+
+
+        this.employees = allUsers.filter((user: any) =>
+          user.role?.toLowerCase() !== 'admin' &&
+          user.email?.toLowerCase() !== this.currentUserEmail?.toLowerCase()
+        );
+
+        this.filteredEmployees = [...this.employees];
       },
       error: (err) => {
-        console.error('Error fetching goals:', err.message || err);
-        alert('⚠️ Failed to load goals.');
+        console.error("❌ Error fetching users", err);
+        this.employees = [];
+        this.filteredEmployees = [];
       }
     });
   }
 
-  get onTrackGoalCount(): number {
-  return this.filteredGoals.filter(g => g.status === 'On Track').length;
-}
-
-
-  generatePreviousMonths(): void {
-    const today = new Date();
-    for (let i = 1; i <= 12; i++) {
-      const date = new Date(today.getFullYear(), today.getMonth() - i, 1);
-      const value = `${date.getMonth() + 1}-${date.getFullYear()}`;
-      const label = `${date.toLocaleString('default', { month: 'short' })} ${date.getFullYear()}`;
-      this.previousMonthOptions.push({ value, label });
-    }
+  onSearch(): void {
+    const term = this.searchText.trim().toLowerCase();
+    this.filteredEmployees = this.employees.filter(emp =>
+      emp.employeeId?.toString().toLowerCase().includes(term) ||
+      emp.fullName?.toLowerCase().includes(term)
+    );
   }
 
-  filterGoalsByMonthYear(): void {
-    const today = new Date();
-
-    if (this.selectedMonth === 'current') {
-      const month = today.getMonth() + 1;
-      const year = today.getFullYear();
-      this.selectedLabel = 'Current Month';
-      this.loadFilteredGoals(month, year);
-    } else if (this.selectedMonth === 'last') {
-      const lastMonth = new Date(today.getFullYear(), today.getMonth() - 1, 1);
-      const month = lastMonth.getMonth() + 1;
-      const year = lastMonth.getFullYear();
-      this.selectedLabel = 'Last Month';
-      this.loadFilteredGoals(month, year);
-    } else {
-      const [monthStr, yearStr] = this.selectedMonth.split('-');
-      const month = +monthStr;
-      const year = +yearStr;
-      const label = this.previousMonthOptions.find(o => o.value === this.selectedMonth)?.label || '';
-      this.selectedLabel = label;
-      this.loadFilteredGoals(month, year);
-    }
-  }
-
-  loadFilteredGoals(month: number, year: number): void {
-    this.http.get<Goal[]>(`${this.apiUrl}?month=${month}&year=${year}`).subscribe({
-      next: (data) => {
-        this.filteredGoals = data;
-      },
-      error: (err) => {
-        console.error('Error filtering goals:', err.message || err);
-        this.filteredGoals = [];
-      }
-    });
+  selectCategory(element: any, category: string) {
+    console.log(`User: ${element.userName}, Selected Category: ${category}`);
   }
 
   goToGoalType(): void {
@@ -113,9 +164,8 @@ export class GoalComponent implements OnInit {
     if (goalType === 'personal') {
       this.currentView = 'newGoal';
     } else if (goalType === 'archived') {
-      alert('Archived goal functionality under construction.');
-    } else if (goalType === 'move') {
-      alert('Move goal from previous year - feature in progress.');
+      this.currentView = 'archived';
+      this.loadArchivedGoals();
     }
   }
 
@@ -123,28 +173,399 @@ export class GoalComponent implements OnInit {
     this.currentView = this.currentView === 'newGoal' ? 'goalType' : 'main';
   }
 
+  closeGoalPopup(): void {
+    this.showGoalPopup = false;
+    this.selectedMonth = null;
+    this.selectedMonthGoals = [];
+  }
+
   goBack(): void {
     this.currentView = 'goalType';
   }
 
+  deleteGoal(goal: any) {
+    if (confirm('Are you sure you want to delete this goal?')) {
+      this.goalService.deleteGoal(goal.id).subscribe(
+        () => {
+          this.goals = this.goals.filter(g => g.id !== goal.id);
+          alert('Goal deleted successfully!');
+        },
+        error => {
+          console.error(error);
+          alert('Error deleting goal');
+        }
+      );
+    }
+  }
+
+  filterGoals(): void {
+    const term = this.searchText.trim().toLowerCase();
+    if (!term) {
+      this.archivedGoals = this.allGoals.filter((g: any) => g.status !== 'Completed');
+      this.completedGoals = this.allGoals.filter((g: any) => g.status === 'Completed');
+      return;
+    }
+    this.archivedGoals = this.allGoals.filter((g: any) =>
+      g.status !== 'Completed' &&
+      (
+        (g.employeeId && g.employeeId.toString().includes(term)) ||
+        (g.employeeName && g.employeeName.toLowerCase().includes(term)) ||
+        (g.category && g.category.toLowerCase().includes(term))
+      )
+    );
+    this.completedGoals = this.allGoals.filter((g: any) =>
+      g.status === 'Completed' &&
+      (
+        (g.employeeId && g.employeeId.toString().includes(term)) ||
+        (g.employeeName && g.employeeName.toLowerCase().includes(term)) ||
+        (g.category && g.category.toLowerCase().includes(term))
+      )
+    );
+  }
+
+  startGoal(goal: any) {
+    if (goal.startDate) {
+      return;
+    }
+
+    goal.startDate = this.formatToDDMMYYYY(new Date());
+    goal.isStarted = true;
+    goal.isEditing = false;
+    this.goalService.updateGoal(goal.id, goal).subscribe({
+      next: () => {
+        console.log("Start date saved and button disabled");
+      },
+      error: (err) => {
+        console.error("Error saving start date", err);
+      }
+    });
+  }
+
+  editGoal(goal: any) {
+    if (goal.startDate) {
+      goal.isEditing = true;
+    }
+  }
+
+  validateDueDate(goal: any) {
+    const today = new Date().toISOString().split('T')[0];
+    if (goal.dueDate < today) {
+      goal.isOverdue = true;
+    } else {
+      goal.isOverdue = false;
+    }
+  }
+
+  isOverDue(goal: any) {
+    return goal.isOverdue;
+  }
+
   submitGoal(): void {
     if (this.goalForm.valid) {
-      const newGoal: Goal = this.goalForm.value;
-      this.http.post<Goal>(this.apiUrl, newGoal).subscribe({
-        next: (savedGoal) => {
-          this.goals.push(savedGoal);
-          alert('✅ Goal submitted successfully!');
+      const confirmed = confirm('Are you sure you want to save this new goal?');
+      if (!confirmed) return;
+
+      const newGoal = {
+        employeeId: this.employeeId,
+        employeeName: this.fullName,
+        category: this.goalForm.value.category,
+        description: this.goalForm.value.description,
+        weight: this.goalForm.value.weight,
+        startDate: null,
+        endDate: null,
+        progress: null,
+        status: "Pending",
+        isStarted: false
+      };
+
+      this.goalService.createGoal(newGoal).subscribe({
+        next: (res: any) => {
           this.goalForm.reset();
-          this.currentView = 'main';
+          this.currentView = 'archived';
+          this.loadArchivedGoals();
         },
-        error: (err) => {
-          console.error('Error submitting goal:', err.message || err);
-          alert('❌ Failed to submit goal.');
+        error: err => {
+          console.error('Error creating goal:', err);
+          alert('Failed to save goal!');
         }
       });
     } else {
-      alert('Please fill all required fields correctly.');
       this.goalForm.markAllAsTouched();
     }
   }
+
+  updateGoal(goal: any): void {
+    const confirmed = confirm('Do you want to save changes to this goal?');
+    if (!confirmed) return;
+
+    this.goalService.updateGoal(goal.id, goal).subscribe({
+      next: () => console.log('Goal updated successfully'),
+      error: err => console.error('Error updating goal:', err)
+    });
+  }
+
+  onStatusChange(goal: any) {
+    if (goal.status === 'Started') {
+      goal.isStarted = true;
+      goal.startDate = new Date().toISOString().split('T')[0];
+    }
+
+    if (goal.status === 'Pending') {
+      goal.isStarted = false;
+      goal.startDate = null;
+      goal.endDate = null;
+      goal.progress = null;
+    }
+
+    if (goal.status === 'Completed') {
+      goal.endDate = new Date().toISOString().split('T')[0];
+      goal.progress = '100%';
+
+      this.archivedGoals = this.archivedGoals.filter(g => g.id !== goal.id);
+      this.completedGoals.push(goal);
+    }
+    this.updateGoal(goal);
+  }
+  formatToDDMMYYYY(date: Date): string {
+  const d = new Date(date);
+  const day = String(d.getDate()).padStart(2, '0');
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const year = d.getFullYear();
+  return `${day}-${month}-${year}`;
+}
+
+  viewGoals(emp: any): void {
+    this.goalService.getGoalByUserid(emp.employeeId).subscribe({
+      next: (res: any) => {
+
+        console.log("API response:", res.body);
+        const allGoalsByUser = res.body || [];
+        const employeeGoals = allGoalsByUser.filter((g: any) => g.user?.employeeId === emp.employeeId);
+        const filteredByMonth = this.filterGoalsBySelectedMonth(employeeGoals);
+        if (filteredByMonth.length > 0) {
+          this.openGoalPopup(filteredByMonth);
+        } else {
+          this.goalListForPopup = [];
+          this.showGoalPopup = true;
+        }
+      },
+      error: (err) => {
+        console.error('Error fetching goals:', err);
+      }
+    });
+  }
+
+  openGoalPopup(goals: any[]): void {
+    this.goalListForPopup = goals;
+    this.showGoalPopup = true;
+  }
+
+  getOffset(progress: any): number {
+    let value: number;
+
+    if (progress == null) value = 0;
+    else if (typeof progress === 'string' && progress.includes('%')) value = parseFloat(progress.replace('%', ''));
+    else value = Number(progress);
+
+    const valid = Math.min(Math.max(value, 0), 100);
+    return this.circumference * (1 - valid / 100);
+  }
+
+  getProgressValue(progress: any): number {
+    if (!progress) return 0;
+    const val = typeof progress === 'string' && progress.includes('%')
+      ? parseFloat(progress.replace('%', ''))
+      : Number(progress);
+    return Math.min(Math.max(val, 0), 100);
+  }
+
+  toggleEdit(goal: any) {
+    goal.isEditing = !goal.isEditing;
+  }
+
+  saveGoal(goal: any) {
+    if (!confirm('Are you sure you want to save changes for this goal?')) {
+      return;
+    }
+
+    if (goal.progress === '100%') {
+      goal.status = 'Completed';
+      goal.endDate = new Date().toISOString().split('T')[0];
+      this.archivedGoals = this.archivedGoals.filter(g => g.id !== goal.id);
+      this.completedGoals.push(goal);
+      goal.isEditing = false;
+    }
+
+    this.goalService.updateGoal(goal.id, goal).subscribe({
+      next: () => {
+        goal.isEditing = false;
+
+        this.validateDueDate(goal);
+      },
+      error: (err) => console.error('Error updating goal:', err)
+    });
+  }
+
+  onDateChange(goal: any) {
+    this.updateGoal(goal);
+  }
+
+  isPopupView(): boolean {
+    return this.currentView === 'goalType' || this.currentView === 'newGoal';
+  }
+
+  loadArchivedGoals() {
+    this.goalService.getAllGoals().subscribe({
+      next: (res) => {
+        this.allGoals = res.body || [];
+        console.log(" All goals from API:", this.allGoals);
+        this.archivedGoals = this.allGoals.filter((g: any) => g.status !== 'Completed');
+        this.completedGoals = this.allGoals.filter((g: any) => g.status === 'Completed');
+      },
+      error: (err) => {
+        console.error('Error fetching archived goals', err);
+      }
+    });
+  }
+
+  onDueDateChange(goal: any, event: any) {
+    const selected = event.value ? this.formatToDDMMYYYY(event.value) : null;
+    if (!confirm('Do you want to save this due date?')) {
+      goal.dueDate = this.previousDueDate;
+      return;
+    }
+    goal.dueDate = selected;
+    goal.isDueDateLocked = true;
+    this.goalService.updateGoal(goal.id, goal).subscribe({
+      next: (res) => {
+        console.log('Due date updated');
+      },
+      error: (err) => {
+        console.error('Error saving due date', err);
+      }
+    });
+  }
+
+  storePreviousDueDate(goal: any) {
+    this.previousDueDate = goal.dueDate;
+  }
+
+  selectMonth(month: string): void {
+    this.selectedMonth = month;
+    const monthIndex = this.months.indexOf(month);
+
+    this.selectedMonthGoals = this.allGoals.filter(goal => {
+      const startDate = goal.startDate ? new Date(goal.startDate) : null;
+      const endDate = goal.endDate ? new Date(goal.endDate) : null;
+      const dueDate = goal.dueDate ? new Date(goal.dueDate) : null;
+
+      return (
+        (startDate &&
+          startDate.getMonth() === monthIndex &&
+          startDate.getFullYear() === this.selectedYear) ||
+
+        (endDate &&
+          endDate.getMonth() === monthIndex &&
+          endDate.getFullYear() === this.selectedYear) ||
+
+        (dueDate &&
+          dueDate.getMonth() === monthIndex &&
+          dueDate.getFullYear() === this.selectedYear)
+      );
+    });
+
+  }
+
+  updateDateRangeLabel(): void {
+    const month = this.currentDate.toLocaleString('default', { month: 'long' });
+    const year = this.currentDate.getFullYear();
+    this.dateRange = `${month} ${year}`;
+  }
+
+  goToPreviousMonth(): void {
+    this.currentDate.setMonth(this.currentDate.getMonth() - 1);
+    this.updateDateRangeLabel();
+    this.filterEmployeesByGoalMonth();
+  }
+
+  goToNextMonth(): void {
+    this.currentDate.setMonth(this.currentDate.getMonth() + 1);
+    this.updateDateRangeLabel();
+    this.filterEmployeesByGoalMonth();
+  }
+
+  filterGoalsBySelectedMonth(goals: any[]): any[] {
+    if (!goals || goals.length === 0) return [];
+
+    const selectedMonth = this.currentDate.getMonth();  
+    const selectedYear = this.currentDate.getFullYear();
+
+    return goals.filter((goal) => {
+      const start = goal.startDate ? new Date(goal.startDate) : null;
+      const end = goal.endDate ? new Date(goal.endDate) : null;
+      const due = goal.dueDate ? new Date(goal.dueDate) : null;
+
+      const isSameMonth =
+        (start && start.getMonth() === selectedMonth && start.getFullYear() === selectedYear) ||
+        (end && end.getMonth() === selectedMonth && end.getFullYear() === selectedYear) ||
+        (due && due.getMonth() === selectedMonth && due.getFullYear() === selectedYear);
+
+      return isSameMonth;
+    });
+  }
+
+  isGoalInSelectedMonth(goal: any): boolean {
+    const selectedMonth = this.currentDate.getMonth();
+    const selectedYear = this.currentDate.getFullYear();
+
+    const start = goal.startDate ? new Date(goal.startDate) : null;
+    const end = goal.endDate ? new Date(goal.endDate) : null;
+    const due = goal.dueDate ? new Date(goal.dueDate) : null;
+
+    const matchStart =
+      !!(start && start.getMonth() === selectedMonth && start.getFullYear() === selectedYear);
+
+    const matchEnd =
+      !!(end && end.getMonth() === selectedMonth && end.getFullYear() === selectedYear);
+
+    const matchDue =
+      !!(due && due.getMonth() === selectedMonth && due.getFullYear() === selectedYear);
+
+    return matchStart || matchEnd || matchDue;
+  }
+
+  filterEmployeesByGoalMonth(): void {
+    this.filteredEmployees = [];
+
+    this.employees.forEach((emp) => {
+      this.goalService.getGoalByUserid(emp.employeeId).subscribe({
+        next: (res: any) => {
+          const goals = res.body || [];
+
+          const monthGoals = goals.filter((g: any) => this.isGoalInSelectedMonth(g));
+
+          if (monthGoals.length > 0) {
+            this.filteredEmployees.push({
+              ...emp,
+              goalsForMonth: monthGoals
+            });
+          }
+        },
+        error: () => { }
+      });
+    });
+  }
+get paginatedEmployees(): any[] {
+  const start = (this.currentPage - 1) * this.itemsPerPage;
+  return this.filteredEmployees.slice(start, start + this.itemsPerPage);
+}
+
+get totalPages(): number {
+  return Math.max(1, Math.ceil(this.filteredEmployees.length / this.itemsPerPage));
+}
+changePage(page: number): void {
+  if (page >= 1 && page <= this.totalPages) {
+    this.currentPage = page;
+  }
+}
 }
