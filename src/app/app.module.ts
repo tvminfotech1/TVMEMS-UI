@@ -184,6 +184,7 @@ import { ThankYouComponent } from './components/thank-you/thank-you.component';
     ReactiveFormsModule,
     HttpClientModule,
     MatIconModule,
+    MatTableModule,
     BrowserAnimationsModule,
     MatButtonModule,
     MatProgressSpinnerModule,

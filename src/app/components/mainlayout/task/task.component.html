@@ -47,24 +47,24 @@
                   (</b>{{ task.employeeId}}<b>)</b></span>
               <span class="description"><b>Description : </b> {{ task.description}}</span>
             </p>
-           
+
             <div *ngIf="viewMode== 'list'" class="newline">
-  <div class="info-col" style="color: #5a6b86; font-size: 0.98em;">
-    <p><span class="info-item"><b>Start:</b> {{ task.assignedDate | date }}</span></p>
-  </div>
+              <div class="info-col" style="color: #5a6b86; font-size: 0.98em;">
+                <p><span class="info-item"><b>Start:</b> {{ task.assignedDate | date }}</span></p>
+              </div>
 
-  <div class="info-col" style="color: #5a6b86; font-size: 0.98em;">
-    <p><span class="info-item"><b>Due:</b> {{ task.dueDate | date }}</span></p>
-  </div>
+              <div class="info-col" style="color: #5a6b86; font-size: 0.98em;">
+                <p><span class="info-item"><b>Due:</b> {{ task.dueDate | date }}</span></p>
+              </div>
 
-  <div class="info-col" *ngIf="isAdmin" style="color: #5a6b86; font-size: 0.98em;">
-    <p><span class="info-item"><b>Priority:</b> {{ task.priority }}</span></p>
-  </div>
+              <div class="info-col" *ngIf="isAdmin" style="color: #5a6b86; font-size: 0.98em;">
+                <p><span class="info-item"><b>Priority:</b> {{ task.priority }}</span></p>
+              </div>
 
-  <div class="info-col" *ngIf="isAdmin" style="color: #5a6b86; font-size: 0.98em;">
-    <p><span class="info-item"><b>Status:</b> {{ task.status }}</span></p>
-  </div>
-</div>
+              <div class="info-col" *ngIf="isAdmin" style="color: #5a6b86; font-size: 0.98em;">
+                <p><span class="info-item"><b>Status:</b> {{ task.status }}</span></p>
+              </div>
+            </div>
 
 
             <div *ngIf="viewMode === 'grid' && isAdmin" class="grid-details">
@@ -80,9 +80,9 @@
               </div>
               <div>
                 <p>
-                  <span style="color: #5a6b86; font-size: 0.98em;"><b>Priority:</b> {{ task.priority }} </span> 
-                </p> 
-              </div> 
+                  <span style="color: #5a6b86; font-size: 0.98em;"><b>Priority:</b> {{ task.priority }} </span>
+                </p>
+              </div>
               <div>
                 <p><span style="color: #5a6b86; font-size: 0.98em;"><b>Status:</b> {{ task.status }}</span></p>
               </div>
@@ -116,12 +116,12 @@
             </div>
 
             <div class="inline-container" *ngIf="isUser && viewMode=='grid'">
-              
-                  <span style="color: #5a6b86; font-size: 0.98em;"><b>Start:</b> {{ task.assignedDate | date }}</span>
-                
-                  <span style="color: #5a6b86; font-size: 0.98em;"><b>Due:</b> {{ task.dueDate | date }}</span>
-                
-            
+
+              <span style="color: #5a6b86; font-size: 0.98em;"><b>Start:</b> {{ task.assignedDate | date }}</span>
+
+              <span style="color: #5a6b86; font-size: 0.98em;"><b>Due:</b> {{ task.dueDate | date }}</span>
+
+
               <span class="inline-dropdown">
                 <b>Priority:</b>
                 <mat-form-field appearance="fill" class="compact-field" style="width: 300px;">
@@ -149,9 +149,9 @@
             </div>
             <br>
             <div>
-            <span class="task-timestamp bottom-right">
-              Posted on: {{ task.todayDate | date: 'dd-MM-yyyy, hh:mm a' }}
-            </span>
+              <span class="task-timestamp bottom-right">
+                Posted on: {{ task.todayDate | date: 'dd-MM-yyyy, hh:mm a' }}
+              </span>
             </div>
           </div>
           <span class="task-actions" *ngIf="isUser && viewMode=='list'">

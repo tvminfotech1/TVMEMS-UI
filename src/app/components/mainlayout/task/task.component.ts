@@ -96,9 +96,9 @@ export class TaskComponent implements OnInit {
       project: this.taskForm.value.project,
       taskName: this.taskForm.value.title,
       description: this.taskForm.value.description,
-      assignedDate: this.taskForm.value.startDate,
+      assignedDate: this.toLocalDate(this.taskForm.value.startDate),
       todayDate: formattedDate,
-      dueDate: this.taskForm.value.dueDate,
+      dueDate: this.toLocalDate(this.taskForm.value.dueDate),
       priority: this.taskForm.value.priority,
       status: this.taskForm.value.status
     };
@@ -143,11 +143,41 @@ export class TaskComponent implements OnInit {
   }
 
   updateDateRange(): void {
+     const year = this.startDate.getFullYear();
+  const month = this.startDate.getMonth();
+   const lastDayOfMonth = new Date(year, month + 1, 0);
+ this.endDate = lastDayOfMonth;
     const options: Intl.DateTimeFormatOptions = { day: '2-digit', month: 'short', year: 'numeric' };
     const startStr = this.startDate.toLocaleDateString('en-US', options);
     const endStr = this.endDate.toLocaleDateString('en-US', options);
     this.dateRange = `${startStr} - ${endStr}`;
   }
+
+  private parseLocalDate(dateStr: string): Date {
+  if (!dateStr) return new Date();
+  const [year, month, day] = dateStr.split('-').map(Number);
+  return new Date(year, month - 1, day);
+}
+
+private toLocalDate(dateInput: any): string {
+  if (!dateInput) return '';
+
+  let date: Date;
+
+  if (typeof dateInput === 'string') {
+    date = new Date(dateInput);
+  } else if (dateInput instanceof Date) {
+    date = dateInput;
+  } else {
+    console.error('Unexpected date input:', dateInput);
+    return '';
+  }
+
+  const year = date.getFullYear();
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const day = date.getDate().toString().padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
 
 
   filterTasksByDate(): void {
@@ -227,9 +257,9 @@ export class TaskComponent implements OnInit {
           fullName: task.taskOwner || '',
           employeeId: task.employeeId ? task.employeeId.toString() : '',
           description: task.description || '',
-          assignedDate: task.assignedDate ? new Date(task.assignedDate) : null,
+          assignedDate: task.assignedDate ? this.parseLocalDate(task.assignedDate) : null,
           todayDate: task.todayDate,
-          dueDate: task.dueDate ? new Date(task.dueDate) : null,
+          dueDate:task.dueDate ? this.parseLocalDate(task.dueDate) : null,
           priority: task.priority || 'Low',
           status: task.status || 'Not Started'
         }));

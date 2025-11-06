@@ -142,7 +142,12 @@ checkMobileExists(mobile: string) {
     return decoded?.empId || null;
   }
 
-  
+  getUserEmail(): string | null {
+  const token = localStorage.getItem('token');
+  if (!token) return null;
+  const decoded: any = jwtDecode(token);
+  return decoded.sub || decoded.email || null;
+}
 
   getfullName(): string | null {
     const decoded = this.getDecodedToken();

@@ -12,6 +12,7 @@ export class AdminComponent implements OnInit {
   public filteredEmployees: any[] = [];
   public searchText: string = '';
   public isAdmin:boolean =false;
+   private currentUserEmail: string | null = null;
 
 
 
@@ -22,6 +23,7 @@ export class AdminComponent implements OnInit {
 
  ngOnInit(): void {
      this.isAdmin=this.authService.isAdmin();
+      this.currentUserEmail = this.authService.getUserEmail?.(); 
      if(this.isAdmin){
       this.allUser();
      }
@@ -30,9 +32,17 @@ export class AdminComponent implements OnInit {
      allUser(): void{
       this.userlistService.getAllUser().subscribe({
         next:(response) => {
-          this.employees=response.body || [];
-  this.filteredEmployees = [...this.employees];
-          console.log(this.employees);          
+
+         const allUsers = response.body || [];
+
+       
+        this.employees = allUsers.filter((user: any) =>
+          user.role?.toLowerCase() !== 'admin' &&
+          user.email?.toLowerCase() !== this.currentUserEmail?.toLowerCase()
+        );
+
+        this.filteredEmployees = [...this.employees];
+        console.log('✅ Filtered employees (no admins, no self):', this.employees);     
         },
         error:(err)=>{
             console.error("❌ Error fetching users", err);
