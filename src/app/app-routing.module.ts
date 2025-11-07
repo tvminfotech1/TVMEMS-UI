@@ -42,7 +42,7 @@ import { EmpfinalComponent } from './components/employee-details/empfinal/empfin
 // Main layout and dashboard routes
 import { MainlayoutComponent } from './components/mainlayout/mainlayout.component';
 import { DashboardhomeComponent } from './components/mainlayout/dashboardhome/dashboardhome.component';
-import { HoildayCalendarComponent } from './components/mainlayout/hoilday-calendar/hoilday-calendar.component';
+import { HolidayCalendarComponent } from './components/mainlayout/hoilday-calendar/hoilday-calendar.component';
 import { FeedbacksComponent } from './components/mainlayout/feedbacks/feedbacks.component';
 import { WorkhoursComponent } from './components/mainlayout/workhours/workhours.component';
 import { HiringComponent } from './components/mainlayout/hiring/hiring.component';
@@ -113,7 +113,7 @@ const routes: Routes = [
       {path: 'signup', component: SignupComponent,canActivate: [adminAuthGuard], },
       {path: 'dashboard', component: DashboardhomeComponent,canActivate: [AuthGuard],},
       {path: 'myprofile/:id',component:MyProfileComponent,canActivate:[AuthGuard]},
-      {path: 'holidays', component: HoildayCalendarComponent,canActivate: [AuthGuard], },
+      {path: 'holidays', component: HolidayCalendarComponent,canActivate: [AuthGuard], },
       {path: 'feedbacks', component: FeedbacksComponent,canActivate: [AuthGuard], },
       {path:'organization', component:OrganizationComponent,canActivate: [AuthGuard],},
       {path: 'workhours',component: WorkhoursComponent,canActivate: [adminAuthGuard],},

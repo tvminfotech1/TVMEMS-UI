@@ -1,60 +1,143 @@
+/* === Calendar Container === */
 .calendar-container {
-  padding: 40px 30px;
-  background-color: #ffffff;
-  box-sizing: border-box;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  max-width: 1000px;
+  margin: 2rem auto;
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
-h2 {
-  text-align: left;
-  font-size: 28px;
-  margin-bottom: 20px;
+.calendar-container h2 {
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: 600;
   color: #2c3e50;
-  border-left: 6px solid #3f51b5;
-  padding-left: 12px;
+  margin-bottom: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
 }
 
-table {
+/* === Table Styling === */
+.holiday-table {
   width: 100%;
   border-collapse: collapse;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
   overflow: hidden;
 }
 
-thead {
-  background-color: #3f51b5;
-  color: white;
+.holiday-table th,
+.holiday-table td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #e0e0e0;
+}
+.holiday-table thead {
+ background: linear-gradient(135deg, #0a0f3c, #1c2b8c);
+  color: #ffffff;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
-th, td {
-  padding: 16px 20px;
-  text-align: left;
-  font-size: 16px;
-  border-bottom: 1px solid #e0e0e0;
+.holiday-table tr:nth-child(even) {
+  background-color: #f9f9f9;
 }
 
-tbody tr:nth-child(even) {
-  background-color: #f4f6fc;
+
+/* === Loading & Error States === */
+.loading,
+.error,
+.no-data {
+  text-align: center;
+  font-size: 1.1rem;
+  margin-top: 1rem;
 }
 
-tbody tr:hover {
-  background-color: #e8ebf9;
-  transition: background-color 0.2s ease;
+.loading {
+  color: #2980b9;
 }
 
+.error {
+  color: #e74c3c;
+  background: #fdecea;
+  padding: 0.8rem;
+  border-radius: 6px;
+}
+
+.no-data {
+  color: #7f8c8d;
+  background: #f7f9fa;
+  padding: 1rem;
+  border-radius: 6px;
+}
+
+/* === Responsive Design === */
+
+/* Medium Devices (Tablets: up to 992px) */
+@media (max-width: 992px) {
+  .calendar-container {
+    padding: 1.5rem;
+  }
+
+  .holiday-table th,
+  .holiday-table td {
+    padding: 10px 12px;
+    font-size: 0.95rem;
+  }
+
+  .calendar-container h2 {
+    font-size: 1.6rem;
+  }
+}
+
+/* Small Devices (Mobiles: up to 768px) */
 @media (max-width: 768px) {
   .calendar-container {
-    padding: 20px 15px;
+    padding: 1rem;
   }
 
-  th, td {
-    padding: 12px 14px;
-    font-size: 14px;
+  .holiday-table th,
+  .holiday-table td {
+    padding: 8px 10px;
+    font-size: 0.9rem;
   }
 
-  h2 {
-    font-size: 22px;
+  .calendar-container h2 {
+    font-size: 1.4rem;
+  }
+
+  /* Optional: make table scrollable horizontally if needed */
+  .calendar-container {
+    overflow-x: auto;
+  }
+
+  .holiday-table {
+    min-width: 600px; /* ensures proper layout */
+  }
+}
+
+/* Extra Small Devices (up to 480px) */
+@media (max-width: 480px) {
+  .calendar-container {
+    padding: 0.8rem;
+  }
+
+  .calendar-container h2 {
+    font-size: 1.2rem;
+  }
+
+  .holiday-table th,
+  .holiday-table td {
+    padding: 6px 8px;
+    font-size: 0.85rem;
+  }
+
+  /* keep table scrollable for very small screens */
+  .calendar-container {
+    overflow-x: auto;
   }
 }

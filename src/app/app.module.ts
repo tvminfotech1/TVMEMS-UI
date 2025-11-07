@@ -42,7 +42,7 @@ import { EmpresumeComponent } from './components/employee-details/empresume/empr
 import { EmpfinalComponent } from './components/employee-details/empfinal/empfinal.component';
 import { TimeSheetComponent } from './components/time-sheet/time-sheet.component';
 import { TimeSheetViewComponent } from './components/time-sheet/time-sheet-view/time-sheet-view.component';
-import { HoildayCalendarComponent } from './components/mainlayout/hoilday-calendar/hoilday-calendar.component';
+import { HolidayCalendarComponent } from './components/mainlayout/hoilday-calendar/hoilday-calendar.component';
 import { DashboardhomeComponent } from './components/mainlayout/dashboardhome/dashboardhome.component';
 import { MainlayoutComponent } from './components/mainlayout/mainlayout.component';
 import { FeedbacksComponent } from './components/mainlayout/feedbacks/feedbacks.component';
@@ -101,6 +101,7 @@ import { MatTableModule } from '@angular/material/table';
 import { ThankYouComponent } from './components/thank-you/thank-you.component';
 import { JobOpeningListComponent } from './components/mainlayout/job-opening-list/job-opening-list.component';
 import { JobEditDialogComponent } from './components/mainlayout/job-opening-list/job-edit-dialog/job-edit-dialog.component';
+import { CommonModule, DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -145,7 +146,7 @@ import { JobEditDialogComponent } from './components/mainlayout/job-opening-list
     TimeSheetComponent,
     TimeSheetComponent,
     TimeSheetViewComponent,
-    HoildayCalendarComponent,
+    HolidayCalendarComponent,
     DashboardhomeComponent,
     MainlayoutComponent,
     FeedbacksComponent,
@@ -206,6 +207,7 @@ import { JobEditDialogComponent } from './components/mainlayout/job-opening-list
     MatDialogModule,
     MatTableModule,
     A11yModule,
+    CommonModule,
   ],
   providers: [
     {
@@ -215,6 +217,7 @@ import { JobEditDialogComponent } from './components/mainlayout/job-opening-list
     },
     { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
     { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
+    DatePipe
   ],
   bootstrap: [AppComponent],
 })

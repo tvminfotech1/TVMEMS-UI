@@ -1,21 +1,29 @@
 <div class="calendar-container">
-  <h2>Holiday Calendar</h2>
-  <table>
+  <h2>📅 Holiday Calendar</h2>
+
+  <div *ngIf="isLoading" class="loading">Loading holidays...</div>
+  <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+
+  <table *ngIf="!isLoading && holidays.length > 0" class="holiday-table">
     <thead>
       <tr>
         <th>SL NO</th>
         <th>HOLIDAY NAME</th>
         <th>DATE</th>
-        <th>DESCRIPTION</th>
+        <th>DAY NAME</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let holiday of holidays;let i = index">
+      <tr *ngFor="let holiday of holidays; let i = index">
         <td>{{ i + 1 }}</td>
         <td>{{ holiday.name }}</td>
-        <td>{{ holiday.date }}</td>
+        <td>{{ holiday.date | date:'dd-MM-yyyy' }}</td>
         <td>{{ holiday.day_Name }}</td>
       </tr>
     </tbody>
   </table>
+
+  <div *ngIf="!isLoading && holidays.length === 0" class="no-data">
+    No holidays found.
+  </div>
 </div>

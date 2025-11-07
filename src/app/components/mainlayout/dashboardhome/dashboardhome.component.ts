@@ -1,55 +1,52 @@
 import { Component, OnInit } from '@angular/core';
+import { trigger, style, animate, transition, query, animateChild } from '@angular/animations';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-dashboardhome',
   templateUrl: './dashboardhome.component.html',
   styleUrls: ['./dashboardhome.component.css'],
+  animations: [
+    trigger('fadeSlideFromButton', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateY(-20px) scale(0.95)' }),
+        animate('400ms ease-out', style({ opacity: 1, transform: 'translateY(0) scale(1)' })),
+      ]),
+      transition(':leave', [
+        animate('300ms ease-in', style({ opacity: 0, transform: 'translateY(15px) scale(0.98)' }))
+      ])
+    ])
+  ]
 })
 export class DashboardhomeComponent implements OnInit {
   public userName = '';
   greeting: string = '';
   workInfo: string = '';
-  public show: any = {
-    workhours: true,
-    wishes: false,
-    hirings: false,
-    holidays: false,
-    workhistory: false,
-    announcement: false,
-  };
 
-  isAdmin = false;
-  isUser = false;
+  public show: any = {
+    announcement: true,
+    holidays: false,
+    wishes: false,
+  };
 
   constructor(private authService: AuthService) {}
 
   ngOnInit() {
     const hour = new Date().getHours();
-    if (hour < 12) {
-      this.greeting = 'Good Morning! 🌞';
-    } else if (hour < 17) {
-      this.greeting = 'Good Afternoon! ☀️';
-    } else {
-      this.greeting = 'Good Evening! 🌙';
-    }
+    this.greeting =
+      hour < 12 ? 'Good Morning! 🌞' : hour < 17 ? 'Good Afternoon! ☀️' : 'Good Evening! 🌙';
 
-    // Get user name from token
     this.userName = this.authService.getfullName() || 'User';
-
-    // Check roles
-    this.isAdmin = this.authService.isAdmin();
-    this.isUser = this.authService.isUser();
-
     const day = new Date().toLocaleDateString('en-US', { weekday: 'long' });
-  this.workInfo = `Happy ${day}! Let's make it a great one.`;
+    this.workInfo = `Happy ${day}! Let's make it a great one.`;
   }
 
   toggle(section: string) {
-    for (let key in this.show) {
-      this.show[key] = false;
-    }
+    for (let key in this.show) this.show[key] = false;
     this.show[section] = true;
   }
 
+  isActive(section: string): boolean {
+    return this.show[section];
+  }
 }
