@@ -24,6 +24,18 @@ export class PayrollEmployeeComponent implements OnInit {
   uniqueDesignations: string[] = [];
 
   excelEmployees: Employee[] = [];
+  displayedColumns: string[] = [
+  'id',
+  'name',
+  'designation',
+  'email',
+  'department',
+  'status',
+  'location',
+  'details'
+];
+
+
 
   constructor(private employeeService: PayrollEmployeeService, private router: Router) {}
 
@@ -123,14 +135,17 @@ uploadData(): void {
 }
 
 
-  applyFilters(): void {
-    this.filteredEmployees = this.employees.filter(emp =>
-      (this.selectedLocation === '' || emp.location === this.selectedLocation) &&
-      (this.selectedStatus === '' || emp.status === this.selectedStatus) &&
-      (this.selectedDesignation === '' || emp.designation === this.selectedDesignation)
-    );
-    console.log('Filtered:', this.filteredEmployees);
-  }
+applyFilters(): void {
+  this.filteredEmployees = this.employees.filter(emp =>
+    (this.selectedLocation === '' || emp.location === this.selectedLocation) &&
+    (this.selectedStatus === '' || emp.status === this.selectedStatus) &&
+    (this.selectedDesignation === '' || emp.designation === this.selectedDesignation)
+  );
+
+  console.log('Filtered Employees:', this.filteredEmployees);
+  console.log('Filtered Count:', this.filteredEmployees.length);
+}
+
 
   resetFilters(): void {
     this.selectedLocation = '';

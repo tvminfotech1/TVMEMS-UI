@@ -1,254 +1,195 @@
-:host {
-  display: block;
-  padding: 20px;
-  width: 100%;
-  box-sizing: border-box;
-  font-family: "Segoe UI", Roboto, sans-serif;
+/* ===== Overall Container ===== */
+.payroll-employee-container {
+  padding: 1.5rem;
+  background: #f7f9fc;
+  min-height: 100vh;
+  font-family: "Inter", "Roboto", sans-serif;
 }
 
-/* Employee Header */
+/* ===== Header ===== */
 .employee-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #ffffff;
-  padding: 16px;
-  border-radius: 8px;
-  margin-bottom: 20px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  flex-wrap: wrap;
-  gap: 12px;
+  background: linear-gradient(135deg, #0a0f3c, #1c2b8c);
+  color: #fff;
+  padding: 1rem 1.5rem;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .employee-header h2 {
-  font-size: 22px;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
   font-weight: 600;
+  font-size: 1.3rem;
   margin: 0;
-  color: #2f3542;
 }
 
-.emp-right-header {
+.emp-right-header button {
   display: flex;
   align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-/* File Input Customization */
-.file-import {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-input[type="file"] {
-  display: none;
-}
-
-.file-label {
-  padding: 6px 12px;
-  background-color: #f1f3f5;
-  color: #444;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: 0.3s;
-}
-
-.file-label:hover {
-  background-color: #e9ecef;
-}
-
-/* Buttons */
-.add-btn,
-.btn-success,
-.search-btn,
-.btn-secondary,
-.view-btn {
-  padding: 6px 14px;
-  font-size: 14px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
+  gap: 0.4rem;
   font-weight: 500;
-  transition: 0.3s;
 }
 
-.add-btn {
-  background-color: #007bff;
-  color: white;
-}
-
-.add-btn:hover {
-  background-color: #0056b3;
-}
-
-.btn-success {
-  background-color: #28a745;
-  color: white;
-}
-
-.btn-success:hover {
-  background-color: #218838;
-}
-
-.search-btn {
-  background-color: #2f54eb;
-  color: #fff;
-}
-
-.search-btn:hover {
-  background-color: #1d39c4;
-}
-
-.btn-secondary {
-  background-color: #6c757d;
-  color: #fff;
-}
-
-.btn-secondary:hover {
-  background-color: #5a6268;
-}
-
-.view-btn {
-  background-color: #2f54eb;
-  color: white;
-}
-
-.view-btn:hover {
-  background-color: #1d39c4;
-  transform: scale(1.05);
-}
-
-.view-btn:active {
-  transform: scale(1);
-  background-color: #10239e;
-}
-
-/* Filters Section */
+/* ===== Filters ===== */
 .filters {
   display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
+  align-items: baseline; /* align all mat-selects and buttons at bottom */
+  justify-content: center;
+  gap: 1rem;
+  background: #fff;
+  padding: 1rem 1rem 0rem 1rem;
+  border-radius: 10px;
+  margin-bottom: 1rem;
   flex-wrap: wrap;
-  align-items: center;
 }
 
-.filters select {
-  padding: 8px 12px;
-  font-size: 14px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  min-width: 180px;
+
+.filters mat-form-field {
+  flex: 1 1 220px;
+  min-width: 200px;
 }
+
 
 .filter-actions {
   display: flex;
-  gap: 10px;
+  align-items: flex-end;
+  gap: 0.8rem;
 }
 
-/* Employee Count */
-.employee-count {
-  font-size: 14px;
-  margin-bottom: 10px;
-}
-
-/* No Data */
-.no-data {
-  text-align: center;
-  color: #dc3545;
+.filter-actions button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.4rem;
   font-weight: 500;
-  margin: 20px 0;
+  transition: all 0.3s ease;
 }
 
-/* Employee Table */
+
+/* ===== Employee Count ===== */
+.employee-count {
+  font-weight: 500;
+  color: #1a2578;
+  margin-bottom: 1rem;
+}
+
+.employee-table ::ng-deep .mat-header-row {
+  background-color: #0a0f3c !important; /* Dark blue header */
+  color: #fff !important;
+}
+
+.employee-table ::ng-deep .mat-header-cell {
+  color: #fff !important;
+  font-weight: 600;
+  text-transform: uppercase;
+  padding: 0.8rem;
+}
+
+.no-data {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.6rem;
+  background: #fff3f3;
+  color: #b71c1c;
+  font-weight: 500;
+  padding: 1rem;
+  border-radius: 6px;
+}
+
+/* ===== Employee Table ===== */
 .employee-table {
-  overflow-x: auto;
-}
-
-.employee-table table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 14px;
-  background-color: white;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
-  border-radius: 8px;
+  background: #fff;
+  border-radius: 10px;
   overflow: hidden;
 }
 
-.employee-table th,
-.employee-table td {
-  padding: 12px 10px;
-  border-bottom: 1px solid #e0e0e0;
-  text-align: left;
-  vertical-align: middle;
+table {
+  width: 100%;
+  border-collapse: collapse;
 }
-
-.employee-table th {
-  background-color: #f1f3f5;
+.employee-table table th {
+  background: #1a237e;
+  color: #ffffff; /* White text */
   font-weight: 600;
-  color: #333;
+  text-align: left;
+  padding: 0.8rem;
 }
 
-.employee-table tr:hover {
-  background-color: #f9f9f9;
+
+th {
+  background: #e9ecf9;
+  color: #1a2578;
+  font-weight: 600;
+  padding: 0.8rem;
 }
 
-/* Profile Info */
+td {
+  padding: 0.8rem;
+  vertical-align: middle;
+  font-size: 0.95rem;
+  border-bottom: 1px solid #eee;
+}
+
+tr:hover td {
+  background: #f5f7ff;
+  transition: background 0.3s ease;
+}
+
+/* ===== Profile Info ===== */
 .profile-info {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 0.6rem;
 }
 
 .profile-info img {
+  width: 35px;
+  height: 35px;
   border-radius: 50%;
-  width: 34px;
-  height: 34px;
   object-fit: cover;
+  border: 2px solid #dfe3f8;
 }
 
 .emp-name {
   cursor: pointer;
+  text-decoration: none;
 }
 
-.emp-name:hover b {
+.emp-name:hover {
   text-decoration: underline;
 }
 
-/* Status Colors */
+/* ===== Status Colors ===== */
 .text-success {
-  color: #28a745 !important;
+  color: #2e7d32;
 }
 
 .text-danger {
-  color: #dc3545 !important;
+  color: #c62828;
 }
 
-.font-weight-bold {
-  font-weight: bold;
+.text-primary {
+  color: #1a2578;
 }
 
-/* Responsive Tweaks */
+/* ===== Responsive Design ===== */
 @media (max-width: 768px) {
-  .employee-header {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
   .filters {
     flex-direction: column;
     align-items: stretch;
   }
 
-  .filters select,
-  .search-btn,
-  .btn-secondary {
+  .filters mat-form-field {
     width: 100%;
   }
 
-  .employee-table table {
-    font-size: 12px;
+  .filter-actions {
+    justify-content: flex-end;
   }
 }
