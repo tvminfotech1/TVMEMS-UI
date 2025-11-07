@@ -51,6 +51,13 @@ export class PayrunsComponent implements OnInit {
     });
   }
 
+  getMonthName(): string {
+  const [year, month] = this.selectedMonth.split('-').map(Number);
+  const date = new Date(year, month - 1);
+  return date.toLocaleString('default', { month: 'long', year: 'numeric' });
+}
+
+
   onMonthChange() {
     this.loadData();
   }
@@ -67,7 +74,7 @@ export class PayrunsComponent implements OnInit {
     const text = this.searchText.toLowerCase().trim();
     this.filteredEmployees = this.employees.filter(emp =>
       emp.id.toString().toLowerCase().includes(text) ||
-      (`${emp.firstName} ${emp.lastName}`).toLowerCase().includes(text)
+      (`${emp.fullName}`).toLowerCase().includes(text)
     );
   }
 

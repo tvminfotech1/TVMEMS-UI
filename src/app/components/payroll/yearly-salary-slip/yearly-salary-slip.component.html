@@ -20,7 +20,7 @@
     <table class="details-table">
       <tr><th colspan="4">Employee Details</th></tr>
       <tr>
-        <td><b>Employee Name</b></td><td>{{ employee.firstName }} {{ employee.lastName }}</td>
+        <td><b>Employee Name</b></td><td>{{ employee.fullName }}</td>
         <td><b>Joining Date</b></td><td>{{ employee.joiningDate }}</td>
       </tr>
       <tr>
@@ -28,7 +28,6 @@
         <td><b>Location</b></td><td>{{ employee.location }}</td>
       </tr>
       <tr>
-        <td><b>Designation</b></td><td>{{ employee.designation }}</td>
         <td><b>NWD</b></td><td>{{ salary.nwd }}</td>
       </tr>
       <tr>
@@ -36,7 +35,6 @@
         <td><b>NOL</b></td><td>{{ salary.nol }}</td>
       </tr>
       <tr>
-        <td><b>DOB</b></td><td>{{ employee.dob }}</td>
         <td><b>Bank Acc No</b></td><td>{{ employee.bankDetails.accountNumber }}</td>
       </tr>
     </table>

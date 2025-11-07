@@ -6,12 +6,8 @@
     <div class="card-body">
       <div class="row">
         <div class="col-left">
-          <img
-            [src]="employee.profileImageUrl"
-            alt="Profile Image"
-            class="profile-img"
-          />
-          <h4>{{ employee.firstName }} {{ employee.lastName }}</h4>
+        
+          <h4>{{ employee.fullName }}</h4>
           <p><strong>ID:</strong> {{ employee.id }}</p>
           <p>
             <strong>Status:</strong>
@@ -41,18 +37,7 @@
               <th>Phone</th>
               <td>{{ employee.phone }}</td>
             </tr>
-            <tr>
-              <th>Gender</th>
-              <td>{{ employee.gender }}</td>
-            </tr>
-            <tr>
-              <th>Date of Birth</th>
-              <td>{{ employee.dob }}</td>
-            </tr>
-            <tr>
-              <th>Designation</th>
-              <td>{{ employee.designation }}</td>
-            </tr>
+          
             <tr>
               <th>Department</th>
               <td>{{ employee.department }}</td>
@@ -65,10 +50,7 @@
               <th>Employee Type</th>
               <td>{{ employee.employeeType }}</td>
             </tr>
-            <tr>
-              <th>Reporting Manager</th>
-              <td>{{ employee.reportingManager }}</td>
-            </tr>
+            
             <tr>
               <th>Location</th>
               <td>{{ employee.location }}</td>
@@ -85,10 +67,7 @@
               <th>In-Hand Salary</th>
               <td>₹{{ employee.inHandSalary }}</td>
             </tr>
-            <tr>
-              <th>Address</th>
-              <td>{{ employee.address }}</td>
-            </tr>
+          
             <tr>
               <th>Aadhaar</th>
               <td>{{ employee.aadhaarNumber }}</td>
@@ -97,14 +76,7 @@
               <th>PAN</th>
               <td>{{ employee.panNumber }}</td>
             </tr>
-            <tr>
-              <th>Blood Group</th>
-              <td>{{ employee.bloodGroup }}</td>
-            </tr>
-            <tr>
-              <th>Emergency Contact</th>
-              <td>{{ employee.emergencyContact }}</td>
-            </tr>
+          
           </table>
 
           <h5>Bank Details</h5>

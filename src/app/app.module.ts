@@ -102,6 +102,7 @@ import { ThankYouComponent } from './components/thank-you/thank-you.component';
 import { JobOpeningListComponent } from './components/mainlayout/job-opening-list/job-opening-list.component';
 import { JobEditDialogComponent } from './components/mainlayout/job-opening-list/job-edit-dialog/job-edit-dialog.component';
 import { CommonModule, DatePipe } from '@angular/common';
+import { MatDividerModule } from '@angular/material/divider';
 
 @NgModule({
   declarations: [
@@ -194,6 +195,7 @@ import { CommonModule, DatePipe } from '@angular/common';
     MatButtonModule,
     MatProgressSpinnerModule,
     MatCardModule,
+     MatDividerModule,
     MatExpansionModule,
     MatFormFieldModule,
     MatInputModule,

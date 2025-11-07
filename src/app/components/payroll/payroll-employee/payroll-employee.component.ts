@@ -58,7 +58,7 @@ export class PayrollEmployeeComponent implements OnInit {
   extractUniqueFilters(data: Employee[]): void {
     this.uniqueLocations = [...new Set(data.map(emp => emp.location).filter(Boolean))];
     this.uniqueStatuses = [...new Set(data.map(emp => emp.status).filter(Boolean))];
-    this.uniqueDesignations = [...new Set(data.map(emp => emp.designation).filter(Boolean))];
+    this.uniqueDesignations = [...new Set(data.map(emp => emp.department).filter(Boolean))];
   }
 
   onFileChange(event: any): void {
@@ -72,30 +72,22 @@ export class PayrollEmployeeComponent implements OnInit {
       const ws: XLSX.WorkSheet = wb.Sheets[wsname];
       const data = XLSX.utils.sheet_to_json(ws);
 
+      // Map only the fields defined in the strict Employee interface you requested
       this.excelEmployees = (data as any[]).map((row: any): Employee => ({
-        id: row['ID'] || '',
-        firstName: row['First Name'] || '',
-        lastName: row['Last Name'] || '',
+        id: +row['ID'] || 0,
+        fullName: row['Full Name'] || ((row['First Name'] || '') + ' ' + (row['Last Name'] || '')).trim(),
         email: row['Email'] || '',
         phone: row['Phone'] || '',
-        gender: row['Gender'] || '',
-        dob: row['DOB'] || '',
-        designation: row['Designation'] || '',
         department: row['Department'] || '',
         joiningDate: row['Joining Date'] || '',
         employeeType: row['Employee Type'] || '',
-        reportingManager: row['Reporting Manager'] || '',
         location: row['Location'] || '',
-        status: row['Status'] || '',
+        status: row['Status'] || 'Active',
         ctc: +row['CTC'] || 0,
         basicSalary: +row['Basic Salary'] || 0,
         inHandSalary: +row['In-Hand Salary'] || 0,
-        address: row['Address'] || '',
         aadhaarNumber: row['Aadhaar Number'] || '',
         panNumber: row['PAN Number'] || '',
-        bloodGroup: row['Blood Group'] || '',
-        emergencyContact: row['Emergency Contact'] || '',
-        profileImageUrl: row['Profile Image URL'] || 'https://static.vecteezy.com/system/resources/previews/032/176/191/non_2x/business-avatar-profile-black-icon-man-of-user-symbol-in-trendy-flat-style-isolated-on-male-profile-people-diverse-face-for-social-network-or-web-vector.jpg',
         bankDetails: {
           bankName: row['Bank Name'] || '',
           accountNumber: row['Account Number'] || '',
@@ -135,17 +127,13 @@ uploadData(): void {
 }
 
 
-applyFilters(): void {
-  this.filteredEmployees = this.employees.filter(emp =>
-    (this.selectedLocation === '' || emp.location === this.selectedLocation) &&
-    (this.selectedStatus === '' || emp.status === this.selectedStatus) &&
-    (this.selectedDesignation === '' || emp.designation === this.selectedDesignation)
-  );
-
-  console.log('Filtered Employees:', this.filteredEmployees);
-  console.log('Filtered Count:', this.filteredEmployees.length);
-}
-
+  applyFilters(): void {
+    this.filteredEmployees = this.employees.filter(emp =>
+      (this.selectedLocation === '' || emp.location === this.selectedLocation) &&
+      (this.selectedStatus === '' || emp.status === this.selectedStatus) 
+    );
+    console.log('Filtered:', this.filteredEmployees);
+  }
 
   resetFilters(): void {
     this.selectedLocation = '';

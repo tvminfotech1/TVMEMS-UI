@@ -19,7 +19,7 @@
     </tr>
     <tr *ngFor="let record of reportData">
       <td>{{ record.employee.id }}</td>
-      <td>{{ record.employee.firstName }} {{ record.employee.lastName }}</td>
+      <td>{{ record.employee.fullName }}</td>
       <td>{{ record.employee.basicSalary }}</td>
       <td>{{ record.employee.ctc }}</td>
       <td>{{ record.totalPaid }}</td>

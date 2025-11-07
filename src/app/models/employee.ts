@@ -8,28 +8,19 @@ export interface BankDetails {
 export interface Employee {
   
   id: number;
-  firstName: string;
-  lastName: string;
+  fullName: string;
   email: string;
   phone: string;
-  gender: string;
-  dob: string; // or Date if you're parsing date
-  designation: string;
   department: string;
-  joiningDate: string; // or Date
+  joiningDate: string; 
   employeeType: string;
-  reportingManager: string;
   location: string;
   status: string;
   ctc: number;
   basicSalary: number;
   inHandSalary: number;
-  address: string;
   aadhaarNumber: string;
   panNumber: string;
-  bloodGroup: string;
-  emergencyContact: string;
-  profileImageUrl: string;
   bankDetails: BankDetails; 
 }
 

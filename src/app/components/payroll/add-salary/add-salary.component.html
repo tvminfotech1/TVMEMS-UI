@@ -1,5 +1,5 @@
 <div class="container">
-  <h2>Generate Salary for {{ employee.firstName }} {{ employee.lastName }} ({{ employee.id }})</h2>
+  <h2>Generate Salary for {{ employee.fullName }} ({{ employee.id }})</h2>
 
   <table class="employee-details-table" *ngIf="employee">
   <thead>
@@ -10,7 +10,7 @@
   <tbody>
     <tr>
       <td><strong>Employee Name</strong></td>
-      <td>{{ employee.firstName }} {{ employee.lastName }}</td>
+      <td>{{ employee.fullName }}</td>
       <td><strong>Joining Date</strong></td>
       <td>{{ employee.joiningDate }}</td>
     </tr>
@@ -21,8 +21,8 @@
       <td>{{ employee.location || 'Chennai' }}</td>
     </tr>
     <tr>
-      <td><strong>Designation</strong></td>
-      <td>{{ employee.designation }}</td>
+      <td><strong>Department</strong></td>
+      <td>{{ employee.department }}</td>
       <td><strong>NWD</strong></td>
       <td>
         <input type="number" [(ngModel)]="nwd" min="0" />
@@ -37,8 +37,6 @@
       </td>
     </tr>
     <tr>
-      <td><strong>DOB</strong></td>
-      <td>{{ employee.dob }}</td>
       <td><strong>Bank Acc No</strong></td>
       <td>{{ employee.bankDetails.accountNumber }}</td>
     </tr>

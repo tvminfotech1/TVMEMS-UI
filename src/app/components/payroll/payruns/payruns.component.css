@@ -1,5 +1,6 @@
 .payruns-container {
   max-width: 1100px;
+  min-height: 250px;
   margin: auto;
   margin-top: 20px;
   padding: 25px;
@@ -51,6 +52,7 @@ h2 {
 .salary-table {
   width: 100%;
   border-collapse: collapse;
+  position: relative;
 }
 
 .salary-table thead {
@@ -68,6 +70,14 @@ h2 {
 .salary-table tbody tr:hover {
   background: #f9f9f9;
   transition: background 0.3s;
+}
+
+.no-data {
+  text-align: center;
+  font-weight: 500;
+  color: #777;
+  padding: 100px 0;
+  font-size: 20px;
 }
 
 /* Name + photo */

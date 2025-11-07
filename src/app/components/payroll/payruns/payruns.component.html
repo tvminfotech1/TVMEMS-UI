@@ -1,20 +1,18 @@
 <div class="payruns-container">
-  <h2>Salary Status – {{ selectedMonth }}</h2>
+  <h2>Salary Status – {{ getMonthName() }}</h2>
 
   <!-- Filters -->
   <div class="filters-bar">
-    <input
-      type="text"
-      placeholder="🔍 Search by ID or Name..."
-      [(ngModel)]="searchText"
-      (input)="onSearch()"
-    />
+    <input type="text" placeholder="Search by ID or Name..." [(ngModel)]="searchText" (input)="onSearch()" />
 
-    <input type="month" [(ngModel)]="selectedMonth" (change)="onMonthChange()"/>
+
+
+    <input type="month" [(ngModel)]="selectedMonth" (change)="onMonthChange()" />
   </div>
   <!-- Salary Table -->
   <div class="table-responsive">
-    <table class="salary-table">
+    
+    <table class="salary-table" >
       <thead>
         <tr>
           <th>Employee ID</th>
@@ -25,6 +23,7 @@
         </tr>
       </thead>
       <tbody>
+      
         <tr *ngFor="let emp of payruns">
           <td>{{ emp.employeeId }}</td>
           <td>
@@ -41,5 +40,7 @@
         </tr>
       </tbody>
     </table>
+
+    <div *ngIf="payruns.length === 0" class="no-data">No Salary Status</div>
   </div>
 </div>
