@@ -53,14 +53,18 @@ export class WfhApplyFormComponent implements OnInit {
     private authService: AuthService,
     private snackBar: MatSnackBar
   ) {
-    this.wfhForm = this.fb.group({
-      fromDate: ['', Validators.required],
-      toDate: ['', Validators.required],
-      reason: ['', [Validators.required, Validators.minLength(10),Validators.maxLength(30)]],
-      approver: ['', [Validators.required, Validators.pattern(/^[A-Za-z\s]+$/)]]
-    },
-      { validators: dateRangeValidator } //
-    );
+   this.wfhForm = this.fb.group(
+  {
+    fromDate: ['', Validators.required],
+    toDate: ['', Validators.required],
+    reason: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(30)]],
+    approver: ['', [Validators.required, Validators.pattern(/^[A-Za-z\s]+$/)]],
+  },
+  {
+    validators: [dateRangeValidator, this.toBeforeFromValidator],
+  }
+);
+
   }
 
   ngOnInit(): void {
@@ -126,18 +130,31 @@ export class WfhApplyFormComponent implements OnInit {
   }
 
   blockApproverInput(event: KeyboardEvent) {
-    const allowedKeys = ['Backspace', 'ArrowLeft', 'ArrowRight', 'Tab', 'delete', ' '];
-    const pattern = /[A-Za-z]/;
+  const allowedKeys = [
+    'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown',
+    'Backspace', 'Delete', 'Tab'
+  ];
+  const pattern = /^[A-Za-z ]$/; // letters + space
 
-    if (!pattern.test(event.key) && !allowedKeys.includes(event.key)) {
-      event.preventDefault();
-    }
+  const input = event.target as HTMLInputElement;
+  const key = event.key;
 
-    const input = event.target as HTMLInputElement;
-    if (input.value.length >= 20) {
-      event.preventDefault();
-    }
+  // ✅ Allow navigation & editing keys
+  if (allowedKeys.includes(key)) {
+    return;
   }
+
+  // ✅ Block any non-letter keys
+  if (!pattern.test(key)) {
+    event.preventDefault();
+    return;
+  }
+
+  // ✅ Prevent typing if length >= 20 (but still allow delete/backspace)
+  if (input.value.length >= 20) {
+    event.preventDefault();
+  }
+}
 
   onOverlayClick(event: MouseEvent) {
     this.onCancel();
@@ -151,4 +168,24 @@ export class WfhApplyFormComponent implements OnInit {
       panelClass: [panelClass]
     });
   }
+  toBeforeFromValidator(group: FormGroup) {
+  const from = group.get('fromDate')?.value;
+  const to = group.get('toDate')?.value;
+
+  if (from && to && to < from) {
+    group.get('toDate')?.setErrors({ toBeforeFrom: true });
+  } else {
+    // Clear the error if it’s valid
+    const errors = group.get('toDate')?.errors;
+    if (errors) {
+      delete errors['toBeforeFrom'];
+      if (!Object.keys(errors).length) {
+        group.get('toDate')?.setErrors(null);
+      }
+    }
+  }
+
+  return null;
+}
+
 }

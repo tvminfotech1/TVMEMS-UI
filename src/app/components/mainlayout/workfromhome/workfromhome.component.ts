@@ -113,15 +113,17 @@ loadingStatus: { [key: number]: 'approve' | 'reject' | null } = {};
         );
         this.details = requests.slice(0, 10);
         this.approvalDetails = requests.filter((req: any) => {
-          const fromDate = new Date(req.fromDate);
-          const toDate = new Date(req.toDate);
+  const fromDate = new Date(req.fromDate);
+  const toDate = new Date(req.toDate);
 
-          return (
-            (fromDate.getMonth() === this.currentMonthIndex && fromDate.getFullYear() === this.year) ||
-            (toDate.getMonth() === this.currentMonthIndex && toDate.getFullYear() === this.year)
-          );
-        });
+  const fromLocal = new Date(fromDate.getFullYear(), fromDate.getMonth(), fromDate.getDate());
+  const toLocal = new Date(toDate.getFullYear(), toDate.getMonth(), toDate.getDate());
 
+  return (
+    (fromLocal.getMonth() === this.currentMonthIndex && fromLocal.getFullYear() === this.year) ||
+    (toLocal.getMonth() === this.currentMonthIndex && toLocal.getFullYear() === this.year)
+  );
+});
         let updatedStatusMessage = '';
 
         for (const req of this.details) {
@@ -152,6 +154,7 @@ loadingStatus: { [key: number]: 'approve' | 'reject' | null } = {};
       }
     });
   }
+  
 
   fetchAllApprovalRequests() {
     this.wfhService.getWfhAllApprovalRequests()
@@ -235,15 +238,20 @@ loadingStatus: { [key: number]: 'approve' | 'reject' | null } = {};
       });
   }
 
-  isInCurrentMonthView(request: any): boolean {
-    const from = new Date(request.fromDate);
-    const to = new Date(request.toDate);
+isInCurrentMonthView(request: any): boolean {
+  const from = new Date(request.fromDate);
+  const to = new Date(request.toDate);
 
-    const startOfMonth = new Date(this.year, this.currentMonthIndex, 1);
-    const endOfMonth = new Date(this.year, this.currentMonthIndex + 1, 0);
+  // Extract only local year/month/day (ignore timezone)
+  const fromLocal = new Date(from.getFullYear(), from.getMonth(), from.getDate());
+  const toLocal = new Date(to.getFullYear(), to.getMonth(), to.getDate());
 
-    return from <= endOfMonth && to >= startOfMonth;
-  }
+  const startOfMonth = new Date(this.year, this.currentMonthIndex, 1);
+  const endOfMonth = new Date(this.year, this.currentMonthIndex + 1, 0);
+
+  return fromLocal <= endOfMonth && toLocal >= startOfMonth;
+}
+
 
 
   updateStatus(request: any, newStatus: 'approved' | 'rejected' |'pending'): void {

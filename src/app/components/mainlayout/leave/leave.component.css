@@ -337,7 +337,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 180px; /* makes it look like 3 rows tall */
+  padding: 100px; /* makes it look like 3 rows tall */
   background-color: #fff;
   font-style: italic;
   color: #777;
@@ -345,7 +345,6 @@
   box-shadow: 0 2px 6px rgba(0,0,0,0.05);
   text-align: center;
   font-size: 16px;
-  font-size: 25px;
 }
 
 td .btn-approve,
@@ -1236,6 +1235,7 @@ td {
   .admin-view .leave-table thead {
     display: none;
   }
+  
 
   /* Display table as block cards */
   .admin-view .leave-table,
@@ -1255,6 +1255,7 @@ td {
     overflow: hidden;
     padding: 12px 14px;
   }
+  
 
   /* Each cell behaves like a labeled line */
   .admin-view .leave-table td {

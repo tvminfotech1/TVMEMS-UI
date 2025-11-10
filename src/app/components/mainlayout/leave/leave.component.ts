@@ -98,7 +98,16 @@ export class LeaveComponent implements OnInit {
   private initForms(): void {
     this.leaveForm = this.fb.group({
       leaveType: ['', Validators.required],
-      employeeId: [{ value: this.employeeId, disabled: !this.isAdmin, }],
+        employeeId: [
+    { value: this.employeeId, disabled: !this.isAdmin },
+    this.isAdmin
+      ? [
+          Validators.required,
+          Validators.minLength(6),
+          Validators.maxLength(6),
+        ]
+      : []
+  ],
       startDate: [null, Validators.required],
       endDate: [null, [Validators.required, this.endDateAfterStartDateValidator.bind(this)]],
       reason: ['', [Validators.required, Validators.minLength(5)]]
@@ -150,7 +159,7 @@ export class LeaveComponent implements OnInit {
 }
 
   /** Apply Leave */
- onSubmit(): void {
+onSubmit(): void {
   this.leaveForm.markAllAsTouched();
 
   if (!this.leaveForm.valid) {
@@ -166,7 +175,7 @@ export class LeaveComponent implements OnInit {
   const formValue = this.leaveForm.getRawValue();
   const leaveType = formValue.leaveType;
 
-  //  Employee ID handling
+  // Get employee ID
   let selectedEmployeeId: number;
   if (this.isAdmin) {
     selectedEmployeeId = Number(formValue.employeeId);
@@ -186,23 +195,51 @@ export class LeaveComponent implements OnInit {
   const startDate: Date = formValue.startDate;
   const endDate: Date = formValue.endDate;
 
-  //  Format dates
   const formatDate = (d: Date) => {
     const y = d.getFullYear();
     const m = String(d.getMonth() + 1).padStart(2, '0');
     const day = String(d.getDate()).padStart(2, '0');
     return `${y}-${m}-${day}`;
   };
+
   const startDateStr = formatDate(startDate);
   const endDateStr = formatDate(endDate);
-
   const totalDays = this.calculateDays(startDate, endDate);
+
+  // ✅ Check available balance
   const leaveBalance = this.leaveBalances.find(lb => lb.leaveType === leaveType);
-if (leaveBalance) {
-  const available = leaveBalance.total - leaveBalance.used + leaveBalance.carryOver;
-  if (available < totalDays) {
+  if (leaveBalance) {
+    const available = leaveBalance.total - leaveBalance.used + leaveBalance.carryOver;
+    if (available < totalDays) {
+      this.snackBar.open(
+        `You only have ${available} ${leaveType} days available, cannot apply for ${totalDays} days.`,
+        'Close',
+        {
+          duration: 4000,
+          horizontalPosition: 'center',
+          verticalPosition: 'top',
+          panelClass: ['error-snackbar'],
+        }
+      );
+      return;
+    }
+  }
+
+  // ✅ Prevent multiple applications for same leave type in same month (unless rejected)
+  const sameMonthConflict = this.leaveList.some(l => {
+    if (l.user?.employeeId !== selectedEmployeeId) return false;
+    const existingStart = new Date(l.startDate);
+    const sameType = l.leaveType === leaveType;
+    const sameMonth =
+      existingStart.getMonth() === startDate.getMonth() &&
+      existingStart.getFullYear() === startDate.getFullYear();
+    const isRejected = (l.status || '').toLowerCase() === 'rejected';
+    return sameType && sameMonth && !isRejected;
+  });
+
+  if (sameMonthConflict) {
     this.snackBar.open(
-      `You only have ${available} ${leaveType} days available, cannot apply for ${totalDays} days.`,
+      `You already have applied ${leaveType} for this month.`,
       'Close',
       {
         duration: 4000,
@@ -213,31 +250,27 @@ if (leaveBalance) {
     );
     return;
   }
-}
 
-  //   Check for duplicate leave type or overlapping leave
-  const hasConflict = this.leaveList.some(l => {
-  if (l.user?.employeeId !== selectedEmployeeId) return false;
+  // ✅ Prevent overlapping with any other leave (unless that leave is rejected)
+  const overlappingConflict = this.leaveList.some(l => {
+    if (l.user?.employeeId !== selectedEmployeeId) return false;
 
-  const existingStart = new Date(l.startDate);
-  const existingEnd = new Date(l.endDate);
+    const normalize = (d: Date) => new Date(d.getFullYear(), d.getMonth(), d.getDate());
+    const start = normalize(new Date(startDate));
+    const end = normalize(new Date(endDate));
+    const existingStart = normalize(new Date(l.startDate));
+    const existingEnd = normalize(new Date(l.endDate));
 
-  const sameType = l.leaveType === leaveType;
+    const overlaps = start <= existingEnd && end >= existingStart;
+    const isRejected = (l.status || '').toLowerCase() === 'rejected';
 
-  // Check if both leaves are in the same month and year
-  const sameMonth =
-    existingStart.getMonth() === startDate.getMonth() &&
-    existingStart.getFullYear() === startDate.getFullYear();
+    // ✅ Block if the overlapping leave is pending/approved — regardless of type
+    return overlaps && !isRejected;
+  });
 
-  const isRejected = l.status?.toLowerCase() === 'rejected';
-
-  //  Conflict only if same type + same month + not rejected
-  return sameType && sameMonth && !isRejected;
-});
-
-  if (hasConflict) {
+  if (overlappingConflict) {
     this.snackBar.open(
-      `You already have  applied  ${leaveType} for this month.`,
+      'You already have a pending or approved leave for these dates.',
       'Close',
       {
         duration: 4000,
@@ -249,7 +282,7 @@ if (leaveBalance) {
     return;
   }
 
-
+  // ✅ Proceed to save
   const newLeave: newLeaveRequest = {
     id: undefined,
     leaveType,
@@ -261,7 +294,6 @@ if (leaveBalance) {
     duration: `${totalDays} days`,
     user: { employeeId: selectedEmployeeId },
   };
-
 
   this.leaveService.createLeaveRequest(newLeave).subscribe({
     next: savedLeave => {
@@ -278,7 +310,7 @@ if (leaveBalance) {
     },
     error: err => {
       console.error('Error applying leave:', err);
-      this.snackBar.open('Error applying leave. Try again!', 'Close', {
+      this.snackBar.open('please enter a valid employee Id', 'Close', {
         duration: 3000,
         horizontalPosition: 'center',
         verticalPosition: 'top',
@@ -287,6 +319,7 @@ if (leaveBalance) {
     },
   });
 }
+
 
 calculateDays(start: string | Date, end: string | Date): number {
   const s = start instanceof Date ? start : new Date(start);
@@ -405,51 +438,57 @@ dateFilter = (date: Date | null): boolean => {
   const yesterday = new Date(today);
   yesterday.setDate(today.getDate() - 1);
 
-  const maxDate = new Date();
+  const maxDate = new Date(today);
   maxDate.setMonth(today.getMonth() + 6); // allow up to 6 months ahead
-  const isWeekend = date.getDay() === 0 || date.getDay() === 6; // Sunday = 0, Saturday = 6
+  const isWeekend = date.getDay() === 0 || date.getDay() === 6;
+
+  // Normalize input date
+  const d = new Date(date);
+  d.setHours(0, 0, 0, 0);
 
   switch (leaveType) {
     case 'Sick Leave':
       // Can select today or yesterday only
-      return date.getTime() === today.getTime() || date.getTime() === yesterday.getTime();
+      return d.getTime() === today.getTime() || d.getTime() === yesterday.getTime();
 
     case 'Casual Leave':
-    case 'Earned Leave':
-      // Disable weekends
-      return date >= today && date <= maxDate && !isWeekend;
+      return d >= today && d <= maxDate && !isWeekend;
 
     case 'Leave without Pay':
-      // Can select any future date
-      return date >= today && date <= maxDate;
+      return d >= today && d <= maxDate;
 
     default:
       return true;
   }
 };
+
 // Disable Sundays and dates before startDate
 endDateFilter = (date: Date | null): boolean => {
   if (!date) return false;
 
   const leaveType = this.leaveForm.get('leaveType')?.value;
-  const startDateControl = this.leaveForm?.get('startDate')?.value;
+  const startDateControl = this.leaveForm.get('startDate')?.value;
   if (!startDateControl) return false;
 
-  const start = startDateControl instanceof Date ? startDateControl : new Date(startDateControl);
+  // Normalize all dates to remove time
+  const normalize = (d: Date | string) => {
+    const nd = new Date(d);
+    nd.setHours(0, 0, 0, 0);
+    return nd;
+  };
+
+  const start = normalize(startDateControl);
+  const end = normalize(date);
 
   // Disable Sundays
-  if (date.getDay() === 0) return false;
+  if (end.getDay() === 0) return false;
 
   // Restrict based on leave type
   let maxDays = 0;
   switch (leaveType) {
     case 'Sick Leave':
     case 'Casual Leave':
-      maxDays = 1;
-      break;
     case 'Earned Leave':
-      maxDays = 1;
-      break;
     case 'Leave without Pay':
       maxDays = 1;
       break;
@@ -459,9 +498,10 @@ endDateFilter = (date: Date | null): boolean => {
 
   const maxEndDate = new Date(start);
   maxEndDate.setDate(start.getDate() + (maxDays - 1));
+  maxEndDate.setHours(0, 0, 0, 0);
 
-  // End date must be ≥ start and ≤ maxEndDate
-  return date >= start && date <= maxEndDate;
+  // ✅ Inclusive comparison
+  return end.getTime() >= start.getTime() && end.getTime() <= maxEndDate.getTime();
 };
 
 

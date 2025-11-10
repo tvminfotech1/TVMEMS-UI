@@ -52,9 +52,10 @@
             <mat-error *ngIf="wfhForm.get('toDate')?.hasError('required')">
               To Date is required.
             </mat-error>
-            <mat-error *ngIf="wfhForm.errors?.['toBeforeFrom']">
-              To Date cannot be before From Date.
-            </mat-error>
+            <mat-error *ngIf="wfhForm.get('toDate')?.hasError('toBeforeFrom')">
+           To Date cannot be before From Date.
+           </mat-error>
+
           </mat-form-field>
 
           <!-- Reason -->

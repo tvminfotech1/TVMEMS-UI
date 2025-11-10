@@ -150,14 +150,14 @@
                 <td data-label="Reason">{{ request.reason }}</td>
                 <td *ngIf="isAdmin" data-label="Action">
                   <button
-                    *ngIf="request.status?.toLowerCase() === 'pending'"
+                    *ngIf="request.status.toLowerCase() === 'pending'"
                     class="btn btn-approve"
                     (click)="approveRequest(request.id)"
                   >
                     ✔ Approve
                   </button>
                   <button
-                    *ngIf="request.status?.toLowerCase() === 'pending'"
+                    *ngIf="request.status.toLowerCase() === 'pending'"
                     class="btn btn-reject"
                     (click)="rejectRequest(request.id)"
                   >
@@ -199,25 +199,35 @@
 
         <div class="modal-body">
          <form [formGroup]="leaveForm" (ngSubmit)="onSubmit()">
+<div *ngIf="isAdmin">
+  <mat-form-field appearance="outline" class="w-100">
+    <mat-label>Employee ID</mat-label>
+    <input
+      matInput
+      type="text"
+      formControlName="employeeId"
+      placeholder="Enter Employee ID"
+      maxlength="6"
+      required
+    />
 
-  <div *ngIf="isAdmin">
-    <mat-form-field appearance="outline" class="w-100">
-      <mat-label>Employee ID</mat-label>
-      <input
-        matInput
-        type="text"
-        formControlName="employeeId"
-        placeholder="Enter Employee ID"
-        required
-      />
-      <mat-error *ngIf="leaveForm.get('employeeId')?.hasError('required')">
-        Employee ID is required
-      </mat-error>
-      <mat-error *ngIf="leaveForm.get('employeeId')?.hasError('min')">
-        Invalid Employee ID
-      </mat-error>
-    </mat-form-field>
-  </div>
+    <!-- Required error -->
+    <mat-error *ngIf="leaveForm.get('employeeId')?.hasError('required')">
+      Employee ID is required.
+    </mat-error>
+
+    <!-- Min length error -->
+    <mat-error *ngIf="leaveForm.get('employeeId')?.hasError('minlength')">
+      Employee ID length should be min 6 characters
+    </mat-error>
+
+    <!-- Max length error -->
+    <mat-error *ngIf="leaveForm.get('employeeId')?.hasError('maxlength')">
+      Employee ID must be 6 digits
+    </mat-error>
+  </mat-form-field>
+</div>
+
 
   <mat-form-field appearance="outline" class="w-100">
     <mat-label>Leave Type</mat-label>
