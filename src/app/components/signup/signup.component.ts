@@ -47,13 +47,8 @@ export class SignupComponent implements OnInit {
         aadhar: ['', [Validators.required, Validators.pattern(/^\d{12}$/)]],
         dob: ['', [Validators.required, this.dobValidator]],
         gender: ['', Validators.required],
-        password: [
-          '',
-          [
-            Validators.required,
-            Validators.minLength(8),
-          ],
-        ],
+       password: ['', [Validators.required, Validators.pattern(/^[A-Z][a-z]{2,}[#@\$&][0-9]{2,}$/)]],
+
         confirmPassword: ['', Validators.required],
       },
       { validators: this.passwordMatchValidator }
@@ -182,6 +177,12 @@ export class SignupComponent implements OnInit {
           res.message || 'Registration successful! Please check your email.';
           alert(this.successMessage);
           this.signupForm.reset();
+          this.signupForm.markAsPristine();
+        this.signupForm.markAsUntouched();
+        this.signupForm.updateValueAndValidity();
+        Object.keys(this.signupForm.controls).forEach(key => {
+          this.signupForm.get(key)?.setErrors(null);
+        }); 
       },
       error: (err) => {
         console.error('Signup error:', err);

@@ -34,7 +34,7 @@
 
     <!-- 🧾 Admin Attendance Table -->
     <div class="table-wrapper">
-      <table mat-table [dataSource]="employees" class="mat-elevation-z8 full-width-table">
+      <table mat-table [dataSource]="filteredAttendance" class="mat-elevation-z8 full-width-table">
         <!-- Employee ID -->
         <ng-container matColumnDef="employeeId">
           <th mat-header-cell *matHeaderCellDef>Employee ID</th>

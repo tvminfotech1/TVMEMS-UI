@@ -230,71 +230,57 @@
 
     <!-- Password -->
     <mat-form-field appearance="outline" class="custom-form-field">
-      <mat-label for="password">Password</mat-label>
-      <div class="password-input-wrapper">
-        <input
-          matInput
-          [type]="showPassword ? 'text' : 'password'"
-          id="password"
-          name="password"
-          formControlName="password"
-          class="input-padding"
-        />
-        <span class="toggle-password" (click)="togglePassword()">
-          {{ showPassword ? "Hide" : "Show" }}
-        </span>
-      </div>
+  <mat-label for="password">Password</mat-label>
+  <div class="password-input-wrapper">
+    <input matInput  [type]="showPassword ? 'text' : 'password'" id="password" name="password" formControlName="password" class="input-padding" />
+    <span class="toggle-password" (click)="togglePassword()">
+      {{ showPassword ? 'Hide' : 'Show' }}
+    </span> 
+  </div>
 
-      <mat-error *ngIf="signupForm.get('password')?.touched">
-        <ng-container *ngIf="signupForm.get('password')?.errors?.['required']">
-          Password is required.
-        </ng-container>
-        <ng-container
-          *ngIf="
+ 
+  <mat-error *ngIf="signupForm.get('password')?.touched">
+    <ng-container *ngIf="signupForm.get('password')?.errors?.['required']">
+      Password is required.
+    </ng-container>
+    <ng-container
+      *ngIf="
         !signupForm.get('password')?.errors?.['required'] &&
-        signupForm.get('password')?.errors?.['minLength']
-      "
-        >
-          Password must atleast 8 characters.
-        </ng-container>
-      </mat-error>
-    </mat-form-field>
+        signupForm.get('password')?.errors?.['pattern']
+      ">
+      Password must start with a capital letter,include digits,one special character,and atleast 8 characters long.
+    </ng-container>
+  </mat-error>
+</mat-form-field> 
+
+
 
     <!-- Confirm Password -->
     <mat-form-field appearance="outline" class="custom-form-field">
-      <mat-label for="confirmPassword">Confirm Password</mat-label>
-      <div class="password-input-wrapper">
-        <input
-          matInput
-          [type]="showConfirmPassword ? 'text' : 'password'"
-          id="confirmPassword"
-          name="confirmPassword"
-          formControlName="confirmPassword"
-          autocomplete="off"
-          class="input-padding"
-        />
-        <span class="toggle-password" (click)="toggleConfirmPassword()">
-          {{ showConfirmPassword ? "Hide" : "Show" }}
-        </span>
-      </div>
-
-      <!-- Required Field Error -->
-      <mat-error *ngIf="signupForm.get('confirmPassword')?.touched">
-        <ng-container
-          *ngIf="signupForm.get('confirmPassword')?.errors?.['required']"
-        >
-          Confirm password is required.
-        </ng-container>
-        <ng-container
-          *ngIf="
+  <mat-label for="confirmPassword">Confirm Password</mat-label>
+  <div class="password-input-wrapper">
+    <input matInput [type]="showConfirmPassword ? 'text' : 'password'" id="confirmPassword" name="confirmPassword" formControlName="confirmPassword"  autocomplete="off" class="input-padding" />
+<span class="toggle-password" (click)="toggleConfirmPassword()">
+      {{ showConfirmPassword ? 'Hide' : 'Show' }}
+    </span>
+  </div>
+ 
+   <!-- Required Field Error -->
+  <mat-error *ngIf="signupForm.get('confirmPassword')?.touched">
+    <ng-container *ngIf="signupForm.get('confirmPassword')?.errors?.['required']">
+      Confirm password is required.
+    </ng-container>
+    <ng-container
+      *ngIf="
         !signupForm.get('confirmPassword')?.errors?.['required'] &&
         signupForm.errors?.['mismatch']
       "
-        >
-          Password and Confirm Password do not match.
-        </ng-container>
-      </mat-error>
-    </mat-form-field>
+    >
+      Password and Confirm Password do not match.
+    </ng-container>
+  </mat-error>
+
+</mat-form-field>
 
     <!-- Submit Button (Full Width) -->
     <div class="button-group">

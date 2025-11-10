@@ -64,9 +64,15 @@ userDisplayedColumns: string[] = ['date', 'entryTime', 'breakTime', 'workingTime
       next: (response: any) => {
         const data = response.body;
         console.log("✅ Attendance data:", data);
+         const currentEmpIdStr = this.authService.getEmployeeId();
+      const currentEmpId = currentEmpIdStr ? Number(currentEmpIdStr) : null;
+
+         const filteredData = data.filter((att: any) => att.user?.employeeId !== currentEmpId);
+
+
 
          const map = new Map<number, any>();
-        data.forEach((att: any) => {
+        filteredData.forEach((att: any) => {
           const empId = att.user?.employeeId;
           if (empId && !map.has(empId)) {
             map.set(empId, {
@@ -79,7 +85,8 @@ userDisplayedColumns: string[] = ['date', 'entryTime', 'breakTime', 'workingTime
         });
 
         this.employees = Array.from(map.values());
-        this.allAttendance = data;
+        this.allAttendance = filteredData;
+        this.filteredAttendance = this.employees;
       },
       error: (err) => console.error("❌ Error:", err)
     });
@@ -228,30 +235,33 @@ openDialog(empId?: number) {
 }
 
 
- applyFilters() {
-
+applyFilters(): void {
   if (this.isUser) {
-      // 🔄 When user changes month, reload their attendance
-      this.loadUserAttendance();
-      return;
-    }
-    this.filteredAttendance = this.allAttendance.filter((record) => {
-      const matchesEmpId =
-        !this.filterEmpId ||
-        record.empId?.toString().includes(this.filterEmpId);
-
-      const matchesName =
-        !this.filterName ||
-        record.name?.toLowerCase().includes(this.filterName.toLowerCase());
-
-      const matchesDate =
-        !this.filterDate || record.date === this.filterDate;
-
-      const matchesMonth =
-        !this.filterMonth ||
-        new Date(record.date).getMonth() + 1 === +this.filterMonth.split('-')[1];
-
-      return matchesEmpId && matchesName && matchesDate && matchesMonth;
-    });
+    // 🔄 User case — reload data when month changes
+    this.loadUserAttendance();
+    return;
   }
+  if (!this.filterEmpId && !this.filterName && !this.filterMonth) {
+  this.filteredAttendance = [...this.employees];
+  return;
 }
+
+
+  // 🔍 Admin case
+  const empIdTerm = this.filterEmpId.trim().toLowerCase();
+  const nameTerm = this.filterName.trim().toLowerCase();
+  const monthTerm = this.filterMonth;
+
+  this.filteredAttendance = this.employees.filter((emp: any) => {
+    const matchesEmpId = !empIdTerm || emp.employeeId?.toString().toLowerCase().includes(empIdTerm);
+    const matchesName = !nameTerm || emp.fullName?.toLowerCase().includes(nameTerm);
+
+    // Optional month filter (if you want it to matter)
+    const matchesMonth = !monthTerm || monthTerm === this.filterMonth;
+
+    return matchesEmpId && matchesName && matchesMonth;
+  });
+}
+
+}
+
