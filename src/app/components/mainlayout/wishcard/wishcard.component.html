@@ -1,38 +1,78 @@
-<div class="dashboard">
-  <div class="card" *ngFor="let category of [CATEGORY_ONBOARDING, CATEGORY_BIRTHDAY, CATEGORY_ANNIVERSARY]">
-    <ng-container *ngIf="getCurrentCard(category) as currentCard">
-      <div class="card-banner">
-        <div class="card-header">
-          <button
-            class="arrow-icon"
-            title="Previous"
-            (click)="previous(category)"
-            [disabled]="
-              (category === CATEGORY_ONBOARDING && onboardingWishes.length <= 1) ||
-              (category === CATEGORY_BIRTHDAY && birthdayWishes.length <= 1) ||
-              (category === CATEGORY_ANNIVERSARY && anniversaryWishes.length <= 1)
-            "
-          >&#8592;</button>
-          <span class="category">{{ currentCard.category }}</span>
-        </div>
-        <div class="profile-pic-container" (click)="next(category)" tabindex="0" role="button" [attr.aria-label]="'Next ' + currentCard.name">
-          <img [src]="currentCard.image" alt="Profile Image" />
-        </div>
-      </div>
-      <div class="card-body">
-        <h3>{{ currentCard.name }}</h3>
-        <div class="date">{{ currentCard.date }}</div>
-        <div class="role">{{ currentCard.role }}</div>
-        <button
-          *ngIf="currentCard.showButton"
-          (click)="sendWishes(currentCard.name)"
-          class="send-wishes-btn"
-          [attr.aria-label]="'Send Wishes to ' + currentCard.name"
-        >Send Wishes</button>
-      </div>
-    </ng-container>
-    <ng-container *ngIf="!getCurrentCard(category)">
+<div class="carousel-container" (mouseenter)="pauseScroll()" (mouseleave)="resumeScroll()">
+
+  <!-- <div class="dashboard-wrapper"> -->
+  <!-- Left arrow -->
+  <!-- <button
+    *ngIf="allWishes.length > visibleCount"
+    class="side-arrow left-arrow"
+    (click)="previousPage()"
+  >
+    &#8592;
+  </button> -->
+  <div class="dashboard">
+    <div
+      *ngIf="filteredWishes.length === 0"
+      class="card-single-card"
+    >
       <div class="card-empty">No wishes available.</div>
-    </ng-container>
+    </div>
+
+  <div class="carousel-track" #carouselTrack>
+
+    <!-- <ng-container *ngIf="filteredWishes.length > 0 ; else noWishes"> -->
+      <div class="card" *ngFor="let card of filteredWishes.concat(filteredWishes); trackBy: trackByWish"
+        [attr.data-category]="card.category">
+
+
+        <!-- <div
+        class="card"
+        *ngFor="let card of visibleCards"
+        [attr.data-category]="card.category"
+      > -->
+
+
+        <div class="card-banner">
+          <div class="profile-pic-container">
+            <!-- <img [src]="card.image" alt="Profile Image" /> -->
+            <img [src]="card.image || 'assets/userimg/OIP.jpg'" [alt]="card.name" />
+          </div>
+        </div>
+
+        <div class="card-body">
+          <h3>{{ card.name }}</h3>
+
+          <!-- Greetings by category -->
+          <p *ngIf="card.category === CATEGORY_BIRTHDAY" class="birthday-text">
+            🎉 Wishing you a very Happy Birthday!
+          </p>
+
+          <p *ngIf="card.category === CATEGORY_ANNIVERSARY" class="anniversary-text">
+            🎊 Happy Work Anniversary!
+          </p>
+
+          <p *ngIf="card.category === CATEGORY_ONBOARDING" class="onboard-text">
+            👋 Welcome Onboard!
+          </p>
+        </div>
+      </div>
+    <!-- </ng-container> -->
+<!-- 
+    <ng-template #noWishes>
+      <div class="card single-card">
+        <div class="card-empty">
+          No wishes available.
+        </div>
+      </div>
+    </ng-template> -->
+    <!-- </div> -->
+
+    <!-- Right arrow -->
+    <!-- <button
+    *ngIf="allWishes.length > visibleCount"
+    class="side-arrow right-arrow"
+    (click)="nextPage()"
+  >
+    &#8594;
+  </button> -->
   </div>
 </div>

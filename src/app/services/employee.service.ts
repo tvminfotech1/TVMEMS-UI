@@ -20,4 +20,10 @@ export class EmployeeService {
       responseType: 'blob'
     });
   }
+
+    getEmployeePhoto(employeeId: string | number): Observable<Blob> {
+    return this.http.get(`${this.baseUrl}/api/documents/photo/${employeeId}`, {
+      responseType: 'blob'
+    });
+  }
 }
