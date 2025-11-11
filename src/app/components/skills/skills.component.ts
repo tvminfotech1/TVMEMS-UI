@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserService } from '../user-service.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-
+import { MainlayoutService } from 'src/app/services/main-layout.service';
 
 @Component({
   selector: 'app-skills',
@@ -19,6 +19,7 @@ export class SkillsComponent implements OnInit {
     private formBuilder: FormBuilder,
     private userService: UserService,
     private router: Router,
+    private mainlayoutService: MainlayoutService,
     private snackBar: MatSnackBar
 
   ) {
@@ -106,13 +107,13 @@ export class SkillsComponent implements OnInit {
   }
 
   finalSubmit(): void {
-    if (this.skillList.length >= 3) {
-      this.userService.setFormData("skills", this.skillList);
+    if (this.skillList.length >= 1) {
+      this.userService.setFormData('skills', this.skillList);
+      console.log('skills', this.skillList);
+      this.mainlayoutService.markTabCompleted('skills', true);
       this.router.navigate(['/mainlayout/certificate']);
-      console.log("skill",this.skillList);
-      
     } else {
-      this.snackBar.open('Minimum 3 skills is required', 'Close', {
+      this.snackBar.open('Minimum 1 skills is required', 'Close', {
         duration: 3000,
         horizontalPosition: 'center',
         verticalPosition: 'top',
