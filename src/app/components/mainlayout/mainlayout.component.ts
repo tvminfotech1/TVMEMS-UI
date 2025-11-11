@@ -58,6 +58,24 @@ export class MainlayoutComponent implements OnInit {
     const target = event.target as HTMLElement;
     const clickedInsideDropdown = target.closest('.dropdown') || target.closest('.settings-wrapper') || target.closest('.search-input');
     if (!clickedInsideDropdown) {
+      const parentMap: { [parent: string]: string[] } = {
+        home: ['home', 'dashboard'],
+        wfh: ['workfromhome', 'workfromhome '],
+        leave: ['leave','myleave','attendance-approval', 'attendance'],
+        timesheet: ['Timelog'],
+        task: ['task', 'tasks'],
+        okr: ['okr', 'goal'],
+        offboarding: ['offboarding','resignation'],
+        onboarding: ['signup','pendingUser','admin','personal','kyc','passport','family','previousEmployee','education','skills','certificate','document','resume','final','thankYou'],
+        addJob: ['addopening', 'seeJobOpening'],
+        payroll: ['payroll', 'payruns', 'add-employee','reports', 'payroll-dashbord', 'payroll-employee']
+      };
+      for (const parent of Object.keys(parentMap)) {
+        if (this.isChildRouteActive(parentMap[parent])) {
+          this.closeAllDropdowns(parent);
+          return;
+        }
+      }
       this.closeAllDropdowns();
     }
   }

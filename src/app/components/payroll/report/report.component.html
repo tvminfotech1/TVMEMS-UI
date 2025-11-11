@@ -1,3 +1,4 @@
+<div class="report-container">
 <div class="filter-container">
   <label for="year">Select Year:</label>
   <select id="year" [(ngModel)]="selectedYear" (change)="onYearChange()">
@@ -34,4 +35,5 @@
 
 <div class="download-btn">
   <button (click)="downloadReport()">Download {{ selectedYear }} Report</button>
+</div>
 </div>

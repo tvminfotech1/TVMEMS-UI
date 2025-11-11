@@ -365,7 +365,7 @@
                     <span class="material-icons">person_add</span> Add User
                   </a>
                 </li>
-                <li>
+                <li *ngIf="isUser">
                   <a
                     routerLink="personal"
                     class="nav-link sub"

@@ -27,7 +27,6 @@ export class PayrollEmployeeComponent implements OnInit {
   displayedColumns: string[] = [
   'id',
   'name',
-  'designation',
   'email',
   'department',
   'status',
@@ -75,7 +74,7 @@ export class PayrollEmployeeComponent implements OnInit {
       // Map only the fields defined in the strict Employee interface you requested
       this.excelEmployees = (data as any[]).map((row: any): Employee => ({
         id: +row['ID'] || 0,
-        fullName: row['Full Name'] || ((row['First Name'] || '') + ' ' + (row['Last Name'] || '')).trim(),
+        fullName: row['Full Name'] || '',
         email: row['Email'] || '',
         phone: row['Phone'] || '',
         department: row['Department'] || '',

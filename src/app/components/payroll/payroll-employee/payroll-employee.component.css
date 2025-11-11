@@ -179,17 +179,212 @@ tr:hover td {
 }
 
 /* ===== Responsive Design ===== */
-@media (max-width: 768px) {
-  .filters {
+
+/* Mobile devices: up to 480px */
+@media (max-width: 480px) {
+  .employee-header {
     flex-direction: column;
-    align-items: stretch;
+    align-items: flex-start;
+    gap: 0.8rem;
   }
 
-  .filters mat-form-field {
-    width: 100%;
+  .employee-header h2 {
+    font-size: 1.1rem;
   }
 
   .filter-actions {
-    justify-content: flex-end;
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+  }
+
+  .filter-actions button {
+    width: 100%;
+  }
+
+  th, td {
+    font-size: 0.85rem;
+  }
+
+  .employee-table {
+    border-radius: 6px;
+    overflow-x: auto; /* allow horizontal scroll for narrow screens */
+  }
+
+  table {
+    width: 600px; /* keeps layout readable while scrollable */
+  }
+
+  th, td {
+    font-size: 0.8rem;
+    padding: 0.6rem;
+  }
+
+  .employee-table ::ng-deep .mat-header-cell {
+    font-size: 0.8rem;
+  }
+
+  .no-data {
+    flex-direction: column;
+    text-align: center;
+    font-size: 0.9rem;
+    padding: 0.8rem;
+  }
+
+  .no-data mat-icon {
+    font-size: 1.8rem;
+  }
+}
+
+
+@media (min-width: 769px) and (max-width: 1024px) {
+   .employee-table table {
+    width: 100%;
+  }
+
+  th, td {
+    font-size: 0.9rem;
+    padding: 0.75rem;
+  }
+
+  .employee-table ::ng-deep .mat-header-cell {
+    font-size: 0.9rem;
+  }
+
+  .no-data {
+    font-size: 1rem;
+    padding: 1rem;
+  }
+}
+  .employee-header h2 {
+    font-size: 1.25rem;
+  }
+
+  .filter-actions button {
+    font-size: 0.9rem;
+    padding: 0.4rem 0.8rem;
+  }
+
+  .employee-count {
+    font-size: 1rem;
+  }
+
+  th, td {
+    font-size: 0.9rem;
+  }
+@media (min-width: 481px) and (max-width: 768px) {
+  .employee-table {
+    overflow-x: auto;
+    border-radius: 8px;
+  }
+
+  th, td {
+    font-size: 0.85rem;
+    padding: 0.7rem;
+  }
+
+  .employee-table ::ng-deep .mat-header-cell {
+    font-size: 0.85rem;
+  }
+
+  .no-data {
+    font-size: 1rem;
+    padding: 1rem;
+  }
+
+  .no-data mat-icon {
+    font-size: 2rem;
+  }
+}
+/* ===== Large Devices: 1025px – 1440px ===== */
+@media (min-width: 1025px) and (max-width: 1440px) {
+  .employee-header h2 {
+    font-size: 1.3rem;
+  }
+
+  .employee-count {
+    font-size: 1.05rem;
+  }
+
+  .filter-actions button {
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+  }
+  .filters {
+    display: flex;
+  align-items: baseline; 
+  justify-content: center;
+  }
+  .filters mat-form-field {
+  flex: 1 1 100px;
+  min-width: 80px;
+}
+
+
+.filter-actions {
+  display: flex;
+  align-items: flex-end;
+  
+}
+
+    th, td {
+    font-size: 0.95rem;
+    padding: 0.8rem;
+  }
+
+  .employee-table ::ng-deep .mat-header-cell {
+    font-size: 0.95rem;
+  }
+
+  .no-data {
+    font-size: 1.05rem;
+    padding: 1.1rem;
+  }
+
+}
+
+/* ===== Extra Large: 1441px and above ===== */
+@media (min-width: 1441px) {
+  .payroll-employee-container {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .employee-header h2 {
+    font-size: 1.4rem;
+  }
+
+  .employee-count {
+    font-size: 1.1rem;
+  }
+
+  th, td {
+    font-size: 1rem;
+  }
+
+  .filters {
+    justify-content: space-between;
+  }
+    .employee-table table {
+    width: 100%;
+  }
+
+  th, td {
+    font-size: 1rem;
+    padding: 1rem;
+  }
+
+  .employee-table ::ng-deep .mat-header-cell {
+    font-size: 1rem;
+  }
+.filter-actions {
+  display: flex;
+  align-items: flex-end;
+  margin-bottom: 10px;
+}
+
+  .no-data {
+    font-size: 1.1rem;
+    padding: 1.2rem;
   }
 }

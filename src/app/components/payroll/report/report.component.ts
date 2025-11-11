@@ -29,12 +29,10 @@ export class ReportComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    debugger
     this.salaryService.getAllSalaryHistory().subscribe(salaries => {
       const recordSalaris: SalaryHistory[] = salaries.body;
       this.allSalaries = salaries.body;
       this.availableYears = [...new Set(recordSalaris.map(s => s.year.toString()))];
-      debugger
       this.updateReport();
     });
   }

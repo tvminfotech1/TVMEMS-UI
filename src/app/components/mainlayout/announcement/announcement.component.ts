@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AnnouncementService } from './announcement.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-announcement',
@@ -8,48 +9,98 @@ import { Router } from '@angular/router';
   styleUrls: ['./announcement.component.css']
 })
 export class AnnouncementComponent implements OnInit {
-
-  currentTab: 'notification' | 'announcement' = 'announcement';
-  currentPage = 1;
   announcements: any[] = [];
+  showModal = false;
+  isEditMode = false;
+  selectedId: number | null = null;
+  isAdmin = false;
+  isUser = false;
 
-  get visibleAnnouncements() {
-    const pageSize = 10;
-    const start = (this.currentPage - 1) * pageSize;
-    return this.announcements.slice(start, start + pageSize);
-  }
+  announcementForm: FormGroup;
 
-  constructor(private http: HttpClient, private router: Router) {}
-
-  ngOnInit(): void {
-    this.fetchAnnouncements();
-  }
-
-  fetchAnnouncements(): void {
-    this.http.get<any>('http://localhost:8080/api/announcements').subscribe({
-      next: (response) => {
-        this.announcements = response.announcements || response;
-      },
-      error: (err) => {
-        console.error('Failed to fetch announcements:', err);
-      }
+  constructor(private fb: FormBuilder, private announcementService:AnnouncementService, private authservice:AuthService) {
+    this.announcementForm = this.fb.group({
+      title: ['', Validators.required],
+      date: ['', Validators.required],
+      startTime: ['', Validators.required],
+      endTime: ['', Validators.required],
+      place: ['', Validators.required],
+      description: ['']
+      
     });
   }
 
-  changePage(page: number): void {
-    this.currentPage = page;
+  ngOnInit() {
+    this.loadAnnouncements();
+    this.isAdmin = this.authservice.isAdmin();
+    this.isUser = this.authservice.isUser();
+
   }
 
-  openCalendar(announcement: any): void {
-    console.log('Calendar clicked for:', announcement);
+ loadAnnouncements() {
+  this.announcementService.getAll().subscribe({
+    next: (data) => {
+      this.announcements = data.map(a => ({
+        ...a,
+        startTimeFormatted: this.formatTimeToAmPm(a.startTime),
+        endTimeFormatted: this.formatTimeToAmPm(a.endTime)
+      }));
+    },
+    error: (err) => console.error('Error loading announcements:', err)
+  });
+}
+
+  openAddModal() {
+    this.isEditMode = false;
+    this.selectedId = null;
+    this.announcementForm.reset();
+    this.showModal = true;
   }
 
-  switchTab(tab: 'notification' | 'announcement'): void {
-    this.currentTab = tab;
+  openEditModal(announcement: any) {
+    this.isEditMode = true;
+    this.selectedId = announcement.id;
+    this.announcementForm.patchValue(announcement);
+    this.showModal = true;
+  }
+  formatTimeToAmPm(time: string): string {
+  if (!time) return '';
+  const [hour, minute] = time.split(':').map(Number);
+  const ampm = hour >= 12 ? 'PM' : 'AM';
+  const hour12 = hour % 12 || 12;
+  return `${hour12}:${minute.toString().padStart(2, '0')} ${ampm}`;
+}
+
+
+  deleteAnnouncement(id: number) {
+    if (confirm('Are you sure you want to delete this announcement?')) {
+      this.announcementService.delete(id).subscribe(() => this.loadAnnouncements());
+    }
   }
 
-  onAddAnnouncement(): void {
-    console.log('Add Announcement clicked');
-    this.router.navigate(['/mainlayout/add-announcement']);
+  submitForm() {
+    if (this.announcementForm.invalid) return;
+
+    const data = this.announcementForm.value;
+
+    if (this.isEditMode && this.selectedId) {
+      this.announcementService.update(this.selectedId, data).subscribe(() => {
+        this.loadAnnouncements();
+        this.closeModal();
+      });
+    } else {
+      this.announcementService.create(data).subscribe(() => {
+        this.loadAnnouncements();
+        this.closeModal();
+      });
+    }
   }
+
+  closeModal(): void {
+  this.showModal = false;
+  this.isEditMode = false;
+  this.announcementForm.reset();
+}
+
+
 }

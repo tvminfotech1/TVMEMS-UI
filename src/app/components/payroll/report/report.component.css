@@ -1,9 +1,20 @@
+.report-container{
+  min-height:100vh;
+  margin:auto;
+  padding:28px;
+  font-family:'Segoe UI', system-ui, -apple-system, Roboto, Arial, sans-serif;
+  background:#f4f6fb;           /* soft light bg */
+  color:#0f172a;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
 .slip-container {
   padding: 20px;
   background: #fff;
   border: 1px solid #ccc;
   max-width: 1000px;
   margin: auto;
+  border-radius: 10px;
 }
 
 .center {
@@ -15,6 +26,7 @@
   border-collapse: collapse;
   font-size: 14px;
   margin-top: 20px;
+  border-radius: 10px;
 }
 
 .details-table th, .details-table td {
@@ -25,8 +37,9 @@
 }
 
 .details-table th {
-  background-color: #4a4a4a;
+  background-color: #0a0f3c;
   color: white;
+  border:1px solid white;
 }
 
 .download-btn {

@@ -29,7 +29,7 @@
     <mat-form-field appearance="outline">
       <mat-label>Status</mat-label>
       <mat-select [(value)]="selectedStatus">
-        <mat-option value="">All Statuses</mat-option>
+        <mat-option value="">All Status </mat-option>
         <mat-option *ngFor="let status of uniqueStatuses" [value]="status">
           {{ status }}
         </mat-option>
@@ -37,9 +37,9 @@
     </mat-form-field>
 
     <mat-form-field appearance="outline">
-      <mat-label>Designation</mat-label>
+      <mat-label>Department</mat-label>
       <mat-select [(value)]="selectedDesignation">
-        <mat-option value="">All Designations</mat-option>
+        <mat-option value="">All Departments</mat-option>
         <mat-option *ngFor="let des of uniqueDesignations" [value]="des">
           {{ des }}
         </mat-option>
@@ -69,7 +69,7 @@
     
     <!-- ===== Table Columns ===== -->
     <ng-container matColumnDef="id">
-      <th mat-header-cell *matHeaderCellDef>ID</th>
+      <th mat-header-cell *matHeaderCellDef>EMP ID</th>
       <td mat-cell *matCellDef="let emp" class="clickable text-success" (click)="viewPayRun(emp)">
         {{ emp.id }}
       </td>
@@ -78,19 +78,10 @@
     <ng-container matColumnDef="name">
       <th mat-header-cell *matHeaderCellDef>Employee Name</th>
       <td mat-cell *matCellDef="let emp">
-        <div class="profile-info">
-          <img [src]="emp.profileImageUrl || 'https://via.placeholder.com/30'" alt="avatar" />
-          <div [routerLink]="['/mainlayout/employees/view', emp.id]" class="emp-name">
-            <b class="text-primary">{{ emp.firstName }} {{ emp.lastName }}</b>
-          </div>
-        </div>
+        {{ emp.fullName }}
       </td>
     </ng-container>
 
-    <ng-container matColumnDef="designation">
-      <th mat-header-cell *matHeaderCellDef>Designation</th>
-      <td mat-cell *matCellDef="let emp">{{ emp.designation }}</td>
-    </ng-container>
 
     <ng-container matColumnDef="email">
       <th mat-header-cell *matHeaderCellDef>Email</th>
@@ -135,14 +126,11 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
 
-    <!-- ===== Show this when there’s no data ===== -->
-    <tr class="mat-row" *matNoDataRow>
-  <td colspan="8" class="no-data">
+  </table>
+  <div class="no-data mat-elevation-z1" *ngIf="filteredEmployees.length === 0">
     <mat-icon color="warn">error_outline</mat-icon>
     No employees found for selected filters.
-  </td>
-</tr>
-  </table>
+  </div>
 </div>
 
 </div>

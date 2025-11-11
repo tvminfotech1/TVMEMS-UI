@@ -1,57 +1,115 @@
-<div class="announcement-wrapper">
-  <!-- Tab Header as plain clickable text/icons -->
-  <div class="tab-header">
-    <span class="tab-link" [class.active]="currentTab === 'notification'" (click)="switchTab('notification')">
-      🔔 Notification
-    </span>
-    <span class="tab-link" [class.active]="currentTab === 'announcement'" (click)="switchTab('announcement')">
-      📢 Announcement
-    </span>
+<div class="announcement-page">
+  <div class="header">
+    <h2>📢 Announcements</h2>
+    <button class="add-btn" (click)="openAddModal()" *ngIf="isAdmin">+ Add
+      Announcement</button>
   </div>
+  <div *ngIf="announcements.length === 0" class="no-data">
+   No announcements available
+</div>
 
-  <!-- Optional Loading Spinner (disabled, can re-enable if needed) -->
-  <!-- <div class="loading-overlay" *ngIf="isLoading">
-    <div class="spinner"></div>
-    <p>Loading...</p>
-  </div> -->
-  <div class="announcement-header">
-    <button class="add-button" (click)="onAddAnnouncement()">➕ Add Announcement</button>
-  </div>
+  <div class="card-container">
+    <div class="announcement-card" *ngFor="let a of announcements">
+      <div class="card-header">
+        <h3><b>{{ a.title | uppercase }} </b></h3>
+        <span class="date"><b>{{ a.date | date: 'mediumDate' }}</b></span>
+      </div>
+      <div class="card-body">
+      <p><strong>Time:</strong> {{ a.startTimeFormatted }} - {{ a.endTimeFormatted }}</p>
 
-  <!-- Tab Switching -->
-  <div [ngSwitch]="currentTab">
-    
-    <!-- Notification Page -->
-    <div *ngSwitchCase="'notification'" class="notification-container">
-      <h2>Notifications</h2>
-      <p>This is the notification section. You can display updates or alerts here.</p>
-    </div>
-
-    <!-- Announcement Page -->
-    <div *ngSwitchCase="'announcement'" class="announcement-container">
-      <h1>Announcement:</h1><br><br>
-      <table>
-        <thead>
-          <tr>
-            <th>TITLE</th>
-            <th>START/END DATE</th>
-            <th>ACTION</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let a of visibleAnnouncements">
-            <td>{{ a.title }}</td>
-           <td>{{ a.announceStartDate }} - {{ a.announceEndDate }}</td>
-            <td><span class="calendar-icon" (click)="openCalendar(a)">📅</span></td>
-          </tr>
-        </tbody>
-      </table>
-
-      <div class="pagination-container">
-        <button class="pagination-button" (click)="changePage(1)" [disabled]="currentPage === 1">1</button>
-        <button class="pagination-button" (click)="changePage(2)" [disabled]="currentPage === 2">2</button>
+        <p class="place"><i class="fa fa-map-marker"></i> <b>Venue: {{ a.place
+            }}</b></p>
+        <p class="desc"><b>Description: {{ a.description ||
+            'No description available.' }}</b></p>
+      </div>
+      <div class="card-footer" *ngIf="isAdmin">
+        <button class="edit-btn" (click)="openEditModal(a)"> Edit</button>
+        <button class="delete-btn"
+          (click)="deleteAnnouncement(a.id)">Delete</button>
       </div>
     </div>
-    
   </div>
+
+  <!-- Modal Overlay -->
+  <div class="modal-overlay" *ngIf="showModal">
+    <div class="modal mat-elevation-z8">
+
+      <div class="modal-header">
+        <button class="close-btn" (click)="closeModal()">✖</button>
+
+      </div>
+      <h2 class="modal-title">
+        {{ isEditMode ? 'Edit Announcement' : 'Add Announcement' }}
+      </h2>
+
+      <form [formGroup]="announcementForm" (ngSubmit)="submitForm()"
+        class="announcement-form">
+        <!-- Title -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Title</mat-label>
+          <input matInput formControlName="title" placeholder="Enter title" />
+          <mat-icon matSuffix>campaign</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+  <mat-label>Date</mat-label>
+
+  <input 
+    matInput
+    [matDatepicker]="picker"
+    formControlName="date"
+    readonly
+    (click)="picker.open()"
+  />
+
+  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+  <mat-datepicker #picker></mat-datepicker>
+</mat-form-field>
+
+        <div class="time-row">
+          <mat-form-field appearance="outline" class="time-field">
+            <mat-label>Start Time(24hrs Format)</mat-label>
+            <input matInput type="time" formControlName="startTime" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="time-field">
+            <mat-label>End Time(24hrs Format)</mat-label>
+            <input matInput type="time" formControlName="endTime" />
+          </mat-form-field>
+        </div>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Topic / Place</mat-label>
+          <input matInput formControlName="place"
+            placeholder="Enter topic or location" />
+          <mat-icon matSuffix>place</mat-icon>
+        </mat-form-field>
+
+        <!-- Description -->
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Description</mat-label>
+          <textarea matInput formControlName="description" rows="3"
+            placeholder="Enter detailed description"></textarea>
+        </mat-form-field>
+
+        <div class="button-row">
+          <button
+            mat-stroked-button
+            color="warn"
+            type="button"
+            (click)="closeModal()">
+            Cancel
+          </button>
+          <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            [disabled]="announcementForm.invalid">
+            {{ isEditMode ? 'Update' : 'Save' }}
+          </button>
+
+        </div>
+      </form>
+    </div>
+  </div>
+
 </div>

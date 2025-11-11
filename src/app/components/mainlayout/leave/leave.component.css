@@ -231,11 +231,11 @@
 }
 .tab-button:hover {
   background-color: #f8f9fa;
-  color: #007bff;
+  color: #0f1446;
 }
 .tab-button.active {
-  border-bottom: 3px solid #007bff;
-  color: #007bff;
+  border-bottom: 3px solid #0a0f3c;
+  color: #0a0f3c;
 }
 
 /* ------------------ Table Controls ------------------ */

@@ -36,14 +36,18 @@ export class PayrollEmployeeService {
   }
 
   // ✅ Add new employee
-  addEmployee(employee: Employee): Observable<Employee> {
-    return this.http.post<Employee>(this.apiUrl, employee);
-  }
+addEmployee(employee: Employee): Observable<Employee> {
+  return this.http.post<{ body: Employee }>(this.apiUrl, employee).pipe(
+    map(res => res.body) // ✅ extract the actual employee object
+  );
+}
 
-  // ✅ Update employee (PUT)
-  updateEmployee(id: number, employee: Employee): Observable<Employee> {
-    return this.http.put<Employee>(`${this.apiUrl}/${id}`, employee);
-  }
+updateEmployee(id: number, employee: Employee): Observable<Employee> {
+  return this.http.put<{ body: Employee }>(`${this.apiUrl}/${id}`, employee).pipe(
+    map(res => res.body)
+  );
+}
+
 
   // ✅ Update employee status (PATCH)
   updateEmployeeStatus(id: number, status: string): Observable<any> {
@@ -62,5 +66,9 @@ export class PayrollEmployeeService {
           return of([]);
         })
       );
+  }
+
+  deleteEmployee(id: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${id}`);
   }
 }

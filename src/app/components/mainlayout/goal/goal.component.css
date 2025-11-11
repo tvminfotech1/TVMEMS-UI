@@ -143,7 +143,7 @@ body {
 }
 .searchBox i {
   font-size: 22px;
-  color: #1976d2;
+  color: #0a0f3c;
   margin-right: 12px;
 }
 
@@ -156,7 +156,7 @@ body {
 }
 
 .searchBox button {
-  background-color: #1976d2;
+  background-color: #0a0f3c;
   color: white;
   border: none;
   border-radius: 20px;
@@ -167,7 +167,7 @@ body {
 }
 
 .searchBox button:hover {
-  background-color: #125ea7;
+  background-color: #0a0f3c;
 }
 
 .admin-container {
@@ -185,7 +185,7 @@ body {
   text-align: center;
   margin-bottom: 20px;
   /* font-size: 26px; */
-  color: #333;
+  color: #0a0f3c;
 }
 
 .month-nav {
@@ -245,16 +245,14 @@ body {
 .table .col-name { width: 60%; text-align: left; }
 .table .col-view { width: 20%; text-align: center; }
 
-.table thead th {
-  position: sticky;
-  top: 0;                 
-  z-index: 5;            
-  background: #3f51b5;    
+.table thead th {           
+  background: #0a0f3c;    
   color: #fff;
   padding: 12px;
   font-weight: 600;
   text-align: center;
   box-shadow: 0 2px 4px rgba(0,0,0,0.05); 
+  border:1px solid white;
 }
 
 .table td,th {
@@ -433,11 +431,12 @@ a {
 }
 
 .btn-view-goals {
-  background-color: #3f51b5;
+  background-color: #0a0f3c;
   color: #fff;
   padding: 8px 16px;
   border: none;
   border-radius: 4px;
+  font-weight: 600;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
