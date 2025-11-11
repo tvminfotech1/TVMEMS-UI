@@ -172,6 +172,22 @@ const routes: Routes = [
        { path: 'empdocument/:id', component: EmpdocumentComponent ,canActivate: [adminAuthGuard],},
        { path: 'empresume/:id', component: EmpresumeComponent ,canActivate: [adminAuthGuard],},
        { path: 'empfinal/:id', component: EmpfinalComponent ,canActivate: [adminAuthGuard],},
+       {
+  path: 'settings',
+  children: [
+    { 
+      path: 'holidays', 
+      component: HolidayCalendarComponent, 
+      canActivate: [AuthGuard] 
+    },
+    { 
+      path: 'announcement', 
+      component: AnnouncementComponent, 
+      canActivate: [AuthGuard] 
+    },
+  ]
+}
+
     ]
   },
 

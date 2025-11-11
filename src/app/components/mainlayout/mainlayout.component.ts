@@ -170,6 +170,17 @@ export class MainlayoutComponent implements OnInit {
     this.router.navigate(['/mainlayout/myprofile',this.employeeId]);
   }
 
+  goToHolidays() {
+  this.showSettings = false;
+  this.router.navigate(['/mainlayout/settings/holidays']);
+}
+
+goToAnnouncements() {
+  this.showSettings = false;
+  this.router.navigate(['/mainlayout/settings/announcement']);
+}
+
+
   isChildRouteActive(keywords: string[]): boolean {
     return keywords.some(path => this.router.url.includes(path));
   }

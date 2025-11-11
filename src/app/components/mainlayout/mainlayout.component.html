@@ -540,7 +540,7 @@
         <span class="material-icons">menu</span>
       </button>
       <div class="top-right-icons">
-        <button class="icon-btn" (click)="toggleSearch()">
+        <!-- <button class="icon-btn" (click)="toggleSearch()">
           <span class="material-icons">{{
             showSearch ? "close" : "search"
           }}</span>
@@ -550,7 +550,7 @@
           type="text"
           placeholder="Search..."
           class="search-input"
-        />
+        /> -->
 
         <button class="icon-btn">
           <span class="material-icons">notifications</span>
@@ -576,15 +576,16 @@
               <li (click)="goToProfile()">
                 <span class="material-icons">person</span> My Profile
               </li>
-              <li>
-                <span class="material-icons">campaign</span> My Announcements
-              </li>
+             <li (click)="goToAnnouncements()">
+  <span class="material-icons">campaign</span> My Announcements
+           </li>
               <li>
                 <span class="material-icons">notifications</span> My
                 Notifications
               </li>
-              <li><span class="material-icons">event</span> Holidays</li>
-              <!-- <li><span class="material-icons">logout</span> Logout</li> -->
+              <li (click)="goToHolidays()">
+         <span class="material-icons">event</span> Holidays
+            </li>
               <li (click)="onLogout()">
                 <span class="material-icons">logout</span> Logout
               </li>
