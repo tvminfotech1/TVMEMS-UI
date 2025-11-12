@@ -1,40 +1,28 @@
 <div class="carousel-container" (mouseenter)="pauseScroll()" (mouseleave)="resumeScroll()">
-
-  <!-- <div class="dashboard-wrapper"> -->
-  <!-- Left arrow -->
-  <!-- <button
-    *ngIf="allWishes.length > visibleCount"
-    class="side-arrow left-arrow"
-    (click)="previousPage()"
-  >
-    &#8592;
-  </button> -->
   <div class="dashboard">
+        <!-- Show loader while waiting for backend -->
+    <div *ngIf="isLoading" class="card-loading">
+      <div class="spinner"></div>
+      <p>Loading wishes...</p>
+    </div>
     <div
-      *ngIf="filteredWishes.length === 0"
+      *ngIf="!isLoading && filteredWishes.length === 0"
       class="card-single-card"
     >
       <div class="card-empty">No wishes available.</div>
     </div>
+    </div>
 
   <div class="carousel-track" #carouselTrack>
-
-    <!-- <ng-container *ngIf="filteredWishes.length > 0 ; else noWishes"> -->
-      <div class="card" *ngFor="let card of filteredWishes.concat(filteredWishes); trackBy: trackByWish"
-        [attr.data-category]="card.category">
-
-
-        <!-- <div
-        class="card"
-        *ngFor="let card of visibleCards"
-        [attr.data-category]="card.category"
-      > -->
-
+      <!-- <div class="card" *ngFor="let card of filteredWishes.concat(filteredWishes); trackBy: trackByWish" -->
+      <div class="card" *ngFor="let card of filteredWishes; trackBy: trackByWish"
+         [attr.data-category]="card.category && card.category !== 'null' && card.category !== 'undefined' ? card.category : null"
+  [class.no-category]="!card.category || card.category === 'null' || card.category === 'undefined'">
 
         <div class="card-banner">
+          
           <div class="profile-pic-container">
-            <!-- <img [src]="card.image" alt="Profile Image" /> -->
-            <img [src]="card.image || 'assets/userimg/OIP.jpg'" [alt]="card.name" />
+            <img [src]="card.image" [alt]="card.name" />
           </div>
         </div>
 
@@ -55,24 +43,4 @@
           </p>
         </div>
       </div>
-    <!-- </ng-container> -->
-<!-- 
-    <ng-template #noWishes>
-      <div class="card single-card">
-        <div class="card-empty">
-          No wishes available.
-        </div>
-      </div>
-    </ng-template> -->
-    <!-- </div> -->
-
-    <!-- Right arrow -->
-    <!-- <button
-    *ngIf="allWishes.length > visibleCount"
-    class="side-arrow right-arrow"
-    (click)="nextPage()"
-  >
-    &#8594;
-  </button> -->
   </div>
-</div>
