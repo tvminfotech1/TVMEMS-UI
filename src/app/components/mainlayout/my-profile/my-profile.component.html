@@ -3,7 +3,12 @@
 
     <div class="profile-header">
       <div class="profile-image">
-        <img src="assets/images/profile.jpg" alt="Profile" class="profile-img" />
+        <img 
+  [src]="profileImageUrl || 'assets/images/profile.jpg'" 
+  alt="Profile Photo" 
+  class="profile-img" 
+  (error)="profileImageUrl = 'assets/images/profile.jpg'" 
+/>
       </div>
 
       <div class="profile-info">

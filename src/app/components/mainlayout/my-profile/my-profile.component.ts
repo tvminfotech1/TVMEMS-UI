@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { UserDetailsService } from 'src/app/services/userDetails.service';
+import { MyProfileService } from 'src/app/services/my-profile.service';
 
 @Component({
   selector: 'app-my-profile',
@@ -14,14 +15,15 @@ export class MyProfileComponent implements OnInit {
   email: string | null = null;
   fullName: string | null = null;
   userDetails!: FormGroup;
+  profileImageUrl: string = 'assets/images/profile.jpg'; 
 
-  constructor(private authService: AuthService, private fb: FormBuilder, private userDetailsService : UserDetailsService) {}
+  constructor(private authService: AuthService, private fb: FormBuilder, private userDetailsService : UserDetailsService,private myprofileService: MyProfileService ) {}
   
   ngOnInit(): void {
     this.employeeId = this.getEmployeeIdFromToken();
     this.email = this.authService.getEmailFromToken();
     this.fullName = this.authService.getfullName()?.toUpperCase() || null;
-
+    this.loadProfilePhoto();
    // Subscribe to getformData observable
   this.userDetailsService.getformData().subscribe(
     (data: any) => {
@@ -117,4 +119,15 @@ export class MyProfileComponent implements OnInit {
     const empIdStr = this.authService.getEmployeeId();
     return empIdStr ? Number(empIdStr) : null;
   }
+
+loadProfilePhoto() {
+  this.myprofileService.getUserPhoto(this.employeeId!).subscribe({
+    next: (photoUrl: string) => {
+      if (photoUrl) {
+        this.profileImageUrl = photoUrl;
+      }
+    },
+    error: (err: any) => console.error('Error loading profile photo:', err)
+  });
+}
 }
