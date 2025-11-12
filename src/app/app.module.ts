@@ -103,6 +103,7 @@ import { JobOpeningListComponent } from './components/mainlayout/job-opening-lis
 import { JobEditDialogComponent } from './components/mainlayout/job-opening-list/job-edit-dialog/job-edit-dialog.component';
 import { CommonModule, DatePipe } from '@angular/common';
 import { MatDividerModule } from '@angular/material/divider';
+import { UserPayslipComponent } from './components/payroll/user-payslip/user-payslip.component';
 
 @NgModule({
   declarations: [
@@ -182,6 +183,7 @@ import { MatDividerModule } from '@angular/material/divider';
     WfhApplyFormComponent,
     JobOpeningListComponent,
     JobEditDialogComponent,
+    UserPayslipComponent,
   ],
   imports: [
     BrowserModule,

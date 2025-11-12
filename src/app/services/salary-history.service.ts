@@ -43,4 +43,9 @@ export class SalaryHistoryService {
       responseType: 'blob'
     });
   }
+
+ getJoiningDate(id: number): Observable<any> {
+  return this.http.get<any>(`http://localhost:8080/api/employeePayRole/joiningDate/${id}`);
+}
+
 }

@@ -518,6 +518,56 @@
               </ul>
             </div>
           </li>
+
+<!-- -------------------------------------- -->
+
+<li class="dropdown" *ngIf="isUser">
+            <button
+              class="nav-button"
+              [ngClass]="{
+                'active-parent-link': isChildRouteActive([
+                  'payroll-dashbord',
+                  'payroll-employee',
+                  '/mainlayout/payruns',
+                  '/mainlayout/reports'
+                ])
+              }"
+              (click)="togglePayrollDropdown()"
+              [attr.aria-expanded]="showPayrollDropdown"
+              aria-controls="payrollDropdown"
+              aria-haspopup="true"
+            >
+              <span class="material-icons">request_quote</span> Payroll
+              <span class="accordion-icon">
+                {{ showPayrollDropdown ? "⯆" : "⯈" }}
+              </span>
+            </button>
+
+            <div
+              *ngIf="showPayrollDropdown"
+              class="dropdown-content"
+              id="payrollDropdown"
+            >
+              <ul class="dropdown-list">
+                
+              
+                <li>
+                  <a
+                    routerLink="payslip"
+                    class="nav-link sub"
+                    routerLinkActive="active-sub-link"
+                    [routerLinkActiveOptions]="{ exact: true }"
+                  >
+                    <span class="material-icons">attach_money</span> Pay Slip
+                  </a>
+                </li>
+    
+              </ul>
+            </div>
+          </li>
+
+
+<!-- ------------------------------------------- -->
         </ul>
       </nav>
     </div>

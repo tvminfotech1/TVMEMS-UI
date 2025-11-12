@@ -13,63 +13,57 @@
   <form (ngSubmit)="onSubmit(empForm)" #empForm="ngForm">
     <div class="form-grid">
 
-     <div class="search-section">
-  <mat-form-field appearance="outline">
-    <mat-label>Employee ID</mat-label>
-    <input matInput type="number" [(ngModel)]="searchId" placeholder="Enter Employee ID" name="employeeId" />
-   <button 
-  mat-icon-button 
-  matSuffix 
-  color="primary" 
-  type="button"  
-  (click)="searchEmployee()">
-  <mat-icon>search</mat-icon>
-</button>
+      <div class="search-section">
+        <mat-form-field appearance="outline">
+          <mat-label>Employee ID</mat-label>
+          <input matInput type="number" [(ngModel)]="searchId" placeholder="Enter Employee ID" name="employeeId" />
+          <button mat-icon-button matSuffix color="primary" type="button" (click)="searchEmployee()">
+            <mat-icon>search</mat-icon>
+          </button>
 
-  </mat-form-field>
+        </mat-form-field>
 
-  <!-- clickable suggestion -->
-  <div *ngIf="searchedEmployee" class="employee-suggestion" (click)="selectEmployee()">
-    {{ searchId }} - {{ searchedEmployee.fullName }}
-  </div>
-</div>
+        <!-- clickable suggestion -->
+        <div *ngIf="searchedEmployee" class="employee-suggestion" (click)="selectEmployee()">
+          {{ searchId }} - {{ searchedEmployee.fullName }}
+        </div>
+      </div>
 
 
       <mat-form-field appearance="outline">
         <mat-label>Full Name</mat-label>
-        <input matInput type="text" name="fullName" [(ngModel)]="employee.fullName" required />
+        <input matInput type="text" name="fullName" [(ngModel)]="employee.fullName" readonly />
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Email</mat-label>
-        <input matInput type="email" name="email" [(ngModel)]="employee.email" required />
+        <input matInput type="email" name="email" [(ngModel)]="employee.email" readonly />
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Phone</mat-label>
-        <input matInput type="text" name="phone" [(ngModel)]="employee.phone" required />
+        <input matInput type="text" name="phone" [(ngModel)]="employee.phone" readonly />
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Joining Date</mat-label>
-        <input matInput [matDatepicker]="joinPicker" name="joiningDate" [(ngModel)]="employee.joiningDate" required />
-        <mat-datepicker-toggle matSuffix [for]="joinPicker"></mat-datepicker-toggle>
-        <mat-datepicker #joinPicker></mat-datepicker>
+        <input matInput [value]="employee.joiningDate | date: 'dd-MM-yyyy'" readonly />
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Aadhaar Number</mat-label>
-        <input matInput name="aadhaarNumber" [(ngModel)]="employee.aadhaarNumber" />
+        <input matInput name="aadhaarNumber" [(ngModel)]="employee.aadhaarNumber" readonly />
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>PAN Number</mat-label>
-        <input matInput name="panNumber" [(ngModel)]="employee.panNumber" />
+        <input matInput name="panNumber" [(ngModel)]="employee.panNumber" readonly/>
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="status-field">
         <mat-label>Status</mat-label>
-        <input matInput name="status" [(ngModel)]="employee.status" value="Active" [disabled]="true" readonly class="status-active" />
+        <input matInput name="status" [(ngModel)]="employee.status" value="Active" [disabled]="true" readonly
+          class="status-active" />
       </mat-form-field>
 
       <mat-form-field appearance="outline">
@@ -111,12 +105,12 @@
 
       <mat-form-field appearance="outline">
         <mat-label>CTC</mat-label>
-        <input matInput type="number" name="ctc" [(ngModel)]="employee.ctc" required/>
+        <input matInput type="number" name="ctc" [(ngModel)]="employee.ctc" required />
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Basic Salary</mat-label>
-        <input matInput type="number" name="basicSalary" [(ngModel)]="employee.basicSalary" required/>
+        <input matInput type="number" name="basicSalary" [(ngModel)]="employee.basicSalary" required />
       </mat-form-field>
 
       <mat-form-field appearance="outline">
@@ -133,28 +127,28 @@
     <div class="form-grid">
       <mat-form-field appearance="outline">
         <mat-label>Bank Name</mat-label>
-        <input matInput name="bankName" [(ngModel)]="employee.bankDetails.bankName" required/>
+        <input matInput name="bankName" [(ngModel)]="employee.bankDetails.bankName" required />
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Account Number</mat-label>
-        <input matInput name="accountNumber" [(ngModel)]="employee.bankDetails.accountNumber" required/>
+        <input matInput name="accountNumber" [(ngModel)]="employee.bankDetails.accountNumber" required />
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>IFSC Code</mat-label>
-        <input matInput name="ifscCode" [(ngModel)]="employee.bankDetails.ifscCode" required/>
+        <input matInput name="ifscCode" [(ngModel)]="employee.bankDetails.ifscCode" required />
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Branch</mat-label>
-        <input matInput name="branch" [(ngModel)]="employee.bankDetails.branch" required/>
+        <input matInput name="branch" [(ngModel)]="employee.bankDetails.branch" required />
       </mat-form-field>
     </div>
     <div class="button-group">
-    <button mat-raised-button color="primary" type="submit" class="submit-btn">
-      {{ isEditMode ? 'Update Employee' : 'Add Employee' }}
-    </button>
+      <button mat-raised-button color="primary" type="submit" class="submit-btn">
+        {{ isEditMode ? 'Update Employee' : 'Add Employee' }}
+      </button>
     </div>
   </form>
 </mat-card>

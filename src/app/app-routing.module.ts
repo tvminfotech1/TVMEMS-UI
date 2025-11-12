@@ -78,21 +78,11 @@ import { AddAnnouncementComponent } from './components/mainlayout/add-announceme
 import { AuthGuard } from './guards/auth.guard';
 import { MyProfileComponent } from './components/mainlayout/my-profile/my-profile.component';
 import { JobOpeningListComponent } from './components/mainlayout/job-opening-list/job-opening-list.component';
+import { UserPayslipComponent } from './components/payroll/user-payslip/user-payslip.component';
 
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
-  // { path: 'personal', component: PersonalComponent },
-  // { path: 'kyc', component: KycComponent },
-  // { path: 'passport', component: PassportVisaComponent },
-  // { path: 'family', component: FamilyComponent },
-  // { path: 'previousEmployee', component: PreviousEmploymentComponent },
-  // { path: 'education', component: EducationComponent },
-  // { path: 'skills', component: SkillsComponent },
-  // { path: 'certificate', component: CertificateComponent },
-  // { path: 'document', component: DocumentComponent },
-  // { path: 'resume', component: ResumeComponent },
-  // { path: 'final', component: FinalComponent },
 
   { path: 'login', component: LoginComponent },
   { path: 'loginByNumber', component: LoginByNumberComponent },
@@ -134,7 +124,7 @@ const routes: Routes = [
       {path:'seeJobOpening', component:JobOpeningListComponent},
       {path:'goal', component:GoalComponent,canActivate: [AuthGuard],},
       { path: 'add-announcement', component: AddAnnouncementComponent,canActivate: [adminAuthGuard], },
-
+      { path: 'payslip', component: UserPayslipComponent },
 
       { path: 'personal', component: PersonalComponent,canActivate: [userAuthGuard] },
       { path: 'kyc', component: KycComponent ,canActivate:[userAuthGuard]},
@@ -190,23 +180,6 @@ const routes: Routes = [
 
     ]
   },
-
-  // Employee Details routes
-  // { path: 'admin/empdetails', component: EmployeeDetailsComponent },
-  // { path: 'admin/empkyc', component: EmpkycComponent },
-  // { path: 'admin/emppassport', component: EmppassportComponent },
-  // { path: 'admin/empfamily', component: EmpfamilyComponent },
-  // { path: 'admin/emppreviousEmployee', component: EmppreviousEmployeeComponent },
-  // { path: 'admin/empeducation', component: EmpeducationComponent },
-  // { path: 'admin/empskills', component: EmpskillsComponent },
-  // { path: 'admin/empcertificate', component: EmpcertificateComponent },
-  // { path: 'admin/empdocument', component: EmpdocumentComponent },
-  // { path: 'admin/empresume', component: EmpresumeComponent },
-  // { path: 'admin/empfinal', component: EmpfinalComponent },
-  // { path: 'timesheet', component: TimeSheetComponent },
-  // { path: 'timesheet-view/:id', component: TimeSheetViewComponent },
-// Payroll 
-  // {path:"add-employee",component:AddEmployeeComponent},
 
   { path: '**', component: HomeComponent }, // Wildcard route
 
