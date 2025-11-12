@@ -121,6 +121,20 @@ export class GoalComponent implements OnInit {
     };
   }
 
+  // allUser(): void {
+  //   this.userlistService.getAllUser().subscribe({
+  //     next: (response) => {
+  //       this.employees = response.body || [];
+  //       this.filteredEmployees = [...this.employees];
+  //       console.log(this.employees);
+  //     },
+  //     error: (err) => {
+  //       console.error("❌ Error fetching users", err);
+  //       this.employees = [];
+  //       this.filteredEmployees = [];
+  //     }
+  //   });
+  // }
 
   allUser(): void {
     this.userlistService.getAllUser().subscribe({
@@ -135,6 +149,7 @@ export class GoalComponent implements OnInit {
         );
 
         this.filteredEmployees = [...this.employees];
+        console.log('✅ Filtered employees (no admins, no self):', this.employees);
       },
       error: (err) => {
         console.error("❌ Error fetching users", err);
@@ -228,7 +243,7 @@ export class GoalComponent implements OnInit {
       return;
     }
 
-    goal.startDate = this.formatToDDMMYYYY(new Date());
+    goal.startDate = new Date().toISOString().split('T')[0];
     goal.isStarted = true;
     goal.isEditing = false;
     this.goalService.updateGoal(goal.id, goal).subscribe({
@@ -326,13 +341,26 @@ export class GoalComponent implements OnInit {
     }
     this.updateGoal(goal);
   }
-  formatToDDMMYYYY(date: Date): string {
-  const d = new Date(date);
-  const day = String(d.getDate()).padStart(2, '0');
-  const month = String(d.getMonth() + 1).padStart(2, '0');
-  const year = d.getFullYear();
-  return `${day}-${month}-${year}`;
-}
+
+  // viewGoals(emp: any): void {
+  //   this.goalService.getGoalByUserid(emp.employeeId).subscribe({
+  //     next: (res: any) => {
+
+  //       console.log("API response:", res.body);
+  //       const allGoalsByUser = res.body || [];
+  //       const employeeGoals = allGoalsByUser.filter((g: any) => g.user?.employeeId === emp.employeeId);
+  //       console.log("Filtered Goals:", employeeGoals);
+  //       if (employeeGoals.length > 0) {
+  //         this.openGoalPopup(employeeGoals);
+  //       } else {
+  //         alert(`${emp.fullName} has no goals.`);
+  //       }
+  //     },
+  //     error: (err) => {
+  //       console.error('Error fetching goals:', err);
+  //     }
+  //   });
+  // }
 
   viewGoals(emp: any): void {
     this.goalService.getGoalByUserid(emp.employeeId).subscribe({
@@ -342,6 +370,9 @@ export class GoalComponent implements OnInit {
         const allGoalsByUser = res.body || [];
         const employeeGoals = allGoalsByUser.filter((g: any) => g.user?.employeeId === emp.employeeId);
         const filteredByMonth = this.filterGoalsBySelectedMonth(employeeGoals);
+        console.log(`✅ ${emp.fullName}'s goals for ${this.dateRange}:`, filteredByMonth);
+
+        console.log("Filtered Goals:", employeeGoals);
         if (filteredByMonth.length > 0) {
           this.openGoalPopup(filteredByMonth);
         } else {
@@ -398,6 +429,7 @@ export class GoalComponent implements OnInit {
 
     this.goalService.updateGoal(goal.id, goal).subscribe({
       next: () => {
+        console.log('Goal updated successfully');
         goal.isEditing = false;
 
         this.validateDueDate(goal);
@@ -429,12 +461,12 @@ export class GoalComponent implements OnInit {
   }
 
   onDueDateChange(goal: any, event: any) {
-    const selected = event.value ? this.formatToDDMMYYYY(event.value) : null;
+    const selectedDate = event.value ? event.value.toISOString().split('T')[0] : null;
     if (!confirm('Do you want to save this due date?')) {
       goal.dueDate = this.previousDueDate;
       return;
     }
-    goal.dueDate = selected;
+    goal.dueDate = selectedDate;
     goal.isDueDateLocked = true;
     this.goalService.updateGoal(goal.id, goal).subscribe({
       next: (res) => {
@@ -474,6 +506,7 @@ export class GoalComponent implements OnInit {
       );
     });
 
+    console.log('✅ Goals for', month, this.selectedYear, ':', this.selectedMonthGoals);
   }
 
   updateDateRangeLabel(): void {
@@ -497,7 +530,7 @@ export class GoalComponent implements OnInit {
   filterGoalsBySelectedMonth(goals: any[]): any[] {
     if (!goals || goals.length === 0) return [];
 
-    const selectedMonth = this.currentDate.getMonth();  
+    const selectedMonth = this.currentDate.getMonth();   // 0–11
     const selectedYear = this.currentDate.getFullYear();
 
     return goals.filter((goal) => {

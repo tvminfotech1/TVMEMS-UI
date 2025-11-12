@@ -82,7 +82,10 @@ export class ResignationComponent implements OnInit {
         } else if (res.status === 'Rejected') {
           this.submittedData = [res];
           this.hasSubmittedResignation = false;
-        } else {
+        }else if (res.status === 'Pending' || res.status === 'Submitted') {
+          this.submittedData = [res];
+          this.hasSubmittedResignation = false;
+        }else {
           this.submittedData = [];
           this.hasSubmittedResignation = false;
         }
@@ -130,7 +133,7 @@ export class ResignationComponent implements OnInit {
   }
 
   openForm() {
-    if (this.hasSubmittedResignation) {
+    if (this.submittedData.length > 0 || this.hasSubmittedResignation) {
       this.snackBar.open(
         'You have already submitted your resignation. You cannot apply again.',
         'Close',

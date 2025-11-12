@@ -33,7 +33,7 @@
       <tr>
         <th>Emp ID</th>
         <th>Name</th>
-        <th>Designation</th>
+        <th>Email</th>
         <th>Department</th>
       </tr>
     </thead>
@@ -41,6 +41,7 @@
       <tr *ngFor="let emp of recentEmployees">
       <td>{{ emp.id }}</td>
       <td>{{ emp.fullName }}</td>
+      <td>{{ emp.email }}</td>
       <td>{{ emp.department }}</td>
     </tr>
     </tbody>
