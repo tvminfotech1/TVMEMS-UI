@@ -20,7 +20,6 @@
   align-items: center;
   position: relative;
   background-color: #f5f8ff;
-  border-bottom: 2px solid #007bff;
   padding: 18px 50px 18px 25px;
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
@@ -77,7 +76,7 @@
 
 .employee-details-table th,
 .salary-table th {
-  background-color: #007bff;
+  background: linear-gradient(135deg, #0a0f3c, #1c2b8c);
   color: #fff;
   text-align: left;
   padding: 12px 14px;
@@ -170,8 +169,6 @@ input:focus {
 
 /* === Buttons === */
 button {
-  display: flex;
-  justify-content: flex-end;
   margin: 30px auto 0;
   padding: 12px 26px;
   background: #007bff;

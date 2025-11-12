@@ -56,7 +56,7 @@ h2 {
 }
 
 .salary-table thead {
-  background: #0a0f3c;
+  background: linear-gradient(135deg, #0a0f3c, #1c2b8c);
   color: #fff;
 }
 

@@ -268,7 +268,7 @@ button[mat-raised-button]:hover {
 
 .timesheet-classic-container .accordion-header {
   cursor: pointer;
-  background-color: #34495e;
+  background: linear-gradient(135deg, #0a0f3c, #1c2b8c);
   color: #ecf0f1;
   padding: 0.8rem 1rem;
   border-radius: 4px 4px 0 0;
@@ -279,10 +279,13 @@ button[mat-raised-button]:hover {
   font-weight: bold;
 
 }
-
-.timesheet-classic-container .accordion-header:hover {
-  background-color: #3e5870;
+.header-table{
+  background: linear-gradient(135deg, #0a0f3c, #1c2b8c);
 }
+
+/* .timesheet-classic-container .accordion-header:hover {
+  background-color: #3e5870;
+} */
 
 .timesheet-classic-container .accordion-content {
   margin-top: 0; 
@@ -343,7 +346,7 @@ button[mat-raised-button]:hover {
   font-weight: bold;
 }
 .status-approved {
-  color: #27ae60 !important; 
+  color: #27ae60 ; 
   font-weight: bold;
 }
 .status-rejected {
@@ -669,10 +672,10 @@ button[mat-raised-button]:hover {
 }
 
 /* Sticky header */
-.classic-table thead th {
+.classic-table thead{
   position: sticky;
   top: 0;
-  background-color: #34495e;
+  background: linear-gradient(135deg, #0a0f3c, #1c2b8c);
   color: #fff;
   z-index: 2;
   text-align: center;

@@ -189,9 +189,11 @@
 }
 
 .details-table th {
-  background: #001f54;
   color: white;
   font-weight: 500;
+}
+.details-table thead{
+  background: linear-gradient(135deg, #0a0f3c, #1c2b8c);
 }
 
 .details-table tr:nth-child(even) {

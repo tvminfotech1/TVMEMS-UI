@@ -25,7 +25,7 @@ html, body {
 
 /* ===== Banner ===== */
 .banner {
-  background-color: #0a0f3c;
+  background: linear-gradient(135deg, #0a0f3c, #1c2b8c);
   padding: 12px;
   text-align: center;
   margin-bottom: 20px;
@@ -338,7 +338,7 @@ html, body {
   flex-wrap: wrap;
   margin: 25px 0;
   padding: 12px 20px;
-  background-color: #0a0f3c;
+  background: linear-gradient(135deg, #0a0f3c, #1c2b8c);
   color: #fff;
   border-radius: 10px;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);

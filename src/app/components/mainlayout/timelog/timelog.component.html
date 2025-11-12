@@ -42,7 +42,7 @@
   <div *ngIf="latestEntry && isUser" class="latest-entry-section">
     <h3>Latest Submitted Entry (Current Week)</h3>
     <table class="classic-table">
-      <thead>
+      <thead class="header-table">
         <tr>
           <th>Project</th>
           <th>Total Hrs.</th>
@@ -82,7 +82,7 @@
 
       <div class="accordion-content" >
         <table class="classic-table" *ngIf="accordionState[0]">
-          <thead>
+          <thead class="header-table">
             <tr>
               <th>Employee Name</th>
               <th>Employee ID</th>
@@ -146,7 +146,7 @@
       <div class="accordion-content" *ngIf="accordionState[2]">
         <form #timelogForm="ngForm" (ngSubmit)="onSubmit(timelogForm)" autocomplete="off">
           <table class="classic-table">
-            <thead>
+            <thead class="header-table">
               <tr>
                 <th>Project</th>
                 <th>Monday</th>
@@ -219,7 +219,7 @@
         </div>
        
         <table class="classic-table">
-          <thead>
+          <thead class="header-table">
             <tr>
               <th>Employee Name</th>
               <th>Employee ID</th>

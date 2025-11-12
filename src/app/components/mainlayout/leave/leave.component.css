@@ -86,7 +86,7 @@
 /* Main Content */
 /* =============================== */
 .main-content {
-  background-color: #0a0f3c;
+  background: linear-gradient(135deg, #0a0f3c, #1c2b8c);
   padding: 1.5rem;
   border-radius: 20px;
 }
@@ -311,11 +311,14 @@
 
 /* Table Header */
 .leave-table th {
-  background-color: #0a0f3c;
+
   color: #fff;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+}
+.header-table{
+  background: linear-gradient(135deg, #0a0f3c, #1c2b8c);
 }
 
 /* Hover Effect */
