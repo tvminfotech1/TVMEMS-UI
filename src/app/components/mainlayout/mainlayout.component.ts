@@ -28,6 +28,7 @@ export class MainlayoutComponent implements OnInit {
   isUser: boolean = false;
   userName: string = '';
   employeeId: string | null = null;
+  hasSubmittedOnboarding = false;
 
   completedTabs: any = {};
 
@@ -52,6 +53,16 @@ export class MainlayoutComponent implements OnInit {
         document.body.classList.remove('noscroll');
       }
     });
+
+  if (this.isUser && this.employeeId) {
+    this.authService.checkOnboardingStatus(this.employeeId).subscribe({
+      next: (status) => {
+        this.hasSubmittedOnboarding = status;
+        console.log('Onboarding submitted:', status);
+      },
+      error: (err) => console.error('Error checking onboarding status:', err)
+    });
+  }
   }
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent) {
@@ -188,16 +199,15 @@ export class MainlayoutComponent implements OnInit {
     this.router.navigate(['/mainlayout/myprofile',this.employeeId]);
   }
 
-  goToHolidays() {
-  this.showSettings = false;
-  this.router.navigate(['/mainlayout/settings/holidays']);
-}
-
 goToAnnouncements() {
+  this.router.navigate(['/mainlayout/dashboard'], { queryParams: { section: 'announcement' } });
   this.showSettings = false;
-  this.router.navigate(['/mainlayout/settings/announcement']);
 }
 
+goToHolidays() {
+  this.router.navigate(['/mainlayout/dashboard'], { queryParams: { section: 'holidays' } });
+  this.showSettings = false;
+}
 
   isChildRouteActive(keywords: string[]): boolean {
     return keywords.some(path => this.router.url.includes(path));

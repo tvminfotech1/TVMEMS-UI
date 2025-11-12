@@ -181,4 +181,9 @@ getUserId(email: string): Observable<number> {
   return this.http.get<number>(`${this.baseUrl}/WFH/employeeId?email=${email}`);
 }
 
+checkOnboardingStatus(employeeId: string): Observable<boolean> {
+  const url = `http://localhost:8080/final/check-status/${employeeId}`;
+  return this.http.get<boolean>(url);
+}
+
 }

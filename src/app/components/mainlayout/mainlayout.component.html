@@ -326,7 +326,7 @@
           </li>
 
           <!-- Onboarding -->
-          <li class="dropdown">
+          <li class="dropdown" *ngIf="!hasSubmittedOnboarding">
             <button
               class="nav-button"
               [ngClass]="{
@@ -540,22 +540,6 @@
         <span class="material-icons">menu</span>
       </button>
       <div class="top-right-icons">
-        <!-- <button class="icon-btn" (click)="toggleSearch()">
-          <span class="material-icons">{{
-            showSearch ? "close" : "search"
-          }}</span>
-        </button>
-        <input
-          *ngIf="showSearch"
-          type="text"
-          placeholder="Search..."
-          class="search-input"
-        /> -->
-
-        <button class="icon-btn">
-          <span class="material-icons">notifications</span>
-        </button>
-
         <span class="settings-wrapper">
           <button class="icon-btn" (click)="toggleSettings()">
             <span class="material-icons">settings</span>
@@ -579,10 +563,7 @@
              <li (click)="goToAnnouncements()">
   <span class="material-icons">campaign</span> My Announcements
            </li>
-              <li>
-                <span class="material-icons">notifications</span> My
-                Notifications
-              </li>
+             
               <li (click)="goToHolidays()">
          <span class="material-icons">event</span> Holidays
             </li>

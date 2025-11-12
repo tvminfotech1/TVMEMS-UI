@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { trigger, style, animate, transition, query, animateChild } from '@angular/animations';
 import { AuthService } from 'src/app/services/auth.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-dashboardhome',
@@ -29,7 +30,7 @@ export class DashboardhomeComponent implements OnInit {
     wishes: false,
   };
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService,private route: ActivatedRoute) {}
 
   ngOnInit() {
     const hour = new Date().getHours();
@@ -39,7 +40,16 @@ export class DashboardhomeComponent implements OnInit {
     this.userName = this.authService.getfullName() || 'User';
     const day = new Date().toLocaleDateString('en-US', { weekday: 'long' });
     this.workInfo = `Happy ${day}! Let's make it a great one.`;
-  }
+
+     this.route.queryParams.subscribe(params => {
+    const section = params['section'];
+    if (section && this.show.hasOwnProperty(section)) {
+      for (let key in this.show) this.show[key] = false;
+      this.show[section] = true;
+    }
+  });
+}
+  
 
   toggle(section: string) {
     for (let key in this.show) this.show[key] = false;
