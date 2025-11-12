@@ -79,7 +79,7 @@ export class PayrunsComponent implements OnInit {
   }
 
   /** View or Generate salary slip */
-  viewOrGenerateSalary(emp: Payruns): void {
+  GenerateSalary(emp: Payruns): void {
     const salaryRecord = this.isSalaryGenerated(emp);
     const month = this.selectedMonth;
     if (salaryRecord) {
@@ -96,11 +96,16 @@ export class PayrunsComponent implements OnInit {
   }
 
   /** Check if salary slip is already generated */
-  isSalaryGenerated(emp: Payruns): boolean {
-    return this.salaryHistory.some(
-      (s) => s.payRoleEmployee.id === emp.employeeId && s.month === this.selectedMonth
-    );
-  }
+isSalaryGenerated(emp: Payruns): boolean {
+  if (!this.salaryHistory || !this.salaryHistory.length) return false;
+
+  return this.salaryHistory.some((s) =>
+    s.payRoleEmployee.id === emp.employeeId &&
+    s.month === this.selectedMonth
+  );
+}
+
+
   
   downloadSalarySlip(employeeId: number, month: string): void {
     this.salaryService.downloadSalarySlip(employeeId, month).subscribe(

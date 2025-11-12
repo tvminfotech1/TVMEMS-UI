@@ -1,39 +1,91 @@
-<div class="report-container">
-<div class="filter-container">
-  <label for="year">Select Year:</label>
-  <select id="year" [(ngModel)]="selectedYear" (change)="onYearChange()">
-    <option *ngFor="let year of availableYears" [value]="year">{{ year }}</option>
-  </select>
+<div class="payroll-report-container">
+  <div class="filter-section">
+  <div class="filter-header">
+    <h2>Payroll Salary Report</h2>
+  
+  </div>
+
+<div class="filter-bar">
+  <mat-form-field appearance="outline" class="year-select-field">
+    <mat-label>Select Year</mat-label>
+    <mat-select [(value)]="selectedYear" (selectionChange)="onYearChange()">
+      <mat-option *ngFor="let year of availableYears" [value]="year">
+        {{ year }}
+      </mat-option>
+    </mat-select>
+    <button mat-icon-button matSuffix>
+      <mat-icon>calendar_today</mat-icon>
+    </button>
+  </mat-form-field>
+
+ 
 </div>
 
-<div id="overview-report" class="slip-container" *ngIf="reportData.length > 0">
-  <h2 class="center">Salary Overview Report - {{ selectedYear }}</h2>
-  <table class="details-table">
-    <tr>
-      <th>Emp ID</th>
-      <th>Employee Name</th>
-      <th>Basic Salary (₹)</th>
-      <th>Total CTC (₹)</th>
-      <th>Total Paid (₹)</th>
-      <th>Remaining CTC (₹)</th>
-      <th>Actions</th>
-    </tr>
-    <tr *ngFor="let record of reportData">
-      <td>{{ record.employee.id }}</td>
-      <td>{{ record.employee.fullName }}</td>
-      <td>{{ record.employee.basicSalary }}</td>
-      <td>{{ record.employee.ctc }}</td>
-      <td>{{ record.totalPaid }}</td>
-      <td>{{ record.remainingCTC }}</td>
-      <td>
-        <button (click)="viewSlip(record.employee.id.toString())">View Slips</button>
 
-      </td>
-    </tr>
-  </table>
 </div>
 
-<div class="download-btn">
-  <button (click)="downloadReport()">Download {{ selectedYear }} Report</button>
-</div>
+
+  <div class="summary-cards" *ngIf="summary">
+    <div class="card">
+      <h3>Total Employees</h3>
+      <p>{{ summary.totalEmployees }}</p>
+    </div>
+    <div class="card">
+      <h3>Total CTC (₹)</h3>
+      <p>{{ summary.totalCTC | number }}</p>
+    </div>
+    <div class="card">
+      <h3>Total Paid (₹)</h3>
+      <p>{{ summary.totalPaid | number }}</p>
+    </div>
+    <div class="card">
+      <h3>Remaining CTC (₹)</h3>
+      <p>{{ summary.remainingCTC | number }}</p>
+    </div>
+  </div>
+
+  <div id="overview-report" class="slip-container">
+    <h2 class="center">Salary Overview Report - {{ selectedYear }}</h2>
+
+    <table class="details-table">
+      <thead>
+        <tr>
+          <th>Emp ID</th>
+          <th>Employee Name</th>
+          <th>Basic Salary (₹)</th>
+          <th>Total CTC (₹)</th>
+          <th>Total Paid (₹)</th>
+          <th>Remaining CTC (₹)</th>
+        </tr>
+      </thead>
+
+      <tbody *ngIf="reportData.length > 0; else noDataRow">
+        <tr *ngFor="let record of reportData">
+          <td>{{ record.employee.id }}</td>
+          <td>{{ record.employee.fullName }}</td>
+          <td>{{ record.employee.basicSalary | number }}</td>
+          <td>{{ record.employee.ctc | number }}</td>
+          <td>{{ record.totalPaid | number }}</td>
+          <td>{{ record.remainingCTC | number }}</td>
+        </tr>
+      </tbody>
+
+      <!-- ✅ "No Data" Row inside table -->
+      <ng-template #noDataRow>
+        <tbody>
+          <tr>
+            <td colspan="6" class="no-data-cell">
+              No payroll data available for {{ selectedYear }}
+            </td>
+          </tr>
+        </tbody>
+      </ng-template>
+    </table>
+  </div>
+
+  <div class="download-btn" *ngIf="reportData.length > 0">
+    <button class="download-report-btn" (click)="downloadReport()">
+      Download {{ selectedYear }} Report
+    </button>
+  </div>
 </div>

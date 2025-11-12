@@ -1,91 +1,233 @@
+/* === Container === */
 .container {
-  max-width: 1000px;
-  margin:auto;
-  padding: 20px;
-  background: #f8f8f8;
-  border-radius: 8px;
-  box-shadow: 0 0 10px #ccc;
-}
-
-h2, h4 {
-  text-align: center;
-  margin-bottom: 20px;
+  max-width: 1100px;
+  margin: 40px auto;
+  background: #ffffff;
+  padding: 0;
+  /* header has its own padding */
+  border-radius: 16px;
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.1);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   color: #333;
+  position: relative;
+  overflow: hidden;
 }
 
-.form-row {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 16px;
-  margin-bottom: 20px;
-}
-
-.form-group {
+/* === Header === */
+.page-header {
   display: flex;
-  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  background-color: #f5f8ff;
+  border-bottom: 2px solid #007bff;
+  padding: 18px 50px 18px 25px;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
 }
 
-label {
+/* Close Button — top-right inside header */
+.close-btn {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  margin: 0;
+  background-color: #ffffff;
+  border-color: 2px solid #ddd;
+  border-radius: 50%;
+  border: none;
+  width: 35px;
+  height: 35px;
+  padding: 0;
+  font-size: 18px;
+  color: #333;
+  cursor: pointer;
+}
+
+.close-btn:hover {
+  background-color: red;
+  color: black;
+}
+
+/* Title */
+.page-header h2 {
+  margin: 0;
+  font-size: 22px;
   font-weight: 600;
-  margin-bottom: 5px;
+  color: #1c2b8c;
+  text-align: center;
 }
 
-input[type="number"],
-input[type="month"] {
-  padding: 6px 10px;
+/* === Body === */
+.body-conytainer {
+  padding: 25px 35px;
+}
+
+/* === Employee & Salary Tables === */
+.employee-details-table,
+.salary-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fafafa;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 30px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.employee-details-table th,
+.salary-table th {
+  background-color: #007bff;
+  color: #fff;
+  text-align: left;
+  padding: 12px 14px;
+  font-size: 15px;
+}
+
+.employee-details-table td,
+.salary-table td {
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  background-color: #fff;
+  vertical-align: middle;
+}
+
+.employee-details-table tr:nth-child(even) td,
+.salary-table tr:nth-child(even) td {
+  background-color: #f7f9fc;
+}
+
+.employee-details-table strong,
+.salary-table strong {
+  color: #444;
+}
+
+/* === Inputs === */
+.employee-details-table input[type="number"],
+.salary-table input[type="number"] {
+  width: 100%;
+  padding: 8px 10px;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 6px;
   font-size: 14px;
+  transition: 0.3s;
+}
+
+input[type="month"] {
+  width: 200px;
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.form-date {
+  margin-top: 20px;
+  margin-bottom: 30px;
+  gap: 20px;
+  display: block;
+}
+
+.form-date label {
+  display: block;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 6px;
 }
 
 input:focus {
   border-color: #007bff;
+  box-shadow: 0 0 4px rgba(0, 123, 255, 0.3);
   outline: none;
 }
 
+
+.salary-table tfoot th {
+  background-color: #cce5ff;
+  /* stronger blue tint */
+  color: #003366;
+  font-weight: bold;
+  font-size: 15px;
+  text-align: right;
+  padding-right: 20px;
+}
+
+/* === Salary Summary === */
+.salary-summary {
+  text-align: right;
+  margin-top: 25px;
+}
+
+.salary-summary h4 {
+  margin: 6px 0;
+  font-weight: 600;
+  color: #333;
+}
+
+.salary-summary b {
+  color: #28a745;
+}
+
+/* === Buttons === */
 button {
-  display: block;
-  margin: 20px auto 0;
-  padding: 10px 20px;
+  display: flex;
+  justify-content: flex-end;
+  margin: 30px auto 0;
+  padding: 12px 26px;
   background: #007bff;
   border: none;
   color: white;
-  border-radius: 4px;
-  font-weight: bold;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 15px;
   cursor: pointer;
-  transition: 0.3s;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.button-submit {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
 }
 
 button:hover {
   background-color: #0056b3;
+  transform: translateY(-2px);
 }
 
-.employee-details-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 25px;
-  font-size: 14px;
-  background: #fff;
-  border: 1px solid #ccc;
+button:active {
+  transform: scale(0.98);
 }
 
-.employee-details-table th {
-  background-color: #444;
-  color: white;
-  text-align: left;
-  padding: 8px;
-  font-size: 15px;
-}
 
-.employee-details-table td {
-  padding: 8px 10px;
-  border: 1px solid #ccc;
-}
+/* === Responsive === */
+@media (max-width: 768px) {
+  .page-header h2 {
+    font-size: 18px;
+  }
 
-.employee-details-table input[type="number"] {
-  width: 100%;
-  padding: 4px 6px;
-  font-size: 14px;
-  border: 1px solid #aaa;
-  border-radius: 4px;
+  .close-btn {
+    font-size: 16px;
+    width: 30px;
+    height: 30px;
+  }
+
+  .body-conytainer {
+    padding: 20px;
+  }
+
+  .employee-details-table th,
+  .employee-details-table td,
+  .salary-table th,
+  .salary-table td {
+    font-size: 13px;
+    padding: 8px;
+  }
+
+  input[type="number"],
+  input[type="month"] {
+    font-size: 13px;
+  }
+
 }

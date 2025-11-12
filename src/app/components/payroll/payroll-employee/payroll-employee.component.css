@@ -177,6 +177,26 @@ tr:hover td {
 .text-primary {
   color: #1a2578;
 }
+/* Action Buttons Alignment */
+.action-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* centers inside the cell */
+  gap: 0.6rem; /* space between buttons */
+}
+
+.action-buttons button {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-width: 100px;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.action-buttons button mat-icon {
+  font-size: 18px;
+}
 
 /* ===== Responsive Design ===== */
 

@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { PayrollEmployeeService } from 'src/app/services/payroll-employee.service';
 import { SalaryHistoryService } from 'src/app/services/salary-history.service';
 import { Employee } from 'src/app/models/employee';
@@ -29,7 +29,7 @@ export class AddSalaryComponent implements OnInit {
   // Deductions
   pf = 0;
   esi = 0;
-  professionalTax = 208;
+  professionalTax = 0;
   incomeTax = 0;
   leaveDeduction = 0;
   otherDeduction = 0;
@@ -49,7 +49,8 @@ export class AddSalaryComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private employeeService: PayrollEmployeeService,
-    private salaryService: SalaryHistoryService
+    private salaryService: SalaryHistoryService,
+    private router:Router
   ) {}
 
 ngOnInit(): void {
@@ -166,6 +167,10 @@ addSalary(): void {
       error: () => alert('Failed to add salary.')
     });
   });
+}
+
+backbtn(){
+  this.router.navigate(['/mainlayout/payroll-employee']);
 }
 
 

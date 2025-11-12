@@ -34,8 +34,9 @@
           <td>{{ emp.accountNumber }}</td>
           <td>{{ emp.status }}</td>
           <td>
-            <button class="btn-slip" (click)="viewOrGenerateSalary(emp)"><i class="ri-download-line"></i>
-            </button>
+                      <button class="btn-slip" (click)="downloadSalarySlip(emp.employeeId, selectedMonth)">
+  <i class="ri-download-line"></i>
+</button>
           </td>
         </tr>
       </tbody>
