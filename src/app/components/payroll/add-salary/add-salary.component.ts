@@ -159,7 +159,7 @@ addSalary(): void {
 
       nwd: this.nwd,
       nol: this.nol,
-      payRoleEmployee : this.employee
+      payRoleEmployee : this.employee.id
     };
 
     this.salaryService.addSalaryHistory(salary).subscribe({

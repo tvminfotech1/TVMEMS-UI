@@ -206,7 +206,7 @@ onSubmit(): void {
   const endDateStr = formatDate(endDate);
   const totalDays = this.calculateDays(startDate, endDate);
 
-  // ✅ Check available balance
+  //  Check available balance
   const leaveBalance = this.leaveBalances.find(lb => lb.leaveType === leaveType);
   if (leaveBalance) {
     const available = leaveBalance.total - leaveBalance.used + leaveBalance.carryOver;
@@ -225,7 +225,7 @@ onSubmit(): void {
     }
   }
 
-  // ✅ Prevent multiple applications for same leave type in same month (unless rejected)
+  //  Prevent multiple applications for same leave type in same month (unless rejected)
   const sameMonthConflict = this.leaveList.some(l => {
     if (l.user?.employeeId !== selectedEmployeeId) return false;
     const existingStart = new Date(l.startDate);
@@ -251,7 +251,7 @@ onSubmit(): void {
     return;
   }
 
-  // ✅ Prevent overlapping with any other leave (unless that leave is rejected)
+  // Prevent overlapping with any other leave (unless that leave is rejected)
   const overlappingConflict = this.leaveList.some(l => {
     if (l.user?.employeeId !== selectedEmployeeId) return false;
 
@@ -264,7 +264,7 @@ onSubmit(): void {
     const overlaps = start <= existingEnd && end >= existingStart;
     const isRejected = (l.status || '').toLowerCase() === 'rejected';
 
-    // ✅ Block if the overlapping leave is pending/approved — regardless of type
+    //  Block if the overlapping leave is pending/approved — regardless of type
     return overlaps && !isRejected;
   });
 
@@ -282,7 +282,7 @@ onSubmit(): void {
     return;
   }
 
-  // ✅ Proceed to save
+  // Proceed to save
   const newLeave: newLeaveRequest = {
     id: undefined,
     leaveType,
@@ -528,7 +528,7 @@ private checkYearEndReset(): void {
   const storedYear = Number(localStorage.getItem('leaveLastResetYear'));
 
   if (storedYear !== currentYear) {
-    // 🧾 Reset all balances
+    //  Reset all balances
     this.leaveBalances.forEach(lb => {
       lb.total = lb.leaveType === 'Casual Leave' ? 12 : 10;
       lb.used = 0;
@@ -539,7 +539,7 @@ private checkYearEndReset(): void {
     this.calculateLeaveBalances();
 
     localStorage.setItem('leaveLastResetYear', String(currentYear));
-    console.log('✅ Leave balances reset for new year:', currentYear);
+    console.log('Leave balances reset for new year:', currentYear);
   }
 
   //  Check daily if it's a new year (so auto reset will happen)
@@ -559,7 +559,7 @@ private checkYearEndReset(): void {
         this.calculateLeaveBalances();
 
         localStorage.setItem('leaveLastResetYear', String(now.getFullYear()));
-        console.log('🎉 Leave balances auto-reset for new year:', now.getFullYear());
+        console.log(' Leave balances auto-reset for new year:', now.getFullYear());
       }
     }
   }, 86400000); // check once every 24 hours
