@@ -15,7 +15,7 @@
     <!-- Qualifications -->
     <mat-form-field appearance="outline" class="custom-form-field">
       <mat-label>Qualifications</mat-label>
-      <input matInput formControlName="qualifications" placeholder="Enter qualifications" />
+      <input matInput formControlName="qualifications" placeholder="Enter qualifications" (keypress)="allowOnlyLetters($event)" />
       <mat-error *ngIf="jobForm.get('qualifications')?.touched && jobForm.get('qualifications')?.invalid">
         Qualifications are required.
       </mat-error>
@@ -24,7 +24,7 @@
     <!-- Year of Passout -->
     <mat-form-field appearance="outline" class="custom-form-field">
       <mat-label>Year of Passout</mat-label>
-      <input matInput type="number" formControlName="yearOfPassout" placeholder="Enter year of passout" />
+      <input matInput type="text" formControlName="yearOfPassout" placeholder="Enter year of passout" (keydown)="preventInvalidInput($event)" (keypress)="allowSixDigitPincode($event)" />
       <mat-error *ngIf="jobForm.get('yearOfPassout')?.touched && jobForm.get('yearOfPassout')?.invalid">
         Year of passout is required.
       </mat-error>
@@ -33,7 +33,7 @@
     <!-- Location -->
     <mat-form-field appearance="outline" class="custom-form-field">
       <mat-label>Location</mat-label>
-      <input matInput formControlName="location" placeholder="Enter location" />
+      <input matInput formControlName="location" placeholder="Enter location" (keypress)="allowOnlyLetters($event)"/>
       <mat-error *ngIf="jobForm.get('location')?.touched && jobForm.get('location')?.invalid">
         Location is required.
       </mat-error>
@@ -42,7 +42,7 @@
     <!-- Experience -->
     <mat-form-field appearance="outline" class="custom-form-field">
       <mat-label>Experience (Years)</mat-label>
-      <input matInput type="number" formControlName="experience" placeholder="Enter experience in years" />
+      <input matInput type="number" formControlName="experience" placeholder="Enter experience in years" (keydown)="preventInvalidInput($event)"/>
       <mat-error *ngIf="jobForm.get('experience')?.touched && jobForm.get('experience')?.invalid">
         Experience is required and must be valid.
       </mat-error>

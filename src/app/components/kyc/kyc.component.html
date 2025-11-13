@@ -32,6 +32,7 @@
           formControlName="panName"
           placeholder="Name on PAN"
           class="input-padding"
+          (keypress)="allowOnlyLetters($event)"
         />
 
         <mat-error *ngIf="kycForm.get('panName')?.touched">
@@ -56,6 +57,8 @@
           placeholder="1111 2222 3333"
           class="input-padding"
           maxlength="12"
+          (keydown)="preventInvalidKeys($event)"
+          (keypress)="allowOnlyNumbers($event)"
         />
 
         <mat-error *ngIf="kycForm.get('aadhar')?.touched">
@@ -76,6 +79,7 @@
           formControlName="aadharName"
           placeholder="Name on Aadhar"
           class="input-padding"
+          (keypress)="allowOnlyLetters($event)"
         />
 
         <mat-error *ngIf="kycForm.get('aadharName')?.touched">

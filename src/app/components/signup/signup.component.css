@@ -302,3 +302,26 @@ button[disabled] {
     gap: 10px;
   }
 }
+
+mat-spinner {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.spinner {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border: 2px solid #ccc;
+  border-top: 2px solid #155724;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}

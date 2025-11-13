@@ -85,4 +85,36 @@ export class AddOpeningComponent implements OnInit {
       }
     });
   }
+
+  allowOnlyLetters(event: KeyboardEvent): void {
+    const char = event.key;
+    if (!/^[a-zA-Z. ]$/.test(char)) {
+      event.preventDefault();
+    }
+  }
+
+  preventInvalidInput(event: KeyboardEvent) {
+    if (['e', 'E', '+', '-'].includes(event.key)) {
+      event.preventDefault();
+    }
+  }
+  allowSixDigitPincode(event: KeyboardEvent): void {
+  const char = event.key;
+  const input = (event.target as HTMLInputElement).value;
+
+  if (!/^[0-9]$/.test(char)) {
+    event.preventDefault();
+    return;
+  }
+
+  
+  if (input.length === 0 && char === '0') {
+    event.preventDefault();
+    return;
+  }
+  
+  if (input.length >= 4) {
+    event.preventDefault();
+  }
+}
 }

@@ -12,6 +12,7 @@ export class SignupComponent implements OnInit {
   signupForm!: FormGroup;
   showPassword = false;
   showConfirmPassword = false;
+  loading: boolean = false;
 
   emailError: string = '';
   mobileError: string = '';
@@ -53,6 +54,13 @@ export class SignupComponent implements OnInit {
       },
       { validators: this.passwordMatchValidator }
     );
+    this.signupForm.get('password')?.valueChanges.subscribe(() => {
+  this.signupForm.get('confirmPassword')?.updateValueAndValidity({ onlySelf: true });
+});
+
+this.signupForm.get('confirmPassword')?.valueChanges.subscribe(() => {
+  this.signupForm.get('confirmPassword')?.updateValueAndValidity({ onlySelf: true });
+});
   }
 
   togglePassword() {
@@ -63,10 +71,17 @@ export class SignupComponent implements OnInit {
   }
 
   passwordMatchValidator(group: FormGroup): { [key: string]: boolean } | null {
-    const password = group.get('password')?.value;
-    const confirmPassword = group.get('confirmPassword')?.value;
-    return password === confirmPassword ? null : { mismatch: true };
+  const password = group.get('password')?.value;
+  const confirmPassword = group.get('confirmPassword')?.value;
+
+  if (confirmPassword && password !== confirmPassword) {
+    group.get('confirmPassword')?.setErrors({ mismatch: true });
+  } else {
+    group.get('confirmPassword')?.setErrors(null);
   }
+
+  return null;
+}
 
   blockFullNameInput(event: KeyboardEvent) {
     const allowedKeys = [
@@ -170,6 +185,7 @@ export class SignupComponent implements OnInit {
       password: formValue.password,
       roles: ['string'],
     };
+    this.loading=true;
 
     this.authService.register(payload).subscribe({
       next: (res: any) => {
@@ -206,7 +222,10 @@ export class SignupComponent implements OnInit {
         }
         console.log('email error' + this.emailError);
         console.log('mobile exists' + this.mobileError);
-      }
+      },
+      complete: () => {
+        this.loading = false;
+      }
     });
   }
 

@@ -7,24 +7,24 @@
     class="form-grid"
   >
     <mat-form-field appearance="outline" class="custom-form-field">
-      <mat-label>First Name:</mat-label>
-      <input
-        matInput
-        type="text"
-        name="fname"
-        formControlName="fname"
-        placeholder=" "
-        class="input-padding"
-      />
-      <mat-error
+    <mat-label>First Name:</mat-label>
+    <input
+      matInput
+      type="text"
+      name="fname"
+      formControlName="fname"
+      placeholder=" "
+      class="input-padding"
+    />
+    <mat-error
         *ngIf="
           userForm.get('fname')?.touched &&
           userForm.get('fname')?.hasError('required')
         "
-      >
-        First Name is required
-      </mat-error>
-      <mat-error
+    >
+      First Name is required
+    </mat-error>
+    <mat-error
         *ngIf="
           userForm.get('fname')?.touched &&
           userForm.get('fname')?.hasError('minlength')
@@ -37,10 +37,10 @@
           userForm.get('fname')?.touched &&
           userForm.get('fname')?.hasError('pattern')
         "
-      >
+    >
         Name should contain only letters
-      </mat-error>
-    </mat-form-field>
+    </mat-error>
+  </mat-form-field>
 
     <!-- Middle Name -->
     <mat-form-field appearance="outline" class="custom-form-field">
@@ -315,6 +315,7 @@
         formControlName="current_state"
         placeholder="State"
         class="input-padding"
+        (keypress)="allowOnlyLetters($event)"
       />
       <mat-error
         *ngIf="
@@ -336,6 +337,7 @@
         formControlName="current_city"
         placeholder="City"
         class="input-padding"
+        (keypress)="allowOnlyLetters($event)"
       />
       <mat-error
         *ngIf="
@@ -357,6 +359,8 @@
         formControlName="current_pincode"
         placeholder="ex.808080"
         class="input-padding"
+        (keydown)="preventInvalidKeys($event)"
+        (keypress)="allowSixDigitPincode($event)"
       />
       <mat-error
         *ngIf="
@@ -386,6 +390,8 @@
         formControlName="current_contact"
         placeholder="9876543210"
         class="input-padding"
+        (keydown)="preventInvalidKeys($event)"
+        (keypress)="allowTenDigitNumber($event)"
       />
       <mat-error
         *ngIf="
@@ -473,6 +479,7 @@
         formControlName="permanent_state"
         placeholder="State"
         class="input-padding"
+        (keypress)="allowOnlyLetters($event)"
       />
       <mat-error
         *ngIf="
@@ -493,6 +500,7 @@
         formControlName="permanent_city"
         placeholder="City"
         class="input-padding"
+        (keypress)="allowOnlyLetters($event)"
       />
       <mat-error
         *ngIf="
@@ -513,6 +521,8 @@
         formControlName="permanent_pincode"
         placeholder="e.g. 808080"
         class="input-padding"
+        (keydown)="preventInvalidKeys($event)"
+        (keypress)="allowSixDigitPincode($event)"
       />
       <mat-error
         *ngIf="
@@ -541,6 +551,8 @@
         formControlName="permanent_contact"
         placeholder="Permanent Number"
         class="input-padding"
+        (keydown)="preventInvalidKeys($event)"
+        (keypress)="allowTenDigitNumber($event)"
       />
       <mat-error
         *ngIf="
@@ -609,6 +621,7 @@
         placeholder="State"
         formControlName="bcp_state"
         class="input-padding"
+        (keypress)="allowOnlyLetters($event)"
       />
       <mat-error
         *ngIf="
@@ -629,6 +642,7 @@
         placeholder="City"
         formControlName="bcp_city"
         class="input-padding"
+        (keypress)="allowOnlyLetters($event)"
       />
       <mat-error
         *ngIf="
@@ -649,6 +663,8 @@
         placeholder="e.g. 808080"
         formControlName="bcp_pincode"
         class="input-padding"
+        (keydown)="preventInvalidKeys($event)"
+        (keypress)="allowSixDigitPincode($event)"
       />
       <mat-error
         *ngIf="
@@ -759,6 +775,8 @@
         placeholder="Emergency Number"
         formControlName="emergency_contact_number"
         class="input-padding"
+        (keydown)="preventInvalidKeys($event)"
+        (keypress)="allowTenDigitNumber($event)"
       />
       <mat-error
         *ngIf="
@@ -779,6 +797,7 @@
         placeholder="Relationship with Employee"
         formControlName="emergency_relationship"
         class="input-padding"
+        (keypress)="allowOnlyLetters($event)"
       />
       <mat-error
         *ngIf="

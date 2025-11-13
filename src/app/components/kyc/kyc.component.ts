@@ -84,4 +84,25 @@ export class KycComponent implements OnInit {
       this.kycForm.markAllAsTouched();
     }
   }
+
+  allowOnlyLetters(event: KeyboardEvent): void {
+    const char = event.key;
+    if (!/^[a-zA-Z ]$/.test(char)) {
+      event.preventDefault();
+    }
+  }
+
+  preventInvalidKeys(event: KeyboardEvent): void {
+  if (['e', 'E', '+', '-'].includes(event.key)) {
+    event.preventDefault();
+  }
+}
+
+allowOnlyNumbers(event: KeyboardEvent): void {
+  const char = event.key;
+  if (!/^[0-9]$/.test(char)) {
+    event.preventDefault();
+  }
+}
+
 }

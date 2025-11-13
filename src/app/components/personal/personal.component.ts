@@ -55,13 +55,13 @@ export class PersonalComponent implements OnInit {
   ) {
     this.userForm = this.formBuilder.group({
       fname: [
-        '',
-        [
-          Validators.required,
+    '',
+    [
+      Validators.required,
           Validators.minLength(4),
           Validators.pattern(/^[A-Za-z\s]+$/),
-        ],
-      ],
+    ],
+  ],
       mname: ['', [Validators.pattern(/^[A-Za-z\s]*$/)]],
       lname: ['', [Validators.required, Validators.pattern(/^[A-Za-z\s]+$/)]],
       email: [
@@ -135,6 +135,62 @@ export class PersonalComponent implements OnInit {
       marriageDateControl?.updateValueAndValidity();
     });
   }
+
+  allowOnlyLetters(event: KeyboardEvent): void {
+    const char = event.key;
+    if (!/^[a-zA-Z]$/.test(char)) {
+      event.preventDefault();
+    }
+  }
+
+  allowOnlyNumbers(event: KeyboardEvent): void {
+  const char = event.key;
+  if (!/^[0-9]$/.test(char)) {
+    event.preventDefault();
+  }
+}
+
+preventInvalidKeys(event: KeyboardEvent): void {
+  if (['e', 'E', '+', '-'].includes(event.key)) {
+    event.preventDefault();
+  }
+}
+
+allowSixDigitPincode(event: KeyboardEvent): void {
+  const char = event.key;
+  const input = (event.target as HTMLInputElement).value;
+
+  if (!/^[0-9]$/.test(char)) {
+    event.preventDefault();
+    return;
+  }
+
+  if (input.length >= 6) {
+    event.preventDefault();
+  }
+}
+
+allowTenDigitNumber(event: KeyboardEvent): void {
+  const char = event.key;
+  const input = (event.target as HTMLInputElement).value;
+
+  
+  if (!/^[0-9]$/.test(char)) {
+    event.preventDefault();
+    return;
+  }
+
+  
+  if (input.length === 0 && char === '0') {
+    event.preventDefault();
+    return;
+  }
+
+  
+  if (input.length >= 10) {
+    event.preventDefault();
+  }
+}
 
   ngOnInit(): void {
     const savedData = this.userService.getFormData('personal');

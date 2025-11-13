@@ -266,19 +266,14 @@
   </div>
  
    <!-- Required Field Error -->
-  <mat-error *ngIf="signupForm.get('confirmPassword')?.touched">
-    <ng-container *ngIf="signupForm.get('confirmPassword')?.errors?.['required']">
-      Confirm password is required.
-    </ng-container>
-    <ng-container
-      *ngIf="
-        !signupForm.get('confirmPassword')?.errors?.['required'] &&
-        signupForm.errors?.['mismatch']
-      "
-    >
-      Password and Confirm Password do not match.
-    </ng-container>
-  </mat-error>
+  <mat-error *ngIf="signupForm.get('confirmPassword')?.touched || signupForm.get('confirmPassword')?.dirty">
+  <ng-container *ngIf="signupForm.get('confirmPassword')?.errors?.['required']">
+    Confirm password is required.
+  </ng-container>
+  <ng-container *ngIf="signupForm.get('confirmPassword')?.errors?.['mismatch']">
+    Password and Confirm Password do not match.
+  </ng-container>
+</mat-error>
 
 </mat-form-field>
 
@@ -288,7 +283,16 @@
         <button (click)="goBack()">cancel</button>
       </div>
       <div>
-        <button type="submit" [disabled]="signupForm.invalid">Create</button>
+       <button 
+          type="submit" 
+          [disabled]="signupForm.invalid || loading"
+          class="submit-btn"
+        >
+          <ng-container *ngIf="!loading">Create</ng-container>
+          <ng-container *ngIf="loading">
+            <span class="spinner"></span> loading......
+          </ng-container>
+        </button>
       </div>
     </div>
   </form>
