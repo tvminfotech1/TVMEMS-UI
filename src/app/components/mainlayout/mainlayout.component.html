@@ -596,11 +596,11 @@
           </button>
           <div *ngIf="showSettings" class="settings-dropdown">
             <div class="profile-header">
-              <img
-                src="assets/images/profile.jpg"
-                alt="Profile"
-                class="profile-img"
-              />
+             <img
+    [src]="profileImageUrl && profileImageUrl.trim() !== '' ? profileImageUrl : 'assets/images/profile.jpg'" 
+    alt="Profile"
+    class="profile-img"
+  />
               <div class="profile-info">
               <div class="profile-name">{{userName}}</div>
               <div class="profile-Id">Employee ID: {{employeeId}}</div>

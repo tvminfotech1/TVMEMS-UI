@@ -4,6 +4,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { MainlayoutService } from 'src/app/services/main-layout.service';  
 import { NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
+import { MyProfileService } from 'src/app/services/my-profile.service';
 
 @Component({
   selector: 'app-mainlayout',
@@ -31,11 +32,14 @@ export class MainlayoutComponent implements OnInit {
   hasSubmittedOnboarding = false;
 
   completedTabs: any = {};
+   profileImageUrl: string = 'assets/images/profile.jpg'; 
 
-  constructor(private router: Router,private authService: AuthService ,  private mainLayoutService: MainlayoutService
+  constructor(private router: Router,private authService: AuthService ,  private mainLayoutService: MainlayoutService, private myprofileService: MyProfileService 
 ) {}
 
   ngOnInit() {
+
+     
 
     this.mainLayoutService.completedTabs$.subscribe(tabs => {
       this.completedTabs = tabs;
@@ -63,6 +67,7 @@ export class MainlayoutComponent implements OnInit {
       error: (err) => console.error('Error checking onboarding status:', err)
     });
   }
+  this.loadProfilePhoto();
   }
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent) {
@@ -212,4 +217,21 @@ goToHolidays() {
   isChildRouteActive(keywords: string[]): boolean {
     return keywords.some(path => this.router.url.includes(path));
   }
+  loadProfilePhoto() {
+     if (!this.employeeId) return;
+
+  const id = Number(this.employeeId); 
+
+  if (isNaN(id)) {
+    return;
+  }
+  this.myprofileService.getUserPhoto(id).subscribe({
+    next: (photoUrl: string) => {
+      if (photoUrl) {
+        this.profileImageUrl = photoUrl;
+      }
+    },
+    error: (err: any) => console.error('Error loading profile photo:', err)
+  });
+}
 }
