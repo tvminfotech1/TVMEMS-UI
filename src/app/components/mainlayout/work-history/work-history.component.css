@@ -6,13 +6,13 @@
 
 body {
   background-color: #f0f4f8;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   color: #333;
   line-height: 1.6;
 }
 
 .container {
-    margin: 40px auto;
+  margin: 40px auto;
   padding: 24px;
   background-color: #0a0f3c;
   border-radius: 12px;
@@ -24,7 +24,7 @@ h2 {
   color: #2d3e50;
   margin-bottom: 6px;
 }
-.header{
+.header {
   color: #fff;
 }
 
@@ -116,11 +116,14 @@ td:last-child {
     margin-bottom: 12px;
   }
 
-  table, th, td {
+  table,
+  th,
+  td {
     font-size: 0.85rem;
   }
 
-  th, td {
+  th,
+  td {
     padding: 10px;
   }
 }

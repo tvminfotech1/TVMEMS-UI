@@ -10,7 +10,7 @@ import { SalaryHistory } from 'src/app/models/salaryHistory';
 @Component({
   selector: 'app-payruns',
   templateUrl: './payruns.component.html',
-  styleUrls: ['./payruns.component.css']
+  styleUrls: ['./payruns.component.css'],
 })
 export class PayrunsComponent implements OnInit {
   employees: Employee[] = [];
@@ -20,7 +20,7 @@ export class PayrunsComponent implements OnInit {
   filteredData: Payruns[] = [];
 
   searchText: string = '';
-  selectedMonth: string = new Date().toISOString().slice(0, 7); // e.g. "2025-08"
+  selectedMonth: string = new Date().toISOString().slice(0, 7);
 
   constructor(
     private employeeService: PayrollEmployeeService,
@@ -39,12 +39,9 @@ export class PayrunsComponent implements OnInit {
       emps: this.employeeService.getPayRunData(this.selectedMonth),
       salaries: this.salaryService.getAllSalaryHistory(),
     }).subscribe(({ emps, salaries }) => {
-      console.log('Employees:', emps);
-      console.log('Salary History:', salaries);
       const activeEmployees = (emps || []).filter(
         (emp) => emp.status === 'Active'
       );
-      console.log('Filtered Active Employees:', activeEmployees);
       this.payruns = [...activeEmployees];
       this.filteredData = [...this.payruns];
       this.salaryHistory = salaries.body;
@@ -52,38 +49,35 @@ export class PayrunsComponent implements OnInit {
   }
 
   getMonthName(): string {
-  const [year, month] = this.selectedMonth.split('-').map(Number);
-  const date = new Date(year, month - 1);
-  return date.toLocaleString('default', { month: 'long', year: 'numeric' });
-}
-
+    const [year, month] = this.selectedMonth.split('-').map(Number);
+    const date = new Date(year, month - 1);
+    return date.toLocaleString('default', { month: 'long', year: 'numeric' });
+  }
 
   onMonthChange() {
     this.loadData();
   }
 
-  /** Check if salary is paid for employee in selected month */
   isPaid(empId: number): boolean {
     return this.salaryHistory.some(
       (sal) => sal.id === empId && sal.month === this.selectedMonth
     );
   }
 
-  /** Search employees by ID or Name */
   onSearch(): void {
     const text = this.searchText.toLowerCase().trim();
-    this.filteredEmployees = this.employees.filter(emp =>
-      emp.id.toString().toLowerCase().includes(text) ||
-      (`${emp.fullName}`).toLowerCase().includes(text)
+    this.filteredEmployees = this.employees.filter(
+      (emp) =>
+        emp.id.toString().toLowerCase().includes(text) ||
+        `${emp.fullName}`.toLowerCase().includes(text)
     );
   }
 
-  /** View or Generate salary slip */
   GenerateSalary(emp: Payruns): void {
     const salaryRecord = this.isSalaryGenerated(emp);
     const month = this.selectedMonth;
     if (salaryRecord) {
-     this.downloadSalarySlip(emp.employeeId,month);
+      this.downloadSalarySlip(emp.employeeId, month);
     } else {
       if (emp.status === 'Active') {
         this.router.navigate(['/mainlayout/payruns', emp.employeeId], {
@@ -95,18 +89,16 @@ export class PayrunsComponent implements OnInit {
     }
   }
 
-  /** Check if salary slip is already generated */
-isSalaryGenerated(emp: Payruns): boolean {
-  if (!this.salaryHistory || !this.salaryHistory.length) return false;
+  isSalaryGenerated(emp: Payruns): boolean {
+    if (!this.salaryHistory || !this.salaryHistory.length) return false;
 
-  return this.salaryHistory.some((s) =>
-    s.payRoleEmployee.id === emp.employeeId &&
-    s.month === this.selectedMonth
-  );
-}
+    return this.salaryHistory.some(
+      (s) =>
+        s.payRoleEmployee.id === emp.employeeId &&
+        s.month === this.selectedMonth
+    );
+  }
 
-
-  
   downloadSalarySlip(employeeId: number, month: string): void {
     this.salaryService.downloadSalarySlip(employeeId, month).subscribe(
       (data: Blob) => {

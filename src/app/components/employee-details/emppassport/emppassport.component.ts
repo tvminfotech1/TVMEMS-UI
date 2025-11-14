@@ -6,7 +6,7 @@ import { EmployeeDataService } from 'src/app/services/employee-data.service';
 @Component({
   selector: 'app-emppassport',
   templateUrl: './emppassport.component.html',
-  styleUrls: ['./emppassport.component.css']
+  styleUrls: ['./emppassport.component.css'],
 })
 export class EmppassportComponent implements OnInit {
   employeeId: any;
@@ -25,18 +25,18 @@ export class EmppassportComponent implements OnInit {
 
     if (sharedData) {
       this.employeeDetails = sharedData;
-      this.passportDetails = sharedData.passport; 
+      this.passportDetails = sharedData.passport;
     } else {
       this.empService.getEmployees().subscribe({
         next: (res: any) => {
           const found = res.body.find((emp: any) => emp.id == id);
           if (found) {
             this.employeeDetails = found;
-            this.passportDetails = found.passport; 
+            this.passportDetails = found.passport;
             this.empDataService.setEmployeeData(found);
           }
         },
-        error: (err: any) => console.error('Error:', err)
+        error: (err: any) => console.error('Error:', err),
       });
     }
   }

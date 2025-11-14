@@ -42,7 +42,6 @@
     </mat-error>
   </mat-form-field>
 
-    <!-- Middle Name -->
     <mat-form-field appearance="outline" class="custom-form-field">
       <mat-label
         >Middle Name <span class="optional-label">(Optional):</span></mat-label
@@ -65,7 +64,6 @@
       </mat-error>
     </mat-form-field>
 
-    <!-- Last Name -->
     <mat-form-field appearance="outline" class="custom-form-field">
       <mat-label>Last Name (Surname):</mat-label>
       <input
@@ -94,7 +92,6 @@
       </mat-error>
     </mat-form-field>
 
-    <!-- Personal Email -->
     <mat-form-field appearance="outline" class="custom-form-field">
       <mat-label>Personal Email:</mat-label>
       <input
@@ -123,7 +120,6 @@
       </mat-error>
     </mat-form-field>
 
-    <!-- Gender -->
     <mat-form-field appearance="outline" class="custom-form-field">
       <mat-label>Gender:</mat-label>
       <mat-select formControlName="gender" id="gender" class="input-padding">
@@ -142,7 +138,6 @@
       </mat-error>
     </mat-form-field>
 
-    <!-- Blood Group -->
     <mat-form-field appearance="outline" class="custom-form-field">
       <mat-label>Blood Group:</mat-label>
       <mat-select
@@ -170,7 +165,6 @@
       </mat-error>
     </mat-form-field>
 
-    <!-- DOB -->
     <mat-form-field appearance="outline" class="custom-form-field">
       <mat-label>DOB:</mat-label>
       <input
@@ -196,7 +190,6 @@
       </mat-error>
     </mat-form-field>
 
-    <!-- Marital Status -->
     <mat-form-field appearance="outline" class="custom-form-field">
       <mat-label>Marital Status:</mat-label>
       <mat-select formControlName="marital" id="marital" class="input-padding">
@@ -215,7 +208,6 @@
       </mat-error>
     </mat-form-field>
 
-    <!-- Marriage Date -->
     <mat-form-field appearance="outline" class="custom-form-field">
       <mat-label>Marriage Date:</mat-label>
       <input
@@ -228,7 +220,6 @@
         (focus)="marriagePicker.open()"
         readonly
       />
-      <!-- readonly to prevent manual typing -->
       <mat-datepicker-toggle
         matSuffix
         [for]="marriagePicker"
@@ -288,7 +279,6 @@
       </mat-error>
     </mat-form-field>
 
-    <!-- Show when "Other" country is selected -->
     <mat-form-field
       appearance="outline"
       *ngIf="current_countryValue === 'other'"
@@ -305,7 +295,6 @@
       />
     </mat-form-field>
 
-    <!-- Current State -->
     <mat-form-field appearance="outline" class="custom-form-field">
       <mat-label>State</mat-label>
       <input
@@ -327,7 +316,6 @@
       </mat-error>
     </mat-form-field>
 
-    <!-- Current City -->
     <mat-form-field appearance="outline" class="custom-form-field">
       <mat-label>City</mat-label>
       <input
@@ -349,7 +337,6 @@
       </mat-error>
     </mat-form-field>
 
-    <!-- Current Pincode -->
     <mat-form-field appearance="outline" class="custom-form-field">
       <mat-label>Pincode</mat-label>
       <input
@@ -380,7 +367,6 @@
       </mat-error>
     </mat-form-field>
 
-    <!-- Current Contact -->
     <mat-form-field appearance="outline" class="custom-form-field">
       <mat-label>Contact Number</mat-label>
       <input
@@ -411,7 +397,6 @@
       </mat-error>
     </mat-form-field>
 
-    <!-- Permanent Address with "Same as Above" -->
     <br />
     <div class="full-width">
       <label class="checkbox-label full-width">
@@ -445,7 +430,6 @@
       </mat-error>
     </mat-form-field>
 
-    <!-- Permanent Country -->
     <mat-form-field appearance="outline" class="custom-form-field">
       <mat-label>Permanent Country</mat-label>
       <mat-select
@@ -470,7 +454,6 @@
       </mat-error>
     </mat-form-field>
 
-    <!-- Permanent State -->
     <mat-form-field appearance="outline" class="custom-form-field">
       <mat-label>State</mat-label>
       <input
@@ -491,7 +474,6 @@
       </mat-error>
     </mat-form-field>
 
-    <!-- Permanent City -->
     <mat-form-field appearance="outline" class="custom-form-field">
       <mat-label>City</mat-label>
       <input
@@ -512,7 +494,6 @@
       </mat-error>
     </mat-form-field>
 
-    <!-- Permanent Pincode -->
     <mat-form-field appearance="outline" class="custom-form-field">
       <mat-label>Pincode</mat-label>
       <input
@@ -542,7 +523,6 @@
       </mat-error>
     </mat-form-field>
 
-    <!-- Permanent Contact Number -->
     <mat-form-field appearance="outline" class="custom-form-field">
       <mat-label>Permanent Contact Number</mat-label>
       <input
@@ -572,7 +552,6 @@
       </mat-error>
     </mat-form-field>
 
-    <!-- BCP Address -->
     <mat-form-field appearance="outline" class="full-width custom-form-field">
       <mat-label>BCP Work Address (with Landmark)</mat-label>
       <textarea
@@ -591,7 +570,6 @@
       </mat-error>
     </mat-form-field>
 
-    <!-- BCP Country -->
     <mat-form-field appearance="outline" class="custom-form-field">
       <mat-label>Country</mat-label>
       <mat-select formControlName="bcp_country" class="input-padding">
@@ -612,7 +590,6 @@
       </mat-error>
     </mat-form-field>
 
-    <!-- BCP State -->
     <mat-form-field appearance="outline" class="custom-form-field">
       <mat-label>State</mat-label>
       <input
@@ -633,7 +610,6 @@
       </mat-error>
     </mat-form-field>
 
-    <!-- BCP City -->
     <mat-form-field appearance="outline" class="custom-form-field">
       <mat-label>City</mat-label>
       <input
@@ -654,7 +630,6 @@
       </mat-error>
     </mat-form-field>
 
-    <!-- BCP Pincode -->
     <mat-form-field appearance="outline" class="custom-form-field">
       <mat-label>Pincode</mat-label>
       <input
@@ -684,7 +659,6 @@
       </mat-error>
     </mat-form-field>
 
-        <!-- Relevant Experience (Years) -->
     <mat-form-field appearance="outline" class="custom-form-field">
       <mat-label>Relevant Experience (Years)</mat-label>
       <mat-select formControlName="relevantYear" class="input-padding">
@@ -705,7 +679,6 @@
       </mat-error>
     </mat-form-field>
 
-    <!-- Previous Experience (Years) -->
     <mat-form-field appearance="outline" class="custom-form-field">
       <mat-label>Previous Experience (Years)</mat-label>
       <mat-select formControlName="exp_year" class="input-padding">
@@ -726,7 +699,6 @@
       </mat-error>
     </mat-form-field>
 
-    <!-- Previous Experience (Months) -->
     <mat-form-field appearance="outline" class="custom-form-field">
       <mat-label>Previous Experience (Months)</mat-label>
       <mat-select formControlName="exp_month" class="input-padding">
@@ -747,7 +719,6 @@
       </mat-error>
     </mat-form-field>
 
-    <!-- Emergency Contact Name & Address -->
     <mat-form-field appearance="outline" class="full-width custom-form-field">
       <mat-label>Emergency Contact Name & Address</mat-label>
       <textarea
@@ -766,7 +737,6 @@
       </mat-error>
     </mat-form-field>
 
-    <!-- Emergency Contact Number -->
     <mat-form-field appearance="outline" class="custom-form-field">
       <mat-label>Emergency Contact Number</mat-label>
       <input
@@ -788,7 +758,6 @@
       </mat-error>
     </mat-form-field>
 
-    <!-- Relationship with Employee -->
     <mat-form-field appearance="outline" class="custom-form-field">
       <mat-label>Relationship with Employee</mat-label>
       <input
@@ -816,7 +785,6 @@
         Name should contain only letters
       </mat-error>
     </mat-form-field>
-
 
     <div class="full-width button-group">
       <button type="submit" class="update-button">Next &raquo;</button>

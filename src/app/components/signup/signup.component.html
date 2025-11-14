@@ -1,15 +1,12 @@
 <div class="signup-container">
   <h2><i class="ri-user-add-fill"></i> Create User</h2>
-  <!-- <div *ngIf="successMessage" class="success">
-    {{ successMessage }}
-  </div> -->
+
   <form
     [formGroup]="signupForm"
     (ngSubmit)="onSubmit()"
     id="form"
     class="form-grid"
   >
-    <!-- First Name -->
     <mat-form-field appearance="outline" class="custom-form-field">
       <mat-label>Full Name</mat-label>
       <input
@@ -28,7 +25,6 @@
           signupForm.get('firstName')?.invalid
         "
       >
-        <!-- Required Error -->
         <ng-container *ngIf="signupForm.get('firstName')?.errors?.['required']">
           First Name is required.
         </ng-container>
@@ -40,7 +36,6 @@
       </mat-error>
     </mat-form-field>
 
-    <!-- Last Name -->
     <mat-form-field appearance="outline" class="custom-form-field">
       <mat-label>Last Name</mat-label>
       <input
@@ -59,7 +54,6 @@
           signupForm.get('lastName')?.invalid
         "
       >
-        <!-- Required Error -->
         <ng-container *ngIf="signupForm.get('lastName')?.errors?.['required']">
           Last Name is required.
         </ng-container>
@@ -90,7 +84,6 @@
       </mat-error>
     </mat-form-field>
 
-    <!-- Mobile -->
     <mat-form-field appearance="outline" class="custom-form-field">
       <mat-label>Mobile Number</mat-label>
       <input
@@ -110,14 +103,12 @@
         "
         class="error"
       >
-        <!-- Frontend validator -->
         <ng-container *ngIf="signupForm.get('mobile')?.errors?.['required']">
           Mobile number is required.
         </ng-container>
         <ng-container *ngIf="signupForm.get('mobile')?.errors?.['pattern']">
           10-digit mobile number required.
         </ng-container>
-        <!-- Backend duplicate error -->
         <ng-container
           *ngIf="signupForm.get('mobile')?.errors?.['duplicate'] && mobileError"
         >
@@ -126,7 +117,6 @@
       </mat-error>
     </mat-form-field>
 
-    <!-- Email -->
     <mat-form-field appearance="outline" class="custom-form-field">
       <mat-label>Email</mat-label>
       <input
@@ -144,14 +134,12 @@
         "
         class="error"
       >
-        <!-- Frontend Validators -->
         <ng-container *ngIf="signupForm.get('email')?.errors?.['required']">
           Email is required.
         </ng-container>
         <ng-container *ngIf="signupForm.get('email')?.errors?.['pattern']">
           Please enter a valid Gmail address (example@gmail.com).
         </ng-container>
-        <!-- Backend Duplicate Error -->
         <ng-container
           *ngIf="signupForm.get('email')?.errors?.['duplicate'] && emailError"
         >
@@ -160,7 +148,6 @@
       </mat-error>
     </mat-form-field>
 
-    <!-- Aadhar -->
     <mat-form-field appearance="outline" class="custom-form-field">
       <mat-label>Aadhar Number</mat-label>
       <input
@@ -182,7 +169,6 @@
       </mat-error>
     </mat-form-field>
 
-    <!-- DOB -->
     <mat-form-field appearance="outline" class="custom-form-field">
       <mat-label>Date of Birth</mat-label>
       <input
@@ -209,7 +195,6 @@
       </mat-error>
     </mat-form-field>
 
-    <!-- Gender -->
     <mat-form-field appearance="outline" class="custom-form-field">
       <mat-label>Gender</mat-label>
       <mat-select formControlName="gender">
@@ -228,34 +213,38 @@
       </mat-error>
     </mat-form-field>
 
-    <!-- Password -->
     <mat-form-field appearance="outline" class="custom-form-field">
-  <mat-label for="password">Password</mat-label>
-  <div class="password-input-wrapper">
-    <input matInput  [type]="showPassword ? 'text' : 'password'" id="password" name="password" formControlName="password" class="input-padding" />
-    <span class="toggle-password" (click)="togglePassword()">
-      {{ showPassword ? 'Hide' : 'Show' }}
-    </span> 
-  </div>
+      <mat-label for="password">Password</mat-label>
+      <div class="password-input-wrapper">
+        <input
+          matInput
+          [type]="showPassword ? 'text' : 'password'"
+          id="password"
+          name="password"
+          formControlName="password"
+          class="input-padding"
+        />
+        <span class="toggle-password" (click)="togglePassword()">
+          {{ showPassword ? "Hide" : "Show" }}
+        </span>
+      </div>
 
- 
-  <mat-error *ngIf="signupForm.get('password')?.touched">
-    <ng-container *ngIf="signupForm.get('password')?.errors?.['required']">
-      Password is required.
-    </ng-container>
-    <ng-container
-      *ngIf="
+      <mat-error *ngIf="signupForm.get('password')?.touched">
+        <ng-container *ngIf="signupForm.get('password')?.errors?.['required']">
+          Password is required.
+        </ng-container>
+        <ng-container
+          *ngIf="
         !signupForm.get('password')?.errors?.['required'] &&
         signupForm.get('password')?.errors?.['pattern']
-      ">
-      Password must start with a capital letter,include digits,one special character,and atleast 8 characters long.
-    </ng-container>
-  </mat-error>
-</mat-form-field> 
+      "
+        >
+          Password must start with a capital letter,include digits,one special
+          character,and atleast 8 characters long.
+        </ng-container>
+      </mat-error>
+    </mat-form-field>
 
-
-
-    <!-- Confirm Password -->
     <mat-form-field appearance="outline" class="custom-form-field">
   <mat-label for="confirmPassword">Confirm Password</mat-label>
   <div class="password-input-wrapper">
@@ -277,7 +266,6 @@
 
 </mat-form-field>
 
-    <!-- Submit Button (Full Width) -->
     <div class="button-group">
       <div class="back-button">
         <button (click)="goBack()">cancel</button>

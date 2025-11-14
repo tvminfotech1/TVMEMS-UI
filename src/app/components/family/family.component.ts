@@ -80,7 +80,6 @@ export class FamilyComponent {
     });
 
     this.userService.maritalStatus$.subscribe((status) => {
-      console.log('Marital status changed:', status);
       const spouseName = this.familyForm.get('spouseName');
       const spouseDOB = this.familyForm.get('spouseDOB');
       const spouseGender = this.familyForm.get('spouseGender');
@@ -149,7 +148,6 @@ export class FamilyComponent {
       this.userService.setFormData('family', fullFamilyData);
       this.router.navigate(['/mainlayout/previousEmployee']);
       this.mainlayoutService.markTabCompleted('family', true);
-      console.log(this.familyForm.value);
     } else {
       this.snackBar.open('Please fill all required fields', 'Close', {
         duration: 3000,

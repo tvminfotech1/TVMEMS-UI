@@ -11,7 +11,7 @@ const html2pdf = require('html2pdf.js');
 @Component({
   selector: 'app-report',
   templateUrl: './report.component.html',
-  styleUrls: ['./report.component.css']
+  styleUrls: ['./report.component.css'],
 })
 export class ReportComponent implements OnInit {
   allSalaries: SalaryHistory[] = [];
@@ -28,7 +28,7 @@ export class ReportComponent implements OnInit {
     totalEmployees: 0,
     totalCTC: 0,
     totalPaid: 0,
-    remainingCTC: 0
+    remainingCTC: 0,
   };
 
   loading: boolean = false;
@@ -48,7 +48,7 @@ export class ReportComponent implements OnInit {
     this.salaryService.getAllSalaryHistory().subscribe({
       next: (response) => {
         this.allSalaries = response.body;
-        const years = new Set(this.allSalaries.map(s => s.year.toString()));
+        const years = new Set(this.allSalaries.map((s) => s.year.toString()));
         this.availableYears = Array.from(years).sort((a, b) => +b - +a);
         this.updateReport();
         this.loading = false;
@@ -56,55 +56,61 @@ export class ReportComponent implements OnInit {
       error: (err) => {
         console.error('Error loading salary history:', err);
         this.loading = false;
-      }
+      },
     });
   }
 
- updateReport(): void {
-  this.reportData = [];
-  this.summary = { totalEmployees: 0, totalCTC: 0, totalPaid: 0, remainingCTC: 0 };
+  updateReport(): void {
+    this.reportData = [];
+    this.summary = {
+      totalEmployees: 0,
+      totalCTC: 0,
+      totalPaid: 0,
+      remainingCTC: 0,
+    };
 
-  // 🧮 Filter salaries for selected year
-  const filteredSalaries = this.allSalaries.filter(
-    s => s.year.toString() === this.selectedYear
-  );
+    const filteredSalaries = this.allSalaries.filter(
+      (s) => s.year.toString() === this.selectedYear
+    );
 
-  if (filteredSalaries.length === 0) {
-    console.warn('⚠️ No salary data found for year', this.selectedYear);
-    return;
-  }
+    if (filteredSalaries.length === 0) {
+      console.warn('⚠️ No salary data found for year', this.selectedYear);
+      return;
+    }
 
-  // 🔹 Fetch all employees once
-  this.employeeService.getEmployees().subscribe(allEmployees => {
-    console.log('All Employees:', allEmployees);
-    console.log('Filtered Salaries:', filteredSalaries);
+    this.employeeService.getEmployees().subscribe((allEmployees) => {
+      const report = allEmployees.map((emp) => {
+        const empSalaries = filteredSalaries.filter((s) =>
+          s.salaryId.startsWith(emp.id.toString())
+        );
+        const totalPaid = empSalaries.reduce((acc, s) => acc + s.netPay, 0);
+        const remainingCTC = emp.ctc - totalPaid;
 
-    const report = allEmployees.map(emp => {
-      const empSalaries = filteredSalaries.filter(s => s.salaryId.startsWith(emp.id.toString()));
-      const totalPaid = empSalaries.reduce((acc, s) => acc + s.netPay, 0);
-      const remainingCTC = emp.ctc - totalPaid;
+        return {
+          employee: emp,
+          salaries: empSalaries,
+          totalPaid,
+          remainingCTC,
+        };
+      });
 
-      return {
-        employee: emp,
-        salaries: empSalaries,
-        totalPaid,
-        remainingCTC
-      };
+      this.reportData = report.filter((r) => r.salaries.length > 0);
+
+      this.summary.totalEmployees = this.reportData.length;
+      this.summary.totalCTC = this.reportData.reduce(
+        (acc, r) => acc + r.employee.ctc,
+        0
+      );
+      this.summary.totalPaid = this.reportData.reduce(
+        (acc, r) => acc + r.totalPaid,
+        0
+      );
+      this.summary.remainingCTC = this.reportData.reduce(
+        (acc, r) => acc + r.remainingCTC,
+        0
+      );
     });
-
-    // ✅ Show only employees with salary records
-    this.reportData = report.filter(r => r.salaries.length > 0);
-
-    // ✅ Summary calculations
-    this.summary.totalEmployees = this.reportData.length;
-    this.summary.totalCTC = this.reportData.reduce((acc, r) => acc + r.employee.ctc, 0);
-    this.summary.totalPaid = this.reportData.reduce((acc, r) => acc + r.totalPaid, 0);
-    this.summary.remainingCTC = this.reportData.reduce((acc, r) => acc + r.remainingCTC, 0);
-
-    console.log('Final Report Data:', this.reportData);
-  });
-}
-
+  }
 
   onYearChange(): void {
     this.updateReport();
@@ -112,7 +118,7 @@ export class ReportComponent implements OnInit {
 
   viewSlip(empId: string): void {
     this.router.navigate(['/mainlayout/reports', empId], {
-      queryParams: { year: this.selectedYear }
+      queryParams: { year: this.selectedYear },
     });
   }
 
@@ -125,7 +131,7 @@ export class ReportComponent implements OnInit {
       filename: `Salary-Report-${this.selectedYear}.pdf`,
       image: { type: 'jpeg', quality: 0.98 },
       html2canvas: { scale: 2 },
-      jsPDF: { unit: 'in', format: 'a4', orientation: 'landscape' }
+      jsPDF: { unit: 'in', format: 'a4', orientation: 'landscape' },
     };
 
     html2pdf().from(element).set(options).save();

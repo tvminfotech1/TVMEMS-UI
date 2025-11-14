@@ -4,46 +4,55 @@
     <strong>Profile & Achievements:</strong>
 
     <mat-form-field appearance="outline" class="full-width">
-  <mat-label>Achievements</mat-label>
-  <textarea
-    matInput
-    formControlName="achievements"
-    placeholder="Briefly describe your profile, key achievements, and skills. For example: Experience in web development, leadership skills, notable project contributions, etc."
-    cdkTextareaAutosize
-    #autosize="cdkTextareaAutosize"
-    minRows="5"
-    maxRows="10"
-    class="input-padding">
-  </textarea>
-  <mat-error *ngIf="resumeForm.get('achievements')?.touched && resumeForm.get('achievements')?.hasError('required')">
-    Achievement is required
-  </mat-error>
-</mat-form-field>
+      <mat-label>Achievements</mat-label>
+      <textarea
+        matInput
+        formControlName="achievements"
+        placeholder="Briefly describe your profile, key achievements, and skills. For example: Experience in web development, leadership skills, notable project contributions, etc."
+        cdkTextareaAutosize
+        #autosize="cdkTextareaAutosize"
+        minRows="5"
+        maxRows="10"
+        class="input-padding"
+      >
+      </textarea>
+      <mat-error
+        *ngIf="
+          resumeForm.get('achievements')?.touched &&
+          resumeForm.get('achievements')?.hasError('required')
+        "
+      >
+        Achievement is required
+      </mat-error>
+    </mat-form-field>
 
-      <mat-form-field appearance="outline">
-        <mat-label>Select Profile</mat-label>
-        <mat-select formControlName="resumeCate" class="input-padding">
-          <mat-option value="">Select</mat-option>
-          <mat-option value="Programming">Programming</mat-option>
-          <mat-option value="Design">Design</mat-option>
-          <mat-option value="Management">Management</mat-option>
-          <mat-option value="Development">Development</mat-option>
-          <mat-option value="Data Science">Data Science</mat-option>
-          <mat-option value="Cybersecurityr">Cybersecurity</mat-option>
-          <mat-option value="DevOpsn">DevOps</mat-option>
-          <mat-option value="Cloud Computing">Cloud Computing</mat-option>
-          <mat-option value="UI/UX">UI/UX</mat-option>
-          <mat-option value="AI & ML">AI & ML</mat-option>
-          <mat-option value="QA & Testing">QA & Testing</mat-option>
-          <mat-option value="other">other</mat-option>
-    </mat-select>
-        
-        <mat-error *ngIf="resumeForm.get('resumeCate')?.touched && resumeForm.get('resumeCate')?.hasError('required')">
-          Profile is required
-        </mat-error>
-      </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Select Profile</mat-label>
+      <mat-select formControlName="resumeCate" class="input-padding">
+        <mat-option value="">Select</mat-option>
+        <mat-option value="Programming">Programming</mat-option>
+        <mat-option value="Design">Design</mat-option>
+        <mat-option value="Management">Management</mat-option>
+        <mat-option value="Development">Development</mat-option>
+        <mat-option value="Data Science">Data Science</mat-option>
+        <mat-option value="Cybersecurityr">Cybersecurity</mat-option>
+        <mat-option value="DevOpsn">DevOps</mat-option>
+        <mat-option value="Cloud Computing">Cloud Computing</mat-option>
+        <mat-option value="UI/UX">UI/UX</mat-option>
+        <mat-option value="AI & ML">AI & ML</mat-option>
+        <mat-option value="QA & Testing">QA & Testing</mat-option>
+        <mat-option value="other">other</mat-option>
+      </mat-select>
 
-
+      <mat-error
+        *ngIf="
+          resumeForm.get('resumeCate')?.touched &&
+          resumeForm.get('resumeCate')?.hasError('required')
+        "
+      >
+        Profile is required
+      </mat-error>
+    </mat-form-field>
 
     <div class="button-group">
       <div>
@@ -55,3 +64,5 @@
         <button type="submit">Next &raquo;</button>
       </div>
     </div>
+  </form>
+</div>

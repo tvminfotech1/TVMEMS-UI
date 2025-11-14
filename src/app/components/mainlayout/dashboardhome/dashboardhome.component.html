@@ -1,34 +1,48 @@
 <div class="top-bar">
   <div class="welcome">
-    {{ greeting }}, <strong>{{ userName }}</strong><br />
+    {{ greeting }}, <strong>{{ userName }}</strong
+    ><br />
     <small>{{ workInfo }}</small>
   </div>
 </div>
 
 <div class="icon-menu" role="toolbar" aria-label="Quick access menu">
-   <button aria-label="Announcement" (click)="toggle('announcement')" [class.active]="isActive('announcement')">
+  <button
+    aria-label="Announcement"
+    (click)="toggle('announcement')"
+    [class.active]="isActive('announcement')"
+  >
     <span class="material-icons">campaign</span> Announcement
   </button>
-  <button aria-label="Wishes" (click)="toggle('wishes')" [class.active]="isActive('wishes')">
+  <button
+    aria-label="Wishes"
+    (click)="toggle('wishes')"
+    [class.active]="isActive('wishes')"
+  >
     <span class="material-icons">favorite</span> Wishes
   </button>
 
-  <button aria-label="Holidays" (click)="toggle('holidays')" [class.active]="isActive('holidays')">
+  <button
+    aria-label="Holidays"
+    (click)="toggle('holidays')"
+    [class.active]="isActive('holidays')"
+  >
     <span class="material-icons">event</span> Holidays
   </button>
-
 </div>
 
+<div *ngIf="show.wishes" [@fadeSlideFromButton] class="showwishes-container">
+  <app-wishcard></app-wishcard>
+</div>
 
-  <div *ngIf="show.wishes" [@fadeSlideFromButton] class="showwishes-container">
-    <app-wishcard></app-wishcard>
-  </div>
+<div *ngIf="show.holidays" [@fadeSlideFromButton] class="calendar-container">
+  <app-hoilday-calendar></app-hoilday-calendar>
+</div>
 
-  <div *ngIf="show.holidays" [@fadeSlideFromButton] class="calendar-container">
-    <app-hoilday-calendar></app-hoilday-calendar>
-  </div>
-
-  <div *ngIf="show.announcement" [@fadeSlideFromButton] class="showAnnouncement-container">
-    <app-announcement></app-announcement>
-  </div>
-
+<div
+  *ngIf="show.announcement"
+  [@fadeSlideFromButton]
+  class="showAnnouncement-container"
+>
+  <app-announcement></app-announcement>
+</div>

@@ -3,11 +3,10 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class GoalService {
-
-  private baseUrl = 'http://localhost:8080/goals'; 
+  private baseUrl = 'http://localhost:8080/goals';
   private apiUrl = 'http://localhost:8080/goals/user';
 
   constructor(private http: HttpClient) {}
@@ -29,15 +28,14 @@ export class GoalService {
   }
 
   getArchivedGoals(): Observable<any> {
-  return this.http.get(`${this.baseUrl}/archived`);
-}
+    return this.http.get(`${this.baseUrl}/archived`);
+  }
 
-getAllGoals():Observable<any>{
-  return this.http.get(`${this.baseUrl}/all`)
-}
+  getAllGoals(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/all`);
+  }
 
-getGoalByUserid(empId: number):Observable<any>{
-  return this.http.get(`${this.apiUrl}/${empId}`)
-}
-
+  getGoalByUserid(empId: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/${empId}`);
+  }
 }

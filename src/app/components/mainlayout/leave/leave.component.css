@@ -1,4 +1,3 @@
-
 .leave-dashboard {
   font-family: "Segoe UI", "Roboto", sans-serif;
   background-color: #f5f7fb;
@@ -8,12 +7,11 @@
 }
 
 .header {
- 
   padding: 16px 28px;
   display: flex;
   justify-content: flex-end;
   align-items: center;
- 
+
   margin-bottom: 1px;
 }
 
@@ -30,8 +28,6 @@
   font-weight: 500;
   transition: all 0.3s ease;
 }
-
-
 
 .btn-primary {
   background-color: #007bff;
@@ -51,7 +47,7 @@
 }
 
 .apply-leave-btn {
-  background-color: #04AA6D;
+  background-color: #04aa6d;
   color: white;
 }
 .apply-leave-btn:hover {
@@ -65,42 +61,36 @@
 .leave-btn:hover {
   background-color: #0d1349;
 }
-.btn-approve{
+.btn-approve {
   background-color: #28a745;
   color: white;
   margin-right: 5px;
 }
-.btn-approve:hover{
+.btn-approve:hover {
   background-color: #218838;
 }
-.btn-reject{
+.btn-reject {
   background-color: #dc3545;
   color: white;
-  
 }
-.btn-reject:hover{
+.btn-reject:hover {
   background-color: #c82333;
 }
 
-/* =============================== */
-/* Main Content */
-/* =============================== */
 .main-content {
   background: linear-gradient(135deg, #0a0f3c, #1c2b8c);
   padding: 1.5rem;
   border-radius: 20px;
 }
 .admin-view {
-   /* darker or different tone */
-  background-color: #f5f7fb ;
-  border: none ;
-  box-shadow: none ;
-  outline: none ;
-  border-radius: 0 ;
-  background-image: none ;
+  background-color: #f5f7fb;
+  border: none;
+  box-shadow: none;
+  outline: none;
+  border-radius: 0;
+  background-image: none;
 }
 
-/* Employee-specific style override (optional) */
 .employee-view {
   background-color: #0a0f3c;
 }
@@ -130,9 +120,6 @@
   letter-spacing: 0.5px;
 }
 
-/* =============================== */
-/* Leave Summary Cards */
-/* =============================== */
 .leave-cards-grid {
   display: flex;
   justify-content: space-around;
@@ -151,12 +138,18 @@
   transition: all 0.3s ease;
 }
 
-
-/* Dynamic card colors */
-.leave-card:nth-child(1) { background-color: #e6f9ff; }
-.leave-card:nth-child(2) { background-color: #e7ffe6; }
-.leave-card:nth-child(3) { background-color: #ffe6e6; }
-.leave-card:nth-child(4) { background-color: #fff9e6; }
+.leave-card:nth-child(1) {
+  background-color: #e6f9ff;
+}
+.leave-card:nth-child(2) {
+  background-color: #e7ffe6;
+}
+.leave-card:nth-child(3) {
+  background-color: #ffe6e6;
+}
+.leave-card:nth-child(4) {
+  background-color: #fff9e6;
+}
 
 .card-header {
   margin-bottom: 16px;
@@ -203,9 +196,6 @@
   color: #222;
 }
 
-/* =============================== */
-/* Table Section */
-/* =============================== */
 .table-section {
   background-color: white;
   border-radius: 12px;
@@ -238,7 +228,6 @@
   color: #0a0f3c;
 }
 
-/* ------------------ Table Controls ------------------ */
 .table-controls {
   padding: 16px 24px;
   display: flex;
@@ -246,11 +235,10 @@
   align-items: center;
   border-bottom: 1px solid #e0e0e0;
   background-color: #fdfdfd;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
   border-radius: 8px 8px 0 0;
 }
 
-/* Search Input */
 .search-input {
   width: 280px;
   padding: 10px 14px;
@@ -265,7 +253,6 @@
   box-shadow: 0 0 8px rgba(0, 123, 255, 0.25);
 }
 
-/* Filter Dropdown */
 .filter-select {
   padding: 10px 14px;
   border-radius: 8px;
@@ -280,14 +267,11 @@
   box-shadow: 0 0 8px rgba(0, 123, 255, 0.15);
 }
 
-
-/* ------------------ Table Wrapper ------------------ */
 .table-wrapper {
-  padding: 0 24px; /* gap on left and right */
-  overflow-x: auto; /* horizontal scroll if table too wide */
+  padding: 0 24px;
+  overflow-x: auto;
 }
 
-/* ------------------ Table ------------------ */
 .leave-table {
   width: 100%;
   max-width: 100%;
@@ -295,13 +279,12 @@
   border-spacing: 0;
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
   background-color: #fff;
-  margin: 16px 0; /* vertical spacing from other elements */
+  margin: 16px 0;
   cursor: pointer;
 }
 
-/* Table Cells */
 .leave-table th,
 .leave-table td {
   padding: 16px 20px;
@@ -309,19 +292,16 @@
   font-size: 14px;
 }
 
-/* Table Header */
 .leave-table th {
-
   color: #fff;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
-.header-table{
+.header-table {
   background: linear-gradient(135deg, #0a0f3c, #1c2b8c);
 }
 
-/* Hover Effect */
 .leave-table tr {
   transition: background-color 0.2s ease, transform 0.1s ease;
 }
@@ -330,7 +310,6 @@
   background-color: #f9f9f9;
 }
 
-/* No Data Message */
 .no-data-row td {
   padding: 0;
   border: none;
@@ -340,12 +319,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 100px; /* makes it look like 3 rows tall */
+  padding: 100px;
   background-color: #fff;
   font-style: italic;
   color: #777;
   border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
   text-align: center;
   font-size: 16px;
 }
@@ -354,24 +333,26 @@ td .btn-approve,
 td .btn-reject {
   display: inline-block;
   vertical-align: middle;
-  margin-right: 8px; /* spacing between buttons */
+  margin-right: 8px;
 }
 
 td {
-  white-space: nowrap; /* prevents buttons from wrapping to the next line */
+  white-space: nowrap;
 }
 
-
-
-/* Optional: Status Badge */
 .status-badge {
   font-size: 12px;
   text-align: center;
 }
-.status-approved {  color:green; }
-.status-pending {  color: #856404; }
-.status-rejected {  color: red; }
-
+.status-approved {
+  color: green;
+}
+.status-pending {
+  color: #856404;
+}
+.status-rejected {
+  color: red;
+}
 
 .status-badge,
 .leave-type-badge {
@@ -381,18 +362,15 @@ td {
   font-weight: 500;
 }
 
-/* Status Badges */
-.status-badge.status-approved { color: green; }
-.status-badge.status-pending {color: #856404; }
-.status-badge.status-rejected {color: red; }
-
-/* Leave Type Badges */
-/* .leave-type-badge.leave-earned { background-color: #d4edda; color: #155724; }
-.leave-type-badge.leave-casual { background-color: #fff3cd; color: #856404; }
-.leave-type-badge.leave-sick { background-color: #f8d7da; color: #721c24; }
-.leave-type-badge.leave-compoff { background-color: #e7d4f7; color: #6f42c1; } */
-
-
+.status-badge.status-approved {
+  color: green;
+}
+.status-badge.status-pending {
+  color: #856404;
+}
+.status-badge.status-rejected {
+  color: red;
+}
 
 .table-pagination {
   padding: 16px 24px;
@@ -420,13 +398,12 @@ td {
   background-color: #0056b3;
 }
 
-/* =============================== */
-/* Modal */
-/* =============================== */
 .modal-overlay {
   position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   background-color: rgba(0, 0, 0, 0.4);
   display: flex;
   justify-content: center;
@@ -462,23 +439,23 @@ td {
 }
 
 .btn-close {
-  background-color:white;
+  background-color: white;
   border: none;
   font-size: 1.5rem;
   cursor: pointer;
-  color: black; 
-  width: 32px; 
+  color: black;
+  width: 32px;
   height: 32px;
-  padding: 0; 
+  padding: 0;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: background-color 0.3s ease;
 }
-.btn-close:hover{
-   background-color: #e63946;
-   color: black;
+.btn-close:hover {
+  background-color: #e63946;
+  color: black;
 }
 
 .modal-body {
@@ -500,7 +477,7 @@ td {
 .form-control:focus {
   border-color: #007bff;
   outline: none;
-  box-shadow: 0 0 0 2px rgba(0,123,255,0.15);
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.15);
 }
 
 .text-danger {
@@ -515,8 +492,7 @@ td {
   padding: 16px;
   border-radius: 0 0 12px 12px;
 }
-.modal-footer
-.form-btn{
+.modal-footer .form-btn {
   background-color: #007bff;
   color: white;
   border: none;
@@ -526,28 +502,37 @@ td {
   font-size: 16px;
   transition: background-color 0.3s;
 }
-.modal-footer
-.btn-secondary{
+.modal-footer .btn-secondary {
   color: white;
 }
 .mat-form-field.w-100 {
   width: 100%;
   margin-bottom: 16px;
 }
-.w-100{
+.w-100 {
   width: 100%;
 }
 
-
-
-/* =============================== */
-/* Animations */
-/* =============================== */
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-@keyframes slideIn { from { transform: translateY(-25px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes slideIn {
+  from {
+    transform: translateY(-25px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
 
 @media (min-width: 2560px) {
-  /* Increase container padding and spacing */
   .main-content {
     max-width: 2200px;
     margin: 0 auto;
@@ -562,7 +547,6 @@ td {
     min-width: 130px;
   }
 
-  /* Larger cards and spacing */
   .leave-card {
     flex: 1 1 22%;
     padding: 2rem;
@@ -574,7 +558,6 @@ td {
     letter-spacing: 0.5px;
   }
 
-  /* Table adjustments for readability */
   .leave-table th,
   .leave-table td {
     padding: 18px 24px;
@@ -591,7 +574,6 @@ td {
     border-spacing: 0 8px;
   }
 
-  /* Buttons scaled proportionally */
   .btn,
   .btn-approve,
   .btn-reject {
@@ -600,13 +582,11 @@ td {
     border-radius: 10px;
   }
 
-  /* Title bar and headers */
   .header {
     padding: 1.5rem 2rem;
     font-size: 1.2rem;
   }
 
-  /* Input & form scaling */
   input,
   select,
   textarea {
@@ -614,14 +594,11 @@ td {
     padding: 12px 16px;
   }
 
-  /* Modal adjustments */
   .modal-dialog {
     width: 60%;
     max-width: 1800px;
   }
 }
-
-
 
 @media (max-width: 1600px) {
   .leave-card {
@@ -629,12 +606,11 @@ td {
   }
 }
 .apply-leave-btn {
-    font-size: 14px;
-    padding: 8px 16px;
-    height: 40px;
-  }
+  font-size: 14px;
+  padding: 8px 16px;
+  height: 40px;
+}
 
-/* 💻 Large desktops and wide laptops (max-width: 1400px) */
 @media (max-width: 1440px) {
   .table-wrapper {
     overflow-x: auto;
@@ -650,10 +626,9 @@ td {
   .leave-table {
     width: 100%;
     border-collapse: collapse;
-    table-layout: auto; /* Let browser auto-adjust width for content */
+    table-layout: auto;
   }
 
-  /* Table Header */
   .leave-table th {
     background-color: #0b0c39;
     color: white;
@@ -661,11 +636,10 @@ td {
     font-weight: 600;
     padding: 14px 12px;
     text-align: center;
-    white-space: nowrap; /* Prevent header text from breaking */
+    white-space: nowrap;
     vertical-align: middle;
   }
 
-  /* Table Data Cells */
   .leave-table td {
     font-size: 14px;
     padding: 14px 12px;
@@ -674,14 +648,12 @@ td {
     white-space: nowrap;
   }
 
-  /* Allow only reason column to wrap */
   .leave-table td:last-child {
     white-space: normal;
     word-wrap: break-word;
     max-width: 220px;
   }
 
-  /* Buttons */
   .btn-approve,
   .btn-reject {
     display: inline-block;
@@ -692,13 +664,11 @@ td {
     text-align: center;
   }
 
-  /*Adjust table spacing */
   .leave-table th,
   .leave-table td {
     border-bottom: 1px solid #e6e6e6;
   }
 
-  /* Pagination */
   .table-pagination {
     display: flex;
     justify-content: space-between;
@@ -708,9 +678,6 @@ td {
   }
 }
 
-
-/* Medium laptops (992px - 1200px) */
-/* Fix: Make table fully visible without scrolling at ~1160px width */
 @media (max-width: 1200px) and (min-width: 1000px) {
   .leave-card {
     flex: 1 1 31%;
@@ -724,53 +691,59 @@ td {
     min-width: 90px;
   }
   .leave-table {
-    table-layout: fixed !important; /* fix layout to distribute space evenly */
+    table-layout: fixed !important;
     width: 100%;
   }
 
   .leave-table th,
   .leave-table td {
-    white-space: normal !important;  /* allow wrapping where needed */
+    white-space: normal !important;
     word-wrap: break-word;
     overflow-wrap: break-word;
-    font-size: 13px;                 /* slightly smaller for better fit */
+    font-size: 13px;
     padding: 10px 8px;
     text-align: center;
   }
 
-  /* 🔹 Set balanced widths for columns */
   .leave-table th:nth-child(1),
-  .leave-table td:nth-child(1) { width: 10%; }  /* Employee ID */
+  .leave-table td:nth-child(1) {
+    width: 10%;
+  }
   .leave-table th:nth-child(2),
-  .leave-table td:nth-child(2) { width: 18%; }  /* Leave Type */
+  .leave-table td:nth-child(2) {
+    width: 18%;
+  }
   .leave-table th:nth-child(3),
-  .leave-table td:nth-child(3) { width: 12%; }  /* Duration */
+  .leave-table td:nth-child(3) {
+    width: 12%;
+  }
   .leave-table th:nth-child(4),
-  .leave-table td:nth-child(4) { width: 20%; }  /* Date */
+  .leave-table td:nth-child(4) {
+    width: 20%;
+  }
   .leave-table th:nth-child(5),
-  .leave-table td:nth-child(5) { width: 15%; }  /* Status */
+  .leave-table td:nth-child(5) {
+    width: 15%;
+  }
   .leave-table th:nth-child(6),
   .leave-table td:nth-child(6) {
-    width: 25%;                     /* Reason column */
+    width: 25%;
     max-width: 200px;
   }
 
-  /* 🔹 Compact action/status badges if any */
   .status-badge {
     font-size: 12px;
     padding: 3px 8px;
   }
 
-  /* 🔹 Buttons inside table */
   .btn-approve,
   .btn-reject {
     font-size: 12px;
     padding: 5px 10px;
   }
 }
-/* ✅ Fix for ADMIN Leave Table (7 columns) to fit at ~1170px width */
+
 @media (max-width: 1250px) and (min-width: 1020px) {
-  /* Only target admin table using .admin-view wrapper */
   .admin-view .leave-table {
     table-layout: fixed !important;
     width: 100%;
@@ -792,26 +765,36 @@ td {
     text-align: center;
   }
 
-  /* ⚖️ Balanced column widths for 7 columns */
   .admin-view .leave-table th:nth-child(1),
-  .admin-view .leave-table td:nth-child(1) { width: 8%; }   /* Employee ID */
+  .admin-view .leave-table td:nth-child(1) {
+    width: 8%;
+  }
   .admin-view .leave-table th:nth-child(2),
-  .admin-view .leave-table td:nth-child(2) { width: 15%; }  /* Leave Type */
+  .admin-view .leave-table td:nth-child(2) {
+    width: 15%;
+  }
   .admin-view .leave-table th:nth-child(3),
-  .admin-view .leave-table td:nth-child(3) { width: 9%; }   /* Duration */
+  .admin-view .leave-table td:nth-child(3) {
+    width: 9%;
+  }
   .admin-view .leave-table th:nth-child(4),
-  .admin-view .leave-table td:nth-child(4) { width: 17%; }  /* Date */
+  .admin-view .leave-table td:nth-child(4) {
+    width: 17%;
+  }
   .admin-view .leave-table th:nth-child(5),
-  .admin-view .leave-table td:nth-child(5) { width: 11%; }  /* Status */
+  .admin-view .leave-table td:nth-child(5) {
+    width: 11%;
+  }
   .admin-view .leave-table th:nth-child(6),
   .admin-view .leave-table td:nth-child(6) {
     width: 23%;
-    max-width: 180px;                                       /* Reason */
+    max-width: 180px;
   }
   .admin-view .leave-table th:nth-child(7),
-  .admin-view .leave-table td:nth-child(7) { width: 17%; }  /* Action */
+  .admin-view .leave-table td:nth-child(7) {
+    width: 17%;
+  }
 
-  /* 🧩 Compact buttons so they fit in Action column */
   .admin-view .leave-table .btn-approve,
   .admin-view .leave-table .btn-reject {
     font-size: 12px;
@@ -820,40 +803,34 @@ td {
     margin: 2px;
   }
 
-  /* Keep buttons on one line */
   .admin-view .leave-table td:last-child {
     white-space: nowrap !important;
   }
 }
 
-
-
 @media (max-width: 1024px) {
-  /* 🌐 Main content adjustments */
   .main-content {
     padding: 1.2rem;
     border-radius: 15px;
   }
-    .apply-leave-btn {
+  .apply-leave-btn {
     font-size: 13px;
     padding: 6px 12px;
     border-radius: 6px;
   }
-  
- .header {
 
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
- 
-  margin-bottom: 1px;
-}
-  /* 🏷️ Page title */
+  .header {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+    margin-bottom: 1px;
+  }
+
   .page-title {
     font-size: 20px;
   }
 
-  /* 🧩 Cards layout */
   .leave-cards-grid {
     flex-wrap: wrap;
     justify-content: center;
@@ -866,18 +843,16 @@ td {
     font-size: 0.95rem;
   }
 
-  /* 📦 Table section */
   .table-section {
     width: 100%;
     background: #ffffff;
     border-radius: 15px;
     padding: 15px 18px;
     box-sizing: border-box;
-    box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
     margin-top: 20px;
   }
 
-  /* 🧾 Wrapper */
   .table-wrapper {
     width: 100%;
     overflow-x: auto;
@@ -887,11 +862,10 @@ td {
     margin: 0;
   }
 
-  /* 📊 Leave Table */
   .leave-table {
     width: 100%;
     border-collapse: collapse;
-    table-layout: auto; /* Important: keeps columns proportional */
+    table-layout: auto;
     margin: 0;
   }
 
@@ -913,7 +887,6 @@ td {
     word-wrap: break-word;
   }
 
-  /* Make columns consistent for user & admin */
   .leave-table th:nth-child(1),
   .leave-table td:nth-child(1) {
     width: 10%;
@@ -944,13 +917,11 @@ td {
     width: 25%;
   }
 
-  /* ✅ Handle missing Action column for user view */
   .leave-table.employee-view th,
   .leave-table.employee-view td {
     width: auto;
   }
 
-  /* ✅ Buttons inside table */
   .btn,
   .btn-approve,
   .btn-reject {
@@ -959,14 +930,6 @@ td {
     border-radius: 6px;
   }
 
-  /* 🧭 Header section */
-  /* .header {
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 10px;
-  } */
-
-  /* 🔍 Filters */
   .table-controls {
     flex-direction: column;
     gap: 10px;
@@ -977,13 +940,11 @@ td {
     width: 100%;
   }
 
-  /* 🪟 Modal */
   .modal-dialog {
     width: 100%;
     margin: 20px auto;
   }
 
-  /* 📄 Pagination fix */
   .table-pagination {
     background: #f8f9fa;
     border-top: 1px solid #ddd;
@@ -994,7 +955,6 @@ td {
     align-items: center;
     margin-top: 5px;
   }
-  
 
   .table-pagination button {
     padding: 6px 12px;
@@ -1004,7 +964,6 @@ td {
     font-size: 13px;
   }
 }
-/* ✅ Fix Action buttons wrapping for screens between 1250px–1300px */
 @media (min-width: 1250px) and (max-width: 1300px) {
   .admin-view .leave-table th,
   .admin-view .leave-table td {
@@ -1020,26 +979,36 @@ td {
     min-width: 85px;
   }
 
-  /* Adjust column widths neatly */
   .admin-view .leave-table th:nth-child(1),
-  .admin-view .leave-table td:nth-child(1) { width: 8%; }
+  .admin-view .leave-table td:nth-child(1) {
+    width: 8%;
+  }
   .admin-view .leave-table th:nth-child(2),
-  .admin-view .leave-table td:nth-child(2) { width: 15%; }
+  .admin-view .leave-table td:nth-child(2) {
+    width: 15%;
+  }
   .admin-view .leave-table th:nth-child(3),
-  .admin-view .leave-table td:nth-child(3) { width: 9%; }
+  .admin-view .leave-table td:nth-child(3) {
+    width: 9%;
+  }
   .admin-view .leave-table th:nth-child(4),
-  .admin-view .leave-table td:nth-child(4) { width: 17%; }
+  .admin-view .leave-table td:nth-child(4) {
+    width: 17%;
+  }
   .admin-view .leave-table th:nth-child(5),
-  .admin-view .leave-table td:nth-child(5) { width: 10%; }
+  .admin-view .leave-table td:nth-child(5) {
+    width: 10%;
+  }
   .admin-view .leave-table th:nth-child(6),
-  .admin-view .leave-table td:nth-child(6) { width: 21%; }
+  .admin-view .leave-table td:nth-child(6) {
+    width: 21%;
+  }
   .admin-view .leave-table th:nth-child(7),
   .admin-view .leave-table td:nth-child(7) {
     width: 20%;
     white-space: nowrap !important;
   }
 
-  /* Keep Approve & Reject perfectly inline */
   .admin-view .leave-table .btn-approve,
   .admin-view .leave-table .btn-reject {
     font-size: 12.5px;
@@ -1050,10 +1019,7 @@ td {
     vertical-align: middle;
   }
 }
-/* ✅ Admin view fix for tablet widths (iPad / 820px range) */
 
-
-/* ✅ Fix cramped Action buttons around 1024px width */
 @media (max-width: 1050px) and (min-width: 900px) {
   .admin-view .leave-table {
     table-layout: fixed !important;
@@ -1072,23 +1038,35 @@ td {
     padding: 6px 5px;
   }
 
-  /* ⚖️ Adjust widths for better fit */
   .admin-view .leave-table th:nth-child(1),
-  .admin-view .leave-table td:nth-child(1) { width: 7%; }   /* Employee ID */
+  .admin-view .leave-table td:nth-child(1) {
+    width: 7%;
+  }
   .admin-view .leave-table th:nth-child(2),
-  .admin-view .leave-table td:nth-child(2) { width: 14%; }  /* Leave Type */
+  .admin-view .leave-table td:nth-child(2) {
+    width: 14%;
+  }
   .admin-view .leave-table th:nth-child(3),
-  .admin-view .leave-table td:nth-child(3) { width: 8%; }   /* Duration */
+  .admin-view .leave-table td:nth-child(3) {
+    width: 8%;
+  }
   .admin-view .leave-table th:nth-child(4),
-  .admin-view .leave-table td:nth-child(4) { width: 17%; }  /* Date */
+  .admin-view .leave-table td:nth-child(4) {
+    width: 17%;
+  }
   .admin-view .leave-table th:nth-child(5),
-  .admin-view .leave-table td:nth-child(5) { width: 10%; }  /* Status */
+  .admin-view .leave-table td:nth-child(5) {
+    width: 10%;
+  }
   .admin-view .leave-table th:nth-child(6),
-  .admin-view .leave-table td:nth-child(6) { width: 22%; }  /* Reason */
+  .admin-view .leave-table td:nth-child(6) {
+    width: 22%;
+  }
   .admin-view .leave-table th:nth-child(7),
-  .admin-view .leave-table td:nth-child(7) { width: 22%; }  /* Action */
+  .admin-view .leave-table td:nth-child(7) {
+    width: 22%;
+  }
 
-  /* 🧩 Make buttons fit neatly */
   .admin-view .leave-table .btn-approve,
   .admin-view .leave-table .btn-reject {
     font-size: 11px;
@@ -1097,24 +1075,17 @@ td {
     display: inline-block;
   }
 
-  /* Add spacing between buttons */
   .admin-view .leave-table td:last-child .btn-reject {
     margin-left: 4px;
   }
 }
 
-
-
-
-
-/* 📱 Tablets and small laptops (768px - 992px) */
 @media (max-width: 992px) {
   .leave-card {
     flex: 1 1 25%;
   }
 
   .header {
-    
     display: flex;
     align-items: flex-end;
   }
@@ -1145,19 +1116,17 @@ td {
   }
 }
 
-/* 📲 Mobile devices (480px - 768px) */
 @media (max-width: 768px) {
   .header {
     flex-direction: column;
     align-items: center;
     gap: 10px;
   }
-  /* Hide original table headers */
+
   .leave-table thead {
     display: none;
   }
 
-  /* Display table as block cards */
   .leave-table,
   .leave-table tbody,
   .leave-table tr,
@@ -1166,17 +1135,15 @@ td {
     width: 100%;
   }
 
-  /* Each row becomes a card */
   .leave-table tr {
     background-color: #ffffff;
     margin-bottom: 16px;
     border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     overflow: hidden;
     padding: 12px 14px;
   }
 
-  /* Each cell behaves like a labeled line */
   .leave-table td {
     text-align: left;
     padding: 8px 0;
@@ -1186,7 +1153,6 @@ td {
     line-height: 1.4;
   }
 
-  /* Add pseudo-labels using the header text */
   .leave-table td::before {
     content: attr(data-label);
     font-weight: 600;
@@ -1196,12 +1162,16 @@ td {
     font-size: 13px;
   }
 
-  /* Status color adjustments */
-  .status-approved { color: #28a745; }
-  .status-pending { color: #856404; }
-  .status-rejected { color: #dc3545; }
+  .status-approved {
+    color: #28a745;
+  }
+  .status-pending {
+    color: #856404;
+  }
+  .status-rejected {
+    color: #dc3545;
+  }
 
-  /* Buttons stacked neatly */
   td .btn-approve,
   td .btn-reject {
     display: inline-block;
@@ -1211,7 +1181,6 @@ td {
     padding: 6px 10px;
   }
 
-  /* Compact pagination */
   .table-pagination {
     flex-direction: column;
     align-items: center;
@@ -1226,7 +1195,7 @@ td {
     margin-top: 6px;
   }
 }
-/* 📱 Tablet-style card layout for admin view between 768px–900px */
+
 @media (min-width: 768px) and (max-width: 900px) {
   .admin-view .header {
     flex-direction: column;
@@ -1234,13 +1203,10 @@ td {
     gap: 10px;
   }
 
-  /* Hide original table headers */
   .admin-view .leave-table thead {
     display: none;
   }
-  
 
-  /* Display table as block cards */
   .admin-view .leave-table,
   .admin-view .leave-table tbody,
   .admin-view .leave-table tr,
@@ -1249,7 +1215,6 @@ td {
     width: 100%;
   }
 
-  /* Each row becomes a card */
   .admin-view .leave-table tr {
     background-color: #ffffff;
     margin-bottom: 14px;
@@ -1258,9 +1223,7 @@ td {
     overflow: hidden;
     padding: 12px 14px;
   }
-  
 
-  /* Each cell behaves like a labeled line */
   .admin-view .leave-table td {
     text-align: left;
     padding: 8px 0;
@@ -1270,7 +1233,6 @@ td {
     line-height: 1.5;
   }
 
-  /* Add pseudo-labels for clarity */
   .admin-view .leave-table td::before {
     content: attr(data-label);
     font-weight: 600;
@@ -1280,12 +1242,16 @@ td {
     font-size: 13px;
   }
 
-  /* Status color adjustments */
-  .status-approved { color: #28a745; }
-  .status-pending { color: #856404; }
-  .status-rejected { color: #dc3545; }
+  .status-approved {
+    color: #28a745;
+  }
+  .status-pending {
+    color: #856404;
+  }
+  .status-rejected {
+    color: #dc3545;
+  }
 
-  /* Buttons neatly aligned */
   .admin-view .leave-table td:last-child {
     text-align: center;
     margin-top: 8px;
@@ -1302,7 +1268,6 @@ td {
     border-radius: 6px;
   }
 
-  /* Apply leave button matches the same style */
   .apply-leave-btn {
     width: 100%;
     max-width: 280px;
@@ -1313,7 +1278,6 @@ td {
     align-self: center;
   }
 
-  /* Compact pagination alignment */
   .table-pagination {
     flex-direction: column;
     align-items: center;
@@ -1321,15 +1285,13 @@ td {
   }
 }
 
-
-/* 📞 Small mobile devices (320px - 480px) */
 @media (max-width: 480px) {
   .header {
     flex-direction: column;
     align-items: center;
     gap: 8px;
   }
-   .apply-leave-btn {
+  .apply-leave-btn {
     width: 100%;
     max-width: 250px;
     font-size: 11px;
@@ -1378,13 +1340,11 @@ td {
     padding: 9px 10px;
   }
 
-
   td {
     white-space: normal;
   }
 }
 
-/* 🖥️ Ultra-wide screens (≥1600px) */
 @media (min-width: 1600px) {
   .main-content {
     max-width: 1600px;
@@ -1399,4 +1359,3 @@ td {
     font-size: 26px;
   }
 }
-

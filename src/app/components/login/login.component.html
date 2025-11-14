@@ -2,8 +2,8 @@
 <div class="spacer">
   <div class="login-container">
     <h2>USER LOGIN</h2>
-<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-        <div class="form-group">
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
         <mat-form-field appearance="outline" class="custom-form-field">
           <mat-label>Email</mat-label>
           <input
@@ -27,21 +27,21 @@
       <div class="form-group password-group">
         <mat-form-field appearance="outline" class="custom-form-field">
           <mat-label>Password</mat-label>
-           <div class="password-wrapper">
-          <input
-            matInput
-            [type]="showPassword ? 'text' : 'password'"
-            formControlName="password"
-            placeholder="Enter your password"
-            class="input-padding"
-          />
-          <button
-            type="button"
-            class="toggle-text"
-            (click)="showPassword = !showPassword"
-          >
-            {{ showPassword ? "Hide" : "Show" }}
-          </button>
+          <div class="password-wrapper">
+            <input
+              matInput
+              [type]="showPassword ? 'text' : 'password'"
+              formControlName="password"
+              placeholder="Enter your password"
+              class="input-padding"
+            />
+            <button
+              type="button"
+              class="toggle-text"
+              (click)="showPassword = !showPassword"
+            >
+              {{ showPassword ? "Hide" : "Show" }}
+            </button>
           </div>
           <mat-error
             *ngIf="
@@ -56,8 +56,8 @@
 
       <div class="button-group">
         <button type="button" class="back-btn" (click)="back()">Back</button>
-      <button type="submit" class="login-btn" >Login</button>
-    </div>
+        <button type="submit" class="login-btn">Login</button>
+      </div>
     </form>
 
     <div class="register-link">

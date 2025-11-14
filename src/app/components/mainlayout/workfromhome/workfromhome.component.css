@@ -1,12 +1,11 @@
-
-html, body {
+html,
+body {
   height: auto;
   min-height: 100%;
   overflow-y: auto !important;
   overflow-x: hidden;
 }
 
-/* Ensure WFH container allows its own scroll and grows properly */
 .WFH-container {
   display: flex;
   flex-direction: column;
@@ -23,7 +22,6 @@ html, body {
   margin-left: 8px;
 }
 
-/* ===== Banner ===== */
 .banner {
   background: linear-gradient(135deg, #0a0f3c, #1c2b8c);
   padding: 12px;
@@ -54,7 +52,6 @@ html, body {
   text-align: center;
 }
 
-/* ===== Modern Status Cards ===== */
 .status-cards-modern {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -130,7 +127,6 @@ html, body {
   transition: width 0.8s ease-in-out;
 }
 
-/* ===== Card Themes ===== */
 .status-card.pending {
   border-left-color: #ffca28;
 }
@@ -186,14 +182,12 @@ html, body {
   animation: fadeInUp 0.6s ease-in-out;
 }
 
-/* ===== Table Container ===== */
 .table-container {
   width: 100%;
   margin: 20px auto;
   overflow-x: auto;
 }
 
-/* ===== Default Table Styling ===== */
 .details-table,
 .approval-details-table {
   width: 100%;
@@ -205,7 +199,6 @@ html, body {
   margin-bottom: 30px;
 }
 
-/* Center the "no data" row properly */
 .details-table tbody tr td.no-data,
 .approval-details-table tbody tr td.no-data {
   text-align: center;
@@ -215,7 +208,6 @@ html, body {
   border: none;
 }
 
-/* ===== Header ===== */
 .details-table th,
 .approval-details-table th {
   background-color: #bebdbd;
@@ -226,29 +218,23 @@ html, body {
   white-space: nowrap;
 }
 
-/* ===== Unified Font Styling for Both Tables ===== */
 .details-table,
 .approval-details-table {
   font-size: 14px;
-  /* uniform font size */
   color: #333;
-  /* consistent text color */
-  font-family: 'Segoe UI', Arial, sans-serif;
+  font-family: "Segoe UI", Arial, sans-serif;
 }
 
 .details-table th,
 .approval-details-table th {
   font-size: 14px;
-  /* same for headers */
 }
 
 .details-table td,
 .approval-details-table td {
   font-size: 14px;
-  /* same for cells */
 }
 
-/* ===== Cells ===== */
 .details-table td,
 .approval-details-table td {
   padding: 10px 8px;
@@ -258,7 +244,6 @@ html, body {
   white-space: nowrap;
 }
 
-/*  Wrap text in Reason column */
 .details-table td[data-label="Reason"],
 .approval-details-table td[data-label="Reason"] {
   white-space: normal !important;
@@ -268,13 +253,11 @@ html, body {
   max-width: 220px;
 }
 
-/* ===== Zebra Rows ===== */
 .details-table tbody tr:nth-child(even),
 .approval-details-table tbody tr:nth-child(even) {
   background-color: #f7f7f7;
 }
 
-/* ===== Status Coloring ===== */
 .approved-status {
   color: #2e7d32;
   font-weight: 600;
@@ -290,9 +273,7 @@ html, body {
   font-weight: 600;
 }
 
-/* ===== Action Buttons ===== */
 .actions button {
-  /* margin: 0 2px; */
   padding: 6px 12px;
   font-size: 12px;
   border: none;
@@ -302,7 +283,6 @@ html, body {
   white-space: wrap;
 
   flex: 0 0 auto;
-  /* prevents buttons from stretching */
   min-width: 60px;
 }
 
@@ -312,7 +292,6 @@ html, body {
   align-items: center;
   gap: 8px;
   flex-wrap: wrap;
-  /* allows buttons to wrap neatly */
 }
 
 .actions button:hover {
@@ -329,7 +308,6 @@ html, body {
   color: #721c24;
 }
 
-/* ===== Month Navigation ===== */
 .month-nav {
   display: flex;
   justify-content: center;
@@ -381,7 +359,6 @@ html, body {
   background: #e7ecff;
 }
 
-/* ===== Miscellaneous ===== */
 .approved-table {
   margin-top: 30px;
   padding: 15px;
@@ -396,7 +373,6 @@ html, body {
   font-size: 18px;
 }
 
-/* Empty state styling */
 .no-data {
   text-align: center;
   font-weight: 600;
@@ -407,7 +383,6 @@ html, body {
   vertical-align: middle;
 }
 
-/* Smooth fade-in animation */
 .no-data {
   animation: fadeInEmpty 0.4s ease-in;
 }
@@ -424,10 +399,6 @@ html, body {
   }
 }
 
-/* ==============================
-   RESPONSIVE DESIGN
-=================================*/
-/* Extra Large Screens (≥1400px) */
 @media (min-width: 1400px) {
   .status-cards-modern {
     grid-template-columns: repeat(3, 1fr);
@@ -440,7 +411,6 @@ html, body {
   }
 }
 
-/* Laptops (1000px–1399px) */
 @media (max-width: 1399px) and (min-width: 1140px) {
   .status-cards-modern {
     grid-template-columns: repeat(3, 1fr);
@@ -456,15 +426,9 @@ html, body {
     height: 120px;
     padding: 20px;
   }
-
 }
 
-/* =========================================
-   Fix for Medium Screens (768px–1140px)
-========================================= */
 @media (min-width: 975px) and (max-width: 1140px) {
-
-  /* Adjust grid layout */
   .status-cards-modern {
     grid-template-columns: repeat(3, 1fr);
     gap: 1rem;
@@ -481,7 +445,6 @@ html, body {
     gap: 10px;
   }
 
-  /* Make table fit nicely */
   .details-table th,
   .details-table td,
   .approval-details-table th,
@@ -491,7 +454,6 @@ html, body {
     white-space: normal;
   }
 
-  /* Keep Reason column readable */
   .details-table td[data-label="Reason"],
   .approval-details-table td[data-label="Reason"] {
     max-width: 180px;
@@ -500,14 +462,12 @@ html, body {
     white-space: normal;
   }
 
-  /* Tweak no-data message */
   .no-data {
     font-size: 0.95rem;
     height: 120px;
     padding: 20px;
   }
 
-  /* Slightly smaller buttons & headers */
   .month-nav h2 {
     font-size: 18px;
   }
@@ -528,11 +488,7 @@ html, body {
   }
 }
 
-
-/* Mobiles (<768px) */
 @media (max-width: 974px) {
-
-  /* Remove traditional table styling */
   .details-table,
   .approval-details-table {
     border: none;
@@ -541,13 +497,10 @@ html, body {
     width: 100%;
   }
 
-  /* Hide header row */
   .details-table thead,
   .approval-details-table thead {
     display: none;
   }
-
-  /* No Data Message */
   .no-data {
     display: flex !important;
     justify-content: center !important;
@@ -558,8 +511,8 @@ html, body {
     padding: 20px;
     margin: 0 auto;
     font-size: 0.95rem;
-    white-space: normal!important;
-    word-wrap: break-word!important;
+    white-space: normal !important;
+    word-wrap: break-word !important;
     overflow-wrap: break-word !important;
   }
 
@@ -573,7 +526,6 @@ html, body {
     align-items: center;
   }
 
-  /* Each row becomes a card */
   .details-table tbody tr,
   .approval-details-table tbody tr {
     display: block;
@@ -585,7 +537,6 @@ html, body {
     padding: 10px 0;
   }
 
-  /* Each cell becomes a block (label above value) */
   .details-table tbody td,
   .approval-details-table tbody td {
     display: block;
@@ -597,7 +548,6 @@ html, body {
     word-break: break-word;
   }
 
-  /* Label (from data-label) appears above each cell value */
   .details-table tbody td::before,
   .approval-details-table tbody td::before {
     content: attr(data-label);
@@ -608,20 +558,17 @@ html, body {
     text-transform: capitalize;
   }
 
-  /* Remove bottom border from last cell */
   .details-table tbody td:last-child,
   .approval-details-table tbody td:last-child {
     border-bottom: none;
   }
 
-  /* Fix for long Reason column text */
   .details-table td[data-label="Reason"],
   .approval-details-table td[data-label="Reason"] {
     max-width: 100%;
     white-space: normal;
   }
 
-  /* Action buttons */
   .actions {
     display: flex;
     gap: 10px;
@@ -637,11 +584,11 @@ html, body {
     padding: 8px 12px;
   }
 
-    .status-cards-modern {
+  .status-cards-modern {
     grid-template-columns: repeat(3, 1fr);
     gap: 0.5rem;
   }
-    .status-card {
+  .status-card {
     padding: 10px 12px;
   }
 
@@ -658,11 +605,11 @@ html, body {
     height: 80px;
     padding: 20px 8px;
   }
-    .status-cards-modern {
+  .status-cards-modern {
     grid-template-columns: repeat(1, 1fr);
     gap: 0.5rem;
   }
-    .status-card {
+  .status-card {
     padding: 5px 7px;
   }
 
@@ -689,12 +636,10 @@ mat-spinner {
   vertical-align: middle;
 }
 
-/* Spinner inside Approve button */
 ::ng-deep .approve-spinner circle {
-  stroke: #155724 !important; /* Dark green */
+  stroke: #155724 !important;
 }
 
-/* Spinner inside Reject button */
 ::ng-deep .reject-spinner circle {
-  stroke: #721c24 !important; /* Deep red */
+  stroke: #721c24 !important;
 }

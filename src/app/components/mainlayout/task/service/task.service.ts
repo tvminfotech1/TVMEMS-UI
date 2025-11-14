@@ -3,11 +3,11 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TaskService {
   private apiUrl = 'http://localhost:8080/user/task';
-  private apiAllUrl = 'http://localhost:8080/user/alltask'; 
+  private apiAllUrl = 'http://localhost:8080/user/alltask';
 
   constructor(private http: HttpClient) {}
 
@@ -22,9 +22,9 @@ export class TaskService {
   addTask(task: any): Observable<any> {
     return this.http.post<any>(this.apiUrl, task);
   }
-  
+
   updateTask(id: number | string, payload: any): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/${id}`, payload);  
+    return this.http.put<any>(`${this.apiUrl}/${id}`, payload);
   }
 
   deleteTask(id: number | string): Observable<any> {

@@ -1,17 +1,20 @@
 import { Injectable } from '@angular/core';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
-  private user: { fullName: string; employeeId: string; roles: string[] } | null = null;
+  private user: {
+    fullName: string;
+    employeeId: string;
+    roles: string[];
+  } | null = null;
 
-  constructor() { 
-    // Ideally initialize or retrieve user info from token/localstorage here
+  constructor() {
     this.user = {
       fullName: 'John Doe',
       employeeId: 'EMP123',
-      roles: ['user']  // or ['admin']
+      roles: ['user'],
     };
   }
 
@@ -30,6 +33,4 @@ export class AuthService {
   isUser(): boolean {
     return this.user !== null;
   }
-
-  // Optional: Add login/logout and token management here
 }

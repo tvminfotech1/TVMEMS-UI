@@ -1,29 +1,23 @@
 <div class="payroll-report-container">
   <div class="filter-section">
-  <div class="filter-header">
-    <h2>Payroll Salary Report</h2>
-  
+    <div class="filter-header">
+      <h2>Payroll Salary Report</h2>
+    </div>
+
+    <div class="filter-bar">
+      <mat-form-field appearance="outline" class="year-select-field">
+        <mat-label>Select Year</mat-label>
+        <mat-select [(value)]="selectedYear" (selectionChange)="onYearChange()">
+          <mat-option *ngFor="let year of availableYears" [value]="year">
+            {{ year }}
+          </mat-option>
+        </mat-select>
+        <button mat-icon-button matSuffix>
+          <mat-icon>calendar_today</mat-icon>
+        </button>
+      </mat-form-field>
+    </div>
   </div>
-
-<div class="filter-bar">
-  <mat-form-field appearance="outline" class="year-select-field">
-    <mat-label>Select Year</mat-label>
-    <mat-select [(value)]="selectedYear" (selectionChange)="onYearChange()">
-      <mat-option *ngFor="let year of availableYears" [value]="year">
-        {{ year }}
-      </mat-option>
-    </mat-select>
-    <button mat-icon-button matSuffix>
-      <mat-icon>calendar_today</mat-icon>
-    </button>
-  </mat-form-field>
-
- 
-</div>
-
-
-</div>
-
 
   <div class="summary-cards" *ngIf="summary">
     <div class="card">
@@ -70,7 +64,6 @@
         </tr>
       </tbody>
 
-      <!-- ✅ "No Data" Row inside table -->
       <ng-template #noDataRow>
         <tbody>
           <tr>

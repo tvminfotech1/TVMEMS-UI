@@ -46,13 +46,12 @@
     </div>
   </mat-card>
 
-  <!-- Popup Modal -->
+  =
   <div class="popup" *ngIf="showPopup">
     <div class="popup-content">
       <span class="close" (click)="closePopup()">&times;</span>
       <form [formGroup]="employmentForm" (ngSubmit)="saveEmployment()">
         <div class="form-grid">
-          <!-- Company Name -->
           <mat-form-field
             appearance="outline"
             class="custom-form-field full-width"
@@ -65,7 +64,6 @@
               class="input-padding"
             />
 
-            <!-- Error: Required -->
             <mat-error
               *ngIf="
                 employmentForm.get('companyName')?.hasError('required') &&
@@ -213,7 +211,6 @@
               </mat-error>
             </mat-form-field>
 
-            <!-- End Date -->
             <mat-form-field appearance="outline" class="custom-form-field">
               <mat-label>Exit Date:</mat-label>
               <input
@@ -247,7 +244,6 @@
             </mat-form-field>
           </div>
 
-          <!-- Submit -->
           <div class="form-group full-width">
             <button id="save-btn" type="submit">Save</button>
           </div>

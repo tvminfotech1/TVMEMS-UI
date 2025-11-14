@@ -38,7 +38,7 @@ export class AdminLoginComponent {
         const payload = {
           sub: 'admin',
           roles: ['ROLE_ADMIN'],
-          exp: Math.floor(Date.now() / 1000) + 60 * 60, // 1 hour expiry
+          exp: Math.floor(Date.now() / 1000) + 60 * 60,
         };
 
         const base64 = (obj: any) => btoa(JSON.stringify(obj));
@@ -59,12 +59,16 @@ export class AdminLoginComponent {
             this.router.navigate(['/mainlayout/dashboard']);
           },
           error: () => {
-            this.snackBar.open('Invalid credentials. Please check and try again', 'Close', {
-              duration: 3000,
-              horizontalPosition: 'center',
-              verticalPosition: 'top',
-              panelClass: ['error-snackbar'],
-            });
+            this.snackBar.open(
+              'Invalid credentials. Please check and try again',
+              'Close',
+              {
+                duration: 3000,
+                horizontalPosition: 'center',
+                verticalPosition: 'top',
+                panelClass: ['error-snackbar'],
+              }
+            );
           },
         });
     } else {

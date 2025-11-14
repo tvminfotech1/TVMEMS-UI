@@ -1,5 +1,3 @@
-/* Overall form container */
-
 .PV-container {
   max-width: 1200px;
   margin: 20px;
@@ -10,7 +8,7 @@
 }
 
 .noCertificate {
-   text-align: center;
+  text-align: center;
   padding: 40px;
   font-size: 22px;
   color: #777;
@@ -22,7 +20,6 @@
   gap: 10px;
 }
 
-/* Popup overlay */
 .popup {
   position: fixed;
   top: 0;
@@ -36,7 +33,6 @@
   z-index: 999;
 }
 
-/* Popup content */
 .popup-content {
   background-color: white;
   padding: 30px;
@@ -64,7 +60,7 @@
   justify-content: center;
   transition: all 0.3s ease;
 }
-.close:hover{
+.close:hover {
   background-color: #e63946;
   color: #fff;
   transform: scale(1.1);
@@ -82,15 +78,11 @@
   display: block;
 }
 
-
-
-/* Labels */
 .form-group label {
   font-weight: 600;
   color: #333;
 }
 
-/* Input fields */
 .form-group input {
   border: 1px solid #ccc;
   border-radius: 6px;
@@ -99,13 +91,10 @@
   transition: border-color 0.3s;
 }
 
-
-/* Input focus effect */
 .form-group input:focus {
   border-color: blue;
 }
 
-/* Button group container */
 .button-group {
   display: flex;
   justify-content: space-between;
@@ -113,7 +102,6 @@
   margin-top: 50px;
 }
 
-/* Previous and Next links */
 .button-group a {
   text-decoration: none;
   padding: 10px 20px;
@@ -124,12 +112,10 @@
   transition: background-color 0.3s;
 }
 
-/* Hover effect on links */
 .button-group a:hover {
   background-color: #bbb;
 }
 
-/* Save (update) button */
 .update-button {
   padding: 10px 24px;
   background-color: #007bff;
@@ -146,12 +132,10 @@
   width: 100%;
 }
 
-/* Hover effect on Save button */
 .update-button:hover {
   background-color: #0056b3;
 }
 
-/* Certificate list */
 ul {
   list-style: none;
   padding: 0;
@@ -203,7 +187,6 @@ li button:hover {
   color: #777;
   margin-left: 6px;
 }
-
 
 .calendar-icon {
   align-content: center;
@@ -321,21 +304,20 @@ button[type="submit"]:hover {
   padding: 0px !important;
 }
 
-input[type=number]::-webkit-outer-spin-button,
-input[type=number]::-webkit-inner-spin-button {
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
-/* Firefox */
-input[type=number] {
+input[type="number"] {
   appearance: textfield;
   -moz-appearance: textfield;
 }
 
 @media (max-width: 768px) {
   .form-grid {
-  display: flex;
-  flex-wrap: wrap;
-}
+    display: flex;
+    flex-wrap: wrap;
+  }
 }

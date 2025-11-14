@@ -6,7 +6,7 @@ import { EmployeeDataService } from 'src/app/services/employee-data.service';
 @Component({
   selector: 'app-empkyc',
   templateUrl: './empkyc.component.html',
-  styleUrls: ['./empkyc.component.css']
+  styleUrls: ['./empkyc.component.css'],
 })
 export class EmpkycComponent implements OnInit {
   employeeId!: number;
@@ -18,30 +18,29 @@ export class EmpkycComponent implements OnInit {
     private empDataService: EmployeeDataService
   ) {}
 
-ngOnInit(): void {
-  const id = Number(this.route.snapshot.paramMap.get('id'));
-  const sharedData = this.empDataService.getEmployeeData(); // now no params needed
+  ngOnInit(): void {
+    const id = Number(this.route.snapshot.paramMap.get('id'));
+    const sharedData = this.empDataService.getEmployeeData();
 
-  if (sharedData?.kyc) {
-    this.kyc = sharedData.kyc;
-    this.employeeId = sharedData.id;
-  } else {
-    this.empService.getEmployees().subscribe({
-      next: (res: any) => {
-        const found = res?.body?.find((emp: any) => emp.id === id);
-        if (found?.kyc) {
-          this.kyc = found.kyc;
-          this.employeeId = found.id;
-          this.empDataService.setEmployeeData(found);
-        }
-      },
-      error: (err) => console.error('Error fetching employees:', err)
-    });
+    if (sharedData?.kyc) {
+      this.kyc = sharedData.kyc;
+      this.employeeId = sharedData.id;
+    } else {
+      this.empService.getEmployees().subscribe({
+        next: (res: any) => {
+          const found = res?.body?.find((emp: any) => emp.id === id);
+          if (found?.kyc) {
+            this.kyc = found.kyc;
+            this.employeeId = found.id;
+            this.empDataService.setEmployeeData(found);
+          }
+        },
+        error: (err) => console.error('Error fetching employees:', err),
+      });
+    }
   }
-}
-
 
   hasAnyKycData(): boolean {
-    return Object.values(this.kyc || {}).some(val => !!val);
+    return Object.values(this.kyc || {}).some((val) => !!val);
   }
 }

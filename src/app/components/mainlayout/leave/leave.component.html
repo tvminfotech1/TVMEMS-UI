@@ -4,18 +4,18 @@
 />
 
 <div class="leave-dashboard">
-
-  <!-- Header -->
   <div class="header">
     <div class="header-actions">
-      <button class="btn apply-leave-btn" (click)="openApplyLeaveModal()">Apply Leave</button>
+      <button class="btn apply-leave-btn" (click)="openApplyLeaveModal()">
+        Apply Leave
+      </button>
     </div>
   </div>
 
-  <!-- Main Content -->
-  <div class="main-content"[ngClass]="{ 'admin-view': isAdmin, 'employee-view': !isAdmin }">
-
-    <!--  Show Leave Details & Summary only for non-admin users -->
+  <div
+    class="main-content"
+    [ngClass]="{ 'admin-view': isAdmin, 'employee-view': !isAdmin }"
+  >
     <ng-container *ngIf="!isAdmin">
       <h2 class="page-title">Leave Details</h2>
       <div class="date-range">
@@ -25,13 +25,16 @@
           [(ngModel)]="selectedDate"
           (change)="applyFilters()"
           #dateInput
-          style="display:none;"
+          style="display: none"
         />
       </div>
 
-      <!-- Leave Summary Cards -->
       <div class="leave-cards-grid">
-        <div class="leave-card" *ngFor="let card of leaveCards" [ngClass]="card.color">
+        <div
+          class="leave-card"
+          *ngFor="let card of leaveCards"
+          [ngClass]="card.color"
+        >
           <div class="card-header">
             <div class="card-icon">
               <i [class]="getLeaveIcon(card.title)"></i>
@@ -57,11 +60,8 @@
       </div>
     </ng-container>
 
-    <!--  Table Section (visible for everyone) -->
     <div class="table-section">
       <div class="table-wrapper">
-
-        <!-- Tabs -->
         <div class="table-tabs">
           <button
             class="tab-button"
@@ -72,16 +72,15 @@
           </button>
         </div>
 
-        <!--  Moved Date Range inside the table controls -->
         <div class="table-controls top-controls">
           <div *ngIf="isAdmin" class="date-range-inline">
-            <span  class="date-text">{{ formatDateRange() }}</span>
+            <span class="date-text">{{ formatDateRange() }}</span>
             <input
               type="date"
               [(ngModel)]="selectedDate"
               (change)="applyFilters()"
               #dateInput2
-              style="display:none;"
+              style="display: none"
             />
           </div>
 
@@ -93,7 +92,11 @@
             (input)="applyFilters()"
           />
 
-          <select class="filter-select" [(ngModel)]="statusFilter" (change)="applyFilters()">
+          <select
+            class="filter-select"
+            [(ngModel)]="statusFilter"
+            (change)="applyFilters()"
+          >
             <option value="">All Status</option>
             <option value="Pending">Pending</option>
             <option value="Approved">Approved</option>
@@ -107,21 +110,13 @@
               <tr>
                 <th (click)="sortBy('user.employeeId')" class="sortable">
                   Employee ID
-                  <!-- <span [ngClass]="getSortClass('user.employeeId')">↕</span> -->
                 </th>
                 <th (click)="sortBy('leaveType')" class="sortable">
                   Leave Type
-                  <!-- <span [ngClass]="getSortClass('leaveType')">↕</span> -->
                 </th>
-                <th (click)="sortBy('duration')" class="sortable">
-                  Duration
-                  <!-- <span [ngClass]="getSortClass('duration')">↕</span> -->
-                </th>
+                <th (click)="sortBy('duration')" class="sortable">Duration</th>
                 <th>Date</th>
-                <th (click)="sortBy('status')" class="sortable">
-                  Status
-                  <!-- <span [ngClass]="getSortClass('status')">↕</span> -->
-                </th>
+                <th (click)="sortBy('status')" class="sortable">Status</th>
                 <th>Reason</th>
                 <th *ngIf="isAdmin">Action</th>
               </tr>
@@ -131,21 +126,38 @@
               <tr *ngIf="paginatedRequests.length === 0" class="no-data-row">
                 <td [attr.colspan]="isAdmin ? 7 : 6">
                   <div class="no-data">
-                    {{ searchTerm || statusFilter ? 'No matching records found' : 'No Data Available' }}
+                    {{
+                      searchTerm || statusFilter
+                        ? "No matching records found"
+                        : "No Data Available"
+                    }}
                   </div>
                 </td>
               </tr>
 
               <tr *ngFor="let request of paginatedRequests">
-                <td data-label="employeeId">{{ (request.user && request.user.employeeId) ? request.user.employeeId : 'N/A' }}</td>
+                <td data-label="employeeId">
+                  {{
+                    request.user && request.user.employeeId
+                      ? request.user.employeeId
+                      : "N/A"
+                  }}
+                </td>
 
                 <td data-label="Leave Type">
-                    {{ request.leaveType }}
+                  {{ request.leaveType }}
                 </td>
                 <td data-label="Duration">{{ request.duration }}</td>
-                <td data-label="Date">{{ request.startDate | date: 'shortDate' }} - {{ request.endDate | date: 'shortDate' }}</td>
-                <td data-label="Status" class="status-badge" [ngClass]="getStatusBadgeClass(request.status)">
-                    {{ request.status }}
+                <td data-label="Date">
+                  {{ request.startDate | date : "shortDate" }} -
+                  {{ request.endDate | date : "shortDate" }}
+                </td>
+                <td
+                  data-label="Status"
+                  class="status-badge"
+                  [ngClass]="getStatusBadgeClass(request.status)"
+                >
+                  {{ request.status }}
                 </td>
                 <td data-label="Reason">{{ request.reason }}</td>
                 <td *ngIf="isAdmin" data-label="Action">
@@ -164,14 +176,16 @@
                     ✖ Reject
                   </button>
                 </td>
-                
               </tr>
             </tbody>
           </table>
 
-          <!-- Pagination -->
           <div class="table-pagination" *ngIf="paginatedRequests.length > 0">
-            <button class="pagination-btn" [disabled]="currentPage === 1" (click)="changePage(currentPage - 1)">
+            <button
+              class="pagination-btn"
+              [disabled]="currentPage === 1"
+              (click)="changePage(currentPage - 1)"
+            >
               Previous
             </button>
             Page {{ currentPage }} of {{ totalPages }}
@@ -188,120 +202,141 @@
     </div>
   </div>
 
-  <!-- ✅ Apply Leave Modal -->
-  <div class="modal-overlay" *ngIf="showApplyLeaveModal" (click)="closeApplyLeaveModal()">
+  <div
+    class="modal-overlay"
+    *ngIf="showApplyLeaveModal"
+    (click)="closeApplyLeaveModal()"
+  >
     <div class="modal-dialog" (click)="$event.stopPropagation()">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">Apply Leave</h5>
-          <button type="button" class="btn-close" (click)="closeApplyLeaveModal()">&times;</button>
+          <button
+            type="button"
+            class="btn-close"
+            (click)="closeApplyLeaveModal()"
+          >
+            &times;
+          </button>
         </div>
 
         <div class="modal-body">
-         <form [formGroup]="leaveForm" (ngSubmit)="onSubmit()">
-<div *ngIf="isAdmin">
-  <mat-form-field appearance="outline" class="w-100">
-    <mat-label>Employee ID</mat-label>
-    <input
-      matInput
-      type="text"
-      formControlName="employeeId"
-      placeholder="Enter Employee ID"
-      maxlength="6"
-      required
-    />
+          <form [formGroup]="leaveForm" (ngSubmit)="onSubmit()">
+            <div *ngIf="isAdmin">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>Employee ID</mat-label>
+                <input
+                  matInput
+                  type="text"
+                  formControlName="employeeId"
+                  placeholder="Enter Employee ID"
+                  maxlength="6"
+                  required
+                />
 
-    <!-- Required error -->
-    <mat-error *ngIf="leaveForm.get('employeeId')?.hasError('required')">
-      Employee ID is required.
-    </mat-error>
+                <mat-error
+                  *ngIf="leaveForm.get('employeeId')?.hasError('required')"
+                >
+                  Employee ID is required.
+                </mat-error>
 
-    <!-- Min length error -->
-    <mat-error *ngIf="leaveForm.get('employeeId')?.hasError('minlength')">
-      Employee ID length should be min 6 characters
-    </mat-error>
+                <mat-error
+                  *ngIf="leaveForm.get('employeeId')?.hasError('minlength')"
+                >
+                  Employee ID length should be min 6 characters
+                </mat-error>
 
-    <!-- Max length error -->
-    <mat-error *ngIf="leaveForm.get('employeeId')?.hasError('maxlength')">
-      Employee ID must be 6 digits
-    </mat-error>
-  </mat-form-field>
-</div>
+                <mat-error
+                  *ngIf="leaveForm.get('employeeId')?.hasError('maxlength')"
+                >
+                  Employee ID must be 6 digits
+                </mat-error>
+              </mat-form-field>
+            </div>
 
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Leave Type</mat-label>
+              <mat-select formControlName="leaveType">
+                <mat-option value="Casual Leave">Casual Leave</mat-option>
+                <mat-option value="Sick Leave">Sick Leave</mat-option>
+                <mat-option value="Leave without Pay"
+                  >Leave without Pay</mat-option
+                >
+              </mat-select>
+              <mat-error
+                *ngIf="leaveForm.get('leaveType')?.hasError('required')"
+              >
+                Leave type is required
+              </mat-error>
+            </mat-form-field>
 
-  <mat-form-field appearance="outline" class="w-100">
-    <mat-label>Leave Type</mat-label>
-    <mat-select formControlName="leaveType">
-      <mat-option value="Casual Leave">Casual Leave</mat-option>
-      <mat-option value="Sick Leave">Sick Leave</mat-option>
-      <mat-option value="Leave without Pay">Leave without Pay</mat-option>
-    </mat-select>
-    <mat-error *ngIf="leaveForm.get('leaveType')?.hasError('required')">
-      Leave type is required
-    </mat-error>
-  </mat-form-field>
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Start Date</mat-label>
+              <input
+                matInput
+                [matDatepickerFilter]="dateFilter"
+                [matDatepicker]="startPicker"
+                formControlName="startDate"
+                (focus)="startPicker.open()"
+              />
+              <mat-datepicker-toggle
+                matSuffix
+                [for]="startPicker"
+              ></mat-datepicker-toggle>
+              <mat-datepicker #startPicker></mat-datepicker>
+              <mat-error
+                *ngIf="leaveForm.get('startDate')?.hasError('required')"
+              >
+                Start date is required
+              </mat-error>
+            </mat-form-field>
 
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>End Date</mat-label>
+              <input
+                matInput
+                [matDatepickerFilter]="endDateFilter"
+                [matDatepicker]="endPicker"
+                formControlName="endDate"
+                (focus)="endPicker.open()"
+              />
+              <mat-datepicker-toggle
+                matSuffix
+                [for]="endPicker"
+              ></mat-datepicker-toggle>
+              <mat-datepicker #endPicker></mat-datepicker>
+              <mat-error *ngIf="leaveForm.get('endDate')?.hasError('required')">
+                End date is required
+              </mat-error>
+              <mat-error *ngIf="leaveForm.hasError('invalidDateRange')">
+                End date must be after start date
+              </mat-error>
+            </mat-form-field>
 
-  <mat-form-field appearance="outline" class="w-100">
-    <mat-label>Start Date</mat-label>
-    <input
-      matInput
-      [matDatepickerFilter]="dateFilter"
-      [matDatepicker]="startPicker"
-      formControlName="startDate"
-      (focus)="startPicker.open()"
-    />
-    <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
-    <mat-datepicker #startPicker></mat-datepicker>
-    <mat-error *ngIf="leaveForm.get('startDate')?.hasError('required')">
-      Start date is required
-    </mat-error>
-  </mat-form-field>
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Reason</mat-label>
+              <textarea matInput rows="3" formControlName="reason"></textarea>
+              <mat-error *ngIf="leaveForm.get('reason')?.hasError('required')">
+                Reason is required
+              </mat-error>
+              <mat-error *ngIf="leaveForm.get('reason')?.hasError('minlength')">
+                Reason must be at least 5 characters
+              </mat-error>
+            </mat-form-field>
 
-  <mat-form-field appearance="outline" class="w-100">
-    <mat-label>End Date</mat-label>
-    <input
-      matInput
-      [matDatepickerFilter]="endDateFilter"
-      [matDatepicker]="endPicker"
-      formControlName="endDate"
-      (focus)="endPicker.open()"
-    />
-    <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
-    <mat-datepicker #endPicker></mat-datepicker>
-    <mat-error *ngIf="leaveForm.get('endDate')?.hasError('required')">
-      End date is required
-    </mat-error>
-    <mat-error *ngIf="leaveForm.hasError('invalidDateRange')">
-      End date must be after start date
-    </mat-error>
-  </mat-form-field>
-
-  <mat-form-field appearance="outline" class="w-100">
-    <mat-label>Reason</mat-label>
-    <textarea matInput rows="3" formControlName="reason"></textarea>
-    <mat-error *ngIf="leaveForm.get('reason')?.hasError('required')">
-      Reason is required
-    </mat-error>
-    <mat-error *ngIf="leaveForm.get('reason')?.hasError('minlength')">
-      Reason must be at least 5 characters
-    </mat-error>
-  </mat-form-field>
-
-
-  <div class="modal-footer">
-    <button
-      mat-raised-button
-      color="primary"
-      type="submit"
-     
-    >
-      Submit
-    </button>
-    <button mat-stroked-button type="button" (click)="closeApplyLeaveModal()">Cancel</button>
-  </div>
-</form>
-
+            <div class="modal-footer">
+              <button mat-raised-button color="primary" type="submit">
+                Submit
+              </button>
+              <button
+                mat-stroked-button
+                type="button"
+                (click)="closeApplyLeaveModal()"
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </div>

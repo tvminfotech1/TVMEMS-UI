@@ -4,29 +4,25 @@ import { AuthService } from './auth.service';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PendingUserService {
- 
-
   private baseUrl = 'http://localhost:8080/userPending';
-  
-    constructor(private http: HttpClient, private authService: AuthService) { }
 
-    private getAuthHeaders(): HttpHeaders {
-        const token = this.authService.getToken();
-        if (!token) {
-          throw new Error('No valid auth token found. Please log in again.');
-        }
-        return new HttpHeaders({ Authorization: `Bearer ${token}` });
-      }
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
-    getUserPending(): Observable<any>{
-        return this.http.get( 
-          `${this.baseUrl}/all`,
-          {headers: this.getAuthHeaders(),observe:'response'}
-        );
-      }
+  private getAuthHeaders(): HttpHeaders {
+    const token = this.authService.getToken();
+    if (!token) {
+      throw new Error('No valid auth token found. Please log in again.');
+    }
+    return new HttpHeaders({ Authorization: `Bearer ${token}` });
+  }
 
-      
+  getUserPending(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/all`, {
+      headers: this.getAuthHeaders(),
+      observe: 'response',
+    });
+  }
 }

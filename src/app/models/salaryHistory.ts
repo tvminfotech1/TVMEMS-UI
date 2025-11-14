@@ -1,11 +1,10 @@
 export interface SalaryHistory {
-  salaryId: string;            // Unique ID like "TVM001-202506"
-  id: number;                  // Employee ID
+  salaryId: string;
+  id: number;
 
-  month: string;               // Format: "YYYY-MM"
-  year: number;                // Example: 2025
+  month: string;
+  year: number;
 
-  // Earnings
   basicSalary: number;
   hra: number;
   medicalAllowance: number;
@@ -14,7 +13,6 @@ export interface SalaryHistory {
   leaveTravel: number;
   specialAllowance: number;
 
-  // Deductions
   pf: number;
   esi: number;
   professionalTax: number;
@@ -22,7 +20,6 @@ export interface SalaryHistory {
   leaveDeduction: number;
   otherDeduction: number;
 
-  // Final amounts
   netPay: number;
   ctc: number;
   remainingCtc: number;

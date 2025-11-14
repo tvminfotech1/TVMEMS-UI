@@ -6,7 +6,7 @@ import { AuthService } from 'src/app/services/auth.service';
 @Component({
   selector: 'app-task',
   templateUrl: './task.component.html',
-  styleUrls: ['./task.component.css']
+  styleUrls: ['./task.component.css'],
 })
 export class TaskComponent implements OnInit {
   taskForm!: FormGroup;
@@ -18,13 +18,19 @@ export class TaskComponent implements OnInit {
   isUser = false;
   employeeId: string | null = null;
   fullName: string | null = null;
-  
 
   searchText: string = '';
 
-  startDate: Date = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
-  endDate: Date = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 1);
-
+  startDate: Date = new Date(
+    new Date().getFullYear(),
+    new Date().getMonth(),
+    1
+  );
+  endDate: Date = new Date(
+    new Date().getFullYear(),
+    new Date().getMonth() + 1,
+    1
+  );
 
   viewMode: 'list' | 'grid' = 'list';
   dateRange: string = '';
@@ -34,10 +40,9 @@ export class TaskComponent implements OnInit {
     private fb: FormBuilder,
     private taskService: TaskService,
     private authservice: AuthService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
-
     this.isAdmin = this.authservice.isAdmin();
     this.isUser = this.authservice.isUser();
     this.employeeId = this.authservice.getEmployeeId();
@@ -57,7 +62,7 @@ export class TaskComponent implements OnInit {
       startDate: ['', Validators.required],
       dueDate: ['', Validators.required],
       priority: ['', Validators.required],
-      status: ['', Validators.required]
+      status: ['', Validators.required],
     });
   }
 
@@ -78,7 +83,6 @@ export class TaskComponent implements OnInit {
 
   addTask() {
     if (this.taskForm.invalid) {
-      console.log('Form is invalid');
       return;
     }
     if (this.taskForm.value.dueDate < this.taskForm.value.startDate) {
@@ -88,7 +92,6 @@ export class TaskComponent implements OnInit {
 
     const today = new Date();
     const formattedDate = today.toISOString();
-
 
     const payload = {
       employeeId: this.employeeId,
@@ -100,23 +103,18 @@ export class TaskComponent implements OnInit {
       todayDate: formattedDate,
       dueDate: this.toLocalDate(this.taskForm.value.dueDate),
       priority: this.taskForm.value.priority,
-      status: this.taskForm.value.status
+      status: this.taskForm.value.status,
     };
 
-    console.log('Submitting task:', payload);
 
     this.taskService.addTask(payload).subscribe({
       next: (res) => {
-
-        console.log('Task added successfully:', res);
         this.closePopup();
         this.taskForm.reset({ priority: '', status: '' });
         this.loadTasks();
       },
-      error: (err) => console.error('Error adding task:', err)
+      error: (err) => console.error('Error adding task:', err),
     });
-
-
   }
 
   setViewMode(mode: 'list' | 'grid') {
@@ -143,65 +141,71 @@ export class TaskComponent implements OnInit {
   }
 
   updateDateRange(): void {
-     const year = this.startDate.getFullYear();
-  const month = this.startDate.getMonth();
-   const lastDayOfMonth = new Date(year, month + 1, 0);
- this.endDate = lastDayOfMonth;
-    const options: Intl.DateTimeFormatOptions = { day: '2-digit', month: 'short', year: 'numeric' };
+    const year = this.startDate.getFullYear();
+    const month = this.startDate.getMonth();
+    const lastDayOfMonth = new Date(year, month + 1, 0);
+    this.endDate = lastDayOfMonth;
+    const options: Intl.DateTimeFormatOptions = {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+    };
     const startStr = this.startDate.toLocaleDateString('en-US', options);
     const endStr = this.endDate.toLocaleDateString('en-US', options);
     this.dateRange = `${startStr} - ${endStr}`;
   }
 
   private parseLocalDate(dateStr: string): Date {
-  if (!dateStr) return new Date();
-  const [year, month, day] = dateStr.split('-').map(Number);
-  return new Date(year, month - 1, day);
-}
-
-private toLocalDate(dateInput: any): string {
-  if (!dateInput) return '';
-
-  let date: Date;
-
-  if (typeof dateInput === 'string') {
-    date = new Date(dateInput);
-  } else if (dateInput instanceof Date) {
-    date = dateInput;
-  } else {
-    console.error('Unexpected date input:', dateInput);
-    return '';
+    if (!dateStr) return new Date();
+    const [year, month, day] = dateStr.split('-').map(Number);
+    return new Date(year, month - 1, day);
   }
 
-  const year = date.getFullYear();
-  const month = (date.getMonth() + 1).toString().padStart(2, '0');
-  const day = date.getDate().toString().padStart(2, '0');
-  return `${year}-${month}-${day}`;
-}
+  private toLocalDate(dateInput: any): string {
+    if (!dateInput) return '';
 
+    let date: Date;
+
+    if (typeof dateInput === 'string') {
+      date = new Date(dateInput);
+    } else if (dateInput instanceof Date) {
+      date = dateInput;
+    } else {
+      console.error('Unexpected date input:', dateInput);
+      return '';
+    }
+
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
 
   filterTasksByDate(): void {
     if (!this.startDate || !this.endDate) return;
 
-    console.log('🔍 Filtering tasks for:', {
-      currentMonth: new Date().getMonth() + 1,
-      viewMonth: this.startDate.getMonth() + 1,
-      startDate: this.startDate.toDateString(),
-      endDate: this.endDate.toDateString(),
-      totalTasks: this.cards.length
-    });
-
-    this.filteredCards = this.cards.filter(task => {
+    this.filteredCards = this.cards.filter((task) => {
       if (!task.assignedDate) {
         return false;
       }
 
       const taskDate = new Date(task.assignedDate);
 
-      const taskDateOnly = new Date(taskDate.getFullYear(), taskDate.getMonth(), taskDate.getDate());
-      const startDateOnly = new Date(this.startDate.getFullYear(), this.startDate.getMonth(), this.startDate.getDate());
-      const endDateOnly = new Date(this.endDate.getFullYear(), this.endDate.getMonth(), this.endDate.getDate());
-
+      const taskDateOnly = new Date(
+        taskDate.getFullYear(),
+        taskDate.getMonth(),
+        taskDate.getDate()
+      );
+      const startDateOnly = new Date(
+        this.startDate.getFullYear(),
+        this.startDate.getMonth(),
+        this.startDate.getDate()
+      );
+      const endDateOnly = new Date(
+        this.endDate.getFullYear(),
+        this.endDate.getMonth(),
+        this.endDate.getDate()
+      );
 
       const taskStart = new Date(task.assignedDate);
       const taskEnd = new Date(task.dueDate);
@@ -212,25 +216,23 @@ private toLocalDate(dateInput: any): string {
         console.log('✅ Task included:', {
           title: task.title,
           assignedDate: taskDateOnly.toDateString(),
-          month: taskDateOnly.getMonth() + 1
+          month: taskDateOnly.getMonth() + 1,
         });
       }
 
       return isInRange;
     });
-
-    console.log(`📊 Results: ${this.filteredCards.length} tasks in current view`);
   }
 
   filterTasksBySearch(): void {
     const term = this.searchText.trim().toLowerCase();
-    this.filteredCards = this.cards.filter(task =>
-      (task.fullName ?? '').toLowerCase().includes(term) ||
-      (task.project ?? '').toLowerCase().includes(term) ||
-      (task.employeeId?.toLowerCase().includes(term))
+    this.filteredCards = this.cards.filter(
+      (task) =>
+        (task.fullName ?? '').toLowerCase().includes(term) ||
+        (task.project ?? '').toLowerCase().includes(term) ||
+        task.employeeId?.toLowerCase().includes(term)
     );
   }
-
 
   loadTasks(): void {
     const taskObservable = this.isAdmin
@@ -239,38 +241,38 @@ private toLocalDate(dateInput: any): string {
 
     taskObservable.subscribe({
       next: (res) => {
-        console.log("API response:", res);
-
         let tasksArray: any[] = [];
 
         if (Array.isArray(res)) {
           tasksArray = res;
         } else if (res && typeof res === 'object') {
-          const possibleArray = Object.values(res).find(val => Array.isArray(val));
+          const possibleArray = Object.values(res).find((val) =>
+            Array.isArray(val)
+          );
           tasksArray = Array.isArray(possibleArray) ? possibleArray : [];
         }
 
-        this.cards = tasksArray.map(task => ({
+        this.cards = tasksArray.map((task) => ({
           id: task.id,
           title: task.taskName || '',
           project: task.project || '',
           fullName: task.taskOwner || '',
           employeeId: task.employeeId ? task.employeeId.toString() : '',
           description: task.description || '',
-          assignedDate: task.assignedDate ? this.parseLocalDate(task.assignedDate) : null,
+          assignedDate: task.assignedDate
+            ? this.parseLocalDate(task.assignedDate)
+            : null,
           todayDate: task.todayDate,
-          dueDate:task.dueDate ? this.parseLocalDate(task.dueDate) : null,
+          dueDate: task.dueDate ? this.parseLocalDate(task.dueDate) : null,
           priority: task.priority || 'Low',
-          status: task.status || 'Not Started'
+          status: task.status || 'Not Started',
         }));
 
         this.filteredCards = [...this.cards];
-
       },
-      error: (err) => console.error(err)
+      error: (err) => console.error(err),
     });
   }
-
 
   updateTask(task: any) {
     const payload = {
@@ -282,38 +284,35 @@ private toLocalDate(dateInput: any): string {
       assignedDate: task.assignedDate,
       dueDate: task.dueDate,
       priority: task.priority,
-      status: task.status
+      status: task.status,
     };
 
     this.taskService.updateTask(task.id, payload).subscribe({
       next: (res) => {
-        console.log('Task updated successfully', res);
         this.loadTasks();
       },
 
-      error: (err) => console.error('Error updating task', err)
+      error: (err) => console.error('Error updating task', err),
     });
   }
 
-
   deleteTask(taskId: any) {
-    if (!confirm("Are you sure you want to delete this task?")) {
+    if (!confirm('Are you sure you want to delete this task?')) {
       return;
     }
 
     this.taskService.deleteTask(taskId).subscribe({
       next: (res) => {
-        console.log('Task deleted successfully', res);
-
-        this.cards = this.cards.filter(task => task.id !== taskId);
-        this.filteredCards = this.filteredCards.filter(task => task.id !== taskId);
+        this.cards = this.cards.filter((task) => task.id !== taskId);
+        this.filteredCards = this.filteredCards.filter(
+          (task) => task.id !== taskId
+        );
 
         if (this.searchText) this.filterTasksBySearch();
         this.filterTasksByDate();
         this.loadTasks();
       },
-      error: (err) => console.error('Error deleting task', err)
+      error: (err) => console.error('Error deleting task', err),
     });
   }
-
 }

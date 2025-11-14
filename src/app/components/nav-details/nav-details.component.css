@@ -13,10 +13,10 @@
   overflow-x: auto;
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
-  padding: 6px 44px; 
+  padding: 6px 44px;
 }
 .tabs::-webkit-scrollbar {
-  display: none; 
+  display: none;
 }
 .tabs {
   scrollbar-width: none;
@@ -90,9 +90,9 @@
   position: absolute;
   top: 0;
   height: 100%;
-  width: 40px; 
-  z-index: 1399; 
-  pointer-events: none; 
+  width: 40px;
+  z-index: 1399;
+  pointer-events: none;
 }
 
 .tabs-container::before {

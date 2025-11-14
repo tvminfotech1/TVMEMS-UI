@@ -2,17 +2,16 @@
   <h2><i class="ri-briefcase-fill"></i> Add Job Opening</h2>
 
   <form [formGroup]="jobForm" (ngSubmit)="onSubmit()" class="form-grid">
-    
-    <!-- Job Title -->
     <mat-form-field appearance="outline" class="custom-form-field">
       <mat-label>Job Title</mat-label>
       <input matInput formControlName="title" placeholder="Enter job title" />
-      <mat-error *ngIf="jobForm.get('title')?.touched && jobForm.get('title')?.invalid">
+      <mat-error
+        *ngIf="jobForm.get('title')?.touched && jobForm.get('title')?.invalid"
+      >
         Job title is required.
       </mat-error>
     </mat-form-field>
 
-    <!-- Qualifications -->
     <mat-form-field appearance="outline" class="custom-form-field">
       <mat-label>Qualifications</mat-label>
       <input matInput formControlName="qualifications" placeholder="Enter qualifications" (keypress)="allowOnlyLetters($event)" />
@@ -21,7 +20,6 @@
       </mat-error>
     </mat-form-field>
 
-    <!-- Year of Passout -->
     <mat-form-field appearance="outline" class="custom-form-field">
       <mat-label>Year of Passout</mat-label>
       <input matInput type="text" formControlName="yearOfPassout" placeholder="Enter year of passout" (keydown)="preventInvalidInput($event)" (keypress)="allowSixDigitPincode($event)" />
@@ -30,7 +28,6 @@
       </mat-error>
     </mat-form-field>
 
-    <!-- Location -->
     <mat-form-field appearance="outline" class="custom-form-field">
       <mat-label>Location</mat-label>
       <input matInput formControlName="location" placeholder="Enter location" (keypress)="allowOnlyLetters($event)"/>
@@ -39,7 +36,6 @@
       </mat-error>
     </mat-form-field>
 
-    <!-- Experience -->
     <mat-form-field appearance="outline" class="custom-form-field">
       <mat-label>Experience (Years)</mat-label>
       <input matInput type="number" formControlName="experience" placeholder="Enter experience in years" (keydown)="preventInvalidInput($event)"/>
@@ -48,27 +44,33 @@
       </mat-error>
     </mat-form-field>
 
-    <!-- Required Skills -->
     <mat-form-field appearance="outline" class="custom-form-field">
       <mat-label>Required Skills</mat-label>
-      <input matInput formControlName="skills" placeholder="e.g. Java, Angular, MySQL" />
-      <mat-error *ngIf="jobForm.get('skills')?.touched && jobForm.get('skills')?.invalid">
+      <input
+        matInput
+        formControlName="skills"
+        placeholder="e.g. Java, Angular, MySQL"
+      />
+      <mat-error
+        *ngIf="jobForm.get('skills')?.touched && jobForm.get('skills')?.invalid"
+      >
         Skills are required.
       </mat-error>
     </mat-form-field>
 
-    <!-- Description -->
     <mat-form-field appearance="outline" class="custom-form-field">
       <mat-label>Description</mat-label>
-      <textarea matInput formControlName="description" placeholder="Enter job description"></textarea>
+      <textarea
+        matInput
+        formControlName="description"
+        placeholder="Enter job description"
+      ></textarea>
     </mat-form-field>
 
-    <!-- Submit Button -->
     <div class="button-group">
       <div>
         <button type="submit">Post Job</button>
       </div>
     </div>
-
   </form>
 </div>

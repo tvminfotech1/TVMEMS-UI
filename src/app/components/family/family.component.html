@@ -2,7 +2,6 @@
 <div class="PV-container">
   <form [formGroup]="familyForm" (ngSubmit)="submitForm()">
     <div class="form-grid">
-      <!-- Father Name -->
       <mat-form-field appearance="outline">
         <mat-label>Father Name</mat-label>
         <input
@@ -38,7 +37,6 @@
         </mat-error>
       </mat-form-field>
 
-      <!-- Father DOB -->
       <mat-form-field appearance="outline" class="custom-form-field">
         <mat-label>Father DOB</mat-label>
         <input
@@ -65,12 +63,13 @@
           >
             Invalid age. Your father age is
             {{ familyForm.get('fatherDOB')?.errors?.['minimumAgeValidator'].actualAge
+
+
             }}.
           </span>
         </mat-error>
       </mat-form-field>
 
-      <!-- Mother Name -->
       <mat-form-field appearance="outline">
         <mat-label>Mother Name</mat-label>
         <input
@@ -106,7 +105,6 @@
         </mat-error>
       </mat-form-field>
 
-      <!-- Mother DOB -->
       <mat-form-field appearance="outline" class="custom-form-field">
         <mat-label>Mother DOB</mat-label>
         <input
@@ -133,12 +131,13 @@
           >
             Invalid age. Your mother age is
             {{ familyForm.get('motherDOB')?.errors?.['minimumAgeValidator'].actualAge
+
+
             }}.
           </span>
         </mat-error>
       </mat-form-field>
 
-      <!-- Spouse Name -->
       <mat-form-field appearance="outline">
         <mat-label>Spouse Name</mat-label>
         <input
@@ -174,7 +173,6 @@
         </mat-error>
       </mat-form-field>
 
-      <!-- Spouse DOB -->
       <mat-form-field appearance="outline" class="custom-form-field">
         <mat-label>Spouse DOB</mat-label>
         <input
@@ -201,12 +199,13 @@
           >
             Invalid age. Your spouse age is
             {{ familyForm.get('spouseDOB')?.errors?.['minimumAgeValidator'].actualAge
+
+
             }}.
           </span>
         </mat-error>
       </mat-form-field>
 
-      <!-- Spouse Gender -->
       <mat-form-field appearance="outline" class="form-group" color="primary">
         <mat-label>Spouse Gender</mat-label>
         <mat-select formControlName="spouseGender">
@@ -225,7 +224,6 @@
         </mat-error>
       </mat-form-field>
 
-      <!-- Children -->
       <div>
         <div class="form-group-radio">
           <label class="mat-label">Do you have children:</label>

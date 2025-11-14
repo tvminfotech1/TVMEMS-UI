@@ -10,8 +10,6 @@ import { BehaviorSubject, Observable } from 'rxjs';
 export class UserService {
   private readonly BASE_URL = 'http://localhost:8080';
 
-  // EmployeeId: number | null;
-
   private formData: Record<string, any> = {};
   private formGroups: Record<string, FormGroup> = {};
   private documentData: FormData = new FormData();
@@ -25,14 +23,12 @@ export class UserService {
   private maritalStatusSubject = new BehaviorSubject<string>('');
   maritalStatus$ = this.maritalStatusSubject.asObservable();
 
-  constructor(private http: HttpClient, private authService: AuthService) {
-    
-  }
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
   private getEmployeeId(): number | null {
-  const empIdStr = localStorage.getItem('employeeId');
-  return empIdStr ? Number(empIdStr) : null;
-}
+    const empIdStr = localStorage.getItem('employeeId');
+    return empIdStr ? Number(empIdStr) : null;
+  }
   setFormData(step: string, data: any): void {
     this.formData[step] = data;
   }
@@ -93,8 +89,8 @@ export class UserService {
       'Content-Type': 'application/json',
     });
 
-     const employeeId = this.getEmployeeId();
-    const jsonBody = {employeeId: employeeId, ...this.getAllFormData() };
+    const employeeId = this.getEmployeeId();
+    const jsonBody = { employeeId: employeeId, ...this.getAllFormData() };
 
     return this.http.post(`${this.BASE_URL}/personal/savejson`, jsonBody, {
       headers,
@@ -105,12 +101,8 @@ export class UserService {
     const token = localStorage.getItem('token');
     if (!token) throw new Error('Token not found');
 
-     const employeeId = this.getEmployeeId();
-     if (!employeeId) throw new Error('Employee ID missing in LocalStorage');
-
-    // if (employeeId) {
-    //   this.documentData.append('employeeId', employeeId.toString());
-    // }
+    const employeeId = this.getEmployeeId();
+    if (!employeeId) throw new Error('Employee ID missing in LocalStorage');
 
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`,

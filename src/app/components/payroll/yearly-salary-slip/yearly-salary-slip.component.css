@@ -6,9 +6,9 @@
   background: #fff;
   border: 1px solid #ccc;
 }
-.logo{
-    width: 120px;
-    height: 70px;
+.logo {
+  width: 120px;
+  height: 70px;
 }
 
 .center {
@@ -23,7 +23,8 @@
   color: #333;
 }
 
-.details-table, .salary-table {
+.details-table,
+.salary-table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;

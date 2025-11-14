@@ -1,11 +1,10 @@
 export interface JobPosting {
   title: string;
   qualifications: string[];
-  yearOfPassout: string; // Changed from number to string
+  yearOfPassout: string;
   location: string;
-  experience: string;     // Changed from number to string
+  experience: string;
   skills: string[];
   description: string;
-  status?: string; // optional field for backend
+  status?: string;
 }
-

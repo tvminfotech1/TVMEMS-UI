@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 @Component({
   selector: 'app-nav-display',
   templateUrl: './nav-display.component.html',
-  styleUrls: ['./nav-display.component.css']
+  styleUrls: ['./nav-display.component.css'],
 })
 export class NavDisplayComponent implements OnInit {
   employeeId: string | null = null;
@@ -21,7 +21,6 @@ export class NavDisplayComponent implements OnInit {
     }
   }
   isActive(tab: string): boolean {
-  return this.router.url.includes(`/mainlayout/${tab}`);
-}
-
+    return this.router.url.includes(`/mainlayout/${tab}`);
+  }
 }

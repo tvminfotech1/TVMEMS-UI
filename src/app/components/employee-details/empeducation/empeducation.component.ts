@@ -6,7 +6,7 @@ import { EmployeeDataService } from 'src/app/services/employee-data.service';
 @Component({
   selector: 'app-empeducation',
   templateUrl: './empeducation.component.html',
-  styleUrls: ['./empeducation.component.css']
+  styleUrls: ['./empeducation.component.css'],
 })
 export class EmpeducationComponent implements OnInit {
   employeeId: any;
@@ -34,7 +34,7 @@ export class EmpeducationComponent implements OnInit {
             this.empDataService.setEmployeeData(found);
           }
         },
-        error: (err: any) => console.error('Error:', err)
+        error: (err: any) => console.error('Error:', err),
       });
     }
   }

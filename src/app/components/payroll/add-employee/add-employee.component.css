@@ -1,4 +1,3 @@
-/* ====== Card Container ====== */
 .employee-form-card {
   padding: 20px;
   margin: 20px auto;
@@ -11,7 +10,6 @@
   cursor: pointer;
 }
 
-/* ====== Header Section ====== */
 .form-header {
   display: flex;
   align-items: center;
@@ -49,7 +47,6 @@
   color: white;
 }
 
-/* ====== Grid Layout ====== */
 .form-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -59,14 +56,12 @@
   overflow: visible;
 }
 
-/*  Employee ID, Full Name, Email in Same Row */
 .form-grid.employee-info-row {
-  grid-template-columns: 1fr 1fr 1fr; /* 3 columns for ID, Name, Email */
+  grid-template-columns: 1fr 1fr 1fr;
   align-items: center;
   gap: 16px;
 }
 
-/* ====== Uniform Field Size ====== */
 mat-form-field {
   width: 100%;
 }
@@ -82,19 +77,17 @@ mat-select .mat-select-trigger {
   font-size: 14px;
 }
 
-/* ====== Remove number field arrows ====== */
-input[type=number]::-webkit-inner-spin-button,
-input[type=number]::-webkit-outer-spin-button {
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
-input[type=number] {
+input[type="number"] {
   -moz-appearance: textfield;
   appearance: textfield;
   text-align: left;
 }
 
-/* ====== Status Field ====== */
 .status-active {
   font-weight: 600;
   letter-spacing: 0.5px;
@@ -105,12 +98,11 @@ input[type=number] {
   color: #06690a;
 }
 
-/* ====== Search Section & Suggestion Box ====== */
 .search-section {
   position: relative;
   width: 100%;
-  margin-bottom: 0; /*  removes extra gap below input */
-  overflow: visible; /* allows dropdown to appear over other elements */
+  margin-bottom: 0;
+  overflow: visible;
   z-index: 50;
 }
 
@@ -119,16 +111,16 @@ input[type=number] {
   top: 75%;
   left: 0;
   right: 0;
-  border: 1px solid rgba(0,0,0,0.2);
+  border: 1px solid rgba(0, 0, 0, 0.2);
   border-radius: 6px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   padding: 8px 14px;
   z-index: 999;
   cursor: pointer;
   font-size: 15px;
   transition: all 0.2s ease-in-out;
-  max-height: 180px; /* ✅ limit height */
-  overflow-y: auto; /* ✅ scroll if too long */
+  max-height: 180px;
+  overflow-y: auto;
 }
 
 .employee-suggestion:hover {
@@ -139,7 +131,6 @@ input[type=number] {
   color: #1976d2;
 }
 
-/* ====== Buttons ====== */
 .button-group {
   display: flex;
   justify-content: center;
@@ -169,7 +160,6 @@ input[type=number] {
   transform: scale(0.98);
 }
 
-/* ====== Responsive Adjustments ====== */
 @media (max-width: 900px) {
   .form-grid.employee-info-row {
     grid-template-columns: 1fr;

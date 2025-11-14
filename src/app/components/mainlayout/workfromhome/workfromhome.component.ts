@@ -6,7 +6,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 @Component({
   selector: 'app-workfromhome',
   templateUrl: './workfromhome.component.html',
-  styleUrls: ['./workfromhome.component.css']
+  styleUrls: ['./workfromhome.component.css'],
 })
 export class WorkfromhomeComponent implements OnInit {
   currentMonthIndex = new Date().getMonth();
@@ -18,16 +18,15 @@ export class WorkfromhomeComponent implements OnInit {
   approvedRequests: any[] = [];
   approvalDetails: any[] = [];
   isProcessing: boolean = false;
-loadingStatus: { [key: number]: 'approve' | 'reject' | null } = {};
+  loadingStatus: { [key: number]: 'approve' | 'reject' | null } = {};
 
   canApplyWfh: boolean = true;
 
   constructor(
     private authservice: AuthService,
     private wfhService: WorkFromHomeService,
-    private snackBar: MatSnackBar,
-  ) { }
-
+    private snackBar: MatSnackBar
+  ) {}
 
   ngOnInit(): void {
     this.isAdmin = this.authservice.isAdmin();
@@ -35,18 +34,15 @@ loadingStatus: { [key: number]: 'approve' | 'reject' | null } = {};
     this.refreshRequests();
     this.fetchAllApprovalRequests();
     this.fetchAllWfhRequests();
-    console.log(this.approvalDetails)
   }
 
-  // getMonthName(): string {
-  //   return new Date(this.year, this.currentMonthIndex).toLocaleString('default', { month: 'long' });
-  // }
   getMonthName(): string {
-    const monthName = new Date(this.year, this.currentMonthIndex)
-      .toLocaleString('default', { month: 'long' })
+    const monthName = new Date(
+      this.year,
+      this.currentMonthIndex
+    ).toLocaleString('default', { month: 'long' });
     return monthName.substring(0, 3);
   }
-
 
   nextMonth() {
     if (this.currentMonthIndex < 11) {
@@ -76,7 +72,7 @@ loadingStatus: { [key: number]: 'approve' | 'reject' | null } = {};
           next: (id: number) => {
             this.fetchUserWfhRequests(id);
           },
-          error: (err: any) => console.error('Failed to get employeeId:', err)
+          error: (err: any) => console.error('Failed to get employeeId:', err),
         });
       }
     } else if (this.isAdmin) {
@@ -87,119 +83,141 @@ loadingStatus: { [key: number]: 'approve' | 'reject' | null } = {};
   lastKnownStatuses: { [key: string]: string } = {};
 
   fetchUserWfhRequests(employeeId: number) {
-    this.wfhService.getRequestByMonthAndYear(employeeId, this.currentMonthIndex + 1, this.year).subscribe({
-      next: (response) => {
-        let requests = response.body || [];
-
-        for (const req of requests) {
-          const from = new Date(req.fromDate);
-          const to = new Date(req.toDate);
-
-             const fromNextDay = new Date(from);
-              fromNextDay.setDate(from.getDate() + 1);
-              req.fromNextDay = fromNextDay;
-
-                const toNextDay = new Date(to);
-              toNextDay.setDate(to.getDate() + 1);
-              req.toNextDay = toNextDay;
-
-          const diffTime = to.getTime() - from.getTime();
-          const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1; // inclusive count
-          req.days = diffDays;
-        }
-
-        requests = requests.sort(
-          (a: any, b: any) => new Date(b.created).getTime() - new Date(a.created).getTime()
-        );
-        this.details = requests.slice(0, 10);
-        this.approvalDetails = requests.filter((req: any) => {
-  const fromDate = new Date(req.fromDate);
-  const toDate = new Date(req.toDate);
-
-  const fromLocal = new Date(fromDate.getFullYear(), fromDate.getMonth(), fromDate.getDate());
-  const toLocal = new Date(toDate.getFullYear(), toDate.getMonth(), toDate.getDate());
-
-  return (
-    (fromLocal.getMonth() === this.currentMonthIndex && fromLocal.getFullYear() === this.year) ||
-    (toLocal.getMonth() === this.currentMonthIndex && toLocal.getFullYear() === this.year)
-  );
-});
-        let updatedStatusMessage = '';
-
-        for (const req of this.details) {
-          const previousStatus = this.lastKnownStatuses[req.requestId];
-
-          if (previousStatus && previousStatus !== req.status && req.status !== 'pending') {
-            updatedStatusMessage = `Your WFH request (${req.requestId}) has been ${req.status.toUpperCase()}`;
-            break;
-          }
-
-          // Update current status in memory
-          this.lastKnownStatuses[req.requestId] = req.status;
-        }
-
-        //  Show popup if status changed
-        if (updatedStatusMessage) {
-          this.snackBar.open(updatedStatusMessage, 'Close', {
-            duration: 4000,
-            horizontalPosition: 'center',
-            verticalPosition: 'top',
-            panelClass: ['success-snackbar']
-          });
-        }
-      },
-      error: (err) => {
-        console.error('Error fetching WFH requests for user:', err);
-        this.details = [];
-      }
-    });
-  }
-  
-
-  fetchAllApprovalRequests() {
-    this.wfhService.getWfhAllApprovalRequests()
+    this.wfhService
+      .getRequestByMonthAndYear(
+        employeeId,
+        this.currentMonthIndex + 1,
+        this.year
+      )
       .subscribe({
         next: (response) => {
-          this.approvalDetails = response?.body || response || [];
+          let requests = response.body || [];
 
-          for (const req of this.approvalDetails) {
+          for (const req of requests) {
             const from = new Date(req.fromDate);
             const to = new Date(req.toDate);
 
-             const fromNextDay = new Date(from);
-              fromNextDay.setDate(from.getDate() + 1);
-              req.fromNextDay = fromNextDay;
+            const fromNextDay = new Date(from);
+            fromNextDay.setDate(from.getDate() + 1);
+            req.fromNextDay = fromNextDay;
 
-                const toNextDay = new Date(to);
-              toNextDay.setDate(to.getDate() + 1);
-              req.toNextDay = toNextDay;
+            const toNextDay = new Date(to);
+            toNextDay.setDate(to.getDate() + 1);
+            req.toNextDay = toNextDay;
 
             const diffTime = to.getTime() - from.getTime();
             const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1; // inclusive count
             req.days = diffDays;
           }
 
-          if (this.isAdmin) {
-            this.approvalDetails = this.approvalDetails.filter((r: any) => r.status === 'pending');
-          }
-          if (this.isUser) {
-            this.approvalDetails = this.approvalDetails
-              .sort((a: any, b: any) => new Date(b.created).getTime() - new Date(a.created).getTime())
-              .slice(0, 10);
+          requests = requests.sort(
+            (a: any, b: any) =>
+              new Date(b.created).getTime() - new Date(a.created).getTime()
+          );
+          this.details = requests.slice(0, 10);
+          this.approvalDetails = requests.filter((req: any) => {
+            const fromDate = new Date(req.fromDate);
+            const toDate = new Date(req.toDate);
+
+            const fromLocal = new Date(
+              fromDate.getFullYear(),
+              fromDate.getMonth(),
+              fromDate.getDate()
+            );
+            const toLocal = new Date(
+              toDate.getFullYear(),
+              toDate.getMonth(),
+              toDate.getDate()
+            );
+
+            return (
+              (fromLocal.getMonth() === this.currentMonthIndex &&
+                fromLocal.getFullYear() === this.year) ||
+              (toLocal.getMonth() === this.currentMonthIndex &&
+                toLocal.getFullYear() === this.year)
+            );
+          });
+          let updatedStatusMessage = '';
+
+          for (const req of this.details) {
+            const previousStatus = this.lastKnownStatuses[req.requestId];
+
+            if (
+              previousStatus &&
+              previousStatus !== req.status &&
+              req.status !== 'pending'
+            ) {
+              updatedStatusMessage = `Your WFH request (${
+                req.requestId
+              }) has been ${req.status.toUpperCase()}`;
+              break;
+            }
+
+            this.lastKnownStatuses[req.requestId] = req.status;
           }
 
-          console.log('Approval Details:', this.approvalDetails);
+          if (updatedStatusMessage) {
+            this.snackBar.open(updatedStatusMessage, 'Close', {
+              duration: 4000,
+              horizontalPosition: 'center',
+              verticalPosition: 'top',
+              panelClass: ['success-snackbar'],
+            });
+          }
         },
-        error: (error) => {
-          console.error('Error fetching approval requests:', error);
-          this.approvalDetails = [];
-        }
+        error: (err) => {
+          console.error('Error fetching WFH requests for user:', err);
+          this.details = [];
+        },
       });
   }
 
+  fetchAllApprovalRequests() {
+    this.wfhService.getWfhAllApprovalRequests().subscribe({
+      next: (response) => {
+        this.approvalDetails = response?.body || response || [];
+
+        for (const req of this.approvalDetails) {
+          const from = new Date(req.fromDate);
+          const to = new Date(req.toDate);
+
+          const fromNextDay = new Date(from);
+          fromNextDay.setDate(from.getDate() + 1);
+          req.fromNextDay = fromNextDay;
+
+          const toNextDay = new Date(to);
+          toNextDay.setDate(to.getDate() + 1);
+          req.toNextDay = toNextDay;
+
+          const diffTime = to.getTime() - from.getTime();
+          const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1; // inclusive count
+          req.days = diffDays;
+        }
+
+        if (this.isAdmin) {
+          this.approvalDetails = this.approvalDetails.filter(
+            (r: any) => r.status === 'pending'
+          );
+        }
+        if (this.isUser) {
+          this.approvalDetails = this.approvalDetails
+            .sort(
+              (a: any, b: any) =>
+                new Date(b.created).getTime() - new Date(a.created).getTime()
+            )
+            .slice(0, 10);
+        }
+      },
+      error: (error) => {
+        console.error('Error fetching approval requests:', error);
+        this.approvalDetails = [];
+      },
+    });
+  }
 
   fetchAllWfhRequests() {
-    this.wfhService.getWfhRequestsByMonthAndYear(this.currentMonthIndex + 1, this.year)
+    this.wfhService
+      .getWfhRequestsByMonthAndYear(this.currentMonthIndex + 1, this.year)
       .subscribe({
         next: (response) => {
           const allRequests = response.body || [];
@@ -207,14 +225,13 @@ loadingStatus: { [key: number]: 'approve' | 'reject' | null } = {};
             const from = new Date(req.fromDate);
             const to = new Date(req.toDate);
 
-             const fromNextDay = new Date(from);
-              fromNextDay.setDate(from.getDate() + 1);
-              req.fromNextDay = fromNextDay;
+            const fromNextDay = new Date(from);
+            fromNextDay.setDate(from.getDate() + 1);
+            req.fromNextDay = fromNextDay;
 
-                const toNextDay = new Date(to);
-              toNextDay.setDate(to.getDate() + 1);
-              req.toNextDay = toNextDay;
-
+            const toNextDay = new Date(to);
+            toNextDay.setDate(to.getDate() + 1);
+            req.toNextDay = toNextDay;
 
             const diffTime = to.getTime() - from.getTime();
             const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1; // inclusive count
@@ -223,41 +240,50 @@ loadingStatus: { [key: number]: 'approve' | 'reject' | null } = {};
 
           this.details = allRequests.filter((r: any) => r.status === 'pending');
 
-          this.approvedRequests = allRequests.filter((r: any) =>
-            r.status === 'approved' && this.isInCurrentMonthView(r))
-            .sort((a: any, b: any) => new Date(b.created).getTime() - new Date(a.created).getTime())
+          this.approvedRequests = allRequests
+            .filter(
+              (r: any) =>
+                r.status === 'approved' && this.isInCurrentMonthView(r)
+            )
+            .sort(
+              (a: any, b: any) =>
+                new Date(b.created).getTime() - new Date(a.created).getTime()
+            )
             .slice(0, 10);
-          console.log('Sorted approved requests:', this.approvedRequests.length);
-
         },
         error: (error) => {
           console.error('Error fetching WFH requests for admin:', error);
           this.details = [];
           this.approvedRequests = [];
-        }
+        },
       });
   }
 
-isInCurrentMonthView(request: any): boolean {
-  const from = new Date(request.fromDate);
-  const to = new Date(request.toDate);
+  isInCurrentMonthView(request: any): boolean {
+    const from = new Date(request.fromDate);
+    const to = new Date(request.toDate);
 
-  // Extract only local year/month/day (ignore timezone)
-  const fromLocal = new Date(from.getFullYear(), from.getMonth(), from.getDate());
-  const toLocal = new Date(to.getFullYear(), to.getMonth(), to.getDate());
+    const fromLocal = new Date(
+      from.getFullYear(),
+      from.getMonth(),
+      from.getDate()
+    );
+    const toLocal = new Date(to.getFullYear(), to.getMonth(), to.getDate());
 
-  const startOfMonth = new Date(this.year, this.currentMonthIndex, 1);
-  const endOfMonth = new Date(this.year, this.currentMonthIndex + 1, 0);
+    const startOfMonth = new Date(this.year, this.currentMonthIndex, 1);
+    const endOfMonth = new Date(this.year, this.currentMonthIndex + 1, 0);
 
-  return fromLocal <= endOfMonth && toLocal >= startOfMonth;
-}
+    return fromLocal <= endOfMonth && toLocal >= startOfMonth;
+  }
 
-
-
-  updateStatus(request: any, newStatus: 'approved' | 'rejected' |'pending'): void {
+  updateStatus(
+    request: any,
+    newStatus: 'approved' | 'rejected' | 'pending'
+  ): void {
     if (!this.isAdmin) return;
 
- this.loadingStatus[request.requestId] = newStatus === 'approved' ? 'approve' : 'reject';
+    this.loadingStatus[request.requestId] =
+      newStatus === 'approved' ? 'approve' : 'reject';
 
     const updatedRequest = {
       ...request,
@@ -266,40 +292,45 @@ isInCurrentMonthView(request: any): boolean {
 
     this.wfhService.updateWfhStatus(updatedRequest).subscribe({
       next: (response) => {
-        console.log('Status updated successfully:', response);
-
-        this.details = this.details.filter(d => d.requestId !== request.requestId);
+        this.details = this.details.filter(
+          (d) => d.requestId !== request.requestId
+        );
         this.fetchAllApprovalRequests();
         this.refreshRequests();
 
-        this.snackBar.open(`WFH Request ${request.requestId} status updated to ${newStatus.toUpperCase()}`, 'Close', {
-          duration: 2000,
-          horizontalPosition: 'center',
-          verticalPosition: 'top',
-          panelClass: ['error-snackbar']
-        }
+        this.snackBar.open(
+          `WFH Request ${
+            request.requestId
+          } status updated to ${newStatus.toUpperCase()}`,
+          'Close',
+          {
+            duration: 2000,
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+            panelClass: ['error-snackbar'],
+          }
         );
 
-this.loadingStatus[request.requestId] = null;
+        this.loadingStatus[request.requestId] = null;
       },
       error: (error) => {
         console.error('Error updating status:', error);
-        this.snackBar.open('Failed to update status. Please try again.', 'close', {
-          duration: 3000,
-          horizontalPosition: 'center',
-          verticalPosition: 'top',
-          panelClass: ['error-snackbar']
-        });
-          this.loadingStatus[request.requestId] = null;
-      }
+        this.snackBar.open(
+          'Failed to update status. Please try again.',
+          'close',
+          {
+            duration: 3000,
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+            panelClass: ['error-snackbar'],
+          }
+        );
+        this.loadingStatus[request.requestId] = null;
+      },
     });
   }
 
   applyWfh() {
-    //     if (!this.canApplyWfh) {
-    //   alert('You already have an approved WFH period. You can apply again after your current WFH ends.');
-    //   return;
-    // }
     this.showApplyForm = true;
   }
 
@@ -307,20 +338,17 @@ this.loadingStatus[request.requestId] = null;
     this.showApplyForm = false;
 
     if (newRequest) {
-      // Add the new request to the top of the list
       this.details.unshift(newRequest);
 
       this.snackBar.open('WFH Request submitted successfully!', 'Close', {
         duration: 3000,
         horizontalPosition: 'center',
         verticalPosition: 'top',
-        panelClass: ['success-snackbar']
+        panelClass: ['success-snackbar'],
       });
       this.refreshRequests();
     }
   }
-
-
 
   onFormCancelled() {
     this.showApplyForm = false;
@@ -331,12 +359,13 @@ this.loadingStatus[request.requestId] = null;
   }
 
   getCount(status: string): number {
-    return this.details.filter(d => d.status === status).length;
+    return this.details.filter((d) => d.status === status).length;
   }
 
   getProgress(status: string): number {
     const count = this.getCount(status);
-    return this.totalRequests > 0 ? Math.round((count / this.totalRequests) * 100) : 0;
+    return this.totalRequests > 0
+      ? Math.round((count / this.totalRequests) * 100)
+      : 0;
   }
-
 }

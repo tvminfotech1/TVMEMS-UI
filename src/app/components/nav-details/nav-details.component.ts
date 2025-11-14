@@ -1,22 +1,30 @@
-import { Component, OnInit, AfterViewInit, ElementRef, ViewChild, OnDestroy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  AfterViewInit,
+  ElementRef,
+  ViewChild,
+  OnDestroy,
+} from '@angular/core';
 import { MainlayoutService } from 'src/app/services/main-layout.service';
 
 @Component({
   selector: 'app-nav-details',
   templateUrl: './nav-details.component.html',
-  styleUrls: ['./nav-details.component.css']
+  styleUrls: ['./nav-details.component.css'],
 })
 export class NavDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
-  completedTabs: any = {}; 
+  completedTabs: any = {};
 
-  @ViewChild('tabsContainer', { static: false }) tabsContainer!: ElementRef<HTMLElement>;
+  @ViewChild('tabsContainer', { static: false })
+  tabsContainer!: ElementRef<HTMLElement>;
 
   private resizeObserver?: ResizeObserver;
 
   constructor(private mainLayoutService: MainlayoutService) {}
 
   ngOnInit(): void {
-    this.mainLayoutService.completedTabs$.subscribe(tabs => {
+    this.mainLayoutService.completedTabs$.subscribe((tabs) => {
       this.completedTabs = tabs;
     });
   }
@@ -27,13 +35,13 @@ export class NavDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
     window.addEventListener('resize', this.onResize);
 
     try {
-      this.resizeObserver = new ResizeObserver(() => this.updateArrowVisibility());
+      this.resizeObserver = new ResizeObserver(() =>
+        this.updateArrowVisibility()
+      );
       if (this.tabsContainer?.nativeElement) {
         this.resizeObserver.observe(this.tabsContainer.nativeElement);
       }
-    } catch {
-      // ignore
-    }
+    } catch {}
   }
 
   ngOnDestroy(): void {
@@ -50,10 +58,10 @@ export class NavDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
     const el = this.tabsContainer?.nativeElement;
     if (!el) return;
 
-    const scrollAmount = Math.round(el.clientWidth * 0.6); // scroll ~60% of width
+    const scrollAmount = Math.round(el.clientWidth * 0.6);
     el.scrollBy({
       left: direction === 'left' ? -scrollAmount : scrollAmount,
-      behavior: 'smooth'
+      behavior: 'smooth',
     });
 
     setTimeout(() => this.updateArrowVisibility(), 300);
@@ -66,12 +74,15 @@ export class NavDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
     const container = el.parentElement as HTMLElement | null;
     if (!container) return;
 
-    const leftBtn = container.querySelector('.scroll-btn.left') as HTMLElement | null;
-    const rightBtn = container.querySelector('.scroll-btn.right') as HTMLElement | null;
+    const leftBtn = container.querySelector(
+      '.scroll-btn.left'
+    ) as HTMLElement | null;
+    const rightBtn = container.querySelector(
+      '.scroll-btn.right'
+    ) as HTMLElement | null;
 
     if (!leftBtn || !rightBtn) return;
 
-    
     if (el.scrollWidth <= el.clientWidth + 2) {
       leftBtn.classList.add('hidden');
       rightBtn.classList.add('hidden');
@@ -81,12 +92,11 @@ export class NavDetailsComponent implements OnInit, AfterViewInit, OnDestroy {
     leftBtn.classList.remove('hidden');
     rightBtn.classList.remove('hidden');
 
-   
     if (el.scrollLeft <= 2) leftBtn.classList.add('hidden');
     else leftBtn.classList.remove('hidden');
 
-    
-    if (el.scrollLeft + el.clientWidth >= el.scrollWidth - 2) rightBtn.classList.add('hidden');
+    if (el.scrollLeft + el.clientWidth >= el.scrollWidth - 2)
+      rightBtn.classList.add('hidden');
     else rightBtn.classList.remove('hidden');
   }
 }

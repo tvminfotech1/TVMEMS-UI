@@ -1,41 +1,56 @@
 <div class="app-container">
-
-  <!-- Header Tabs -->
   <header class="header">
     <nav class="tabs" role="tablist">
-      <button class="tab" [class.active]="activeTab === 'business'" (click)="setActiveTab('business')">
+      <button
+        class="tab"
+        [class.active]="activeTab === 'business'"
+        (click)="setActiveTab('business')"
+      >
         Business Unit Org Chart
       </button>
-      <button class="tab" [class.active]="activeTab === 'reporting'" (click)="setActiveTab('reporting')">
+      <button
+        class="tab"
+        [class.active]="activeTab === 'reporting'"
+        (click)="setActiveTab('reporting')"
+      >
         Reporting Structure
       </button>
-      <button class="tab" [class.active]="activeTab === 'directory'" (click)="setActiveTab('directory')">
+      <button
+        class="tab"
+        [class.active]="activeTab === 'directory'"
+        (click)="setActiveTab('directory')"
+      >
         Organization Directory
       </button>
     </nav>
   </header>
 
-  <!-- Loading -->
   <div *ngIf="isLoading" class="loading-state">
     <div class="spinner"></div>
     <p>Loading employees...</p>
   </div>
 
-  <!-- BUSINESS & REPORTING VIEW -->
-  <div *ngIf="!isLoading && activeTab !== 'directory'" class="org-chart-container">
-
-    <!-- Department Info -->
+  <div
+    *ngIf="!isLoading && activeTab !== 'directory'"
+    class="org-chart-container"
+  >
     <div class="department-card" *ngIf="activeTab === 'business'">
       <h3>{{ teamDepartment }}</h3>
       <p>Head by {{ departmentHead }}</p>
       <small>Department</small>
     </div>
 
-    <!-- Employee Grid -->
-    <div class="employees-grid" *ngIf="getVisibleEmployees().length; else noEmployees">
-      <div class="employee-card" *ngFor="let emp of getVisibleEmployees()" (click)="selectEmployee(emp)">
+    <div
+      class="employees-grid"
+      *ngIf="getVisibleEmployees().length; else noEmployees"
+    >
+      <div
+        class="employee-card"
+        *ngFor="let emp of getVisibleEmployees()"
+        (click)="selectEmployee(emp)"
+      >
         <div class="employee-photo">
-          <img [src]="emp.photo" [alt]="emp.name">
+          <img [src]="emp.photo" [alt]="emp.name" />
         </div>
         <h4>{{ emp.name }}</h4>
         <p class="designation">{{ emp.designation }}</p>
@@ -51,25 +66,65 @@
     </ng-template>
   </div>
 
-  <!-- DIRECTORY VIEW -->
-  <div *ngIf="!isLoading && activeTab === 'directory'" class="directory-container">
-
-    <!-- Add New Employee Form -->
+  <div
+    *ngIf="!isLoading && activeTab === 'directory'"
+    class="directory-container"
+  >
     <form class="add-employee-form" (ngSubmit)="aaddEmployee()">
       <h3>Add New Employee</h3>
-      <input type="text" placeholder="Name" [(ngModel)]="newEmployee.name" name="name" required>
-      <input type="email" placeholder="Email" [(ngModel)]="newEmployee.email" name="email" required>
-      <input type="text" placeholder="Department" [(ngModel)]="newEmployee.department" name="department" required>
-      <input type="text" placeholder="Designation" [(ngModel)]="newEmployee.designation" name="designation" required>
-      <input type="text" placeholder="Location" [(ngModel)]="newEmployee.location" name="location" required>
-      <input type="text" placeholder="Photo URL" [(ngModel)]="newEmployee.photo" name="photo" required>
+      <input
+        type="text"
+        placeholder="Name"
+        [(ngModel)]="newEmployee.name"
+        name="name"
+        required
+      />
+      <input
+        type="email"
+        placeholder="Email"
+        [(ngModel)]="newEmployee.email"
+        name="email"
+        required
+      />
+      <input
+        type="text"
+        placeholder="Department"
+        [(ngModel)]="newEmployee.department"
+        name="department"
+        required
+      />
+      <input
+        type="text"
+        placeholder="Designation"
+        [(ngModel)]="newEmployee.designation"
+        name="designation"
+        required
+      />
+      <input
+        type="text"
+        placeholder="Location"
+        [(ngModel)]="newEmployee.location"
+        name="location"
+        required
+      />
+      <input
+        type="text"
+        placeholder="Photo URL"
+        [(ngModel)]="newEmployee.photo"
+        name="photo"
+        required
+      />
       <button type="submit" class="action-btn">Add Employee</button>
     </form>
 
-    <!-- Search & Sort -->
     <div class="search-section">
       <div class="search-box">
-        <input type="text" placeholder="Search by Name / ID" [(ngModel)]="searchTerm" (input)="filterEmployees()">
+        <input
+          type="text"
+          placeholder="Search by Name / ID"
+          [(ngModel)]="searchTerm"
+          (input)="filterEmployees()"
+        />
         <i class="search-icon">🔍</i>
       </div>
       <div class="sort-options">
@@ -81,12 +136,15 @@
       </div>
     </div>
 
-    <!-- Directory List -->
     <div class="employee-list" *ngIf="filteredEmployees.length; else noResults">
-      <div class="employee-row" *ngFor="let emp of filteredEmployees" (click)="selectEmployee(emp)">
+      <div
+        class="employee-row"
+        *ngFor="let emp of filteredEmployees"
+        (click)="selectEmployee(emp)"
+      >
         <div class="employee-info">
           <div class="employee-photo-small">
-            <img [src]="emp.photo" [alt]="emp.name">
+            <img [src]="emp.photo" [alt]="emp.name" />
           </div>
           <div class="employee-details">
             <h4>{{ emp.name }}</h4>
@@ -111,12 +169,11 @@
     </ng-template>
   </div>
 
-  <!-- Detail Modal -->
   <div *ngIf="selectedEmployee" class="employee-detail-overlay">
     <div class="employee-detail-card">
       <button class="close-btn" (click)="closeEmployeeDetail()">×</button>
       <div class="employee-photo-large">
-        <img [src]="selectedEmployee.photo" [alt]="selectedEmployee.name">
+        <img [src]="selectedEmployee.photo" [alt]="selectedEmployee.name" />
       </div>
       <h3>{{ selectedEmployee.name }}</h3>
       <p>{{ selectedEmployee.location }}</p>
@@ -125,5 +182,4 @@
       <p *ngIf="selectedEmployee.email">📧 {{ selectedEmployee.email }}</p>
     </div>
   </div>
-
 </div>

@@ -5,7 +5,6 @@ import { UserService } from '../user-service.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MainlayoutService } from 'src/app/services/main-layout.service';
 
-
 @Component({
   selector: 'app-kyc',
   templateUrl: './kyc.component.html',
@@ -72,8 +71,6 @@ export class KycComponent implements OnInit {
       this.userService.setFormData('kyc', this.kycForm.value);
       this.router.navigate(['/mainlayout/passport']);
       this.mainlayoutService.markTabCompleted('kyc', true);
-
-      console.log(this.kycForm.value);
     } else {
       this.snackBar.open('Please fill all required fields', 'Close', {
         duration: 3000,

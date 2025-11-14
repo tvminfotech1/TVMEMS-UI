@@ -5,6 +5,6 @@ export interface Goal {
   metrics: string;
   outcome: string;
   weight: number;
-  startDate: string; // ISO string
+  startDate: string;
   endDate: string;
 }

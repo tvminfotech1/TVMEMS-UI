@@ -82,10 +82,10 @@ export class ResignationComponent implements OnInit {
         } else if (res.status === 'Rejected') {
           this.submittedData = [res];
           this.hasSubmittedResignation = false;
-        }else if (res.status === 'Pending' || res.status === 'Submitted') {
+        } else if (res.status === 'Pending' || res.status === 'Submitted') {
           this.submittedData = [res];
           this.hasSubmittedResignation = false;
-        }else {
+        } else {
           this.submittedData = [];
           this.hasSubmittedResignation = false;
         }
@@ -102,8 +102,6 @@ export class ResignationComponent implements OnInit {
 
     this.resingService.updateResignationStatus(data).subscribe({
       next: (res) => {
-        console.log(`Resignation ${newStatus.toLowerCase()}:`, res);
-
         if (this.isAdmin) {
           this.submittedData = this.submittedData.filter(
             (item) => item.id !== data.id

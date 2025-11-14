@@ -4,7 +4,7 @@
   padding: 20px;
   background-color: #ffffff;
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 form {
@@ -101,7 +101,8 @@ input {
   margin-top: 30px;
 }
 
-.prev-btn, .next-btn {
+.prev-btn,
+.next-btn {
   padding: 10px 20px;
   border-radius: 8px;
   background-color: #007bff;
@@ -112,6 +113,7 @@ input {
   cursor: pointer;
 }
 
-.prev-btn:hover, .next-btn:hover {
+.prev-btn:hover,
+.next-btn:hover {
   background-color: #004aad;
 }

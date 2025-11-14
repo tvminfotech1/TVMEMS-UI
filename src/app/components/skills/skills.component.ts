@@ -8,7 +8,7 @@ import { MainlayoutService } from 'src/app/services/main-layout.service';
 @Component({
   selector: 'app-skills',
   templateUrl: './skills.component.html',
-  styleUrls: ['./skills.component.css']
+  styleUrls: ['./skills.component.css'],
 })
 export class SkillsComponent implements OnInit {
   skillForm!: FormGroup;
@@ -21,55 +21,52 @@ export class SkillsComponent implements OnInit {
     private router: Router,
     private mainlayoutService: MainlayoutService,
     private snackBar: MatSnackBar
-
   ) {
     this.skillForm = this.formBuilder.group({
-  skillName: [
-    '',
-    [
-      Validators.required,
-      Validators.pattern(/^[a-zA-Z\s.,&'-]+$/),
-      Validators.minLength(3)
-    ]
-  ],
-  skillCategories: ['', [
-    Validators.required,
-    Validators.pattern(/^[a-zA-Z\s.,&'-]+$/),
-    Validators.minLength(3)
-  ]
-],
-  versionNum: [
-    '',
-    [
-      Validators.required,
-      Validators.pattern('^[0-9]+(\\.[0-9]+)?$') 
-    ]
-  ],
-  experience_year: [
-    '',
-    [
-      Validators.required,
-      Validators.pattern('^[0-9]+$'),
-      Validators.min(1),
-      Validators.max(15)
-    ]
-  ],
-  experience_month: [
-    '',
-    [
-      Validators.required,
-      Validators.pattern('^[0-9]+$'),
-      Validators.max(11) 
-    ]
-  ],
-  selfRate: ['', [Validators.required]],
-});
+      skillName: [
+        '',
+        [
+          Validators.required,
+          Validators.pattern(/^[a-zA-Z\s.,&'-]+$/),
+          Validators.minLength(3),
+        ],
+      ],
+      skillCategories: [
+        '',
+        [
+          Validators.required,
+          Validators.pattern(/^[a-zA-Z\s.,&'-]+$/),
+          Validators.minLength(3),
+        ],
+      ],
+      versionNum: [
+        '',
+        [Validators.required, Validators.pattern('^[0-9]+(\\.[0-9]+)?$')],
+      ],
+      experience_year: [
+        '',
+        [
+          Validators.required,
+          Validators.pattern('^[0-9]+$'),
+          Validators.min(1),
+          Validators.max(15),
+        ],
+      ],
+      experience_month: [
+        '',
+        [
+          Validators.required,
+          Validators.pattern('^[0-9]+$'),
+          Validators.max(11),
+        ],
+      ],
+      selfRate: ['', [Validators.required]],
+    });
 
     this.userService.setFormGroup('skills', this.skillForm);
   }
 
   ngOnInit(): void {
-    // Load saved data from service if available
     const savedSkills = this.userService.getFormData('skills');
     if (savedSkills && Array.isArray(savedSkills)) {
       this.skillList = savedSkills;
@@ -87,15 +84,15 @@ export class SkillsComponent implements OnInit {
   addSkill(): void {
     if (this.skillForm.valid) {
       this.skillList.push(this.skillForm.value);
-      this.userService.setFormData("skills", this.skillList);
-       this.skillForm.reset({
-      skillName: '',
-      skillCategories: '',
-      versionNum: '',
-      experience_year: null,
-      experience_month: null,
-      selfRate: null
-    });
+      this.userService.setFormData('skills', this.skillList);
+      this.skillForm.reset({
+        skillName: '',
+        skillCategories: '',
+        versionNum: '',
+        experience_year: null,
+        experience_month: null,
+        selfRate: null,
+      });
       this.showPopup = false;
     } else {
       this.skillForm.markAllAsTouched();
@@ -109,7 +106,6 @@ export class SkillsComponent implements OnInit {
   finalSubmit(): void {
     if (this.skillList.length >= 1) {
       this.userService.setFormData('skills', this.skillList);
-      console.log('skills', this.skillList);
       this.mainlayoutService.markTabCompleted('skills', true);
       this.router.navigate(['/mainlayout/certificate']);
     } else {
@@ -123,13 +119,12 @@ export class SkillsComponent implements OnInit {
   }
 
   preventInvalidInput(event: KeyboardEvent) {
-  if (['e', 'E', '+', '-'].includes(event.key)) {
-    event.preventDefault();
+    if (['e', 'E', '+', '-'].includes(event.key)) {
+      event.preventDefault();
+    }
   }
-}
 
-previous(){
-
-  this.router.navigate(['/mainlayout/education']);
-}
+  previous() {
+    this.router.navigate(['/mainlayout/education']);
+  }
 }

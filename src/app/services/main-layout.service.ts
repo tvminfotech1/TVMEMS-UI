@@ -3,7 +3,6 @@ import { BehaviorSubject } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class MainlayoutService {
-
   private completedTabsSource = new BehaviorSubject<any>({
     personal: false,
     kyc: false,
@@ -15,16 +14,21 @@ export class MainlayoutService {
     certificate: false,
     document: false,
     resume: false,
-    final: false
+    final: false,
   });
 
   completedTabs$ = this.completedTabsSource.asObservable();
 
-markTabCompleted(tabName: keyof typeof this.completedTabsSource.value, completed: boolean = true) {
-  const updatedTabs = { ...this.completedTabsSource.value, [tabName]: completed };
-  this.completedTabsSource.next(updatedTabs);
-}
-
+  markTabCompleted(
+    tabName: keyof typeof this.completedTabsSource.value,
+    completed: boolean = true
+  ) {
+    const updatedTabs = {
+      ...this.completedTabsSource.value,
+      [tabName]: completed,
+    };
+    this.completedTabsSource.next(updatedTabs);
+  }
 
   getCompletedTabs() {
     return this.completedTabsSource.value;

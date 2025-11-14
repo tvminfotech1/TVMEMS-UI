@@ -2,7 +2,6 @@
 <div class="PV-container">
   <form #form="ngForm" [formGroup]="userForm" (ngSubmit)="submitForm()">
     <div class="form-grid">
-      <!-- Nationality -->
       <mat-form-field appearance="outline">
         <mat-label>Nationality</mat-label>
         <mat-select formControlName="nationality" class="input-padding">
@@ -21,8 +20,6 @@
         </mat-error>
       </mat-form-field>
 
-      <!-- Passport Number -->
-      <!-- Passport dropdown -->
       <mat-form-field appearance="outline">
         <mat-label>Do you have passport?</mat-label>
         <mat-select formControlName="ifPassport" class="input-padding">
@@ -39,8 +36,6 @@
           Please select if you have a passport
         </mat-error>
       </mat-form-field>
-
-      <!-- Passport Number (conditionally visible) -->
       <div *ngIf="userForm.get('ifPassport')?.value === 'Yes'">
         <mat-form-field appearance="outline" style="width: 100%">
           <mat-label>Enter Passport Number</mat-label>

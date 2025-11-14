@@ -19,8 +19,10 @@ export const userAuthGuard: CanActivateFn = (route, state) => {
     const roles = decoded.roles;
 
     if (
-      (Array.isArray(roles) && (roles.includes('ROLE_USER') || roles.includes('ROLE_ADMIN'))) ||
-      (typeof roles === 'string' && (roles === 'ROLE_USER' || roles === 'ROLE_ADMIN'))
+      (Array.isArray(roles) &&
+        (roles.includes('ROLE_USER') || roles.includes('ROLE_ADMIN'))) ||
+      (typeof roles === 'string' &&
+        (roles === 'ROLE_USER' || roles === 'ROLE_ADMIN'))
     ) {
       return of(true);
     } else {

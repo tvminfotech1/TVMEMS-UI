@@ -1,10 +1,9 @@
 <div class="container" *ngIf="employee">
   <div class="card">
-    <!-- ===== Header ===== -->
     <div class="card-header">
       <button mat-icon-button class="back-btn" (click)="goBack()">
-      <mat-icon>arrow_back</mat-icon>
-    </button>
+        <mat-icon>arrow_back</mat-icon>
+      </button>
       <h3>
         <mat-icon>badge</mat-icon>
         Employee Details
@@ -15,103 +14,139 @@
     </div>
 
     <div class="card-body">
-      <!-- ===== Top Info Row ===== -->
- <!-- Top Row Header (Employee Info) -->
-<div class="employee-header-row">
-  <div class="emp-info">
-    <h4 class="emp-name">{{ employee.fullName }}</h4>
-    <p class="emp-id">ID: {{ employee.id }}</p>
-  </div>
+      <div class="employee-header-row">
+        <div class="emp-info">
+          <h4 class="emp-name">{{ employee.fullName }}</h4>
+          <p class="emp-id">ID: {{ employee.id }}</p>
+        </div>
 
-  <div class="emp-status-container">
-    <p class="emp-status">
-      <strong>Status:</strong>
-      <span
-        [ngClass]="{
-          'text-success': employee.status === 'Active',
-          'text-danger': employee.status !== 'Active'
-        }"
-      >
-        {{ employee.status }}
-      </span>
-    </p>
+        <div class="emp-status-container">
+          <p class="emp-status">
+            <strong>Status:</strong>
+            <span
+              [ngClass]="{
+                'text-success': employee.status === 'Active',
+                'text-danger': employee.status !== 'Active'
+              }"
+            >
+              {{ employee.status }}
+            </span>
+          </p>
 
-    <button
-      class="status-btn"
-      [ngClass]="employee.status === 'Active' ? 'danger' : 'success'"
-      (click)="toggleStatus()"
-    >
-      {{ employee.status === 'Active' ? 'Deactivate' : 'Activate' }}
-    </button>
-  </div>
-</div>
+          <button
+            class="status-btn"
+            [ngClass]="employee.status === 'Active' ? 'danger' : 'success'"
+            (click)="toggleStatus()"
+          >
+            {{ employee.status === "Active" ? "Deactivate" : "Activate" }}
+          </button>
+        </div>
+      </div>
 
-
-
-      <!-- ===== Main Details ===== -->
       <div class="row">
         <div class="col-right">
-          <!-- Personal Info -->
           <div class="section">
             <h5 class="section-title">
               <mat-icon>person_outline</mat-icon> Personal Info
             </h5>
             <table class="custom-table">
-              <tr><th>Email</th><td>{{ employee.email }}</td></tr>
-              <tr><th>Phone</th><td>{{ employee.phone }}</td></tr>
-              <tr><th>Department</th><td>{{ employee.department }}</td></tr>
-              <tr><th>Joining Date</th><td>{{ employee.joiningDate }}</td></tr>
-              <tr><th>Employee Type</th><td>{{ employee.employeeType }}</td></tr>
-              <tr><th>Location</th><td>{{ employee.location }}</td></tr>
+              <tr>
+                <th>Email</th>
+                <td>{{ employee.email }}</td>
+              </tr>
+              <tr>
+                <th>Phone</th>
+                <td>{{ employee.phone }}</td>
+              </tr>
+              <tr>
+                <th>Department</th>
+                <td>{{ employee.department }}</td>
+              </tr>
+              <tr>
+                <th>Joining Date</th>
+                <td>{{ employee.joiningDate }}</td>
+              </tr>
+              <tr>
+                <th>Employee Type</th>
+                <td>{{ employee.employeeType }}</td>
+              </tr>
+              <tr>
+                <th>Location</th>
+                <td>{{ employee.location }}</td>
+              </tr>
             </table>
           </div>
 
-          <!-- Salary Info -->
           <div class="section">
             <h5 class="section-title">
               <mat-icon>currency_rupee</mat-icon> Salary Info
             </h5>
             <table class="custom-table striped">
-              <tr><th>CTC</th><td>₹{{ employee.ctc }}</td></tr>
-              <tr><th>Basic Salary</th><td>₹{{ employee.basicSalary }}</td></tr>
-              <tr><th>In-Hand Salary</th><td>₹{{ employee.inHandSalary }}</td></tr>
+              <tr>
+                <th>CTC</th>
+                <td>₹{{ employee.ctc }}</td>
+              </tr>
+              <tr>
+                <th>Basic Salary</th>
+                <td>₹{{ employee.basicSalary }}</td>
+              </tr>
+              <tr>
+                <th>In-Hand Salary</th>
+                <td>₹{{ employee.inHandSalary }}</td>
+              </tr>
             </table>
           </div>
 
-          <!-- Identification -->
           <div class="section">
             <h5 class="section-title">
               <mat-icon>credit_card</mat-icon> Identification
             </h5>
             <table class="custom-table striped">
-              <tr><th>Aadhaar</th><td>{{ employee.aadhaarNumber }}</td></tr>
-              <tr><th>PAN</th><td>{{ employee.panNumber }}</td></tr>
+              <tr>
+                <th>Aadhaar</th>
+                <td>{{ employee.aadhaarNumber }}</td>
+              </tr>
+              <tr>
+                <th>PAN</th>
+                <td>{{ employee.panNumber }}</td>
+              </tr>
             </table>
           </div>
 
-          <!-- Bank Details -->
           <div class="section">
             <h5 class="section-title">
               <mat-icon>account_balance</mat-icon> Bank Details
             </h5>
             <table class="custom-table striped">
-              <tr><th>Bank Name</th><td>{{ employee.bankDetails.bankName }}</td></tr>
-              <tr><th>Account Number</th><td>{{ employee.bankDetails.accountNumber }}</td></tr>
-              <tr><th>IFSC Code</th><td>{{ employee.bankDetails.ifscCode }}</td></tr>
-              <tr><th>Branch</th><td>{{ employee.bankDetails.branch }}</td></tr>
+              <tr>
+                <th>Bank Name</th>
+                <td>{{ employee.bankDetails.bankName }}</td>
+              </tr>
+              <tr>
+                <th>Account Number</th>
+                <td>{{ employee.bankDetails.accountNumber }}</td>
+              </tr>
+              <tr>
+                <th>IFSC Code</th>
+                <td>{{ employee.bankDetails.ifscCode }}</td>
+              </tr>
+              <tr>
+                <th>Branch</th>
+                <td>{{ employee.bankDetails.branch }}</td>
+              </tr>
             </table>
           </div>
         </div>
       </div>
-          <div class="employee-actions">
-  <button mat-raised-button color="primary" (click)="editEmployee()">
-    <mat-icon>edit</mat-icon> Edit
-  </button>
+      <div class="employee-actions">
+        <button mat-raised-button color="primary" (click)="editEmployee()">
+          <mat-icon>edit</mat-icon> Edit
+        </button>
 
-  <button mat-raised-button color="warn" (click)="deleteEmployee()">
-    <mat-icon>delete</mat-icon> Delete
-  </button>
-</div>
+        <button mat-raised-button color="warn" (click)="deleteEmployee()">
+          <mat-icon>delete</mat-icon> Delete
+        </button>
+      </div>
     </div>
   </div>
 </div>

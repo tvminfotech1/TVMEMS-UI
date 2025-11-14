@@ -1,35 +1,57 @@
 <div class="wfh-form-overlay" (click)="onOverlayClick($event)">
   <div class="wfh-form-container animate-in" (click)="$event.stopPropagation()">
-
     <button type="button" class="close-btn" (click)="onCancel()">✖</button>
 
     <h3>Apply for Work From Home</h3>
 
-
-    <!-- WFH Form Popup -->
-
     <div class="popup">
       <div class="popup-content">
         <form class="form-grid" [formGroup]="wfhForm" (ngSubmit)="onSubmit()">
-
-          <!-- Employee Id -->
-          <mat-form-field appearance="outline" class="custom-form-field full-width">
+          <mat-form-field
+            appearance="outline"
+            class="custom-form-field full-width"
+          >
             <mat-label>Employee ID</mat-label>
-            <input matInput [value]="employeeId" readonly class="disabled-look" />
+            <input
+              matInput
+              [value]="employeeId"
+              readonly
+              class="disabled-look"
+            />
           </mat-form-field>
 
-          <!-- Employee Name -->
-          <mat-form-field appearance="outline" class="custom-form-field full-width">
+          <mat-form-field
+            appearance="outline"
+            class="custom-form-field full-width"
+          >
             <mat-label>Employee Name</mat-label>
-            <input matInput [value]="employeeName" readonly class="disabled-look" />
+            <input
+              matInput
+              [value]="employeeName"
+              readonly
+              class="disabled-look"
+            />
           </mat-form-field>
 
-          <!-- From Date -->
-          <mat-form-field appearance="outline" class="custom-form-field full-width">
+          <mat-form-field
+            appearance="outline"
+            class="custom-form-field full-width"
+          >
             <mat-label>From Date</mat-label>
-            <input matInput [matDatepicker]="fromPicker" formControlName="fromDate" [min]="today"
-              placeholder="DD-MM-YYYY" required (click)="fromPicker.open()" readonly />
-            <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
+            <input
+              matInput
+              [matDatepicker]="fromPicker"
+              formControlName="fromDate"
+              [min]="today"
+              placeholder="DD-MM-YYYY"
+              required
+              (click)="fromPicker.open()"
+              readonly
+            />
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="fromPicker"
+            ></mat-datepicker-toggle>
             <mat-datepicker #fromPicker></mat-datepicker>
 
             <mat-error *ngIf="wfhForm.get('fromDate')?.hasError('required')">
@@ -40,29 +62,47 @@
             </mat-error>
           </mat-form-field>
 
-          <!-- To Date -->
-          <mat-form-field appearance="outline" class="custom-form-field full-width">
+          <mat-form-field
+            appearance="outline"
+            class="custom-form-field full-width"
+          >
             <mat-label>To Date</mat-label>
-            <input matInput [matDatepicker]="toPicker" formControlName="toDate"
-              [min]="wfhForm.get('fromDate')?.value || today" placeholder="DD-MM-YYYY" required
-              (click)="toPicker.open()" readonly />
-            <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
+            <input
+              matInput
+              [matDatepicker]="toPicker"
+              formControlName="toDate"
+              [min]="wfhForm.get('fromDate')?.value || today"
+              placeholder="DD-MM-YYYY"
+              required
+              (click)="toPicker.open()"
+              readonly
+            />
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="toPicker"
+            ></mat-datepicker-toggle>
             <mat-datepicker #toPicker></mat-datepicker>
 
             <mat-error *ngIf="wfhForm.get('toDate')?.hasError('required')">
               To Date is required.
             </mat-error>
             <mat-error *ngIf="wfhForm.get('toDate')?.hasError('toBeforeFrom')">
-           To Date cannot be before From Date.
-           </mat-error>
-
+              To Date cannot be before From Date.
+            </mat-error>
           </mat-form-field>
 
-          <!-- Reason -->
-          <mat-form-field appearance="outline" class="custom-form-field full-width">
+          <mat-form-field
+            appearance="outline"
+            class="custom-form-field full-width"
+          >
             <mat-label>Reason</mat-label>
-            <textarea matInput rows="4" formControlName="reason" placeholder="Enter reason for WFH..."
-              required></textarea>
+            <textarea
+              matInput
+              rows="4"
+              formControlName="reason"
+              placeholder="Enter reason for WFH..."
+              required
+            ></textarea>
 
             <mat-error *ngIf="wfhForm.get('reason')?.hasError('required')">
               Reason is required.
@@ -75,35 +115,44 @@
             </mat-error>
           </mat-form-field>
 
-          <!-- Approver -->
-          <mat-form-field appearance="outline" class="custom-form-field full-width">
+          <mat-form-field
+            appearance="outline"
+            class="custom-form-field full-width"
+          >
             <mat-label>Approver</mat-label>
-            <input matInput type="text" formControlName="approver" placeholder="Enter approver's name"
-              class="input-padding" (keydown)="blockApproverInput($event)" required />
+            <input
+              matInput
+              type="text"
+              formControlName="approver"
+              placeholder="Enter approver's name"
+              class="input-padding"
+              (keydown)="blockApproverInput($event)"
+              required
+            />
             <mat-error *ngIf="wfhForm.get('approver')?.hasError('required')">
               Approver is required.
             </mat-error>
             <mat-error *ngIf="wfhForm.get('approver')?.hasError('pattern')">
               Only letters are allowed (no numbers or symbols).
             </mat-error>
-
           </mat-form-field>
 
-          <!-- Submission Error -->
           <div *ngIf="submissionError" class="submission-error">
             {{ submissionError }}
           </div>
 
-          <!-- Form Actions -->
           <div class="full-width">
-            <button type="submit" class="update-button" color="accent" [disabled]="wfhForm.invalid">
+            <button
+              type="submit"
+              class="update-button"
+              color="accent"
+              [disabled]="wfhForm.invalid"
+            >
               Submit
             </button>
           </div>
         </form>
-
       </div>
     </div>
-
   </div>
 </div>

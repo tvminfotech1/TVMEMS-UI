@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { EmployeeService } from '../../services/employee.service';
-import { EmployeeDataService } from 'src/app/services/employee-data.service'; // Import shared service
-
+import { EmployeeDataService } from 'src/app/services/employee-data.service';
 @Component({
   selector: 'app-employee-details',
   templateUrl: './employee-details.component.html',
-  styleUrls: ['./employee-details.component.css']
+  styleUrls: ['./employee-details.component.css'],
 })
 export class EmployeeDetailsComponent implements OnInit {
   employeeId: any;
@@ -15,48 +14,28 @@ export class EmployeeDetailsComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private empService: EmployeeService,
-    private empDataService: EmployeeDataService 
+    private empDataService: EmployeeDataService
   ) {}
 
-  // ngOnInit(): void {
-  //   const id = this.route.snapshot.paramMap.get('id');
-    
-  //   // Check if employee details are available in shared service
-  //   const sharedData = this.empDataService.getEmployeeData();
-    
-  //   if (sharedData) {
-  //     this.employeeDetails = sharedData; // Use shared data if available
-  //   } else {
-  //     // If no shared data, fetch from API
-  //     this.empService.getEmployees().subscribe({
-  //       next: (res: any) => {
-  //         this.employeeDetails = res.body.find((emp: any) => emp.id == id);
-  //         this.empDataService.setEmployeeData(this.employeeDetails); // Save in shared service for future use
-  //       },
-  //       error: (err: any) => console.error('Error:', err)
-  //     });
-  //   }
-  // }
   ngOnInit(): void {
-  const id = this.route.snapshot.paramMap.get('id');
-  const sharedData = this.empDataService.getEmployeeData();
+    const id = this.route.snapshot.paramMap.get('id');
+    const sharedData = this.empDataService.getEmployeeData();
 
-  if (sharedData) {
-    this.employeeDetails = sharedData;
-  } else if (id) {
-    this.empService.getEmployees().subscribe({
-      next: (res: any) => {
-        const found = res.body.find((emp: any) => emp.id == id);
-        if (found) {
-          this.employeeDetails = found;
-          this.empDataService.setEmployeeData(found);
-        } else {
-          console.error('Employee not found');
-        }
-      },
-      error: (err) => console.error('API error:', err)
-    });
+    if (sharedData) {
+      this.employeeDetails = sharedData;
+    } else if (id) {
+      this.empService.getEmployees().subscribe({
+        next: (res: any) => {
+          const found = res.body.find((emp: any) => emp.id == id);
+          if (found) {
+            this.employeeDetails = found;
+            this.empDataService.setEmployeeData(found);
+          } else {
+            console.error('Employee not found');
+          }
+        },
+        error: (err) => console.error('API error:', err),
+      });
+    }
   }
-}
-
 }

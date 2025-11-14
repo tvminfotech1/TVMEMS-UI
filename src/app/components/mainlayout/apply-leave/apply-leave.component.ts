@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'app-apply-leave',
   templateUrl: './apply-leave.component.html',
-  styleUrls: ['./apply-leave.component.css']
+  styleUrls: ['./apply-leave.component.css'],
 })
 export class ApplyLeaveComponent {
   leave = {
@@ -13,13 +13,11 @@ export class ApplyLeaveComponent {
     to: '',
     toType: 'full',
     comments: '',
-    notifyTo: ''
+    notifyTo: '',
   };
 
   onSubmit() {
-    console.log('Leave Application Submitted:', this.leave);
     alert('Leave Application Submitted!');
-    // Reset form values
     this.leave = {
       leaveType: '',
       from: '',
@@ -27,7 +25,7 @@ export class ApplyLeaveComponent {
       to: '',
       toType: 'full',
       comments: '',
-      notifyTo: ''
+      notifyTo: '',
     };
   }
 }

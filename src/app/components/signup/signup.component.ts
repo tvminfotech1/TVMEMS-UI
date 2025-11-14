@@ -48,7 +48,13 @@ export class SignupComponent implements OnInit {
         aadhar: ['', [Validators.required, Validators.pattern(/^\d{12}$/)]],
         dob: ['', [Validators.required, this.dobValidator]],
         gender: ['', Validators.required],
-       password: ['', [Validators.required, Validators.pattern(/^[A-Z][a-z]{2,}[#@\$&][0-9]{2,}$/)]],
+        password: [
+          '',
+          [
+            Validators.required,
+            Validators.pattern(/^[A-Z][a-z]{2,}[#@\$&][0-9]{2,}$/),
+          ],
+        ],
 
         confirmPassword: ['', Validators.required],
       },
@@ -191,14 +197,14 @@ this.signupForm.get('confirmPassword')?.valueChanges.subscribe(() => {
       next: (res: any) => {
         this.successMessage =
           res.message || 'Registration successful! Please check your email.';
-          alert(this.successMessage);
-          this.signupForm.reset();
-          this.signupForm.markAsPristine();
+        alert(this.successMessage);
+        this.signupForm.reset();
+        this.signupForm.markAsPristine();
         this.signupForm.markAsUntouched();
         this.signupForm.updateValueAndValidity();
-        Object.keys(this.signupForm.controls).forEach(key => {
+        Object.keys(this.signupForm.controls).forEach((key) => {
           this.signupForm.get(key)?.setErrors(null);
-        }); 
+        });
       },
       error: (err) => {
         console.error('Signup error:', err);

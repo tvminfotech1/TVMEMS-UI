@@ -18,7 +18,6 @@ export class UserDetailsService {
       Authorization: `Bearer ${token}`,
     });
 
-    // GET request with headers
     return this.http.get(`${this.BASE_URL}/userDetails`, { headers });
   }
 }

@@ -6,7 +6,6 @@ import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MainlayoutService } from 'src/app/services/main-layout.service';
 
-
 @Component({
   selector: 'app-education',
   templateUrl: './education.component.html',

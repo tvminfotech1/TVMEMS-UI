@@ -1,4 +1,3 @@
-/* Background overlay */
 .wfh-form-overlay {
   position: fixed;
   inset: 0;
@@ -11,12 +10,11 @@
   overflow-y: auto;
 }
 
-/* Popup container */
 .wfh-form-container {
   background: #ffffff;
   width: 600px;
   max-width: 500px;
-    max-height: 100vh;
+  max-height: 100vh;
   padding: 30px;
   border-radius: 14px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
@@ -24,7 +22,6 @@
   animation: zoomIn 0.4s ease forwards;
 }
 
-/* Heading */
 .wfh-form-container h3 {
   font-size: 1.6rem;
   font-weight: 600;
@@ -32,8 +29,6 @@
   margin-bottom: 1.2rem;
   text-align: center;
 }
-
-/* Close button */
 .close-btn {
   position: absolute;
   top: 15px;
@@ -46,27 +41,23 @@
   transition: transform 0.2s ease, color 0.2s ease;
 }
 
-
 .close-btn:hover {
   transform: rotate(90deg);
   color: #ff4d4d;
 }
 
-/* Popup content */
 .popup-content {
   display: flex;
   flex-direction: column;
   gap: 18px;
 }
 
-/* Form grid for uniform spacing */
 .form-grid {
   display: flex;
   flex-direction: column;
   gap: 0px;
 }
 
-/* Angular Material fields */
 .custom-form-field {
   width: 100%;
 }
@@ -75,7 +66,6 @@ textarea[matInput] {
   height: 50px;
 }
 
-/* Submit button */
 .update-button {
   width: 100%;
   background-color: #3f51b5;
@@ -95,7 +85,6 @@ textarea[matInput] {
   background-color: #0056b3;
 }
 
-/* Error message styles */
 .mat-error,
 .submission-error {
   font-size: 0.85rem;
@@ -104,7 +93,6 @@ textarea[matInput] {
   display: block;
 }
 
-/* Responsive design */
 @media (max-width: 600px) {
   .wfh-form-container {
     width: 95%;
@@ -119,7 +107,6 @@ textarea[matInput] {
   }
 }
 
-/* Smooth popup animation */
 @keyframes fadeInUp {
   0% {
     transform: translateY(40px);
@@ -138,19 +125,16 @@ textarea[matInput] {
   flex-direction: column;
 }
 
-/* Full width fields */
 .full-width {
   width: 100%;
   display: block;
 }
 
-/* Labels */
 .form-group label {
   font-weight: 600;
   color: #333;
 }
 
-/* Input fields */
 .form-group input {
   border: 1px solid #ccc;
   border-radius: 6px;
@@ -159,8 +143,6 @@ textarea[matInput] {
   transition: border-color 0.3s;
 }
 
-
-/* Input focus effect */
 .form-group input:focus {
   border-color: blue;
 }
@@ -182,14 +164,13 @@ textarea[matInput] {
   font-weight: 500;
 }
 
-/* Shrink form on very small screens (below 400px) */
 @media (max-width: 400px) {
   .wfh-form-container {
     width: 90% !important;
     max-width: 90% !important;
     padding: 16px;
     transform: scale(0.95);
-    margin-top: 60px; /* pushes form down a bit from top icons */
+    margin-top: 60px;
   }
 
   .wfh-form-container h3 {
@@ -204,21 +185,19 @@ textarea[matInput] {
   }
 }
 
-/* Fine-tune for 1000px–1200px screen width */
-@media  (max-height: 600px) and (min-height:500px) {
+@media (max-height: 600px) and (min-height: 500px) {
   .wfh-form-container {
     width: 60%;
     max-width: 50%;
     max-height: 103vh;
-    padding: 28px 26px 36px; /* added bottom padding */
+    padding: 28px 26px 36px;
     border-radius: 14px;
     transform: scale(0.95);
     margin: 0 auto;
   }
 
   .update-button {
-    /* margin-top: 10px; */
-    margin-bottom: 10px; /* adds breathing room */
+    margin-bottom: 10px;
     padding: 10px 0;
     border-radius: 10px;
   }
@@ -233,7 +212,7 @@ textarea[matInput] {
     margin-top: 0dvb;
   }
 
-    .close-btn {
+  .close-btn {
     top: 10px !important;
     right: 6px !important;
     font-size: 18px !important;
@@ -243,25 +222,20 @@ textarea[matInput] {
 
 @media (min-width: 1000px) and (max-width: 1200px) {
   .wfh-form-container {
-    transform: scale(0.92); /* slightly shrink form */
-    margin: 20px auto;      /* keep centered */
+    transform: scale(0.92);
+    margin: 20px auto;
   }
 }
 
-/* Optional for smaller heights (phones in landscape) */
 @media (max-height: 700px) {
   .wfh-form-container {
-    max-height: 85vh;  /* ensures Submit button stays visible */
+    max-height: 85vh;
     overflow-y: auto;
   }
 
-    .close-btn {
+  .close-btn {
     top: 20px;
     right: 20px;
     font-size: 18px;
   }
-
 }
-
-
-

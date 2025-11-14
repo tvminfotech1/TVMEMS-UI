@@ -1,5 +1,4 @@
 <div class="payroll-employee-container">
-  <!-- ===== Header ===== -->
   <div class="employee-header mat-elevation-z2">
     <h2>
       <mat-icon color="primary">people</mat-icon>
@@ -7,14 +6,17 @@
     </h2>
 
     <div class="emp-right-header">
-      <button mat-raised-button color="primary" (click)="navigateToAddEmployee()">
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="navigateToAddEmployee()"
+      >
         <mat-icon>person_add</mat-icon>
         Add Employee
       </button>
     </div>
   </div>
 
-  <!-- ===== Filters ===== -->
   <div class="filters mat-elevation-z1">
     <mat-form-field appearance="outline">
       <mat-label>Work Location</mat-label>
@@ -58,86 +60,84 @@
     </div>
   </div>
 
-  <!-- ===== Filtered Employee Count ===== -->
   <p class="employee-count">
     <b>Total Employees:</b> {{ filteredEmployees.length }}
   </p>
 
-  <!-- ===== Employee Table ===== -->
   <div class="employee-table mat-elevation-z2">
-  <table mat-table [dataSource]="filteredEmployees" class="mat-elevation-z1">
-    
-    <!-- ===== Table Columns ===== -->
-    <ng-container matColumnDef="id">
-      <th mat-header-cell *matHeaderCellDef>EMP ID</th>
-      <td mat-cell *matCellDef="let emp" class="clickable text-success">
-        {{ emp.id }}
-      </td>
-    </ng-container>
+    <table mat-table [dataSource]="filteredEmployees" class="mat-elevation-z1">
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef>EMP ID</th>
+        <td mat-cell *matCellDef="let emp" class="clickable text-success">
+          {{ emp.id }}
+        </td>
+      </ng-container>
 
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef>Employee Name</th>
-      <td mat-cell *matCellDef="let emp">
-        {{ emp.fullName }}
-      </td>
-    </ng-container>
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Employee Name</th>
+        <td mat-cell *matCellDef="let emp">
+          {{ emp.fullName }}
+        </td>
+      </ng-container>
 
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef>Email</th>
+        <td mat-cell *matCellDef="let emp">{{ emp.email }}</td>
+      </ng-container>
 
-    <ng-container matColumnDef="email">
-      <th mat-header-cell *matHeaderCellDef>Email</th>
-      <td mat-cell *matCellDef="let emp">{{ emp.email }}</td>
-    </ng-container>
+      <ng-container matColumnDef="department">
+        <th mat-header-cell *matHeaderCellDef>Department</th>
+        <td mat-cell *matCellDef="let emp">{{ emp.department }}</td>
+      </ng-container>
 
-    <ng-container matColumnDef="department">
-      <th mat-header-cell *matHeaderCellDef>Department</th>
-      <td mat-cell *matCellDef="let emp">{{ emp.department }}</td>
-    </ng-container>
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef>Status</th>
+        <td mat-cell *matCellDef="let emp">
+          <span
+            [ngClass]="{
+              'text-success': emp.status === 'Active',
+              'text-danger': emp.status === 'Deactivated'
+            }"
+          >
+            <b>{{ emp.status }}</b>
+          </span>
+        </td>
+      </ng-container>
 
-    <ng-container matColumnDef="status">
-      <th mat-header-cell *matHeaderCellDef>Status</th>
-      <td mat-cell *matCellDef="let emp">
-        <span
-          [ngClass]="{
-            'text-success': emp.status === 'Active',
-            'text-danger': emp.status === 'Deactivated'
-          }"
-        >
-          <b>{{ emp.status }}</b>
-        </span>
-      </td>
-    </ng-container>
+      <ng-container matColumnDef="location">
+        <th mat-header-cell *matHeaderCellDef>Location</th>
+        <td mat-cell *matCellDef="let emp">{{ emp.location }}</td>
+      </ng-container>
 
-    <ng-container matColumnDef="location">
-      <th mat-header-cell *matHeaderCellDef>Location</th>
-      <td mat-cell *matCellDef="let emp">{{ emp.location }}</td>
-    </ng-container>
+      <ng-container matColumnDef="details">
+        <th mat-header-cell *matHeaderCellDef>Details</th>
+        <td mat-cell *matCellDef="let emp">
+          <div class="action-buttons">
+            <button
+              mat-stroked-button
+              color="primary"
+              [routerLink]="['/mainlayout/payroll-employee', emp.id]"
+            >
+              <mat-icon>visibility</mat-icon>
+              View
+            </button>
+            <button mat-raised-button color="primary" (click)="viewPayRun(emp)">
+              <mat-icon>add</mat-icon>
+              Add Salary
+            </button>
+          </div>
+        </td>
+      </ng-container>
 
-   <ng-container matColumnDef="details">
-  <th mat-header-cell *matHeaderCellDef>Details</th>
-  <td mat-cell *matCellDef="let emp">
-    <div class="action-buttons">
-      <button mat-stroked-button color="primary" [routerLink]="['/mainlayout/payroll-employee', emp.id]">
-        <mat-icon>visibility</mat-icon>
-        View
-      </button>
-      <button mat-raised-button color="primary" (click)="viewPayRun(emp)">
-        <mat-icon>add</mat-icon>
-        Add Salary
-      </button>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+    <div
+      class="no-data mat-elevation-z1"
+      *ngIf="filteredEmployees.length === 0"
+    >
+      <mat-icon color="warn">error_outline</mat-icon>
+      No employees found for selected filters.
     </div>
-  </td>
-</ng-container>
-
-
-    <!-- ===== Always Visible Header & Rows ===== -->
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-
-  </table>
-  <div class="no-data mat-elevation-z1" *ngIf="filteredEmployees.length === 0">
-    <mat-icon color="warn">error_outline</mat-icon>
-    No employees found for selected filters.
   </div>
-</div>
-
 </div>

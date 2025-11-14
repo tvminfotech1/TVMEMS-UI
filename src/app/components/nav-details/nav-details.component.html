@@ -1,107 +1,119 @@
 <div class="tabs-container">
-  <button class="scroll-btn left" (click)="scrollTabs('left')" aria-label="Scroll left">
+  <button
+    class="scroll-btn left"
+    (click)="scrollTabs('left')"
+    aria-label="Scroll left"
+  >
     <span class="material-icons">chevron_left</span>
   </button>
-<div class="tabs"  #tabsContainer>
-  <!-- Step 1: Personal -->
-  <a
-    routerLink="/mainlayout/personal"
-    routerLinkActive="active-tab"
-    [routerLinkActiveOptions]="{ exact: true }">
-    Personal
-  </a>
+  <div class="tabs" #tabsContainer>
+    <a
+      routerLink="/mainlayout/personal"
+      routerLinkActive="active-tab"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      Personal
+    </a>
 
-  <!-- Step 2: KYC -->
-  <a
-    [class.disabled]="!completedTabs.personal"
-    [routerLink]="completedTabs.personal ? '/mainlayout/kyc' : null"
-    routerLinkActive="active-tab"
-    [routerLinkActiveOptions]="{ exact: true }">
-    KYC
-  </a>
+    <a
+      [class.disabled]="!completedTabs.personal"
+      [routerLink]="completedTabs.personal ? '/mainlayout/kyc' : null"
+      routerLinkActive="active-tab"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      KYC
+    </a>
 
-  <!-- Step 3: Passport & Visa -->
-  <a
-    [class.disabled]="!completedTabs.kyc"
-    [routerLink]="completedTabs.kyc ? '/mainlayout/passport' : null"
-    routerLinkActive="active-tab"
-    [routerLinkActiveOptions]="{ exact: true }">
-    Passport & Visa
-  </a>
+    <a
+      [class.disabled]="!completedTabs.kyc"
+      [routerLink]="completedTabs.kyc ? '/mainlayout/passport' : null"
+      routerLinkActive="active-tab"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      Passport & Visa
+    </a>
 
-  <!-- Step 4: Family -->
-  <a
-    [class.disabled]="!completedTabs.passport"
-    [routerLink]="completedTabs.passport ? '/mainlayout/family' : null"
-    routerLinkActive="active-tab"
-    [routerLinkActiveOptions]="{ exact: true }">
-    Family
-  </a>
+    <a
+      [class.disabled]="!completedTabs.passport"
+      [routerLink]="completedTabs.passport ? '/mainlayout/family' : null"
+      routerLinkActive="active-tab"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      Family
+    </a>
 
-  <!-- Step 5: Previous Employment -->
-  <a
-    [class.disabled]="!completedTabs.family"
-    [routerLink]="completedTabs.family ? '/mainlayout/previousEmployee' : null"
-    routerLinkActive="active-tab"
-    [routerLinkActiveOptions]="{ exact: true }">
-    Previous Employment
-  </a>
+    <a
+      [class.disabled]="!completedTabs.family"
+      [routerLink]="
+        completedTabs.family ? '/mainlayout/previousEmployee' : null
+      "
+      routerLinkActive="active-tab"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      Previous Employment
+    </a>
 
-  <!-- Step 6: Education -->
-  <a
-    [class.disabled]="!completedTabs.previousEmployee"
-    [routerLink]="completedTabs.previousEmployee ? '/mainlayout/education' : null"
-    routerLinkActive="active-tab"
-    [routerLinkActiveOptions]="{ exact: true }">
-    Education
-  </a>
+    <a
+      [class.disabled]="!completedTabs.previousEmployee"
+      [routerLink]="
+        completedTabs.previousEmployee ? '/mainlayout/education' : null
+      "
+      routerLinkActive="active-tab"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      Education
+    </a>
 
-  <!-- Step 7: Skills -->
-  <a
-    [class.disabled]="!completedTabs.education"
-    [routerLink]="completedTabs.education ? '/mainlayout/skills' : null"
-    routerLinkActive="active-tab"
-    [routerLinkActiveOptions]="{ exact: true }">
-    Skills
-  </a>
+    <a
+      [class.disabled]="!completedTabs.education"
+      [routerLink]="completedTabs.education ? '/mainlayout/skills' : null"
+      routerLinkActive="active-tab"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      Skills
+    </a>
 
-  <!-- Step 8: Certifications -->
-  <a
-    [class.disabled]="!completedTabs.skills"
-    [routerLink]="completedTabs.skills ? '/mainlayout/certificate' : null"
-    routerLinkActive="active-tab"
-    [routerLinkActiveOptions]="{ exact: true }">
-    Certifications
-  </a>
+    <a
+      [class.disabled]="!completedTabs.skills"
+      [routerLink]="completedTabs.skills ? '/mainlayout/certificate' : null"
+      routerLinkActive="active-tab"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      Certifications
+    </a>
 
-  <!-- Step 9: Document -->
-  <a
-    [class.disabled]="!completedTabs.certificate"
-    [routerLink]="completedTabs.certificate ? '/mainlayout/document' : null"
-    routerLinkActive="active-tab"
-    [routerLinkActiveOptions]="{ exact: true }">
-    Document
-  </a>
+    <a
+      [class.disabled]="!completedTabs.certificate"
+      [routerLink]="completedTabs.certificate ? '/mainlayout/document' : null"
+      routerLinkActive="active-tab"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      Document
+    </a>
 
-  <!-- Step 10: Resume -->
-  <a
-    [class.disabled]="!completedTabs.document"
-    [routerLink]="completedTabs.document ? '/mainlayout/resume' : null"
-    routerLinkActive="active-tab"
-    [routerLinkActiveOptions]="{ exact: true }">
-    Resume
-  </a>
+    <a
+      [class.disabled]="!completedTabs.document"
+      [routerLink]="completedTabs.document ? '/mainlayout/resume' : null"
+      routerLinkActive="active-tab"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      Resume
+    </a>
 
-  <!-- Step 11: Final -->
-  <a
-    [class.disabled]="!completedTabs.resume"
-    [routerLink]="completedTabs.resume ? '/mainlayout/final' : null"
-    routerLinkActive="active-tab"
-    [routerLinkActiveOptions]="{ exact: true }">
-    Final
-  </a>
-</div>
-<button class="scroll-btn right" (click)="scrollTabs('right')" aria-label="Scroll right">
+    <a
+      [class.disabled]="!completedTabs.resume"
+      [routerLink]="completedTabs.resume ? '/mainlayout/final' : null"
+      routerLinkActive="active-tab"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      Final
+    </a>
+  </div>
+  <button
+    class="scroll-btn right"
+    (click)="scrollTabs('right')"
+    aria-label="Scroll right"
+  >
     <span class="material-icons">chevron_right</span>
   </button>
 </div>

@@ -10,21 +10,40 @@ type WeekDay = 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday';
 @Component({
   selector: 'app-timelog',
   templateUrl: './timelog.component.html',
-  styleUrls: ['./timelog.component.css']
+  styleUrls: ['./timelog.component.css'],
 })
 export class TimelogComponent implements OnInit {
-
-
-
   years: number[] = [];
   months: string[] = [
-    'January', 'February', 'March', 'April', 'May', 'June',
-    'July', 'August', 'September', 'October', 'November', 'December'
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
   ];
   weekendDates: string[] = [];
-  weekDays: WeekDay[] = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+  weekDays: WeekDay[] = [
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+  ];
 
-  timelog = { year: new Date().getFullYear(), month: '', weekendDate: '', employeeName: '', employeeId: '' };
+  timelog = {
+    year: new Date().getFullYear(),
+    month: '',
+    weekendDate: '',
+    employeeName: '',
+    employeeId: '',
+  };
   timelogEntry: TimelogEntry = this.getEmptyEntry();
   timelogSummary: TimelogEntry[] = [];
   latestEntry: TimelogEntry | null = null;
@@ -32,11 +51,9 @@ export class TimelogComponent implements OnInit {
   allEmployeeTimelogs: TimelogEntry[] = [];
   filteredAllEmployeeTimelogs: TimelogEntry[] = [];
 
-  // Filters for All Employees table (admin)
   employeeIdSearch: string = '';
   employeeMonthFilter: string = '';
 
-  // Filters for Employee History overlay
   historyMonthFilter: string = '';
   filteredEmployeeHistory: TimelogEntry[] = [];
 
@@ -58,7 +75,7 @@ export class TimelogComponent implements OnInit {
     private authService: AuthService,
     private dateUtils: DateUtilsService,
     private snackBar: MatSnackBar
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.isAdmin = this.authService.isAdmin();
@@ -78,7 +95,10 @@ export class TimelogComponent implements OnInit {
     this.timelogEntry.employeeName = this.timelog.employeeName;
     this.timelogEntry.employeeId = this.timelog.employeeId;
   }
-  updateTimesheetStatus(entry: TimelogEntry, status: 'Approved' | 'Rejected'): void {
+  updateTimesheetStatus(
+    entry: TimelogEntry,
+    status: 'Approved' | 'Rejected'
+  ): void {
     if (!entry?.id) {
       console.warn('Cannot update timesheet: missing ID');
       return;
@@ -86,19 +106,16 @@ export class TimelogComponent implements OnInit {
 
     this.timelogService.updateTimesheetStatus(entry.id, status).subscribe({
       next: (res) => {
-        console.log(`[Timelog] Timesheet ${status} successfully:`, res);
+        this.timelogSummary = this.timelogSummary.filter(
+          (e) => e.id !== entry.id
+        );
 
-        //  Remove that entry from the current admin summary table
-        this.timelogSummary = this.timelogSummary.filter(e => e.id !== entry.id);
-
-        // Optionally show success message
         this.snackBar.open(`Timesheet ${status} successfully`, 'Close', {
           duration: 3000,
           horizontalPosition: 'center',
           verticalPosition: 'top',
           panelClass: ['error-snackbar'],
         });
-
       },
       error: (err) => {
         console.error(`[Timelog] Failed to ${status} timesheet:`, err);
@@ -108,8 +125,7 @@ export class TimelogComponent implements OnInit {
           verticalPosition: 'top',
           panelClass: ['error-snackbar'],
         });
-
-      }
+      },
     });
   }
 
@@ -128,10 +144,15 @@ export class TimelogComponent implements OnInit {
   }
 
   onMonthOrYearChange(): void {
-    if (!this.timelog.month) this.timelog.month = this.months[new Date().getMonth()];
+    if (!this.timelog.month)
+      this.timelog.month = this.months[new Date().getMonth()];
     const monthIndex = this.months.indexOf(this.timelog.month);
-    this.weekendDates = this.dateUtils.getAllMondaysOfMonth(this.timelog.year, monthIndex);
-    if (!this.weekendDates.includes(this.timelog.weekendDate)) this.timelog.weekendDate = this.weekendDates[0] || '';
+    this.weekendDates = this.dateUtils.getAllMondaysOfMonth(
+      this.timelog.year,
+      monthIndex
+    );
+    if (!this.weekendDates.includes(this.timelog.weekendDate))
+      this.timelog.weekendDate = this.weekendDates[0] || '';
     this.onWeekendDateSelect();
   }
 
@@ -146,14 +167,21 @@ export class TimelogComponent implements OnInit {
   }
 
   isWeekendDateDisabled(date: string): boolean {
-    return new Date(date).getTime() !== new Date(this.currentMondayISO).getTime();
+    return (
+      new Date(date).getTime() !== new Date(this.currentMondayISO).getTime()
+    );
   }
 
   calculateTotalHours(): void {
-    if (!this.timelogEntry.hours) { this.timelogEntry.totalhours = 0; return; }
+    if (!this.timelogEntry.hours) {
+      this.timelogEntry.totalhours = 0;
+      return;
+    }
     const hours = this.normalizeHoursObject(this.timelogEntry.hours);
     let total = 0;
-    Object.values(hours).forEach(val => { if (val === 'WFO' || val === 'WFH') total += 8; });
+    Object.values(hours).forEach((val) => {
+      if (val === 'WFO' || val === 'WFH') total += 8;
+    });
     this.timelogEntry.totalhours = total;
   }
 
@@ -164,9 +192,12 @@ export class TimelogComponent implements OnInit {
   private extractEmployeeIdFromEntry(e: any): string {
     if (!e || typeof e !== 'object') return '';
     if (e.user && typeof e.user === 'object') {
-      if (e.user.employeeId != null && e.user.employeeId !== '') return String(e.user.employeeId).trim();
-      if (e.user.id != null && e.user.id !== '') return String(e.user.id).trim();
-      if (e.user.empId != null && e.user.empId !== '') return String(e.user.empId).trim();
+      if (e.user.employeeId != null && e.user.employeeId !== '')
+        return String(e.user.employeeId).trim();
+      if (e.user.id != null && e.user.id !== '')
+        return String(e.user.id).trim();
+      if (e.user.empId != null && e.user.empId !== '')
+        return String(e.user.empId).trim();
     }
     const candidateKeys = ['employeeId', 'employee_id', 'empId', 'emp_id'];
     for (const k of candidateKeys) {
@@ -177,8 +208,16 @@ export class TimelogComponent implements OnInit {
 
   private extractEmployeeName(e: any): string {
     if (!e) return '';
-    const keys = ['employeeName', 'fullName', 'name', 'employee_name', 'full_name'];
-    for (const k of keys) { if (k in e && e[k]) return String(e[k]).trim(); }
+    const keys = [
+      'employeeName',
+      'fullName',
+      'name',
+      'employee_name',
+      'full_name',
+    ];
+    for (const k of keys) {
+      if (k in e && e[k]) return String(e[k]).trim();
+    }
     if (e.user && typeof e.user === 'object') {
       if (e.user.fullName) return String(e.user.fullName).trim();
       if (e.user.name) return String(e.user.name).trim();
@@ -194,8 +233,8 @@ export class TimelogComponent implements OnInit {
         else if (res?.body && Array.isArray(res.body)) arr = res.body;
         else if (res?.data && Array.isArray(res.data)) arr = res.data;
         else {
-          const first = Object.values(res || {}).find(v => Array.isArray(v));
-          arr = Array.isArray(first) ? first as any[] : [];
+          const first = Object.values(res || {}).find((v) => Array.isArray(v));
+          arr = Array.isArray(first) ? (first as any[]) : [];
         }
 
         const normalized: TimelogEntry[] = arr.map((e: any) => {
@@ -223,10 +262,10 @@ export class TimelogComponent implements OnInit {
           } as TimelogEntry;
         });
 
-        const myEmpIdRaw = this.timelog.employeeId ?? this.authService.getEmployeeId();
+        const myEmpIdRaw =
+          this.timelog.employeeId ?? this.authService.getEmployeeId();
         const myEmpId = myEmpIdRaw != null ? String(myEmpIdRaw).trim() : '';
 
-        //  ADMIN SECTION
         if (this.isAdmin) {
           this.timelogSummary = normalized.filter(
             (e) => (e.status ?? '').toUpperCase() === 'PENDING'
@@ -235,19 +274,21 @@ export class TimelogComponent implements OnInit {
             (b.weekendDate || '').localeCompare(a.weekendDate || '')
           );
 
-          // Keep only one entry per employee (latest weekendDate)
-          
           const employeeMap = new Map<string, TimelogEntry>();
 
           for (const e of normalized) {
-            const empKey = String(e.employeeId || '').trim().toLowerCase();
+            const empKey = String(e.employeeId || '')
+              .trim()
+              .toLowerCase();
             if (!empKey) continue;
             const existing = employeeMap.get(empKey);
 
             if (!existing) {
               employeeMap.set(empKey, e);
             } else {
-              const existingDate = new Date(existing.weekendDate || '').getTime();
+              const existingDate = new Date(
+                existing.weekendDate || ''
+              ).getTime();
               const newDate = new Date(e.weekendDate || '').getTime();
               if (newDate > existingDate) {
                 employeeMap.set(empKey, e);
@@ -255,29 +296,28 @@ export class TimelogComponent implements OnInit {
             }
           }
 
-          this.allEmployeeTimelogs = Array.from(employeeMap.values()).sort((a, b) =>
-            (a.employeeName || '').localeCompare(b.employeeName || '')
+          this.allEmployeeTimelogs = Array.from(employeeMap.values()).sort(
+            (a, b) => (a.employeeName || '').localeCompare(b.employeeName || '')
           );
 
-          // initialize filtered table
           this.filteredAllEmployeeTimelogs = [...this.allEmployeeTimelogs];
           return;
         }
 
-        //  USER SECTION
         const sameEmployee = (a?: string, b?: string): boolean => {
           if (!a || !b) return false;
           const na = Number(a);
           const nb = Number(b);
           if (!isNaN(na) && !isNaN(nb)) return na === nb;
-          return String(a).trim().toLowerCase() === String(b).trim().toLowerCase();
+          return (
+            String(a).trim().toLowerCase() === String(b).trim().toLowerCase()
+          );
         };
 
         this.timelogSummary = normalized.filter((e) =>
           sameEmployee(e.employeeId, myEmpId)
         );
 
-        // remove duplicates by weekendDate for user
         const dedupeMap = new Map<string, TimelogEntry>();
         for (const e of this.timelogSummary) {
           const key = (e.weekendDate || '').trim();
@@ -306,35 +346,39 @@ export class TimelogComponent implements OnInit {
     });
   }
 
-  //  Filter for admin All Employees table
   applyFilters(): void {
     const idTerm = (this.employeeIdSearch || '').trim().toLowerCase();
     const month = (this.employeeMonthFilter || '').trim();
 
-    this.filteredAllEmployeeTimelogs = this.allEmployeeTimelogs.filter(entry => {
-      const employeeId = entry.employeeId ? entry.employeeId.toString().toLowerCase() : '';
-      const employeeName = entry.employeeName ? entry.employeeName.toLowerCase() : '';
+    this.filteredAllEmployeeTimelogs = this.allEmployeeTimelogs.filter(
+      (entry) => {
+        const employeeId = entry.employeeId
+          ? entry.employeeId.toString().toLowerCase()
+          : '';
+        const employeeName = entry.employeeName
+          ? entry.employeeName.toLowerCase()
+          : '';
 
-      //  Filter by ID or name
-      const matchesIdOrName = !idTerm || employeeId.includes(idTerm) || employeeName.includes(idTerm);
+        const matchesIdOrName =
+          !idTerm ||
+          employeeId.includes(idTerm) ||
+          employeeName.includes(idTerm);
 
-      //  Filter by month (if selected)
-      const entryMonth = entry.weekendDate
-        ? new Date(entry.weekendDate).toLocaleString('default', { month: 'long' })
-        : '';
-      const matchesMonth = !month || entryMonth === month;
+        const entryMonth = entry.weekendDate
+          ? new Date(entry.weekendDate).toLocaleString('default', {
+              month: 'long',
+            })
+          : '';
+        const matchesMonth = !month || entryMonth === month;
 
-      //  Final combined condition
-      return matchesIdOrName && matchesMonth;
-    });
+        return matchesIdOrName && matchesMonth;
+      }
+    );
   }
 
-
-  //  Employee History view
   viewEmployeeHistory(entry: any): void {
     if (!entry?.employeeId) return;
 
-    //  Reset first (forces Angular change detection)
     this.selectedEmployeeHistory = [];
     this.filteredEmployeeHistory = [];
     this.historyMonthFilter = '';
@@ -342,7 +386,6 @@ export class TimelogComponent implements OnInit {
     this.selectedEmployeeName = entry.employeeName;
     this.selectedEmployeeId = entry.employeeId;
 
-    // Fetch latest backend data
     this.timelogService.getTimelogs(true).subscribe({
       next: (res: any) => {
         let arr: any[] = [];
@@ -350,19 +393,17 @@ export class TimelogComponent implements OnInit {
         else if (res?.body && Array.isArray(res.body)) arr = res.body;
         else if (res?.data && Array.isArray(res.data)) arr = res.data;
         else {
-          const first = Object.values(res || {}).find(v => Array.isArray(v));
+          const first = Object.values(res || {}).find((v) => Array.isArray(v));
           arr = Array.isArray(first) ? (first as any[]) : [];
         }
 
-        // Filter this employee’s full history
         const filtered = arr.filter(
           (e: any) =>
             String(e.user?.employeeId || e.employeeId).trim() ===
             String(entry.employeeId).trim()
         );
 
-        // Normalize results
-        this.selectedEmployeeHistory = filtered.map(e => ({
+        this.selectedEmployeeHistory = filtered.map((e) => ({
           weekendDate: e.weekendDate ?? e.weekend_date ?? e.weekEndDate ?? '',
           project: e.project ?? '',
           totalhours: e.totalhours ?? e.totalHours ?? 0,
@@ -370,12 +411,9 @@ export class TimelogComponent implements OnInit {
           status: (e.status ?? e.Status ?? 'PENDING').toString().trim(),
         }));
 
-        //  Sort latest first
-        this.selectedEmployeeHistory.sort(
-          (a, b) => (b.weekendDate || '').localeCompare(a.weekendDate || '')
+        this.selectedEmployeeHistory.sort((a, b) =>
+          (b.weekendDate || '').localeCompare(a.weekendDate || '')
         );
-
-        //  Set filtered version for display
         this.filteredEmployeeHistory = [...this.selectedEmployeeHistory];
       },
       error: (err) => {
@@ -386,15 +424,13 @@ export class TimelogComponent implements OnInit {
     });
   }
 
-
-
   applyMonthFilter(): void {
     if (!this.historyMonthFilter) {
       this.filteredEmployeeHistory = [...this.selectedEmployeeHistory];
       return;
     }
 
-    this.filteredEmployeeHistory = this.selectedEmployeeHistory.filter(e => {
+    this.filteredEmployeeHistory = this.selectedEmployeeHistory.filter((e) => {
       const monthName = e.weekendDate
         ? new Date(e.weekendDate).toLocaleString('default', { month: 'long' })
         : '';
@@ -410,21 +446,23 @@ export class TimelogComponent implements OnInit {
       return;
     }
 
-    this.filteredEmployeeHistory = this.selectedEmployeeHistory.filter(e => {
+    this.filteredEmployeeHistory = this.selectedEmployeeHistory.filter((e) => {
       if (!e.weekendDate) return false;
-      const entryMonth = new Date(e.weekendDate).toLocaleString('default', { month: 'long' });
+      const entryMonth = new Date(e.weekendDate).toLocaleString('default', {
+        month: 'long',
+      });
       return entryMonth === selectedMonth;
     });
   }
-
 
   loadTimesheetForSelectedWeek(): void {
     const myEmpId = String(this.timelog.employeeId || '').trim();
     const selectedWeekIso = this.toDateOnlyISO(this.timelog.weekendDate);
 
-    const existing = this.timelogSummary.find(e =>
-      (this.isAdmin || String(e.employeeId || '').trim() === myEmpId) &&
-      this.toDateOnlyISO(e.weekendDate) === selectedWeekIso
+    const existing = this.timelogSummary.find(
+      (e) =>
+        (this.isAdmin || String(e.employeeId || '').trim() === myEmpId) &&
+        this.toDateOnlyISO(e.weekendDate) === selectedWeekIso
     );
 
     if (this.isAdmin) {
@@ -436,30 +474,36 @@ export class TimelogComponent implements OnInit {
     }
 
     if (existing) {
-      // If rejected, allow resubmission
       const status = (existing.status ?? '').trim().toLowerCase();
       if (status === 'rejected') {
-        this.entryExistsForWeek = false; // User can submit again
-        this.latestEntry = existing; // still show last rejected entry if you want
+        this.entryExistsForWeek = false;
+        this.latestEntry = existing;
       } else {
-        this.entryExistsForWeek = true; // block if pending or approved
+        this.entryExistsForWeek = true;
         this.latestEntry = existing;
       }
 
       this.resetEntry();
       this.timelogEntry.employeeName = this.timelog.employeeName;
       this.timelogEntry.employeeId = this.timelog.employeeId;
-      this.timelogEntry.weekendDate = this.timelog.weekendDate || this.currentMondayISO;
-      this.timelogEntry.hours = { monday: '', tuesday: '', wednesday: '', thursday: '', friday: '' };
+      this.timelogEntry.weekendDate =
+        this.timelog.weekendDate || this.currentMondayISO;
+      this.timelogEntry.hours = {
+        monday: '',
+        tuesday: '',
+        wednesday: '',
+        thursday: '',
+        friday: '',
+      };
       this.timelogEntry.totalhours = 0;
       this.calculateTotalHours();
     } else {
       this.entryExistsForWeek = false;
       this.resetEntry();
-      this.timelogEntry.weekendDate = this.timelog.weekendDate || this.currentMondayISO;
+      this.timelogEntry.weekendDate =
+        this.timelog.weekendDate || this.currentMondayISO;
     }
   }
-
 
   onSubmit(form: NgForm): void {
     if (!form.valid) {
@@ -481,14 +525,18 @@ export class TimelogComponent implements OnInit {
       return;
     }
 
-    this.timelogEntry.hours = this.normalizeHoursObject(this.timelogEntry.hours);
+    this.timelogEntry.hours = this.normalizeHoursObject(
+      this.timelogEntry.hours
+    );
     this.calculateTotalHours();
-    const canonicalWeekend = this.toDateOnlyISO(this.timelog.weekendDate || this.currentMondayISO);
+    const canonicalWeekend = this.toDateOnlyISO(
+      this.timelog.weekendDate || this.currentMondayISO
+    );
 
     const payload: TimelogEntry = {
       ...this.timelogEntry,
       weekendDate: canonicalWeekend,
-      status: 'PENDING'
+      status: 'PENDING',
     };
 
     this.timelogService.addTimelog(payload).subscribe({
@@ -510,7 +558,7 @@ export class TimelogComponent implements OnInit {
           verticalPosition: 'top',
           panelClass: ['error-snackbar'],
         });
-      }
+      },
     });
   }
 
@@ -518,38 +566,57 @@ export class TimelogComponent implements OnInit {
     this.timelogEntry = this.getEmptyEntry();
     this.timelogEntry.employeeName = this.timelog.employeeName;
     this.timelogEntry.employeeId = this.timelog.employeeId;
-    this.timelogEntry.weekendDate = this.timelog.weekendDate || this.currentMondayISO;
+    this.timelogEntry.weekendDate =
+      this.timelog.weekendDate || this.currentMondayISO;
     this.timelogEntry.project = '';
-    this.timelogEntry.hours = { monday: '', tuesday: '', wednesday: '', thursday: '', friday: '' };
+    this.timelogEntry.hours = {
+      monday: '',
+      tuesday: '',
+      wednesday: '',
+      thursday: '',
+      friday: '',
+    };
     this.timelogEntry.totalhours = 0;
     this.calculateTotalHours();
   }
   closeEmployeeHistory(): void {
-  this.selectedEmployeeHistory = [];
-  this.filteredEmployeeHistory = [];
-  this.selectedEmployeeId = null;
-  this.selectedEmployeeName = null;
-  this.showEmployeeHistory = false;
-}
-
+    this.selectedEmployeeHistory = [];
+    this.filteredEmployeeHistory = [];
+    this.selectedEmployeeId = null;
+    this.selectedEmployeeName = null;
+    this.showEmployeeHistory = false;
+  }
 
   private getEmptyEntry(): TimelogEntry {
     return {
       project: '',
-      hours: { monday: '', tuesday: '', wednesday: '', thursday: '', friday: '' },
+      hours: {
+        monday: '',
+        tuesday: '',
+        wednesday: '',
+        thursday: '',
+        friday: '',
+      },
       totalhours: 0,
       description: '',
       weekendDate: '',
       employeeName: '',
       employeeId: '',
-      status: 'PENDING'
+      status: 'PENDING',
     };
   }
 
   private normalizeHoursObject(h?: any): Hours {
-    if (!h) return { monday: '', tuesday: '', wednesday: '', thursday: '', friday: '' };
+    if (!h)
+      return {
+        monday: '',
+        tuesday: '',
+        wednesday: '',
+        thursday: '',
+        friday: '',
+      };
     const normalized: any = {};
-    Object.keys(h).forEach(k => {
+    Object.keys(h).forEach((k) => {
       if (!k) return;
       normalized[k.toLowerCase()] = h[k] ?? '';
     });
@@ -558,7 +625,7 @@ export class TimelogComponent implements OnInit {
       tuesday: normalized.tuesday || '',
       wednesday: normalized.wednesday || '',
       thursday: normalized.thursday || '',
-      friday: normalized.friday || ''
+      friday: normalized.friday || '',
     };
   }
 

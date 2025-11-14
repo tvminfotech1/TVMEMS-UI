@@ -6,32 +6,32 @@
       <div class="form-grid">
         <div class="form-group">
           <label>Skill Name</label>
-          <input type="text" [value]="skill.skillName" readonly>
+          <input type="text" [value]="skill.skillName" readonly />
         </div>
 
         <div class="form-group">
           <label>Skill Category</label>
-          <input type="text" [value]="skill.skillCategories" readonly>
+          <input type="text" [value]="skill.skillCategories" readonly />
         </div>
 
         <div class="form-group">
           <label>Version Number</label>
-          <input type="text" [value]="skill.versionNum" readonly>
+          <input type="text" [value]="skill.versionNum" readonly />
         </div>
 
         <div class="form-group">
           <label>Experience (Years)</label>
-          <input type="text" [value]="skill.experience_year" readonly>
+          <input type="text" [value]="skill.experience_year" readonly />
         </div>
 
         <div class="form-group">
           <label>Experience (Months)</label>
-          <input type="text" [value]="skill.experience_month" readonly>
+          <input type="text" [value]="skill.experience_month" readonly />
         </div>
 
         <div class="form-group">
           <label>Self Rating (1-5)</label>
-          <input type="text" [value]="skill.selfRate" readonly>
+          <input type="text" [value]="skill.selfRate" readonly />
         </div>
       </div>
     </div>
@@ -42,12 +42,17 @@
   </ng-template>
 </div>
 
-<!-- ✅ Navigation Buttons -->
 <div class="button-group">
-  <a [routerLink]="['/mainlayout/empeducation', employeeDetails?.id]" class="btn prev-btn">
+  <a
+    [routerLink]="['/mainlayout/empeducation', employeeDetails?.id]"
+    class="btn prev-btn"
+  >
     &laquo; Previous
   </a>
-  <a [routerLink]="['/mainlayout/empcertificate', employeeDetails?.id]" class="btn next-btn">
+  <a
+    [routerLink]="['/mainlayout/empcertificate', employeeDetails?.id]"
+    class="btn next-btn"
+  >
     Next &raquo;
   </a>
 </div>

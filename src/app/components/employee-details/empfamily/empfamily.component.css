@@ -6,20 +6,10 @@ input[readonly] {
   padding: 5px 0;
 }
 
-input[readonly]:hover{
-cursor: not-allowed;
+input[readonly]:hover {
+  cursor: not-allowed;
 }
 
-/* .form-container {
-  max-width: 800px;
-  margin: 140px auto;
-  padding: 30px;
-  background-color: #fff;
-  border-radius: 12px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
-} */
-
-/* Grid layout for form fields */
 .form-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -31,7 +21,6 @@ cursor: not-allowed;
 .form-group {
   display: flex;
   flex-direction: column;
-  /* justify-content: center; */
 }
 
 .form-group label {
@@ -55,7 +44,6 @@ cursor: not-allowed;
   outline: none;
 }
 
-/* Radio group for children */
 .radio-group {
   display: flex;
   gap: 20px;
@@ -70,7 +58,6 @@ cursor: not-allowed;
   gap: 5px;
 }
 
-/* Button styling */
 .button-group {
   margin-top: 30px;
   display: flex;
@@ -78,9 +65,7 @@ cursor: not-allowed;
   gap: 12px;
 }
 
-
-.update-btn
- {
+.update-btn {
   background-color: #007bff;
   color: white;
   padding: 10px 22px;
@@ -101,11 +86,11 @@ cursor: not-allowed;
   font-weight: bold;
 }
 
-.button-group a:hover, .update-button:hover {
+.button-group a:hover,
+.update-button:hover {
   background-color: #004aad;
   color: white;
 }
-
 
 .prev-btn:hover,
 .update-btn:hover,
@@ -113,7 +98,6 @@ cursor: not-allowed;
   background-color: #0056b3;
 }
 
-/* Nominee section */
 .nominee-section {
   display: flex;
   justify-content: space-between;

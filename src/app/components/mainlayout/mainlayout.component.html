@@ -1,5 +1,4 @@
 <div class="container">
-  <!-- Sidebar -->
   <aside class="sidebar" [class.open]="sidebarOpen">
     <img src="assets/images/TVM Infotech Logo.jpg" class="logo" />
     <button
@@ -12,7 +11,6 @@
     <div class="sidebar-list">
       <nav class="nav" aria-label="Primary navigation">
         <ul>
-          <!-- Home -->
           <li class="dropdown">
             <button
               class="nav-button"
@@ -50,41 +48,10 @@
                     Dashboard</a
                   >
                 </li>
-                <!-- <li>
-                  <a
-                    routerLink="holidays"
-                    class="nav-link sub"
-                    routerLinkActive="active-sub-link"
-                    [routerLinkActiveOptions]="{ exact: true }"
-                    ><span class="material-icons">beach_access</span>
-                    Holidays</a
-                  >
-                </li> -->
-                <!-- <li>
-                  <a
-                    routerLink="feedbacks"
-                    class="nav-link sub"
-                    routerLinkActive="active-sub-link"
-                    [routerLinkActiveOptions]="{ exact: true }"
-                    ><span class="material-icons">question_answer</span> My
-                    Feedbacks</a
-                  >
-                </li>
-                <li>
-                  <a
-                    routerLink="organization"
-                    class="nav-link sub"
-                    routerLinkActive="active-sub-link"
-                    [routerLinkActiveOptions]="{ exact: true }"
-                    ><span class="material-icons">account_box</span>
-                    Organization Directory</a
-                  >
-                </li> -->
               </ul>
             </div>
           </li>
 
-          <!-- Work from Home -->
           <li class="dropdown">
             <button
               class="nav-button"
@@ -121,7 +88,6 @@
             </div>
           </li>
 
-          <!-- Leave & Attendance -->
           <li class="dropdown">
             <button
               class="nav-button"
@@ -174,15 +140,14 @@
                     class="nav-link sub"
                     routerLinkActive="active-sub-link"
                     [routerLinkActiveOptions]="{ exact: true }"
-                    ><span class="material-icons">check_circle</span> View-Attendance
-              </a
-                  >
+                    ><span class="material-icons">check_circle</span>
+                    View-Attendance
+                  </a>
                 </li>
               </ul>
             </div>
           </li>
 
-          <!-- Timesheets -->
           <li class="dropdown">
             <button
               class="nav-button"
@@ -219,7 +184,6 @@
             </div>
           </li>
 
-          <!-- Tasks -->
           <li class="dropdown">
             <button
               class="nav-button"
@@ -253,7 +217,6 @@
             </div>
           </li>
 
-          <!-- Goal -->
           <li class="dropdown">
             <button
               class="nav-button"
@@ -288,7 +251,6 @@
             </div>
           </li>
 
-          <!-- Offboarding -->
           <li class="dropdown">
             <button
               class="nav-button"
@@ -325,7 +287,6 @@
             </div>
           </li>
 
-          <!-- Onboarding -->
           <li class="dropdown" *ngIf="!hasSubmittedOnboarding">
             <button
               class="nav-button"
@@ -400,7 +361,6 @@
             </div>
           </li>
 
-          <!-- Add Job Opening -->
           <li class="dropdown">
             <button
               class="nav-button"
@@ -412,8 +372,14 @@
               aria-controls="addJobDropdown"
               aria-haspopup="true"
             >
-              <span *ngIf="isAdmin"><span class="material-icons">add_business</span>Job Opening</span>
-              <span *ngIf="isUser"><span class="material-icons">add_business</span> Job Opening</span>
+              <span *ngIf="isAdmin"
+                ><span class="material-icons">add_business</span>Job
+                Opening</span
+              >
+              <span *ngIf="isUser"
+                ><span class="material-icons">add_business</span> Job
+                Opening</span
+              >
               <span class="accordion-icon">
                 {{ showAddJobDropdown ? "⯆" : "⯈" }}
               </span>
@@ -439,13 +405,13 @@
                     class="nav-link sub"
                     routerLinkActive="active-sub-link"
                     [routerLinkActiveOptions]="{ exact: true }"
-                    ><span class="material-icons">work_outline</span> Job Openings</a
+                    ><span class="material-icons">work_outline</span> Job
+                    Openings</a
                   >
                 </li>
               </ul>
             </div>
           </li>
-          <!-- Payroll -->
           <li class="dropdown" *ngIf="isAdmin">
             <button
               class="nav-button"
@@ -519,9 +485,7 @@
             </div>
           </li>
 
-<!-- -------------------------------------- -->
-
-<li class="dropdown" *ngIf="isUser">
+          <li class="dropdown" *ngIf="isUser">
             <button
               class="nav-button"
               [ngClass]="{
@@ -549,8 +513,6 @@
               id="payrollDropdown"
             >
               <ul class="dropdown-list">
-                
-              
                 <li>
                   <a
                     routerLink="payslip"
@@ -561,24 +523,18 @@
                     <span class="material-icons">attach_money</span> Pay Slip
                   </a>
                 </li>
-    
               </ul>
             </div>
           </li>
-
-
-<!-- ------------------------------------------- -->
         </ul>
       </nav>
     </div>
   </aside>
-  <!-- Backdrop - closes sidebar on click -->
   <div
     class="sidebar-backdrop"
     *ngIf="sidebarOpen"
     (click)="toggleSidebar()"
   ></div>
-  <!-- Main Content -->
   <main>
     <div class="top-bar-icons">
       <button
@@ -602,21 +558,21 @@
     class="profile-img"
   />
               <div class="profile-info">
-              <div class="profile-name">{{userName}}</div>
-              <div class="profile-Id">Employee ID: {{employeeId}}</div>
+                <div class="profile-name">{{ userName }}</div>
+                <div class="profile-Id">Employee ID: {{ employeeId }}</div>
               </div>
             </div>
             <ul class="settings-menu">
               <li (click)="goToProfile()">
                 <span class="material-icons">person</span> My Profile
               </li>
-             <li (click)="goToAnnouncements()">
-  <span class="material-icons">campaign</span> My Announcements
-           </li>
-             
+              <li (click)="goToAnnouncements()">
+                <span class="material-icons">campaign</span> My Announcements
+              </li>
+
               <li (click)="goToHolidays()">
-         <span class="material-icons">event</span> Holidays
-            </li>
+                <span class="material-icons">event</span> Holidays
+              </li>
               <li (click)="onLogout()">
                 <span class="material-icons">logout</span> Logout
               </li>

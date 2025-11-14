@@ -133,9 +133,9 @@ button[type="submit"]:hover {
     gap: 10px;
   }
   .form-grid {
-  display: grid;
-  grid-template-columns:1fr;
-}
+    display: grid;
+    grid-template-columns: 1fr;
+  }
 }
 
 .error {

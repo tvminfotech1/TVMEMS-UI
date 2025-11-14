@@ -5,7 +5,6 @@ import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MainlayoutService } from 'src/app/services/main-layout.service';
 
-
 @Component({
   selector: 'app-passport-visa',
   templateUrl: './passport-visa.component.html',
@@ -60,7 +59,6 @@ export class PassportVisaComponent implements OnInit {
       this.userService.setFormData('passport', this.userForm.value);
       this.router.navigate(['/mainlayout/family']);
       this.mainlayoutService.markTabCompleted('passport', true);
-      console.log(this.userForm.value);
     } else {
       this.snackBar.open('Please fill all required fields', 'Close', {
         duration: 3000,

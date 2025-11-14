@@ -1,11 +1,19 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  AbstractControl,
+  ValidationErrors,
+  ValidatorFn,
+} from '@angular/forms';
 import { WorkFromHomeService } from 'src/app/services/work-from-home.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
-// Custom validator function for date logic
-export const dateRangeValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+export const dateRangeValidator: ValidatorFn = (
+  control: AbstractControl
+): ValidationErrors | null => {
   const fromDateValue = control.get('fromDate')?.value;
   const toDateValue = control.get('toDate')?.value;
 
@@ -15,7 +23,6 @@ export const dateRangeValidator: ValidatorFn = (control: AbstractControl): Valid
   const toDate = new Date(toDateValue);
   const today = new Date();
   today.setHours(0, 0, 0, 0);
-
 
   if (fromDate < today) {
     return { fromDatePast: true };
@@ -31,11 +38,9 @@ export const dateRangeValidator: ValidatorFn = (control: AbstractControl): Valid
 @Component({
   selector: 'app-wfh-apply-form',
   templateUrl: './wfh-apply-form.component.html',
-  styleUrls: ['./wfh-apply-form.component.css']
+  styleUrls: ['./wfh-apply-form.component.css'],
 })
-
 export class WfhApplyFormComponent implements OnInit {
-
   @Output() formSubmitted = new EventEmitter<any>();
   @Output() formCancelled = new EventEmitter<void>();
 
@@ -45,7 +50,7 @@ export class WfhApplyFormComponent implements OnInit {
   employeeId: string = 'Unknown Employee';
   submissionError: string | null = null;
 
-  today: String = ' ';  //
+  today: String = ' '; //
 
   constructor(
     private fb: FormBuilder,
@@ -53,39 +58,43 @@ export class WfhApplyFormComponent implements OnInit {
     private authService: AuthService,
     private snackBar: MatSnackBar
   ) {
-   this.wfhForm = this.fb.group(
-  {
-    fromDate: ['', Validators.required],
-    toDate: ['', Validators.required],
-    reason: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(30)]],
-    approver: ['', [Validators.required, Validators.pattern(/^[A-Za-z\s]+$/)]],
-  },
-  {
-    validators: [dateRangeValidator, this.toBeforeFromValidator],
-  }
-);
-
+    this.wfhForm = this.fb.group(
+      {
+        fromDate: ['', Validators.required],
+        toDate: ['', Validators.required],
+        reason: [
+          '',
+          [
+            Validators.required,
+            Validators.minLength(10),
+            Validators.maxLength(30),
+          ],
+        ],
+        approver: [
+          '',
+          [Validators.required, Validators.pattern(/^[A-Za-z\s]+$/)],
+        ],
+      },
+      {
+        validators: [dateRangeValidator, this.toBeforeFromValidator],
+      }
+    );
   }
 
   ngOnInit(): void {
-    this.employeeEmail = this.authService.getEmailFromToken() || 'Employee email';
+    this.employeeEmail =
+      this.authService.getEmailFromToken() || 'Employee email';
     this.employeeId = this.authService.getEmployeeId() || 'Employee Id';
     this.employeeName = this.authService.getfullName() || 'Employee Name';
-    const now = new Date();              //
-    this.today = now.toISOString().split('T')[0];   //
+    const now = new Date(); //
+    this.today = now.toISOString().split('T')[0]; //
   }
 
   onSubmit(): void {
-    console.log('Submit clicked, form valid:', this.wfhForm.valid);
-    // debugger
     this.submissionError = null;
     if (this.wfhForm.valid) {
       const formValue = this.wfhForm.value;
-      console.log(formValue);
-
-
       const newWfhRequest = {
-        // id: 0,
         employeeEmail: this.employeeEmail,
         employeeId: this.employeeId,
         employeeName: this.employeeName,
@@ -94,33 +103,47 @@ export class WfhApplyFormComponent implements OnInit {
         reason: formValue.reason,
         approver: formValue.approver,
         status: 'pending',
-        action: 'N/A'
+        action: 'N/A',
       };
 
       this.wfhService.createWfhRequest(newWfhRequest).subscribe({
-
         next: (response) => {
           this.wfhForm.reset();
 
           this.formSubmitted.emit(response);
-          this.showSnackBar('WFH request submitted successfully!', 'success-snackbar');
+          this.showSnackBar(
+            'WFH request submitted successfully!',
+            'success-snackbar'
+          );
         },
-      
+
         error: (error) => {
           console.error('Error submitting WFH Request:', error);
 
           if (error.status === 400) {
-            this.showSnackBar('Invalid data provided. Please check your inputs.', 'error-snackbar');
+            this.showSnackBar(
+              'Invalid data provided. Please check your inputs.',
+              'error-snackbar'
+            );
           } else if (error.status === 500) {
-            this.showSnackBar('Server error. Please try again later.', 'error-snackbar');
+            this.showSnackBar(
+              'Server error. Please try again later.',
+              'error-snackbar'
+            );
           } else {
-            this.showSnackBar('Failed to submit request. Please try again.', 'error-snackbar');
+            this.showSnackBar(
+              'Failed to submit request. Please try again.',
+              'error-snackbar'
+            );
           }
-        }
+        },
       });
     } else {
       this.wfhForm.markAllAsTouched();
-      this.showSnackBar('Please fill all required fields correctly.', 'error-snackbar');
+      this.showSnackBar(
+        'Please fill all required fields correctly.',
+        'error-snackbar'
+      );
     }
   }
 
@@ -130,62 +153,62 @@ export class WfhApplyFormComponent implements OnInit {
   }
 
   blockApproverInput(event: KeyboardEvent) {
-  const allowedKeys = [
-    'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown',
-    'Backspace', 'Delete', 'Tab'
-  ];
-  const pattern = /^[A-Za-z ]$/; // letters + space
+    const allowedKeys = [
+      'ArrowLeft',
+      'ArrowRight',
+      'ArrowUp',
+      'ArrowDown',
+      'Backspace',
+      'Delete',
+      'Tab',
+    ];
+    const pattern = /^[A-Za-z ]$/;
 
-  const input = event.target as HTMLInputElement;
-  const key = event.key;
+    const input = event.target as HTMLInputElement;
+    const key = event.key;
 
-  // ✅ Allow navigation & editing keys
-  if (allowedKeys.includes(key)) {
-    return;
+    if (allowedKeys.includes(key)) {
+      return;
+    }
+
+    if (!pattern.test(key)) {
+      event.preventDefault();
+      return;
+    }
+
+    if (input.value.length >= 20) {
+      event.preventDefault();
+    }
   }
-
-  // ✅ Block any non-letter keys
-  if (!pattern.test(key)) {
-    event.preventDefault();
-    return;
-  }
-
-  // ✅ Prevent typing if length >= 20 (but still allow delete/backspace)
-  if (input.value.length >= 20) {
-    event.preventDefault();
-  }
-}
 
   onOverlayClick(event: MouseEvent) {
     this.onCancel();
   }
 
-   private showSnackBar(message: string, panelClass: string) {
+  private showSnackBar(message: string, panelClass: string) {
     this.snackBar.open(message, 'Close', {
       duration: 3000,
       horizontalPosition: 'center',
       verticalPosition: 'top',
-      panelClass: [panelClass]
+      panelClass: [panelClass],
     });
   }
   toBeforeFromValidator(group: FormGroup) {
-  const from = group.get('fromDate')?.value;
-  const to = group.get('toDate')?.value;
+    const from = group.get('fromDate')?.value;
+    const to = group.get('toDate')?.value;
 
-  if (from && to && to < from) {
-    group.get('toDate')?.setErrors({ toBeforeFrom: true });
-  } else {
-    // Clear the error if it’s valid
-    const errors = group.get('toDate')?.errors;
-    if (errors) {
-      delete errors['toBeforeFrom'];
-      if (!Object.keys(errors).length) {
-        group.get('toDate')?.setErrors(null);
+    if (from && to && to < from) {
+      group.get('toDate')?.setErrors({ toBeforeFrom: true });
+    } else {
+      const errors = group.get('toDate')?.errors;
+      if (errors) {
+        delete errors['toBeforeFrom'];
+        if (!Object.keys(errors).length) {
+          group.get('toDate')?.setErrors(null);
+        }
       }
     }
+
+    return null;
   }
-
-  return null;
-}
-
 }

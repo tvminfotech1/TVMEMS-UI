@@ -22,18 +22,18 @@ export class LoginByNumberComponent implements OnInit {
 
   ngOnInit(): void {
     this.mobileLoginForm = this.fb.group({
-      mobile: ['', [Validators.required,Validators.pattern(/^[6-9]\d{9}$/)]],
+      mobile: ['', [Validators.required, Validators.pattern(/^[6-9]\d{9}$/)]],
       password: ['', Validators.required],
     });
   }
 
-    allowOnlyDigits(event: KeyboardEvent): void {
+  allowOnlyDigits(event: KeyboardEvent): void {
     const charCode = event.which ? event.which : event.keyCode;
     if (charCode < 48 || charCode > 57) {
       event.preventDefault();
     }
   }
-  
+
   back(): void {
     this.router.navigate(['/']);
   }
@@ -53,18 +53,18 @@ export class LoginByNumberComponent implements OnInit {
         .subscribe({
           next: (res) => {
             console.log('Login successful:', res);
-            const token = (res as any).token;  
-if (token) {
-  localStorage.setItem('token', token); 
-} else {
-  console.error('No token received from server:', res);
-  this.snackBar.open('Login failed: No token received.', 'Close', {
-    duration: 3000,
-    horizontalPosition: 'center',
-    verticalPosition: 'top',
-    panelClass: ['error-snackbar'],
-  });
-}
+            const token = (res as any).token;
+            if (token) {
+              localStorage.setItem('token', token);
+            } else {
+              console.error('No token received from server:', res);
+              this.snackBar.open('Login failed: No token received.', 'Close', {
+                duration: 3000,
+                horizontalPosition: 'center',
+                verticalPosition: 'top',
+                panelClass: ['error-snackbar'],
+              });
+            }
 
             this.router.navigate(['/mainlayout/personal']);
           },

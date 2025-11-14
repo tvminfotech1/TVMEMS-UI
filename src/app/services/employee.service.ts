@@ -9,21 +9,19 @@ export class EmployeeService {
 
   constructor(private http: HttpClient) {}
 
-  // Fetch all employees without parameters
   getEmployees(): Observable<any[]> {
     return this.http.get<any[]>(this.employeeApiUrl);
   }
 
-  // Download document file by document ID
   downloadDocument(fileId: number): Observable<Blob> {
     return this.http.get(`${this.baseUrl}/api/documents/${fileId}/download`, {
-      responseType: 'blob'
+      responseType: 'blob',
     });
   }
 
-    getEmployeePhoto(employeeId: string | number): Observable<Blob> {
+  getEmployeePhoto(employeeId: string | number): Observable<Blob> {
     return this.http.get(`${this.baseUrl}/api/documents/photo/${employeeId}`, {
-      responseType: 'blob'
+      responseType: 'blob',
     });
   }
 }

@@ -6,7 +6,7 @@ import { EmployeeDataService } from 'src/app/services/employee-data.service';
 @Component({
   selector: 'app-empdocument',
   templateUrl: './empdocument.component.html',
-  styleUrls: ['./empdocument.component.css']
+  styleUrls: ['./empdocument.component.css'],
 })
 export class EmpdocumentComponent implements OnInit {
   employeeDetails: any;
@@ -29,7 +29,7 @@ export class EmpdocumentComponent implements OnInit {
           this.employeeDetails = res;
           this.empDataService.setEmployeeData(res);
         },
-        error: (err: any) => console.error('Error:', err)
+        error: (err: any) => console.error('Error:', err),
       });
     }
   }
@@ -40,11 +40,11 @@ export class EmpdocumentComponent implements OnInit {
 
   downloadFile(fileNameOrId: string | number) {
     if (typeof fileNameOrId === 'number') {
-      this.empService.downloadDocument(fileNameOrId).subscribe(blob => {
+      this.empService.downloadDocument(fileNameOrId).subscribe((blob) => {
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = 'document'; 
+        a.download = 'document';
         a.click();
         window.URL.revokeObjectURL(url);
       });

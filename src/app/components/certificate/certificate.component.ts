@@ -96,12 +96,10 @@ export class CertificateComponent {
   finalSubmit(): void {
     if (this.certificateList.length > 0) {
       this.userService.setFormData('certification', this.certificateList);
-      console.log('certification', this.certificateList);
       this.router.navigate(['/mainlayout/document']);
       this.mainlayoutService.markTabCompleted('certificate', true);
     } else {
       this.userService.setFormData('certification', this.certificateList);
-      console.log('certification', this.certificateList);
       this.mainlayoutService.markTabCompleted('certificate', true);
       this.router.navigate(['/mainlayout/document']);
     }
@@ -113,7 +111,7 @@ export class CertificateComponent {
     }
   }
 
-  back():void {
+  back(): void {
     this.router.navigate(['/mainlayout/skills']);
   }
 

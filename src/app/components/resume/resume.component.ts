@@ -29,10 +29,10 @@ export class ResumeComponent implements OnInit {
       resumeCate: ['', Validators.required],
     });
 
-     const savedData = this.userService.getFormData('resume');
-  if (savedData) {
-    this.resumeForm.patchValue(savedData);
-  }
+    const savedData = this.userService.getFormData('resume');
+    if (savedData) {
+      this.resumeForm.patchValue(savedData);
+    }
   }
 
   back() {

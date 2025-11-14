@@ -17,7 +17,7 @@
       <tr *ngFor="let holiday of holidays; let i = index">
         <td>{{ i + 1 }}</td>
         <td>{{ holiday.name }}</td>
-        <td>{{ holiday.date | date:'dd-MM-yyyy' }}</td>
+        <td>{{ holiday.date | date : "dd-MM-yyyy" }}</td>
         <td>{{ holiday.day_Name }}</td>
       </tr>
     </tbody>

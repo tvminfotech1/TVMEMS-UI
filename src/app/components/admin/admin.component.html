@@ -1,13 +1,16 @@
 <div class="admin-container">
-<div class="top-bar">
-  <div class="searchBox">
-    <i class="ri-user-search-fill"></i>
-      <input type="text" id="search" [(ngModel)]="searchText" 
-       (input)="onSearch()" placeholder="Search by name, mobile or ID" />
-
+  <div class="top-bar">
+    <div class="searchBox">
+      <i class="ri-user-search-fill"></i>
+      <input
+        type="text"
+        id="search"
+        [(ngModel)]="searchText"
+        (input)="onSearch()"
+        placeholder="Search by name, mobile or ID"
+      />
+    </div>
   </div>
-  </div>
-
 
   <h2>Employee List</h2>
   <table *ngIf="filteredEmployees.length > 0; else noData">
@@ -23,15 +26,14 @@
         <th>Delete</th>
       </tr>
     </thead>
-     <tbody>
+    <tbody>
       <tr *ngFor="let emp of filteredEmployees">
-        
         <td>{{ emp.employeeId }}</td>
         <td>{{ emp.fullName }}</td>
         <td>{{ emp.mobile }}</td>
         <td>{{ emp.email }}</td>
         <td>{{ emp.aadhar }}</td>
-        <td>{{ emp.dob | date:'mediumDate' }}</td>
+        <td>{{ emp.dob | date : "mediumDate" }}</td>
         <td>{{ emp.gender }}</td>
         <td>
           <button class="delete-btn" (click)="deleteEmployee(emp.employeeId)">
@@ -40,12 +42,9 @@
         </td>
       </tr>
     </tbody>
-
   </table>
- 
 
   <ng-template #noData>
     <p class="no-data">No employee data available.</p>
   </ng-template>
-
 </div>

@@ -1,31 +1,42 @@
 <div class="announcement-page">
   <div class="header">
     <h2>📢 Announcements</h2>
-    <button class="add-btn" (click)="openAddModal()" *ngIf="isAdmin">+ Add
-      Announcement</button>
+    <button class="add-btn" (click)="openAddModal()" *ngIf="isAdmin">
+      + Add Announcement
+    </button>
   </div>
   <div *ngIf="announcements.length === 0" class="no-data">
-   No announcements available
-</div>
+    No announcements available
+  </div>
 
   <div class="card-container">
     <div class="announcement-card" *ngFor="let a of announcements">
       <div class="card-header">
-        <h3><b>{{ a.title | uppercase }} </b></h3>
-        <span class="date"><b>{{ a.date | date: 'mediumDate' }}</b></span>
+        <h3>
+          <b>{{ a.title | uppercase }} </b>
+        </h3>
+        <span class="date"
+          ><b>{{ a.date | date : "mediumDate" }}</b></span
+        >
       </div>
       <div class="card-body">
-      <p><strong>Time:</strong> {{ a.startTimeFormatted }} - {{ a.endTimeFormatted }}</p>
+        <p>
+          <strong>Time:</strong> {{ a.startTimeFormatted }} -
+          {{ a.endTimeFormatted }}
+        </p>
 
-        <p class="place"><i class="fa fa-map-marker"></i> <b>Venue: {{ a.place
-            }}</b></p>
-        <p class="desc"><b>Description: {{ a.description ||
-            'No description available.' }}</b></p>
+        <p class="place">
+          <i class="fa fa-map-marker"></i> <b>Venue: {{ a.place }}</b>
+        </p>
+        <p class="desc">
+          <b>Description: {{ a.description || "No description available." }}</b>
+        </p>
       </div>
       <div class="card-footer" *ngIf="isAdmin">
-        <button class="edit-btn" (click)="openEditModal(a)"> Edit</button>
-        <button class="delete-btn"
-          (click)="deleteAnnouncement(a.id)">Delete</button>
+        <button class="edit-btn" (click)="openEditModal(a)">Edit</button>
+        <button class="delete-btn" (click)="deleteAnnouncement(a.id)">
+          Delete
+        </button>
       </div>
     </div>
   </div>
@@ -33,17 +44,18 @@
   <!-- Modal Overlay -->
   <div class="modal-overlay" *ngIf="showModal">
     <div class="modal mat-elevation-z8">
-
       <div class="modal-header">
         <button class="close-btn" (click)="closeModal()">✖</button>
-
       </div>
       <h2 class="modal-title">
-        {{ isEditMode ? 'Edit Announcement' : 'Add Announcement' }}
+        {{ isEditMode ? "Edit Announcement" : "Add Announcement" }}
       </h2>
 
-      <form [formGroup]="announcementForm" (ngSubmit)="submitForm()"
-        class="announcement-form">
+      <form
+        [formGroup]="announcementForm"
+        (ngSubmit)="submitForm()"
+        class="announcement-form"
+      >
         <!-- Title -->
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>Title</mat-label>
@@ -52,19 +64,22 @@
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="full-width">
-  <mat-label>Date</mat-label>
+          <mat-label>Date</mat-label>
 
-  <input 
-    matInput
-    [matDatepicker]="picker"
-    formControlName="date"
-    readonly
-    (click)="picker.open()"
-  />
+          <input
+            matInput
+            [matDatepicker]="picker"
+            formControlName="date"
+            readonly
+            (click)="picker.open()"
+          />
 
-  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-  <mat-datepicker #picker></mat-datepicker>
-</mat-form-field>
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
 
         <div class="time-row">
           <mat-form-field appearance="outline" class="time-field">
@@ -79,16 +94,23 @@
         </div>
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>Topic / Place</mat-label>
-          <input matInput formControlName="place"
-            placeholder="Enter topic or location" />
+          <input
+            matInput
+            formControlName="place"
+            placeholder="Enter topic or location"
+          />
           <mat-icon matSuffix>place</mat-icon>
         </mat-form-field>
 
         <!-- Description -->
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>Description</mat-label>
-          <textarea matInput formControlName="description" rows="3"
-            placeholder="Enter detailed description"></textarea>
+          <textarea
+            matInput
+            formControlName="description"
+            rows="3"
+            placeholder="Enter detailed description"
+          ></textarea>
         </mat-form-field>
 
         <div class="button-row">
@@ -96,20 +118,20 @@
             mat-stroked-button
             color="warn"
             type="button"
-            (click)="closeModal()">
+            (click)="closeModal()"
+          >
             Cancel
           </button>
           <button
             mat-raised-button
             color="primary"
             type="submit"
-            [disabled]="announcementForm.invalid">
-            {{ isEditMode ? 'Update' : 'Save' }}
+            [disabled]="announcementForm.invalid"
+          >
+            {{ isEditMode ? "Update" : "Save" }}
           </button>
-
         </div>
       </form>
     </div>
   </div>
-
 </div>

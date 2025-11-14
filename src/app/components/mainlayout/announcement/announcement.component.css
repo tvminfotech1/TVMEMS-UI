@@ -2,13 +2,12 @@
   padding: 40px;
   background: linear-gradient(180deg, #f8faff 0%, #eef2f8 100%);
   min-height: 100vh;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-/* -------------------- HEADER -------------------- */
 .header {
   display: flex;
   justify-content: space-between;
@@ -24,7 +23,7 @@
   color: #444;
   text-align: center;
   background: #ffffffcc;
-  padding: clamp(40px,15vw,250px);
+  padding: clamp(40px, 15vw, 250px);
   border-radius: 12px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   width: fit-content;
@@ -32,8 +31,8 @@
 
 .header h2 {
   color: #0a0f3c;
-  font-family: 'Cinzel', serif;
-  font-size: clamp(18px,4vw,20px);
+  font-family: "Cinzel", serif;
+  font-size: clamp(18px, 4vw, 20px);
   font-weight: 700;
   letter-spacing: 1px;
   text-transform: uppercase;
@@ -42,9 +41,9 @@
 .add-btn {
   background: linear-gradient(135deg, #0a0f3c, #1c2b8c);
   color: #fff;
-  padding: clamp(8px,1.5vw,10px) clamp(16px,2.5vw,24px);
+  padding: clamp(8px, 1.5vw, 10px) clamp(16px, 2.5vw, 24px);
   border: none;
-  font-size: clamp(14px,2vw,18px);
+  font-size: clamp(14px, 2vw, 18px);
   border-radius: 30px;
   font-weight: 600;
   cursor: pointer;
@@ -52,12 +51,6 @@
   transition: all 0.3s ease;
 }
 
-/* .add-btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 25px rgba(12, 24, 77, 0.55);
-} */
-
-/* -------------------- CARD GRID -------------------- */
 .card-container {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -68,8 +61,6 @@
   width: 100%;
   max-width: 1200px;
   box-sizing: border-box;
- 
- 
 }
 
 @media (max-width: 900px) {
@@ -79,9 +70,7 @@
   }
 }
 
-
 .announcement-card {
-
   border-radius: 15px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
   overflow: hidden;
@@ -89,17 +78,10 @@
   flex-direction: column;
   width: 100%;
   min-height: 350px;
-   background:
-    url('/assets/images/annoucemenybg.jpg');
+  background: url("/assets/images/annoucemenybg.jpg");
   background-repeat: repeat;
-  background-size:cover;
- 
-   
- 
-  
+  background-size: cover;
 }
-
-
 
 .card-header {
   color: #fff;
@@ -107,11 +89,10 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  
 }
 
 .card-header h3 {
-  font-family:Verdana, Geneva, Tahoma, sans-serif;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
   font-size: 20px;
   font-weight: 600;
   margin: 0;
@@ -125,25 +106,21 @@
   border-radius: 6px;
   font-size: 13px;
   align-self: flex-end;
-  font-family:Verdana, Geneva, Tahoma, sans-serif;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
-
 
 .card-body {
   padding: 20px 25px;
   flex-grow: 1;
-  font-family:Verdana, Geneva, Tahoma, sans-serif;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
   color: white;
-
- 
-  
 }
 
 .place {
-  font-family: 'Cinzel', serif;
+  font-family: "Cinzel", serif;
   font-weight: 600;
   color: white;
-  font-family:Verdana, Geneva, Tahoma, sans-serif;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
   font-size: 15px;
   border-bottom: 1px solid #e0e4ee;
   padding-bottom: 6px;
@@ -154,7 +131,7 @@
   color: #333;
   line-height: 1.6;
   font-size: 15px;
-  font-family:Verdana, Geneva, Tahoma, sans-serif;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
   word-wrap: break-word;
   white-space: pre-wrap;
   overflow: visible;
@@ -207,11 +184,11 @@
   color: #0d47a1;
   text-align: center;
   margin-bottom: 16px;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   letter-spacing: 0.5px;
 }
 .modal-overlay {
- position: fixed;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
@@ -248,7 +225,7 @@
   color: #0d47a1;
   text-align: center;
   margin-bottom: 16px;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   letter-spacing: 0.5px;
 }
 .modal-header {
@@ -276,7 +253,6 @@
   margin-top: 8px;
 }
 
-
 .close-btn {
   background: transparent;
   border: none;
@@ -291,7 +267,6 @@
   color: #e53935;
   transform: scale(1.1);
 }
-
 
 .time-row {
   display: flex;
@@ -315,9 +290,7 @@
 mat-select {
   width: 65px;
 }
-/* ---------------- GLOBAL RESPONSIVENESS ---------------- */
 
-/* ✅ 1200px and below (small laptops) */
 @media (max-width: 1200px) {
   .announcement-page {
     padding: 30px;
@@ -328,7 +301,6 @@ mat-select {
   }
 }
 
-/* ✅ 1024px and below (tablets landscape + iPad Pro) */
 @media (max-width: 1024px) {
   .header {
     flex-direction: column;
@@ -342,10 +314,9 @@ mat-select {
   }
 }
 
-/* ✅ 900px and below (tablets portrait) */
 @media (max-width: 900px) {
   .card-container {
-    grid-template-columns: 1fr;     /* ✅ Only 1 card per row */
+    grid-template-columns: 1fr;
     padding: 0 10px 30px;
   }
 
@@ -355,7 +326,6 @@ mat-select {
   }
 }
 
-/* ✅ 600px and below (large phones + foldables) */
 @media (max-width: 600px) {
   .announcement-page {
     padding: 15px;
@@ -383,7 +353,6 @@ mat-select {
   }
 }
 
-/* ✅ 480px and below (small mobile phones) */
 @media (max-width: 480px) {
   .announcement-card {
     padding: 0;

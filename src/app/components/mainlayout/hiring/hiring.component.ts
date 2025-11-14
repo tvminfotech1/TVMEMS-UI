@@ -14,7 +14,7 @@ interface Job {
 @Component({
   selector: 'app-hiring',
   templateUrl: './hiring.component.html',
-  styleUrls: ['./hiring.component.css']
+  styleUrls: ['./hiring.component.css'],
 })
 export class HiringComponent implements OnInit {
   jobs?: any[] = [];
@@ -34,7 +34,6 @@ export class HiringComponent implements OnInit {
 
     this.http.get<Job[]>('http://localhost:8080/api/hiring/jobs').subscribe({
       next: (data) => {
-        console.log(data);
         this.jobs = data;
         this.loading = false;
       },
@@ -42,7 +41,7 @@ export class HiringComponent implements OnInit {
         console.error('Job fetch failed:', err);
         this.errorMessage = 'Failed to load jobs. Please try again.';
         this.loading = false;
-      }
+      },
     });
   }
 

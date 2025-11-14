@@ -50,8 +50,7 @@ export class PersonalComponent implements OnInit {
     private userService: UserService,
     private router: Router,
     private snackBar: MatSnackBar,
-        private mainLayoutService: MainlayoutService
-
+    private mainLayoutService: MainlayoutService
   ) {
     this.userForm = this.formBuilder.group({
       fname: [
@@ -303,7 +302,6 @@ allowTenDigitNumber(event: KeyboardEvent): void {
         copyAddressChecked: this.copyAddressChecked,
       };
 
-      console.log('Submitting data: ', formValue);
       this.userService.setFormData('personal', formValue);
       this.mainLayoutService.markTabCompleted('personal', true);
       this.router.navigate(['/mainlayout/kyc']);

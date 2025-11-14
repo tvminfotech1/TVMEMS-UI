@@ -3,87 +3,153 @@
     <button mat-icon-button class="back-btn" (click)="onCancel()">
       <mat-icon>arrow_back</mat-icon>
     </button>
-    <h2>{{ isEditMode ? 'Edit Payroll Employee' : 'Add Payroll Employee' }}</h2>
+    <h2>{{ isEditMode ? "Edit Payroll Employee" : "Add Payroll Employee" }}</h2>
     <button mat-icon-button class="close-btn" (click)="onCancel()">
       <mat-icon>close</mat-icon>
     </button>
   </div>
 
-
   <form (ngSubmit)="onSubmit(empForm)" #empForm="ngForm">
     <div class="form-grid">
-
       <div class="search-section">
         <mat-form-field appearance="outline">
           <mat-label>Employee ID</mat-label>
-          <input matInput type="number" [(ngModel)]="searchId" placeholder="Enter Employee ID" name="employeeId" />
-          <button mat-icon-button matSuffix color="primary" type="button" (click)="searchEmployee()">
+          <input
+            matInput
+            type="number"
+            [(ngModel)]="searchId"
+            placeholder="Enter Employee ID"
+            name="employeeId"
+          />
+          <button
+            mat-icon-button
+            matSuffix
+            color="primary"
+            type="button"
+            (click)="searchEmployee()"
+          >
             <mat-icon>search</mat-icon>
           </button>
-
         </mat-form-field>
 
-        <!-- clickable suggestion -->
-        <div *ngIf="searchedEmployee" class="employee-suggestion" (click)="selectEmployee()">
+        <div
+          *ngIf="searchedEmployee"
+          class="employee-suggestion"
+          (click)="selectEmployee()"
+        >
           {{ searchId }} - {{ searchedEmployee.fullName }}
         </div>
       </div>
 
-
       <mat-form-field appearance="outline">
         <mat-label>Full Name</mat-label>
-        <input matInput type="text" name="fullName" [(ngModel)]="employee.fullName" readonly />
+        <input
+          matInput
+          type="text"
+          name="fullName"
+          [(ngModel)]="employee.fullName"
+          readonly
+        />
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Email</mat-label>
-        <input matInput type="email" name="email" [(ngModel)]="employee.email" readonly />
+        <input
+          matInput
+          type="email"
+          name="email"
+          [(ngModel)]="employee.email"
+          readonly
+        />
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Phone</mat-label>
-        <input matInput type="text" name="phone" [(ngModel)]="employee.phone" readonly />
+        <input
+          matInput
+          type="text"
+          name="phone"
+          [(ngModel)]="employee.phone"
+          readonly
+        />
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Joining Date</mat-label>
-        <input matInput [value]="employee.joiningDate | date: 'dd-MM-yyyy'" readonly />
+        <input matInput [value]="employee.joiningDate" readonly />
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Aadhaar Number</mat-label>
-        <input matInput name="aadhaarNumber" [(ngModel)]="employee.aadhaarNumber" readonly />
+        <input
+          matInput
+          name="aadhaarNumber"
+          [(ngModel)]="employee.aadhaarNumber"
+          readonly
+        />
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>PAN Number</mat-label>
-        <input matInput name="panNumber" [(ngModel)]="employee.panNumber" readonly/>
+        <input
+          matInput
+          name="panNumber"
+          [(ngModel)]="employee.panNumber"
+          readonly
+        />
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="status-field">
         <mat-label>Status</mat-label>
-        <input matInput name="status" [(ngModel)]="employee.status" value="Active" [disabled]="true" readonly
-          class="status-active" />
+        <input
+          matInput
+          name="status"
+          [(ngModel)]="employee.status"
+          value="Active"
+          [disabled]="true"
+          readonly
+          class="status-active"
+        />
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Department</mat-label>
-        <mat-select name="department" [(ngModel)]="employee.department" required>
+        <mat-select
+          name="department"
+          [(ngModel)]="employee.department"
+          required
+        >
           <mat-option value="">Select Department</mat-option>
-          <mat-option value="Frontend Development">Frontend Development</mat-option>
-          <mat-option value="Backend Development">Backend Development</mat-option>
-          <mat-option value="Full Stack Development">Full Stack Development</mat-option>
-          <mat-option value="DevOps & Deployment">DevOps & Deployment</mat-option>
-          <mat-option value="Software Development">Software Development</mat-option>
+          <mat-option value="Frontend Development"
+            >Frontend Development</mat-option
+          >
+          <mat-option value="Backend Development"
+            >Backend Development</mat-option
+          >
+          <mat-option value="Full Stack Development"
+            >Full Stack Development</mat-option
+          >
+          <mat-option value="DevOps & Deployment"
+            >DevOps & Deployment</mat-option
+          >
+          <mat-option value="Software Development"
+            >Software Development</mat-option
+          >
           <mat-option value="QA / Testing">QA / Testing</mat-option>
-          <mat-option value="Human Resources (HR)">Human Resources (HR)</mat-option>
+          <mat-option value="Human Resources (HR)"
+            >Human Resources (HR)</mat-option
+          >
           <mat-option value="Finance & Accounts">Finance & Accounts</mat-option>
         </mat-select>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Employee Type</mat-label>
-        <mat-select [(ngModel)]="employee.employeeType" name="employeeType" required>
+        <mat-select
+          [(ngModel)]="employee.employeeType"
+          name="employeeType"
+          required
+        >
           <mat-option value="">Select Employee Type</mat-option>
           <mat-option value="Intern">Intern</mat-option>
           <mat-option value="Full Time">Full Time</mat-option>
@@ -96,8 +162,23 @@
         <mat-select name="location" [(ngModel)]="employee.location" required>
           <mat-option value="">Select Location</mat-option>
           <mat-option
-            *ngFor="let city of ['Bangalore','Chennai','Hyderabad','Mumbai','Pune','Delhi','Noida','Kolkata','Ahmedabad','Jaipur','Other']"
-            [value]="city">
+            *ngFor="
+              let city of [
+                'Bangalore',
+                'Chennai',
+                'Hyderabad',
+                'Mumbai',
+                'Pune',
+                'Delhi',
+                'Noida',
+                'Kolkata',
+                'Ahmedabad',
+                'Jaipur',
+                'Other'
+              ]
+            "
+            [value]="city"
+          >
             {{ city }}
           </mat-option>
         </mat-select>
@@ -105,49 +186,90 @@
 
       <mat-form-field appearance="outline">
         <mat-label>CTC</mat-label>
-        <input matInput type="number" name="ctc" [(ngModel)]="employee.ctc" required />
+        <input
+          matInput
+          type="number"
+          name="ctc"
+          [(ngModel)]="employee.ctc"
+          required
+        />
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Basic Salary</mat-label>
-        <input matInput type="number" name="basicSalary" [(ngModel)]="employee.basicSalary" required />
+        <input
+          matInput
+          type="number"
+          name="basicSalary"
+          [(ngModel)]="employee.basicSalary"
+          required
+        />
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>In-Hand Salary</mat-label>
-        <input matInput type="number" name="inHandSalary" [(ngModel)]="employee.inHandSalary" required />
+        <input
+          matInput
+          type="number"
+          name="inHandSalary"
+          [(ngModel)]="employee.inHandSalary"
+          required
+        />
       </mat-form-field>
-
     </div>
 
     <mat-divider></mat-divider>
 
-    <!-- Bank Details -->
     <h3>Bank Details</h3>
     <div class="form-grid">
       <mat-form-field appearance="outline">
         <mat-label>Bank Name</mat-label>
-        <input matInput name="bankName" [(ngModel)]="employee.bankDetails.bankName" required />
+        <input
+          matInput
+          name="bankName"
+          [(ngModel)]="employee.bankDetails.bankName"
+          required
+        />
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Account Number</mat-label>
-        <input matInput name="accountNumber" [(ngModel)]="employee.bankDetails.accountNumber" required />
+        <input
+          matInput
+          name="accountNumber"
+          [(ngModel)]="employee.bankDetails.accountNumber"
+          required
+        />
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>IFSC Code</mat-label>
-        <input matInput name="ifscCode" [(ngModel)]="employee.bankDetails.ifscCode" required />
+        <input
+          matInput
+          name="ifscCode"
+          [(ngModel)]="employee.bankDetails.ifscCode"
+          required
+        />
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Branch</mat-label>
-        <input matInput name="branch" [(ngModel)]="employee.bankDetails.branch" required />
+        <input
+          matInput
+          name="branch"
+          [(ngModel)]="employee.bankDetails.branch"
+          required
+        />
       </mat-form-field>
     </div>
     <div class="button-group">
-      <button mat-raised-button color="primary" type="submit" class="submit-btn">
-        {{ isEditMode ? 'Update Employee' : 'Add Employee' }}
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        class="submit-btn"
+      >
+        {{ isEditMode ? "Update Employee" : "Add Employee" }}
       </button>
     </div>
   </form>

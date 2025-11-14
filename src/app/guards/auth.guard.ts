@@ -5,7 +5,7 @@ import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthGuard implements CanActivate {
   constructor(private authService: AuthService, private router: Router) {}
@@ -18,7 +18,7 @@ export class AuthGuard implements CanActivate {
     }
 
     return this.authService.checkRole().pipe(
-      map(res => {
+      map((res) => {
         return true;
       }),
       catchError(() => {

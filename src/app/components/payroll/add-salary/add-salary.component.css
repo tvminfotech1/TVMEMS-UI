@@ -1,19 +1,16 @@
-/* === Container === */
 .container {
   max-width: 1100px;
   margin: 40px auto;
   background: #ffffff;
   padding: 0;
-  /* header has its own padding */
   border-radius: 16px;
   box-shadow: 0 4px 25px rgba(0, 0, 0, 0.1);
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   color: #333;
   position: relative;
   overflow: hidden;
 }
 
-/* === Header === */
 .page-header {
   display: flex;
   justify-content: center;
@@ -25,7 +22,6 @@
   border-top-right-radius: 16px;
 }
 
-/* Close Button — top-right inside header */
 .close-btn {
   position: absolute;
   right: 10px;
@@ -48,7 +44,6 @@
   color: black;
 }
 
-/* Title */
 .page-header h2 {
   margin: 0;
   font-size: 22px;
@@ -57,12 +52,10 @@
   text-align: center;
 }
 
-/* === Body === */
 .body-conytainer {
   padding: 25px 35px;
 }
 
-/* === Employee & Salary Tables === */
 .employee-details-table,
 .salary-table {
   width: 100%;
@@ -101,7 +94,6 @@
   color: #444;
 }
 
-/* === Inputs === */
 .employee-details-table input[type="number"],
 .salary-table input[type="number"] {
   width: 100%;
@@ -140,10 +132,8 @@ input:focus {
   outline: none;
 }
 
-
 .salary-table tfoot th {
   background-color: #cce5ff;
-  /* stronger blue tint */
   color: #003366;
   font-weight: bold;
   font-size: 15px;
@@ -151,7 +141,6 @@ input:focus {
   padding-right: 20px;
 }
 
-/* === Salary Summary === */
 .salary-summary {
   text-align: right;
   margin-top: 25px;
@@ -167,7 +156,6 @@ input:focus {
   color: #28a745;
 }
 
-/* === Buttons === */
 button {
   margin: 30px auto 0;
   padding: 12px 26px;
@@ -185,7 +173,6 @@ button {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-
 }
 
 button:hover {
@@ -197,8 +184,6 @@ button:active {
   transform: scale(0.98);
 }
 
-
-/* === Responsive === */
 @media (max-width: 768px) {
   .page-header h2 {
     font-size: 18px;
@@ -226,5 +211,4 @@ button:active {
   input[type="month"] {
     font-size: 13px;
   }
-
 }

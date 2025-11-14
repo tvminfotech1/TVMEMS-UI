@@ -10,7 +10,7 @@ const html2pdf = require('html2pdf.js');
 @Component({
   selector: 'app-monthly-salary-slip',
   templateUrl: './monthly-salary-slip.component.html',
-  styleUrls: ['./monthly-salary-slip.component.css']
+  styleUrls: ['./monthly-salary-slip.component.css'],
 })
 export class MonthlySalarySlipComponent implements OnInit {
   employee!: Employee;
@@ -22,44 +22,49 @@ export class MonthlySalarySlipComponent implements OnInit {
     private employeeService: PayrollEmployeeService
   ) {}
 
- ngOnInit(): void {
-  const salaryId = this.route.snapshot.paramMap.get('salaryId');
-  const empIdParam = this.route.snapshot.paramMap.get('empId');
-  const empId = empIdParam ? +empIdParam : null;  // Convert to number
+  ngOnInit(): void {
+    const salaryId = this.route.snapshot.paramMap.get('salaryId');
+    const empIdParam = this.route.snapshot.paramMap.get('empId');
+    const empId = empIdParam ? +empIdParam : null; // Convert to number
 
-  if (salaryId && empId !== null) {
-    this.salaryService.getAllSalaryHistory().subscribe(salaries => {
-      const recordSalaris:SalaryHistory[] = salaries.body;
-      const record = recordSalaris.find(s => s.salaryId === salaryId && s.id === empId);
-      if (record) {
-        this.salary = record;
-        this.employeeService.getEmployeeById(record.id).subscribe(emp => {
-          this.employee = emp;
-        });
-      }
-    });
+    if (salaryId && empId !== null) {
+      this.salaryService.getAllSalaryHistory().subscribe((salaries) => {
+        const recordSalaris: SalaryHistory[] = salaries.body;
+        const record = recordSalaris.find(
+          (s) => s.salaryId === salaryId && s.id === empId
+        );
+        if (record) {
+          this.salary = record;
+          this.employeeService.getEmployeeById(record.id).subscribe((emp) => {
+            this.employee = emp;
+          });
+        }
+      });
+    }
   }
-}
 
-calculateTotalEarnings(): number {
-  return this.salary.basicSalary +
-         this.salary.hra +
-         this.salary.medicalAllowance +
-         this.salary.conveyanceAllowance +
-         this.salary.flexiBenefit +
-         this.salary.leaveTravel +
-         this.salary.specialAllowance;
-}
+  calculateTotalEarnings(): number {
+    return (
+      this.salary.basicSalary +
+      this.salary.hra +
+      this.salary.medicalAllowance +
+      this.salary.conveyanceAllowance +
+      this.salary.flexiBenefit +
+      this.salary.leaveTravel +
+      this.salary.specialAllowance
+    );
+  }
 
-calculateTotalDeductions(): number {
-  return this.salary.professionalTax +
-         this.salary.incomeTax +
-         this.salary.leaveDeduction +
-         this.salary.otherDeduction +
-         this.salary.esi +
-         this.salary.pf; // If PF is part of deductions
-}
-
+  calculateTotalDeductions(): number {
+    return (
+      this.salary.professionalTax +
+      this.salary.incomeTax +
+      this.salary.leaveDeduction +
+      this.salary.otherDeduction +
+      this.salary.esi +
+      this.salary.pf
+    );
+  }
 
   downloadPDF(): void {
     const element = document.getElementById('salary-slip');
@@ -68,7 +73,7 @@ calculateTotalDeductions(): number {
       filename: `${this.salary.salaryId}-PaySlip.pdf`,
       image: { type: 'jpeg', quality: 1 },
       html2canvas: { scale: 5 },
-      jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+      jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' },
     };
     html2pdf().from(element).set(options).save();
   }

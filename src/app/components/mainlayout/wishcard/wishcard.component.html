@@ -1,6 +1,9 @@
-<div class="carousel-container" (mouseenter)="pauseScroll()" (mouseleave)="resumeScroll()">
+<div
+  class="carousel-container"
+  (mouseenter)="pauseScroll()"
+  (mouseleave)="resumeScroll()"
+>
   <div class="dashboard">
-        <!-- Show loader while waiting for backend -->
     <div *ngIf="isLoading" class="card-loading">
       <div class="spinner"></div>
       <p>Loading wishes...</p>
@@ -11,36 +14,49 @@
     >
       <div class="card-empty">No wishes available.</div>
     </div>
-    </div>
+  </div>
 
   <div class="carousel-track" #carouselTrack>
-      <!-- <div class="card" *ngFor="let card of filteredWishes.concat(filteredWishes); trackBy: trackByWish" -->
-      <div class="card" *ngFor="let card of filteredWishes; trackBy: trackByWish"
-         [attr.data-category]="card.category && card.category !== 'null' && card.category !== 'undefined' ? card.category : null"
-  [class.no-category]="!card.category || card.category === 'null' || card.category === 'undefined'">
-
-        <div class="card-banner">
-          
-          <div class="profile-pic-container">
-            <img [src]="card.image" [alt]="card.name" />
-          </div>
-        </div>
-
-        <div class="card-body">
-          <h3>{{ card.name }}</h3>
-
-          <!-- Greetings by category -->
-          <p *ngIf="card.category === CATEGORY_BIRTHDAY" class="birthday-text">
-            🎉 Wishing you a very Happy Birthday!
-          </p>
-
-          <p *ngIf="card.category === CATEGORY_ANNIVERSARY" class="anniversary-text">
-            🎊 Happy Work Anniversary!
-          </p>
-
-          <p *ngIf="card.category === CATEGORY_ONBOARDING" class="onboard-text">
-            👋 Welcome Onboard!
-          </p>
+    <div
+      class="card"
+      *ngFor="let card of filteredWishes; trackBy: trackByWish"
+      [attr.data-category]="
+        card.category &&
+        card.category !== 'null' &&
+        card.category !== 'undefined'
+          ? card.category
+          : null
+      "
+      [class.no-category]="
+        !card.category ||
+        card.category === 'null' ||
+        card.category === 'undefined'
+      "
+    >
+      <div class="card-banner">
+        <div class="profile-pic-container">
+          <img [src]="card.image" [alt]="card.name" />
         </div>
       </div>
+
+      <div class="card-body">
+        <h3>{{ card.name }}</h3>
+
+        <p *ngIf="card.category === CATEGORY_BIRTHDAY" class="birthday-text">
+          🎉 Wishing you a very Happy Birthday!
+        </p>
+
+        <p
+          *ngIf="card.category === CATEGORY_ANNIVERSARY"
+          class="anniversary-text"
+        >
+          🎊 Happy Work Anniversary!
+        </p>
+
+        <p *ngIf="card.category === CATEGORY_ONBOARDING" class="onboard-text">
+          👋 Welcome Onboard!
+        </p>
+      </div>
+    </div>
   </div>
+</div>

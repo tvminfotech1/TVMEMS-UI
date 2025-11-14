@@ -5,7 +5,6 @@
     {{ employeeDetails.lname }}
   </h2>
 
-  <!-- Personal Information -->
   <section class="section">
     <h3>Personal Information</h3>
     <div class="sub-section">
@@ -197,7 +196,6 @@
     </div>
   </section>
 
-  <!-- Education -->
   <section class="section" *ngIf="employeeDetails.education?.length">
     <h3>Education</h3>
     <div class="sub-section" *ngFor="let edu of employeeDetails.education">
@@ -219,7 +217,6 @@
     </div>
   </section>
 
-  <!-- Skills -->
   <section class="section" *ngIf="employeeDetails.skills?.length">
     <h3>Skills</h3>
     <div class="sub-section" *ngFor="let skill of employeeDetails.skills">
@@ -237,7 +234,6 @@
     </div>
   </section>
 
-  <!-- Certifications -->
   <section class="section" *ngIf="employeeDetails.certification?.length">
     <h3>Certifications</h3>
     <div class="sub-section" *ngFor="let cert of employeeDetails.certification">
@@ -252,7 +248,6 @@
     </div>
   </section>
 
-  <!-- Resume Info -->
   <section class="section">
     <h3>Resume Info</h3>
     <div class="sub-section">
@@ -265,7 +260,6 @@
     </div>
   </section>
 
-  <!-- Final Declaration -->
   <section class="section">
     <h3>Final Declaration</h3>
     <div class="row">

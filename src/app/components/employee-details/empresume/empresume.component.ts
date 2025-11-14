@@ -6,7 +6,7 @@ import { EmployeeDataService } from 'src/app/services/employee-data.service';
 @Component({
   selector: 'app-empresume',
   templateUrl: './empresume.component.html',
-  styleUrls: ['./empresume.component.css']
+  styleUrls: ['./empresume.component.css'],
 })
 export class EmpresumeComponent implements OnInit {
   employeeId: any;
@@ -32,7 +32,7 @@ export class EmpresumeComponent implements OnInit {
           this.employeeDetails = res.body.find((emp: any) => emp.id == id);
           this.empDataService.setEmployeeData(this.employeeDetails);
         },
-        error: (err: any) => console.error('Error:', err)
+        error: (err: any) => console.error('Error:', err),
       });
     }
   }

@@ -1,24 +1,23 @@
 #navBar {
-  background-color: #000B3D;
+  background-color: #000b3d;
   align-content: center;
   text-align: center;
   color: white;
   align-items: center;
-  height:80px;
-
+  height: 80px;
 }
 
 #tvm {
   display: inline-block;
   cursor: pointer;
-  font-family:Georgia, 'Times New Roman', Times, serif;
+  font-family: Georgia, "Times New Roman", Times, serif;
   letter-spacing: 0.3rem;
   font-size: 4rem;
   font-weight: bold;
   margin: 0px;
 }
 @media (max-width: 768px) {
-  #tvm{
-  font-size: 2rem;
-}
+  #tvm {
+    font-size: 2rem;
+  }
 }

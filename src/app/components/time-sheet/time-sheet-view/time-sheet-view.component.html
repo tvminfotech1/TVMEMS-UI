@@ -1,9 +1,10 @@
-<!-- File: timesheet.component.html  -->
 <div class="header-bar">
   <div class="breadcrumb">Time Sheets List</div>
   <div class="top-section">
     <div class="left">
-      <div class="name"><strong>{{ timesheet.name }}</strong></div>
+      <div class="name">
+        <strong>{{ timesheet.name }}</strong>
+      </div>
       <span class="badge">Time Sheet</span>
       <div class="row">
         <div><strong>Status:</strong> {{ timesheet.status }}</div>
@@ -16,7 +17,8 @@
     <div class="right">
       <button class="btn">Withdraw</button>
       <button class="btn">Actions ▼</button>
-    </div>em
+    </div>
+    em
   </div>
 </div>
 
@@ -24,7 +26,6 @@
   <h3>Time Worked</h3>
   <p><strong>Worker ID:</strong> {{ timesheet.workerId }}</p>
 
- 
   <table class="styled-table">
     <thead>
       <tr>
@@ -41,7 +42,10 @@
         <td colspan="9" class="billable">Billable</td>
       </tr>
       <tr>
-        <td colspan="9">Cost Center |{{ timesheet.costCenter }} ({{ timesheet.costCenter }}) - Hours Worked - {{ timesheet.description }}</td>
+        <td colspan="9">
+          Cost Center |{{ timesheet.costCenter }} ({{ timesheet.costCenter }}) -
+          Hours Worked - {{ timesheet.description }}
+        </td>
       </tr>
       <tr>
         <td>ST /Hr</td>
@@ -54,12 +58,14 @@
         <td>{{ totalHours.toFixed(2) }}</td>
       </tr>
 
-      <!-- Non-Billable Section -->
       <tr>
         <td colspan="9" class="billable">Non-Billable</td>
       </tr>
       <tr>
-        <td colspan="9">Cost Center |{{ timesheet.costCenter }} ({{ timesheet.costCenter }}) - Hours Worked - {{ timesheet.description }}</td>
+        <td colspan="9">
+          Cost Center |{{ timesheet.costCenter }} ({{ timesheet.costCenter }}) -
+          Hours Worked - {{ timesheet.description }}
+        </td>
       </tr>
       <tr>
         <td>ST /Hr</td>

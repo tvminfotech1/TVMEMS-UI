@@ -5,7 +5,6 @@
   </div>
 
   <div class="body-conytainer">
-    <!-- Employee Details -->
     <table class="employee-details-table" *ngIf="employee">
       <thead>
         <tr>
@@ -23,7 +22,7 @@
           <td><strong>Employee Id</strong></td>
           <td>{{ employee.id }}</td>
           <td><strong>Location</strong></td>
-          <td>{{ employee.location || 'Chennai' }}</td>
+          <td>{{ employee.location || "Chennai" }}</td>
         </tr>
         <tr>
           <td><strong>Department</strong></td>
@@ -44,16 +43,17 @@
       </tbody>
     </table>
 
-    <!-- Pay Month -->
-
     <div class="form-date">
       <div class="form-group">
         <label>Pay Month</label>
-        <input type="month" [(ngModel)]="payMonth" (change)="updateNWDFromMonth()" />
+        <input
+          type="month"
+          [(ngModel)]="payMonth"
+          (change)="updateNWDFromMonth()"
+        />
       </div>
     </div>
 
-    <!-- Earnings -->
     <table class="salary-table">
       <thead>
         <tr>
@@ -63,35 +63,78 @@
       <tbody>
         <tr>
           <td><strong>Basic Salary</strong></td>
-          <td><input type="number" [(ngModel)]="basicSalary" (input)="calculateSalary()" /></td>
+          <td>
+            <input
+              type="number"
+              [(ngModel)]="basicSalary"
+              (input)="calculateSalary()"
+            />
+          </td>
           <td><strong>HRA</strong></td>
-          <td><input type="number" [(ngModel)]="hra" (input)="calculateSalary()" /></td>
+          <td>
+            <input
+              type="number"
+              [(ngModel)]="hra"
+              (input)="calculateSalary()"
+            />
+          </td>
         </tr>
         <tr>
           <td><strong>Medical Allowance</strong></td>
-          <td><input type="number" [(ngModel)]="medicalAllowance" (input)="calculateSalary()" /></td>
+          <td>
+            <input
+              type="number"
+              [(ngModel)]="medicalAllowance"
+              (input)="calculateSalary()"
+            />
+          </td>
           <td><strong>Conveyance Allowance</strong></td>
-          <td><input type="number" [(ngModel)]="conveyanceAllowance" (input)="calculateSalary()" /></td>
+          <td>
+            <input
+              type="number"
+              [(ngModel)]="conveyanceAllowance"
+              (input)="calculateSalary()"
+            />
+          </td>
         </tr>
         <tr>
           <td><strong>Flexi Benefit</strong></td>
-          <td><input type="number" [(ngModel)]="flexiBenefit" (input)="calculateSalary()" /></td>
+          <td>
+            <input
+              type="number"
+              [(ngModel)]="flexiBenefit"
+              (input)="calculateSalary()"
+            />
+          </td>
           <td><strong>Leave Travel</strong></td>
-          <td><input type="number" [(ngModel)]="leaveTravel" (input)="calculateSalary()" /></td>
+          <td>
+            <input
+              type="number"
+              [(ngModel)]="leaveTravel"
+              (input)="calculateSalary()"
+            />
+          </td>
         </tr>
         <tr>
           <td><strong>Special Allowance</strong></td>
-          <td colspan="3"><input type="number" [(ngModel)]="specialAllowance" (input)="calculateSalary()" /></td>
+          <td colspan="3">
+            <input
+              type="number"
+              [(ngModel)]="specialAllowance"
+              (input)="calculateSalary()"
+            />
+          </td>
         </tr>
       </tbody>
       <tfoot class="table-footer">
         <tr>
-          <th colspan="4" style="color: rgb(5, 169, 5);">Total Earnings: ₹{{ totalEarnings }}</th>
+          <th colspan="4" style="color: rgb(5, 169, 5)">
+            Total Earnings: ₹{{ totalEarnings }}
+          </th>
         </tr>
       </tfoot>
     </table>
 
-    <!-- Deductions -->
     <table class="salary-table">
       <thead>
         <tr>
@@ -101,37 +144,70 @@
       <tbody>
         <tr>
           <td><strong>PF</strong></td>
-          <td><input type="number" [(ngModel)]="pf" (input)="calculateSalary()" /></td>
+          <td>
+            <input type="number" [(ngModel)]="pf" (input)="calculateSalary()" />
+          </td>
           <td><strong>ESI</strong></td>
-          <td><input type="number" [(ngModel)]="esi" (input)="calculateSalary()" /></td>
+          <td>
+            <input
+              type="number"
+              [(ngModel)]="esi"
+              (input)="calculateSalary()"
+            />
+          </td>
         </tr>
         <tr>
           <td><strong>Professional Tax</strong></td>
-          <td><input type="number" [(ngModel)]="professionalTax" (input)="calculateSalary()" /></td>
+          <td>
+            <input
+              type="number"
+              [(ngModel)]="professionalTax"
+              (input)="calculateSalary()"
+            />
+          </td>
           <td><strong>Income Tax</strong></td>
-          <td><input type="number" [(ngModel)]="incomeTax" (input)="calculateSalary()" /></td>
+          <td>
+            <input
+              type="number"
+              [(ngModel)]="incomeTax"
+              (input)="calculateSalary()"
+            />
+          </td>
         </tr>
         <tr>
           <td><strong>Leave Deduction</strong></td>
-          <td><input type="number" [(ngModel)]="leaveDeduction" (input)="calculateSalary()" /></td>
+          <td>
+            <input
+              type="number"
+              [(ngModel)]="leaveDeduction"
+              (input)="calculateSalary()"
+            />
+          </td>
           <td><strong>Other Deduction</strong></td>
-          <td><input type="number" [(ngModel)]="otherDeduction" (input)="calculateSalary()" /></td>
+          <td>
+            <input
+              type="number"
+              [(ngModel)]="otherDeduction"
+              (input)="calculateSalary()"
+            />
+          </td>
         </tr>
       </tbody>
       <tfoot class="table-footer">
         <tr>
-          <th colspan="4" style="color: red;">Total Deductions: ₹{{ totalDeductions }}</th>
+          <th colspan="4" style="color: red">
+            Total Deductions: ₹{{ totalDeductions }}
+          </th>
         </tr>
       </tfoot>
     </table>
 
-    <!-- Summary -->
     <div class="salary-summary">
       <h4><b>Net Pay:</b> ₹{{ netPay }}</h4>
       <h4>Remaining CTC: ₹{{ remainingCtc }}</h4>
     </div>
     <div class="button-submit">
-    <button class="btn btn-primary" (click)="addSalary()">Add Salary</button>
+      <button class="btn btn-primary" (click)="addSalary()">Add Salary</button>
     </div>
   </div>
 </div>

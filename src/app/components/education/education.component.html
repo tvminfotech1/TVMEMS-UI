@@ -3,7 +3,6 @@
 <div class="PV-container">
   <form [formGroup]="educationForm" (ngSubmit)="submitForm()">
     <div class="form-grid">
-      <!-- Qualification -->
       <mat-form-field appearance="outline">
         <mat-label>Qualification</mat-label>
         <input
@@ -31,7 +30,6 @@
         </mat-error>
       </mat-form-field>
 
-      <!-- Specialization -->
       <mat-form-field appearance="outline">
         <mat-label>Specialization</mat-label>
         <input
@@ -54,7 +52,6 @@
         </mat-error>
       </mat-form-field>
 
-      <!-- Institute Name -->
       <mat-form-field appearance="outline">
         <mat-label>Institute Name</mat-label>
         <input
@@ -74,7 +71,6 @@
         </mat-error>
       </mat-form-field>
 
-      <!-- University Name -->
       <mat-form-field appearance="outline">
         <mat-label>University Name</mat-label>
         <input
@@ -94,7 +90,6 @@
         </mat-error>
       </mat-form-field>
 
-      <!-- Study Mode -->
       <mat-form-field appearance="outline">
         <mat-label>Study Mode</mat-label>
         <mat-select formControlName="time">
@@ -112,7 +107,6 @@
         </mat-error>
       </mat-form-field>
 
-      <!-- Education Type -->
       <mat-form-field appearance="outline">
         <mat-label>Education Type</mat-label>
         <mat-select formControlName="educationType">
@@ -155,7 +149,6 @@
         </mat-error>
       </mat-form-field>
 
-      <!-- To Date -->
       <mat-form-field appearance="outline">
         <mat-label>To (End Date)</mat-label>
         <input
@@ -176,13 +169,11 @@
           End date is required
         </mat-error>
 
-        <!-- Custom date validation message -->
         <mat-error *ngIf="educationForm.get('toDate')?.hasError('dateRange')">
           End date cannot before start date
         </mat-error>
       </mat-form-field>
 
-      <!-- percentage -->
       <mat-form-field appearance="outline">
         <mat-label>Percentage (%)</mat-label>
         <input
@@ -213,7 +204,6 @@
         </mat-error>
       </mat-form-field>
 
-      <!-- Roll No -->
       <mat-form-field appearance="outline">
         <mat-label>Roll Number</mat-label>
         <input

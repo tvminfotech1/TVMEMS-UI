@@ -3,7 +3,10 @@
 <div class="education-section" *ngIf="employeeDetails?.education?.length > 0">
   <h2>Education Details</h2>
 
-  <div *ngFor="let edu of employeeDetails.education; let i = index" class="form-grid education-card">
+  <div
+    *ngFor="let edu of employeeDetails.education; let i = index"
+    class="form-grid education-card"
+  >
     <h3>Education {{ i + 1 }}</h3>
 
     <div class="form-group">
@@ -57,14 +60,19 @@
     </div>
   </div>
 
-  <!-- Navigation Buttons -->
   <div class="button-group">
-    <a [routerLink]="['/mainlayout/emppreviousEmployee', employeeDetails?.id]">&laquo; Previous</a>
-    <button class="update-button" [routerLink]="['/mainlayout/empskills', employeeDetails?.id]">Next &raquo;</button>
+    <a [routerLink]="['/mainlayout/emppreviousEmployee', employeeDetails?.id]"
+      >&laquo; Previous</a
+    >
+    <button
+      class="update-button"
+      [routerLink]="['/mainlayout/empskills', employeeDetails?.id]"
+    >
+      Next &raquo;
+    </button>
   </div>
 </div>
 
-<!-- Fallback -->
 <div *ngIf="employeeDetails?.education?.length === 0" class="fallback-message">
   <p>No education data added.</p>
 </div>

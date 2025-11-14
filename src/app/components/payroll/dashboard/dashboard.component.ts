@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css']
+  styleUrls: ['./dashboard.component.css'],
 })
 export class DashboardComponent implements OnInit {
   employees: Employee[] = [];
@@ -21,20 +21,21 @@ export class DashboardComponent implements OnInit {
     private router: Router
   ) {}
 
- ngOnInit(): void {
-  this.employeeService.getEmployees().subscribe((data: Employee[]) => {
-    console.log('All Employees:', data);
+  ngOnInit(): void {
+    this.employeeService.getEmployees().subscribe((data: Employee[]) => {
+      this.employees = data;
+      this.totalEmployees = data.length;
+      this.activeEmployees = data.filter(
+        (emp) => emp.status === 'Active'
+      ).length;
+      this.inactiveEmployees = data.filter(
+        (emp) => emp.status === 'Inactive' || emp.status === 'Deactivated'
+      ).length;
+      this.departmentCount = new Set(data.map((emp) => emp.department)).size;
 
-    this.employees = data;
-    this.totalEmployees = data.length;
-    this.activeEmployees = data.filter(emp => emp.status === 'Active').length;
-    this.inactiveEmployees = data.filter(emp => emp.status === 'Inactive' || emp.status === 'Deactivated').length;
-    this.departmentCount = new Set(data.map(emp => emp.department)).size;
-
-    this.recentEmployees = [...data.slice(-2).reverse()];
-    console.log('Recent Employees:', this.recentEmployees);
-  });
-}
+      this.recentEmployees = [...data.slice(-2).reverse()];
+    });
+  }
 
   goToAddEmployee() {
     this.router.navigate(['/mainlayout/add-employee']);

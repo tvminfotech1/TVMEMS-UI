@@ -1,6 +1,6 @@
 .review-container {
   padding: 20px;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: "Segoe UI", sans-serif;
 }
 
 .tab-headers {
@@ -27,13 +27,6 @@
   border-top-right-radius: 4px;
 }
 
-/* .tab-content {
-  background-color: #fff;
-  padding: 15px;
-  border: 1px solid #ccc;
-  border-top: none;
-} */
-
 .table-wrapper {
   overflow-x: auto;
 }
@@ -44,7 +37,8 @@ table {
   background-color: #fff;
 }
 
-th, td {
+th,
+td {
   text-align: left;
   padding: 12px;
   border-bottom: 1px solid #ccc;

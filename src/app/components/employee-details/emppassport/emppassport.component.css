@@ -3,7 +3,7 @@
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 1.2rem;
   margin: 20px auto;
-  max-width: 800px; /* Reduces overall width */
+  max-width: 800px;
 }
 
 .form-group {
@@ -32,10 +32,6 @@
   border-color: #007bff;
 }
 
-
-
-/* .prev-btn, 
-.next-btn,*/
 .save-btn {
   background-color: #007bff;
   color: white;
@@ -53,9 +49,7 @@
   font-weight: bold;
 }
 
-
-.save-btn:hover
- {
+.save-btn:hover {
   background-color: #0056b3;
 }
 
@@ -88,14 +82,15 @@
   font-weight: bold;
 }
 
-.button-group a:hover, .update-button:hover {
+.button-group a:hover,
+.update-button:hover {
   background-color: #004aad;
   color: white;
 }
 
-.error{
+.error {
   color: red;
-  margin-top:5px ;
+  margin-top: 5px;
   font-size: 14px;
 }
 input[readonly] {
@@ -105,6 +100,6 @@ input[readonly] {
   font-weight: 500;
 }
 
-input[readonly]:hover{
-cursor: not-allowed;
+input[readonly]:hover {
+  cursor: not-allowed;
 }

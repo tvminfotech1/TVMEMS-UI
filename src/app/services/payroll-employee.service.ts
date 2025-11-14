@@ -5,51 +5,45 @@ import { Employee } from '../models/employee';
 import { tap, catchError, map } from 'rxjs/operators';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PayrollEmployeeService {
-
   private apiUrl = 'http://localhost:8080/api/employeePayRole';
 
   constructor(private http: HttpClient) {}
 
-  // ✅ Fetch all employees
   getEmployees(): Observable<Employee[]> {
     return this.http.get<{ body: Employee[] }>(this.apiUrl).pipe(
-      map(res => res.body),
-      catchError(err => {
+      map((res) => res.body),
+      catchError((err) => {
         console.error('Error fetching employees', err);
         return of([]);
       })
     );
   }
 
-  // ✅ Get single employee by ID
   getEmployeeById(id: number): Observable<Employee> {
     return this.http.get<{ body: Employee }>(`${this.apiUrl}/${id}`).pipe(
-      map(res => res.body),
-      catchError(err => {
+      map((res) => res.body),
+      catchError((err) => {
         console.error('Error fetching employee by id', err);
         return of({} as Employee);
       })
     );
   }
 
-  // ✅ Add new employee
-addEmployee(employee: Employee): Observable<Employee> {
-  return this.http.post<{ body: Employee }>(this.apiUrl, employee).pipe(
-    map(res => res.body) // ✅ extract the actual employee object
-  );
-}
+  addEmployee(employee: Employee): Observable<Employee> {
+    return this.http
+      .post<{ body: Employee }>(this.apiUrl, employee)
+      .pipe(map((res) => res.body));
+  }
 
-updateEmployee(id: number, employee: Employee): Observable<Employee> {
-  return this.http.put<{ body: Employee }>(`${this.apiUrl}/${id}`, employee).pipe(
-    map(res => res.body)
-  );
-}
+  updateEmployee(id: number, employee: Employee): Observable<Employee> {
+    return this.http
+      .put<{ body: Employee }>(`${this.apiUrl}/${id}`, employee)
+      .pipe(map((res) => res.body));
+  }
 
-
-  // ✅ Update employee status (PATCH)
   updateEmployeeStatus(id: number, status: string): Observable<any> {
     return this.http.patch(`${this.apiUrl}/${id}/status`, { status });
   }

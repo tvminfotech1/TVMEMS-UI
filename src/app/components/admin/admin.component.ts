@@ -5,79 +5,77 @@ import { AuthService } from 'src/app/services/auth.service';
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
-  styleUrls: ['./admin.component.css']
+  styleUrls: ['./admin.component.css'],
 })
 export class AdminComponent implements OnInit {
   public employees: any[] = [];
   public filteredEmployees: any[] = [];
   public searchText: string = '';
-  public isAdmin:boolean =false;
-   private currentUserEmail: string | null = null;
-
-
+  public isAdmin: boolean = false;
+  private currentUserEmail: string | null = null;
 
   constructor(
-  private userlistService:UserlistService,
-  private authService: AuthService
-) {}
+    private userlistService: UserlistService,
+    private authService: AuthService
+  ) {}
 
- ngOnInit(): void {
-     this.isAdmin=this.authService.isAdmin();
-      this.currentUserEmail = this.authService.getUserEmail?.(); 
-     if(this.isAdmin){
+  ngOnInit(): void {
+    this.isAdmin = this.authService.isAdmin();
+    this.currentUserEmail = this.authService.getUserEmail?.();
+    if (this.isAdmin) {
       this.allUser();
-     }
     }
+  }
 
-     allUser(): void{
-      this.userlistService.getAllUser().subscribe({
-        next:(response) => {
+  allUser(): void {
+    this.userlistService.getAllUser().subscribe({
+      next: (response) => {
+        const allUsers = response.body || [];
 
-         const allUsers = response.body || [];
-
-       
-        this.employees = allUsers.filter((user: any) =>
-          user.role?.toLowerCase() !== 'admin' &&
-          user.email?.toLowerCase() !== this.currentUserEmail?.toLowerCase()
+        this.employees = allUsers.filter(
+          (user: any) =>
+            user.role?.toLowerCase() !== 'admin' &&
+            user.email?.toLowerCase() !== this.currentUserEmail?.toLowerCase()
         );
 
         this.filteredEmployees = [...this.employees];
-        console.log('✅ Filtered employees (no admins, no self):', this.employees);     
-        },
-        error:(err)=>{
-            console.error("❌ Error fetching users", err);
-      this.employees = [];
-      this.filteredEmployees = [];
-        }
-      });
-     }
-  
+      },
+      error: (err) => {
+        console.error('❌ Error fetching users', err);
+        this.employees = [];
+        this.filteredEmployees = [];
+      },
+    });
+  }
 
   onSearch(): void {
-  const term = this.searchText.trim().toLowerCase();
-  this.filteredEmployees = this.employees.filter(emp =>
-    emp.employeeId?.toString().toLowerCase().includes(term) ||
-    emp.fullName?.toLowerCase().includes(term) ||
-    emp.mobile?.toString().toLowerCase().includes(term) ||
-    emp.email?.toLowerCase().includes(term)
-  );
-}
-
+    const term = this.searchText.trim().toLowerCase();
+    this.filteredEmployees = this.employees.filter(
+      (emp) =>
+        emp.employeeId?.toString().toLowerCase().includes(term) ||
+        emp.fullName?.toLowerCase().includes(term) ||
+        emp.mobile?.toString().toLowerCase().includes(term) ||
+        emp.email?.toLowerCase().includes(term)
+    );
+  }
 
   deleteEmployee(employeeId: number): void {
     if (!confirm('Are you sure you want to delete this user?')) return;
 
     this.userlistService.deleteUser(employeeId).subscribe({
       next: (res) => {
-        console.log('🗑 User deleted successfully:', res);
         alert('User deleted successfully!');
-        this.filteredEmployees = this.filteredEmployees.filter(emp => emp.employeeId !== employeeId);
-        this.employees = this.employees.filter(emp => emp.employeeId !== employeeId);
+        this.filteredEmployees = this.filteredEmployees.filter(
+          (emp) => emp.employeeId !== employeeId
+        );
+        this.employees = this.employees.filter(
+          (emp) => emp.employeeId !== employeeId
+        );
       },
       error: (err) => {
         console.error('❌ Error deleting user:', err);
         alert('Failed to delete user');
-      }
+      },
     });
   }
- }
+}

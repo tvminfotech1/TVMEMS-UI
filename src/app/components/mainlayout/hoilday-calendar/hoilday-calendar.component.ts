@@ -9,7 +9,7 @@ interface Holiday {
 @Component({
   selector: 'app-hoilday-calendar',
   templateUrl: './hoilday-calendar.component.html',
-  styleUrls: ['./hoilday-calendar.component.css']
+  styleUrls: ['./hoilday-calendar.component.css'],
 })
 export class HolidayCalendarComponent implements OnInit {
   holidays: Holiday[] = [];
@@ -36,7 +36,7 @@ export class HolidayCalendarComponent implements OnInit {
         console.error('Error fetching holidays:', error);
         this.errorMessage = 'Failed to load holidays. Please try again later.';
         this.isLoading = false;
-      }
+      },
     });
   }
 }

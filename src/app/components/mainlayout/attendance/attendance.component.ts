@@ -1,12 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AttendanceRecord, AttendanceService } from 'src/app/services/attendance.service';
+import {
+  AttendanceRecord,
+  AttendanceService,
+} from 'src/app/services/attendance.service';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-attendance',
   templateUrl: './attendance.component.html',
-  styleUrls: ['./attendance.component.css']
+  styleUrls: ['./attendance.component.css'],
 })
 export class AttendanceComponent implements OnInit {
   attendanceForm!: FormGroup;
@@ -22,9 +25,8 @@ export class AttendanceComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Get employee info from JWT via AuthService
-    const empId = this.authService.getEmployeeId();       // returns string or null
-    const fullName = this.authService.getfullName();     // returns string or null
+    const empId = this.authService.getEmployeeId();
+    const fullName = this.authService.getfullName();
 
     const currentTime = this.getCurrentTime();
     const currentDate = new Date();
@@ -36,31 +38,24 @@ export class AttendanceComponent implements OnInit {
       designation: ['', Validators.required],
       date: [currentDate, Validators.required],
       entryTime: [currentTime, Validators.required],
-      remarks: [''] // optional
+      remarks: [''],
     });
-
-    // this.fetchAllUser(empId);
   }
 
   getCurrentTime(): string {
     const now = new Date();
-    return `${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}`;
+    return `${now.getHours().toString().padStart(2, '0')}:${now
+      .getMinutes()
+      .toString()
+      .padStart(2, '0')}`;
   }
 
-  // fetchAllUser(empId: string | null) {
-  //   if (!empId) return;
-  //   this.attendanceService.getAllAttendance().subscribe((data: any[]) => {
-  //     this.attendanceList = data.filter(r => r.empId === Number(empId));
-  //   });
-  // }
-                    
   submitAttendance(): void {
     if (this.attendanceForm.invalid) {
       alert('⚠️ Please fill in required fields');
       return;
     }
 
-    // getRawValue() includes disabled fields
     const formValue = this.attendanceForm.getRawValue();
 
     const record: AttendanceRecord = {
@@ -71,25 +66,36 @@ export class AttendanceComponent implements OnInit {
       date: formValue.date,
       entryTime: formValue.entryTime,
       remarks: formValue.remarks || '',
-      isApproved: false
+      isApproved: false,
     };
 
     this.attendanceService.submitAttendance(record).subscribe({
-  next: (res) => {
-    console.log('Attendance saved:', res); // check here
-    alert('✅ Attendance submitted');
-    this.attendanceForm.patchValue({
-      remarks: '',
-      entryTime: this.getCurrentTime()
+      next: (res) => {
+        alert('✅ Attendance submitted');
+        this.attendanceForm.patchValue({
+          remarks: '',
+          entryTime: this.getCurrentTime(),
+        });
+      },
+      error: (err) => console.error('Submit error', err),
     });
-  },
-  error: (err) => console.error('Submit error', err)
-});
-
   }
 
   get selectedMonthYear(): string {
-    const months = ['Jan', 'Feb', 'Mar', 'Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    const months = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
+    ];
     return `${months[this.currentMonthIndex]} ${this.currentYear}`;
   }
 

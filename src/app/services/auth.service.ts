@@ -16,7 +16,7 @@ interface DecodedToken {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
   private baseUrl = 'http://localhost:8080';
@@ -28,79 +28,98 @@ export class AuthService {
   }
 
   loginAdmin(data: any): Observable<any> {
-    return this.http.post(`${this.baseUrl}/adminlogin`, data, { observe: 'response' }).pipe(
-      tap((response: HttpResponse<any>) => {
-        const token = response.headers.get('Authorization') || response.body?.token;
-        if (token) {
-          this.saveToken(token.startsWith('Bearer ') ? token.substring(7) : token);
-        } else {
-          console.warn('Login Admin: Token not found in response header or body.');
-          throw new Error('Authentication failed: Token not received.');
-        }
-      }),
-      map(response => response.body),
-      catchError(error => {
-        console.error('Login Admin failed:', error);
-        return throwError(() => new Error('Admin login failed. Please check credentials.'));
-      })
-    );
+    return this.http
+      .post(`${this.baseUrl}/adminlogin`, data, { observe: 'response' })
+      .pipe(
+        tap((response: HttpResponse<any>) => {
+          const token =
+            response.headers.get('Authorization') || response.body?.token;
+          if (token) {
+            this.saveToken(
+              token.startsWith('Bearer ') ? token.substring(7) : token
+            );
+          } else {
+            console.warn(
+              'Login Admin: Token not found in response header or body.'
+            );
+            throw new Error('Authentication failed: Token not received.');
+          }
+        }),
+        map((response) => response.body),
+        catchError((error) => {
+          console.error('Login Admin failed:', error);
+          return throwError(
+            () => new Error('Admin login failed. Please check credentials.')
+          );
+        })
+      );
   }
 
   loginUser(data: any): Observable<any> {
-    return this.http.post(`${this.baseUrl}/userlogin`, data, { observe: 'response' }).pipe(
-      tap((response: HttpResponse<any>) => {
-        const token = response.headers.get('Authorization') || response.body?.token;
-        if (token) {
-          const pureToken=token.startsWith('Bearer ') ? token.substring(7) : token;
-             this.saveToken(pureToken);
+    return this.http
+      .post(`${this.baseUrl}/userlogin`, data, { observe: 'response' })
+      .pipe(
+        tap((response: HttpResponse<any>) => {
+          const token =
+            response.headers.get('Authorization') || response.body?.token;
+          if (token) {
+            const pureToken = token.startsWith('Bearer ')
+              ? token.substring(7)
+              : token;
+            this.saveToken(pureToken);
 
-
-          const decoded: DecodedToken = jwtDecode(pureToken);
-          if (decoded?.empId) {
-            localStorage.setItem('employeeId', decoded.empId.toString());
-            console.log("Employee ID stored:", decoded.empId);
+            const decoded: DecodedToken = jwtDecode(pureToken);
+            if (decoded?.empId) {
+              localStorage.setItem('employeeId', decoded.empId.toString());
+            } else {
+              console.warn('⚠ No employee ID found in token!');
+            }
           } else {
-            console.warn("⚠ No employee ID found in token!");
+            console.warn(
+              'Login User: Token not found in response header or body.'
+            );
+            throw new Error('Authentication failed: Token not received.');
           }
-        } else {
-          console.warn('Login User: Token not found in response header or body.');
-          throw new Error('Authentication failed: Token not received.');
-        }
-      }),
-      map(response => response.body),
-      catchError(error => {
-        console.error('Login User failed:', error);
-        return throwError(() => new Error('User login failed. Please check credentials.'));
-      })
-    );
+        }),
+        map((response) => response.body),
+        catchError((error) => {
+          console.error('Login User failed:', error);
+          return throwError(
+            () => new Error('User login failed. Please check credentials.')
+          );
+        })
+      );
   }
 
   register(data: any): Observable<any> {
-    return this.http.post(`${this.baseUrl}/admin/newuser`, data, {
-      responseType: 'json'
-    }).pipe(
-      catchError(error => {
-        console.error('Registration failed:', error);
-        return throwError(() => error);
+    return this.http
+      .post(`${this.baseUrl}/admin/newuser`, data, {
+        responseType: 'json',
       })
-    );
+      .pipe(
+        catchError((error) => {
+          console.error('Registration failed:', error);
+          return throwError(() => error);
+        })
+      );
   }
 
   checkEmailExists(email: string) {
-  return this.http.get<boolean>(`${this.baseUrl}/users/check-email/${email}`);
-}
+    return this.http.get<boolean>(`${this.baseUrl}/users/check-email/${email}`);
+  }
 
-checkMobileExists(mobile: string) {
-  return this.http.get<boolean>(`${this.baseUrl}/users/check-mobile/${mobile}`);
-}
-
+  checkMobileExists(mobile: string) {
+    return this.http.get<boolean>(
+      `${this.baseUrl}/users/check-mobile/${mobile}`
+    );
+  }
 
   getToken(): string | null {
     const token = localStorage.getItem('token');
     if (token && this.isTokenExpired(token)) {
-        console.warn('JWT token is expired. Logging out.');
-        this.logout();
-        return null;
+      console.warn('JWT token is expired. Logging out.');
+      this.logout();
+      return null;
     }
     return token;
   }
@@ -110,7 +129,7 @@ checkMobileExists(mobile: string) {
     if (!token) return null;
 
     try {
-      return jwtDecode<DecodedToken>(token);      
+      return jwtDecode<DecodedToken>(token);
     } catch (err) {
       console.error('JWT decode error:', err);
       return null;
@@ -143,11 +162,11 @@ checkMobileExists(mobile: string) {
   }
 
   getUserEmail(): string | null {
-  const token = localStorage.getItem('token');
-  if (!token) return null;
-  const decoded: any = jwtDecode(token);
-  return decoded.sub || decoded.email || null;
-}
+    const token = localStorage.getItem('token');
+    if (!token) return null;
+    const decoded: any = jwtDecode(token);
+    return decoded.sub || decoded.email || null;
+  }
 
   getfullName(): string | null {
     const decoded = this.getDecodedToken();
@@ -172,18 +191,19 @@ checkMobileExists(mobile: string) {
     sessionStorage.clear();
     this.router.navigateByUrl('/adminLogin');
   }
-   getEmailFromToken(): string | null {
-  const decoded = this.getDecodedToken();
-  return decoded?.sub || null;
-}
+  getEmailFromToken(): string | null {
+    const decoded = this.getDecodedToken();
+    return decoded?.sub || null;
+  }
 
-getUserId(email: string): Observable<number> {
-  return this.http.get<number>(`${this.baseUrl}/WFH/employeeId?email=${email}`);
-}
+  getUserId(email: string): Observable<number> {
+    return this.http.get<number>(
+      `${this.baseUrl}/WFH/employeeId?email=${email}`
+    );
+  }
 
-checkOnboardingStatus(employeeId: string): Observable<boolean> {
-  const url = `http://localhost:8080/final/check-status/${employeeId}`;
-  return this.http.get<boolean>(url);
-}
-
+  checkOnboardingStatus(employeeId: string): Observable<boolean> {
+    const url = `http://localhost:8080/final/check-status/${employeeId}`;
+    return this.http.get<boolean>(url);
+  }
 }

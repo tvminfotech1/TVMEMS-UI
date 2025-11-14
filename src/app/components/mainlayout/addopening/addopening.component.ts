@@ -6,7 +6,7 @@ import { MainLayoutService } from '../resignation/service/MainLayoutSevice';
 @Component({
   selector: 'app-addopening',
   templateUrl: './addopening.component.html',
-  styleUrls: ['./addopening.component.css']
+  styleUrls: ['./addopening.component.css'],
 })
 export class AddOpeningComponent implements OnInit {
   jobForm: FormGroup;
@@ -15,7 +15,7 @@ export class AddOpeningComponent implements OnInit {
   successMessage = '';
 
   @Output() jobPosted = new EventEmitter<JobPosting>();
-  
+
   constructor(
     private fb: FormBuilder,
     private mainLayoutService: MainLayoutService
@@ -28,20 +28,20 @@ export class AddOpeningComponent implements OnInit {
         [
           Validators.required,
           Validators.min(1900),
-          Validators.max(new Date().getFullYear())
-        ]
+          Validators.max(new Date().getFullYear()),
+        ],
       ],
       location: ['', Validators.required],
-      experience: ['', [Validators.required, Validators.min(0), Validators.max(50)]],
+      experience: [
+        '',
+        [Validators.required, Validators.min(0), Validators.max(50)],
+      ],
       skills: ['', Validators.required],
-      description: ['']
+      description: [''],
     });
   }
 
-  ngOnInit(): void {
-    // Initialization logic (no POST request here)
-  }
-
+  ngOnInit(): void {}
 
   onSubmit(): void {
     if (this.jobForm.invalid) {
@@ -65,7 +65,7 @@ export class AddOpeningComponent implements OnInit {
         .filter((s: string) => s.length > 0),
       yearOfPassout: Number(this.jobForm.value.yearOfPassout),
       experience: Number(this.jobForm.value.experience),
-      status: 'OPEN'
+      status: 'OPEN',
     };
 
     this.mainLayoutService.postJobPostings(formData).subscribe({
@@ -82,7 +82,7 @@ export class AddOpeningComponent implements OnInit {
       },
       complete: () => {
         this.isSubmitting = false;
-      }
+      },
     });
   }
 

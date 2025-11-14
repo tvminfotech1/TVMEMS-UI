@@ -26,7 +26,6 @@ import { PendingUserComponent } from './components/pending-user/pending-user.com
 import { TimeSheetComponent } from './components/time-sheet/time-sheet.component';
 import { TimeSheetViewComponent } from './components/time-sheet/time-sheet-view/time-sheet-view.component';
 
-// Employee details component
 import { EmployeeDetailsComponent } from './components/employee-details/employee-details.component';
 import { EmpkycComponent } from './components/employee-details/empkyc/empkyc.component';
 import { EmppassportComponent } from './components/employee-details/emppassport/emppassport.component';
@@ -39,7 +38,6 @@ import { EmpdocumentComponent } from './components/employee-details/empdocument/
 import { EmpresumeComponent } from './components/employee-details/empresume/empresume.component';
 import { EmpfinalComponent } from './components/employee-details/empfinal/empfinal.component';
 
-// Main layout and dashboard routes
 import { MainlayoutComponent } from './components/mainlayout/mainlayout.component';
 import { DashboardhomeComponent } from './components/mainlayout/dashboardhome/dashboardhome.component';
 import { HolidayCalendarComponent } from './components/mainlayout/hoilday-calendar/hoilday-calendar.component';
@@ -73,123 +71,318 @@ import { adminAuthGuard } from './guards/admin-auth.guard';
 import { userAuthGuard } from './guards/user-auth.guard';
 import { AdminAttendanceComponent } from './components/mainlayout/admin-attendance/admin-attendance.component';
 
-
 import { AddAnnouncementComponent } from './components/mainlayout/add-announcement/add-announcement.component';
 import { AuthGuard } from './guards/auth.guard';
 import { MyProfileComponent } from './components/mainlayout/my-profile/my-profile.component';
 import { JobOpeningListComponent } from './components/mainlayout/job-opening-list/job-opening-list.component';
 import { UserPayslipComponent } from './components/payroll/user-payslip/user-payslip.component';
 
-
 const routes: Routes = [
   { path: '', component: HomeComponent },
 
   { path: 'login', component: LoginComponent },
   { path: 'loginByNumber', component: LoginByNumberComponent },
-  
+
   { path: 'admin', component: AdminComponent },
-  { path: 'adminLogin', component: AdminLoginComponent},
+  { path: 'adminLogin', component: AdminLoginComponent },
   { path: 'employeeData/:id', component: EmployeeDataComponent },
   { path: 'thankYou', component: ThankYouComponent },
   { path: 'onboarding', component: OnboardingComponent },
   { path: 'pendingUser', component: PendingUserComponent },
 
-  // Dashboard Section under MainLayout
   {
     path: 'mainlayout',
     component: MainlayoutComponent,
-     
-    children: [       
-      {path: 'signup', component: SignupComponent,canActivate: [adminAuthGuard], },
-      {path: 'dashboard', component: DashboardhomeComponent,canActivate: [AuthGuard],},
-      {path: 'myprofile/:id',component:MyProfileComponent,canActivate:[AuthGuard]},
-      {path: 'holidays', component: HolidayCalendarComponent,canActivate: [AuthGuard], },
-      {path: 'feedbacks', component: FeedbacksComponent,canActivate: [AuthGuard], },
-      {path:'organization', component:OrganizationComponent,canActivate: [AuthGuard],},
-      {path: 'workhours',component: WorkhoursComponent,canActivate: [adminAuthGuard],},
-      {path: 'workhistory', component: WorkHistoryComponent,canActivate: [adminAuthGuard],},
-      {path:'wishcard', component: WishcardComponent,canActivate: [adminAuthGuard],},
-      {path:'announcement', component:AnnouncementComponent,canActivate: [adminAuthGuard],},
-      {path: 'applyleave', component:ApplyLeaveComponent,canActivate: [adminAuthGuard],},
-      {path:'myleave',component:LeaveComponent,canActivate: [AuthGuard],},
-      {path:'workfromhome',component:WorkfromhomeComponent,canActivate: [AuthGuard],},
-      {path:'hiring', component: HiringComponent,canActivate: [adminAuthGuard],},
-      {path:'Timelog', component:TimelogComponent},
-      {path:'task', component:TaskComponent,canActivate: [AuthGuard],},
-      {path:'resignation', component:ResignationComponent,canActivate: [AuthGuard],},
-      {path:'okr',component:OkrComponent,canActivate: [adminAuthGuard],},
-      {path:'attendance', component:AttendanceComponent,canActivate: [AuthGuard],},
-      {path:'attendance-approval',component:AdminAttendanceComponent,canActivate:[AuthGuard]},
-      {path:'addopening', component:AddOpeningComponent,canActivate: [adminAuthGuard],},
-      {path:'seeJobOpening', component:JobOpeningListComponent},
-      {path:'goal', component:GoalComponent,canActivate: [AuthGuard],},
-      { path: 'add-announcement', component: AddAnnouncementComponent,canActivate: [adminAuthGuard], },
+
+    children: [
+      {
+        path: 'signup',
+        component: SignupComponent,
+        canActivate: [adminAuthGuard],
+      },
+      {
+        path: 'dashboard',
+        component: DashboardhomeComponent,
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'myprofile/:id',
+        component: MyProfileComponent,
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'holidays',
+        component: HolidayCalendarComponent,
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'feedbacks',
+        component: FeedbacksComponent,
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'organization',
+        component: OrganizationComponent,
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'workhours',
+        component: WorkhoursComponent,
+        canActivate: [adminAuthGuard],
+      },
+      {
+        path: 'workhistory',
+        component: WorkHistoryComponent,
+        canActivate: [adminAuthGuard],
+      },
+      {
+        path: 'wishcard',
+        component: WishcardComponent,
+        canActivate: [adminAuthGuard],
+      },
+      {
+        path: 'announcement',
+        component: AnnouncementComponent,
+        canActivate: [adminAuthGuard],
+      },
+      {
+        path: 'applyleave',
+        component: ApplyLeaveComponent,
+        canActivate: [adminAuthGuard],
+      },
+      { path: 'myleave', component: LeaveComponent, canActivate: [AuthGuard] },
+      {
+        path: 'workfromhome',
+        component: WorkfromhomeComponent,
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'hiring',
+        component: HiringComponent,
+        canActivate: [adminAuthGuard],
+      },
+      { path: 'Timelog', component: TimelogComponent },
+      { path: 'task', component: TaskComponent, canActivate: [AuthGuard] },
+      {
+        path: 'resignation',
+        component: ResignationComponent,
+        canActivate: [AuthGuard],
+      },
+      { path: 'okr', component: OkrComponent, canActivate: [adminAuthGuard] },
+      {
+        path: 'attendance',
+        component: AttendanceComponent,
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'attendance-approval',
+        component: AdminAttendanceComponent,
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'addopening',
+        component: AddOpeningComponent,
+        canActivate: [adminAuthGuard],
+      },
+      { path: 'seeJobOpening', component: JobOpeningListComponent },
+      { path: 'goal', component: GoalComponent, canActivate: [AuthGuard] },
+      {
+        path: 'add-announcement',
+        component: AddAnnouncementComponent,
+        canActivate: [adminAuthGuard],
+      },
       { path: 'payslip', component: UserPayslipComponent },
 
-      { path: 'personal', component: PersonalComponent,canActivate: [userAuthGuard] },
-      { path: 'kyc', component: KycComponent ,canActivate:[userAuthGuard]},
-      { path: 'passport', component: PassportVisaComponent,canActivate: [userAuthGuard] },
-      { path: 'family', component: FamilyComponent,canActivate: [userAuthGuard] },
-      { path: 'previousEmployee', component: PreviousEmploymentComponent,canActivate: [userAuthGuard] },
-      { path: 'education', component: EducationComponent,canActivate: [userAuthGuard] },
-      { path: 'skills', component: SkillsComponent,canActivate: [userAuthGuard] },
-      { path: 'certificate', component: CertificateComponent,canActivate: [userAuthGuard] },
-      { path: 'document', component: DocumentComponent,canActivate: [userAuthGuard] },
-      { path: 'resume', component: ResumeComponent,canActivate: [userAuthGuard] },
-      { path: 'final', component: FinalComponent,canActivate: [userAuthGuard] },
-      { path: 'thankYou', component: ThankYouComponent ,canActivate: [userAuthGuard]},
-      { path: 'add-employee', component: AddEmployeeComponent ,canActivate: [adminAuthGuard],},
-      { path: 'payroll-dashbord', component: DashboardComponent ,canActivate: [adminAuthGuard],},
-      { path: 'payroll-employee', component: PayrollEmployeeComponent ,canActivate: [adminAuthGuard],},
-      { path: 'payroll-employee/:id', component: EmployeeViewComponent,canActivate: [adminAuthGuard],},
-      { path: 'payruns', component: PayrunsComponent,canActivate: [adminAuthGuard],},
-      { path: 'payruns/:id', component: AddSalaryComponent,canActivate: [adminAuthGuard],},
-      { path: 'payruns/:empId/:salaryId', component: MonthlySalarySlipComponent,canActivate: [adminAuthGuard],},
-      {path:'reports',component:ReportComponent,canActivate: [adminAuthGuard],},
-      {path:'reports/:empId',component:YearlySalarySlipComponent,canActivate: [adminAuthGuard],},
-      { path: 'pendingUser', component: PendingUserComponent ,canActivate: [adminAuthGuard],},
-      { path: 'admin', component: AdminComponent ,canActivate: [adminAuthGuard],},
+      {
+        path: 'personal',
+        component: PersonalComponent,
+        canActivate: [userAuthGuard],
+      },
+      { path: 'kyc', component: KycComponent, canActivate: [userAuthGuard] },
+      {
+        path: 'passport',
+        component: PassportVisaComponent,
+        canActivate: [userAuthGuard],
+      },
+      {
+        path: 'family',
+        component: FamilyComponent,
+        canActivate: [userAuthGuard],
+      },
+      {
+        path: 'previousEmployee',
+        component: PreviousEmploymentComponent,
+        canActivate: [userAuthGuard],
+      },
+      {
+        path: 'education',
+        component: EducationComponent,
+        canActivate: [userAuthGuard],
+      },
+      {
+        path: 'skills',
+        component: SkillsComponent,
+        canActivate: [userAuthGuard],
+      },
+      {
+        path: 'certificate',
+        component: CertificateComponent,
+        canActivate: [userAuthGuard],
+      },
+      {
+        path: 'document',
+        component: DocumentComponent,
+        canActivate: [userAuthGuard],
+      },
+      {
+        path: 'resume',
+        component: ResumeComponent,
+        canActivate: [userAuthGuard],
+      },
+      {
+        path: 'final',
+        component: FinalComponent,
+        canActivate: [userAuthGuard],
+      },
+      {
+        path: 'thankYou',
+        component: ThankYouComponent,
+        canActivate: [userAuthGuard],
+      },
+      {
+        path: 'add-employee',
+        component: AddEmployeeComponent,
+        canActivate: [adminAuthGuard],
+      },
+      {
+        path: 'payroll-dashbord',
+        component: DashboardComponent,
+        canActivate: [adminAuthGuard],
+      },
+      {
+        path: 'payroll-employee',
+        component: PayrollEmployeeComponent,
+        canActivate: [adminAuthGuard],
+      },
+      {
+        path: 'payroll-employee/:id',
+        component: EmployeeViewComponent,
+        canActivate: [adminAuthGuard],
+      },
+      {
+        path: 'payruns',
+        component: PayrunsComponent,
+        canActivate: [adminAuthGuard],
+      },
+      {
+        path: 'payruns/:id',
+        component: AddSalaryComponent,
+        canActivate: [adminAuthGuard],
+      },
+      {
+        path: 'payruns/:empId/:salaryId',
+        component: MonthlySalarySlipComponent,
+        canActivate: [adminAuthGuard],
+      },
+      {
+        path: 'reports',
+        component: ReportComponent,
+        canActivate: [adminAuthGuard],
+      },
+      {
+        path: 'reports/:empId',
+        component: YearlySalarySlipComponent,
+        canActivate: [adminAuthGuard],
+      },
+      {
+        path: 'pendingUser',
+        component: PendingUserComponent,
+        canActivate: [adminAuthGuard],
+      },
+      {
+        path: 'admin',
+        component: AdminComponent,
+        canActivate: [adminAuthGuard],
+      },
 
-      // Employee details view page
-       { path: 'empdetails/:id', component: EmployeeDetailsComponent ,canActivate: [adminAuthGuard],},
-       { path: 'empkyc/:id', component: EmpkycComponent ,canActivate: [adminAuthGuard],},
-       { path: 'emppassport/:id', component: EmppassportComponent ,canActivate: [adminAuthGuard],},
-       { path: 'empfamily/:id', component: EmpfamilyComponent,canActivate: [adminAuthGuard], },
-       { path: 'emppreviousEmployee/:id', component: EmppreviousEmployeeComponent,canActivate: [adminAuthGuard], },
-       { path: 'empeducation/:id', component: EmpeducationComponent ,canActivate: [adminAuthGuard],},
-       { path: 'empskills/:id', component: EmpskillsComponent,canActivate: [adminAuthGuard], },
-       { path: 'empcertificate/:id', component: EmpcertificateComponent ,canActivate: [adminAuthGuard],},
-       { path: 'empdocument/:id', component: EmpdocumentComponent ,canActivate: [adminAuthGuard],},
-       { path: 'empresume/:id', component: EmpresumeComponent ,canActivate: [adminAuthGuard],},
-       { path: 'empfinal/:id', component: EmpfinalComponent ,canActivate: [adminAuthGuard],},
-       {
-  path: 'settings',
-  children: [
-    { 
-      path: 'holidays', 
-      component: HolidayCalendarComponent, 
-      canActivate: [AuthGuard] 
-    },
-    { 
-      path: 'announcement', 
-      component: AnnouncementComponent, 
-      canActivate: [AuthGuard] 
-    },
-  ]
-}
-
-    ]
+      {
+        path: 'empdetails/:id',
+        component: EmployeeDetailsComponent,
+        canActivate: [adminAuthGuard],
+      },
+      {
+        path: 'empkyc/:id',
+        component: EmpkycComponent,
+        canActivate: [adminAuthGuard],
+      },
+      {
+        path: 'emppassport/:id',
+        component: EmppassportComponent,
+        canActivate: [adminAuthGuard],
+      },
+      {
+        path: 'empfamily/:id',
+        component: EmpfamilyComponent,
+        canActivate: [adminAuthGuard],
+      },
+      {
+        path: 'emppreviousEmployee/:id',
+        component: EmppreviousEmployeeComponent,
+        canActivate: [adminAuthGuard],
+      },
+      {
+        path: 'empeducation/:id',
+        component: EmpeducationComponent,
+        canActivate: [adminAuthGuard],
+      },
+      {
+        path: 'empskills/:id',
+        component: EmpskillsComponent,
+        canActivate: [adminAuthGuard],
+      },
+      {
+        path: 'empcertificate/:id',
+        component: EmpcertificateComponent,
+        canActivate: [adminAuthGuard],
+      },
+      {
+        path: 'empdocument/:id',
+        component: EmpdocumentComponent,
+        canActivate: [adminAuthGuard],
+      },
+      {
+        path: 'empresume/:id',
+        component: EmpresumeComponent,
+        canActivate: [adminAuthGuard],
+      },
+      {
+        path: 'empfinal/:id',
+        component: EmpfinalComponent,
+        canActivate: [adminAuthGuard],
+      },
+      {
+        path: 'settings',
+        children: [
+          {
+            path: 'holidays',
+            component: HolidayCalendarComponent,
+            canActivate: [AuthGuard],
+          },
+          {
+            path: 'announcement',
+            component: AnnouncementComponent,
+            canActivate: [AuthGuard],
+          },
+        ],
+      },
+    ],
   },
 
-  { path: '**', component: HomeComponent }, // Wildcard route
-
-  
-  
-
+  { path: '**', component: HomeComponent },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class AppRoutingModule {}

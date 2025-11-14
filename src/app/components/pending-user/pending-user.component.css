@@ -9,9 +9,9 @@
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   font-family: Arial, sans-serif;
 }
-p{
-    opacity: 0.7;
-    margin-top: 10px;
+p {
+  opacity: 0.7;
+  margin-top: 10px;
 }
 .search-box {
   width: 100%;
@@ -19,23 +19,22 @@ p{
   font-size: 1rem;
   border-radius: 6px;
 }
-.test-table-div{
+.test-table-div {
   width: 100%;
-  overflow-x: auto; 
+  overflow-x: auto;
   display: block;
 }
 .user-table {
   width: 100%;
   border-collapse: collapse;
-  table-layout: fixed; 
+  table-layout: fixed;
   word-wrap: break-word;
   white-space: nowrap;
- 
 }
 
 .user-table th,
 .user-table td {
-  min-width: 0 !important; 
+  min-width: 0 !important;
   border: 1px solid rgb(166, 162, 162);
   padding: 0.8rem;
   text-align: left;
@@ -44,9 +43,7 @@ p{
   word-wrap: break-word;
 }
 tbody tr:nth-child(even) {
- 
   background-color: #e5e2e2;
-
 }
 
 .status-badge {
@@ -73,8 +70,8 @@ tbody tr:nth-child(even) {
 }
 
 .table-header {
-  background-color: #bebdbd; 
-  color: white;              
+  background-color: #bebdbd;
+  color: white;
   text-align: center;
   padding: 8px;
   font-weight: bold;
@@ -88,9 +85,7 @@ tbody tr:nth-child(even) {
   }
 }
 
-
 @media (max-width: 480px) {
-
   .test-table-div {
     overflow-x: hidden;
   }
@@ -126,7 +121,7 @@ tbody tr:nth-child(even) {
   }
 
   .user-table td:before {
-    content: attr(data-label); 
+    content: attr(data-label);
     position: absolute;
     left: 8px;
     top: 6px;

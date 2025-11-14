@@ -8,10 +8,9 @@ import { MatDialog } from '@angular/material/dialog';
 @Component({
   selector: 'app-goal',
   templateUrl: './goal.component.html',
-  styleUrls: ['./goal.component.css']
+  styleUrls: ['./goal.component.css'],
 })
 export class GoalComponent implements OnInit {
-
   isAdmin = false;
   isUser = true;
   employeeId: string | null = null;
@@ -28,19 +27,37 @@ export class GoalComponent implements OnInit {
   goalForm!: FormGroup;
   archivedGoals: any[] = [];
   selectedGoal: any;
-  displayedColumns = ['category', 'description', 'weight', 'startDate', 'dueDate', 'progress', 'action'];
+  displayedColumns = [
+    'category',
+    'description',
+    'weight',
+    'startDate',
+    'dueDate',
+    'progress',
+    'action',
+  ];
   goalData: any[] = [];
   showHistoryMap = false;
   months: string[] = [
-    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'June',
-    'July', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'June',
+    'July',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
   ];
   private currentUserEmail: string | null = null;
   goals: any[] = [];
   selectedMonth: string | null = null;
   selectedMonthGoals: any[] = [];
   currentYear: number = new Date().getFullYear();
-  monthPoints: { x: number, y: number }[] = [];
+  monthPoints: { x: number; y: number }[] = [];
   selectedYear: number = this.currentYear;
   filteredGoals: any[] = [];
   showGoalPopup: boolean = false;
@@ -58,7 +75,7 @@ export class GoalComponent implements OnInit {
     private userlistService: UserlistService,
     private goalService: GoalService,
     private dialog: MatDialog
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.isAdmin = this.authService.isAdmin();
@@ -70,7 +87,10 @@ export class GoalComponent implements OnInit {
     this.goalForm = this.fb.group({
       category: ['', Validators.required],
       description: ['', [Validators.required, Validators.maxLength(35)]],
-      weight: ['', [Validators.required, Validators.min(0), Validators.max(100)]]
+      weight: [
+        '',
+        [Validators.required, Validators.min(0), Validators.max(100)],
+      ],
     });
     this.loadArchivedGoals();
     this.allUser();
@@ -121,54 +141,34 @@ export class GoalComponent implements OnInit {
     };
   }
 
-  // allUser(): void {
-  //   this.userlistService.getAllUser().subscribe({
-  //     next: (response) => {
-  //       this.employees = response.body || [];
-  //       this.filteredEmployees = [...this.employees];
-  //       console.log(this.employees);
-  //     },
-  //     error: (err) => {
-  //       console.error("❌ Error fetching users", err);
-  //       this.employees = [];
-  //       this.filteredEmployees = [];
-  //     }
-  //   });
-  // }
-
   allUser(): void {
     this.userlistService.getAllUser().subscribe({
       next: (response) => {
-
         const allUsers = response.body || [];
 
-
-        this.employees = allUsers.filter((user: any) =>
-          user.role?.toLowerCase() !== 'admin' &&
-          user.email?.toLowerCase() !== this.currentUserEmail?.toLowerCase()
+        this.employees = allUsers.filter(
+          (user: any) =>
+            user.role?.toLowerCase() !== 'admin' &&
+            user.email?.toLowerCase() !== this.currentUserEmail?.toLowerCase()
         );
 
         this.filteredEmployees = [...this.employees];
-        console.log('✅ Filtered employees (no admins, no self):', this.employees);
       },
       error: (err) => {
-        console.error("❌ Error fetching users", err);
+        console.error('❌ Error fetching users', err);
         this.employees = [];
         this.filteredEmployees = [];
-      }
+      },
     });
   }
 
   onSearch(): void {
     const term = this.searchText.trim().toLowerCase();
-    this.filteredEmployees = this.employees.filter(emp =>
-      emp.employeeId?.toString().toLowerCase().includes(term) ||
-      emp.fullName?.toLowerCase().includes(term)
+    this.filteredEmployees = this.employees.filter(
+      (emp) =>
+        emp.employeeId?.toString().toLowerCase().includes(term) ||
+        emp.fullName?.toLowerCase().includes(term)
     );
-  }
-
-  selectCategory(element: any, category: string) {
-    console.log(`User: ${element.userName}, Selected Category: ${category}`);
   }
 
   goToGoalType(): void {
@@ -202,10 +202,10 @@ export class GoalComponent implements OnInit {
     if (confirm('Are you sure you want to delete this goal?')) {
       this.goalService.deleteGoal(goal.id).subscribe(
         () => {
-          this.goals = this.goals.filter(g => g.id !== goal.id);
+          this.goals = this.goals.filter((g) => g.id !== goal.id);
           alert('Goal deleted successfully!');
         },
-        error => {
+        (error) => {
           console.error(error);
           alert('Error deleting goal');
         }
@@ -216,25 +216,27 @@ export class GoalComponent implements OnInit {
   filterGoals(): void {
     const term = this.searchText.trim().toLowerCase();
     if (!term) {
-      this.archivedGoals = this.allGoals.filter((g: any) => g.status !== 'Completed');
-      this.completedGoals = this.allGoals.filter((g: any) => g.status === 'Completed');
+      this.archivedGoals = this.allGoals.filter(
+        (g: any) => g.status !== 'Completed'
+      );
+      this.completedGoals = this.allGoals.filter(
+        (g: any) => g.status === 'Completed'
+      );
       return;
     }
-    this.archivedGoals = this.allGoals.filter((g: any) =>
-      g.status !== 'Completed' &&
-      (
-        (g.employeeId && g.employeeId.toString().includes(term)) ||
-        (g.employeeName && g.employeeName.toLowerCase().includes(term)) ||
-        (g.category && g.category.toLowerCase().includes(term))
-      )
+    this.archivedGoals = this.allGoals.filter(
+      (g: any) =>
+        g.status !== 'Completed' &&
+        ((g.employeeId && g.employeeId.toString().includes(term)) ||
+          (g.employeeName && g.employeeName.toLowerCase().includes(term)) ||
+          (g.category && g.category.toLowerCase().includes(term)))
     );
-    this.completedGoals = this.allGoals.filter((g: any) =>
-      g.status === 'Completed' &&
-      (
-        (g.employeeId && g.employeeId.toString().includes(term)) ||
-        (g.employeeName && g.employeeName.toLowerCase().includes(term)) ||
-        (g.category && g.category.toLowerCase().includes(term))
-      )
+    this.completedGoals = this.allGoals.filter(
+      (g: any) =>
+        g.status === 'Completed' &&
+        ((g.employeeId && g.employeeId.toString().includes(term)) ||
+          (g.employeeName && g.employeeName.toLowerCase().includes(term)) ||
+          (g.category && g.category.toLowerCase().includes(term)))
     );
   }
 
@@ -247,12 +249,10 @@ export class GoalComponent implements OnInit {
     goal.isStarted = true;
     goal.isEditing = false;
     this.goalService.updateGoal(goal.id, goal).subscribe({
-      next: () => {
-        console.log("Start date saved and button disabled");
-      },
+      next: () => {},
       error: (err) => {
-        console.error("Error saving start date", err);
-      }
+        console.error('Error saving start date', err);
+      },
     });
   }
 
@@ -289,8 +289,8 @@ export class GoalComponent implements OnInit {
         startDate: null,
         endDate: null,
         progress: null,
-        status: "Pending",
-        isStarted: false
+        status: 'Pending',
+        isStarted: false,
       };
 
       this.goalService.createGoal(newGoal).subscribe({
@@ -299,10 +299,10 @@ export class GoalComponent implements OnInit {
           this.currentView = 'archived';
           this.loadArchivedGoals();
         },
-        error: err => {
+        error: (err) => {
           console.error('Error creating goal:', err);
           alert('Failed to save goal!');
-        }
+        },
       });
     } else {
       this.goalForm.markAllAsTouched();
@@ -315,7 +315,7 @@ export class GoalComponent implements OnInit {
 
     this.goalService.updateGoal(goal.id, goal).subscribe({
       next: () => console.log('Goal updated successfully'),
-      error: err => console.error('Error updating goal:', err)
+      error: (err) => console.error('Error updating goal:', err),
     });
   }
 
@@ -336,43 +336,21 @@ export class GoalComponent implements OnInit {
       goal.endDate = new Date().toISOString().split('T')[0];
       goal.progress = '100%';
 
-      this.archivedGoals = this.archivedGoals.filter(g => g.id !== goal.id);
+      this.archivedGoals = this.archivedGoals.filter((g) => g.id !== goal.id);
       this.completedGoals.push(goal);
     }
     this.updateGoal(goal);
   }
 
-  // viewGoals(emp: any): void {
-  //   this.goalService.getGoalByUserid(emp.employeeId).subscribe({
-  //     next: (res: any) => {
-
-  //       console.log("API response:", res.body);
-  //       const allGoalsByUser = res.body || [];
-  //       const employeeGoals = allGoalsByUser.filter((g: any) => g.user?.employeeId === emp.employeeId);
-  //       console.log("Filtered Goals:", employeeGoals);
-  //       if (employeeGoals.length > 0) {
-  //         this.openGoalPopup(employeeGoals);
-  //       } else {
-  //         alert(`${emp.fullName} has no goals.`);
-  //       }
-  //     },
-  //     error: (err) => {
-  //       console.error('Error fetching goals:', err);
-  //     }
-  //   });
-  // }
-
   viewGoals(emp: any): void {
     this.goalService.getGoalByUserid(emp.employeeId).subscribe({
       next: (res: any) => {
-
-        console.log("API response:", res.body);
         const allGoalsByUser = res.body || [];
-        const employeeGoals = allGoalsByUser.filter((g: any) => g.user?.employeeId === emp.employeeId);
+        const employeeGoals = allGoalsByUser.filter(
+          (g: any) => g.user?.employeeId === emp.employeeId
+        );
         const filteredByMonth = this.filterGoalsBySelectedMonth(employeeGoals);
-        console.log(`✅ ${emp.fullName}'s goals for ${this.dateRange}:`, filteredByMonth);
 
-        console.log("Filtered Goals:", employeeGoals);
         if (filteredByMonth.length > 0) {
           this.openGoalPopup(filteredByMonth);
         } else {
@@ -382,7 +360,7 @@ export class GoalComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error fetching goals:', err);
-      }
+      },
     });
   }
 
@@ -395,7 +373,8 @@ export class GoalComponent implements OnInit {
     let value: number;
 
     if (progress == null) value = 0;
-    else if (typeof progress === 'string' && progress.includes('%')) value = parseFloat(progress.replace('%', ''));
+    else if (typeof progress === 'string' && progress.includes('%'))
+      value = parseFloat(progress.replace('%', ''));
     else value = Number(progress);
 
     const valid = Math.min(Math.max(value, 0), 100);
@@ -404,9 +383,10 @@ export class GoalComponent implements OnInit {
 
   getProgressValue(progress: any): number {
     if (!progress) return 0;
-    const val = typeof progress === 'string' && progress.includes('%')
-      ? parseFloat(progress.replace('%', ''))
-      : Number(progress);
+    const val =
+      typeof progress === 'string' && progress.includes('%')
+        ? parseFloat(progress.replace('%', ''))
+        : Number(progress);
     return Math.min(Math.max(val, 0), 100);
   }
 
@@ -422,19 +402,18 @@ export class GoalComponent implements OnInit {
     if (goal.progress === '100%') {
       goal.status = 'Completed';
       goal.endDate = new Date().toISOString().split('T')[0];
-      this.archivedGoals = this.archivedGoals.filter(g => g.id !== goal.id);
+      this.archivedGoals = this.archivedGoals.filter((g) => g.id !== goal.id);
       this.completedGoals.push(goal);
       goal.isEditing = false;
     }
 
     this.goalService.updateGoal(goal.id, goal).subscribe({
       next: () => {
-        console.log('Goal updated successfully');
         goal.isEditing = false;
 
         this.validateDueDate(goal);
       },
-      error: (err) => console.error('Error updating goal:', err)
+      error: (err) => console.error('Error updating goal:', err),
     });
   }
 
@@ -450,18 +429,23 @@ export class GoalComponent implements OnInit {
     this.goalService.getAllGoals().subscribe({
       next: (res) => {
         this.allGoals = res.body || [];
-        console.log(" All goals from API:", this.allGoals);
-        this.archivedGoals = this.allGoals.filter((g: any) => g.status !== 'Completed');
-        this.completedGoals = this.allGoals.filter((g: any) => g.status === 'Completed');
+        this.archivedGoals = this.allGoals.filter(
+          (g: any) => g.status !== 'Completed'
+        );
+        this.completedGoals = this.allGoals.filter(
+          (g: any) => g.status === 'Completed'
+        );
       },
       error: (err) => {
         console.error('Error fetching archived goals', err);
-      }
+      },
     });
   }
 
   onDueDateChange(goal: any, event: any) {
-    const selectedDate = event.value ? event.value.toISOString().split('T')[0] : null;
+    const selectedDate = event.value
+      ? event.value.toISOString().split('T')[0]
+      : null;
     if (!confirm('Do you want to save this due date?')) {
       goal.dueDate = this.previousDueDate;
       return;
@@ -469,12 +453,10 @@ export class GoalComponent implements OnInit {
     goal.dueDate = selectedDate;
     goal.isDueDateLocked = true;
     this.goalService.updateGoal(goal.id, goal).subscribe({
-      next: (res) => {
-        console.log('Due date updated');
-      },
+      next: (res) => {},
       error: (err) => {
         console.error('Error saving due date', err);
-      }
+      },
     });
   }
 
@@ -486,7 +468,7 @@ export class GoalComponent implements OnInit {
     this.selectedMonth = month;
     const monthIndex = this.months.indexOf(month);
 
-    this.selectedMonthGoals = this.allGoals.filter(goal => {
+    this.selectedMonthGoals = this.allGoals.filter((goal) => {
       const startDate = goal.startDate ? new Date(goal.startDate) : null;
       const endDate = goal.endDate ? new Date(goal.endDate) : null;
       const dueDate = goal.dueDate ? new Date(goal.dueDate) : null;
@@ -495,18 +477,14 @@ export class GoalComponent implements OnInit {
         (startDate &&
           startDate.getMonth() === monthIndex &&
           startDate.getFullYear() === this.selectedYear) ||
-
         (endDate &&
           endDate.getMonth() === monthIndex &&
           endDate.getFullYear() === this.selectedYear) ||
-
         (dueDate &&
           dueDate.getMonth() === monthIndex &&
           dueDate.getFullYear() === this.selectedYear)
       );
     });
-
-    console.log('✅ Goals for', month, this.selectedYear, ':', this.selectedMonthGoals);
   }
 
   updateDateRangeLabel(): void {
@@ -530,7 +508,7 @@ export class GoalComponent implements OnInit {
   filterGoalsBySelectedMonth(goals: any[]): any[] {
     if (!goals || goals.length === 0) return [];
 
-    const selectedMonth = this.currentDate.getMonth();   // 0–11
+    const selectedMonth = this.currentDate.getMonth(); // 0–11
     const selectedYear = this.currentDate.getFullYear();
 
     return goals.filter((goal) => {
@@ -539,9 +517,15 @@ export class GoalComponent implements OnInit {
       const due = goal.dueDate ? new Date(goal.dueDate) : null;
 
       const isSameMonth =
-        (start && start.getMonth() === selectedMonth && start.getFullYear() === selectedYear) ||
-        (end && end.getMonth() === selectedMonth && end.getFullYear() === selectedYear) ||
-        (due && due.getMonth() === selectedMonth && due.getFullYear() === selectedYear);
+        (start &&
+          start.getMonth() === selectedMonth &&
+          start.getFullYear() === selectedYear) ||
+        (end &&
+          end.getMonth() === selectedMonth &&
+          end.getFullYear() === selectedYear) ||
+        (due &&
+          due.getMonth() === selectedMonth &&
+          due.getFullYear() === selectedYear);
 
       return isSameMonth;
     });
@@ -555,14 +539,23 @@ export class GoalComponent implements OnInit {
     const end = goal.endDate ? new Date(goal.endDate) : null;
     const due = goal.dueDate ? new Date(goal.dueDate) : null;
 
-    const matchStart =
-      !!(start && start.getMonth() === selectedMonth && start.getFullYear() === selectedYear);
+    const matchStart = !!(
+      start &&
+      start.getMonth() === selectedMonth &&
+      start.getFullYear() === selectedYear
+    );
 
-    const matchEnd =
-      !!(end && end.getMonth() === selectedMonth && end.getFullYear() === selectedYear);
+    const matchEnd = !!(
+      end &&
+      end.getMonth() === selectedMonth &&
+      end.getFullYear() === selectedYear
+    );
 
-    const matchDue =
-      !!(due && due.getMonth() === selectedMonth && due.getFullYear() === selectedYear);
+    const matchDue = !!(
+      due &&
+      due.getMonth() === selectedMonth &&
+      due.getFullYear() === selectedYear
+    );
 
     return matchStart || matchEnd || matchDue;
   }
@@ -575,30 +568,35 @@ export class GoalComponent implements OnInit {
         next: (res: any) => {
           const goals = res.body || [];
 
-          const monthGoals = goals.filter((g: any) => this.isGoalInSelectedMonth(g));
+          const monthGoals = goals.filter((g: any) =>
+            this.isGoalInSelectedMonth(g)
+          );
 
           if (monthGoals.length > 0) {
             this.filteredEmployees.push({
               ...emp,
-              goalsForMonth: monthGoals
+              goalsForMonth: monthGoals,
             });
           }
         },
-        error: () => { }
+        error: () => {},
       });
     });
   }
-get paginatedEmployees(): any[] {
-  const start = (this.currentPage - 1) * this.itemsPerPage;
-  return this.filteredEmployees.slice(start, start + this.itemsPerPage);
-}
-
-get totalPages(): number {
-  return Math.max(1, Math.ceil(this.filteredEmployees.length / this.itemsPerPage));
-}
-changePage(page: number): void {
-  if (page >= 1 && page <= this.totalPages) {
-    this.currentPage = page;
+  get paginatedEmployees(): any[] {
+    const start = (this.currentPage - 1) * this.itemsPerPage;
+    return this.filteredEmployees.slice(start, start + this.itemsPerPage);
   }
-}
+
+  get totalPages(): number {
+    return Math.max(
+      1,
+      Math.ceil(this.filteredEmployees.length / this.itemsPerPage)
+    );
+  }
+  changePage(page: number): void {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+    }
+  }
 }

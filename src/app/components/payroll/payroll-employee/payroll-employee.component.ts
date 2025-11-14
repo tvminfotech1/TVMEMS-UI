@@ -8,13 +8,12 @@ import { forkJoin } from 'rxjs';
 @Component({
   selector: 'app-payroll-employee',
   templateUrl: './payroll-employee.component.html',
-  styleUrls: ['./payroll-employee.component.css']
+  styleUrls: ['./payroll-employee.component.css'],
 })
 export class PayrollEmployeeComponent implements OnInit {
   employees: Employee[] = [];
   filteredEmployees: Employee[] = [];
 
-  // Filters
   selectedLocation: string = '';
   selectedStatus: string = '';
   selectedDesignation: string = '';
@@ -25,18 +24,19 @@ export class PayrollEmployeeComponent implements OnInit {
 
   excelEmployees: Employee[] = [];
   displayedColumns: string[] = [
-  'id',
-  'name',
-  'email',
-  'department',
-  'status',
-  'location',
-  'details'
-];
+    'id',
+    'name',
+    'email',
+    'department',
+    'status',
+    'location',
+    'details',
+  ];
 
-
-
-  constructor(private employeeService: PayrollEmployeeService, private router: Router) {}
+  constructor(
+    private employeeService: PayrollEmployeeService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.selectedLocation = '';
@@ -55,9 +55,15 @@ export class PayrollEmployeeComponent implements OnInit {
   }
 
   extractUniqueFilters(data: Employee[]): void {
-    this.uniqueLocations = [...new Set(data.map(emp => emp.location).filter(Boolean))];
-    this.uniqueStatuses = [...new Set(data.map(emp => emp.status).filter(Boolean))];
-    this.uniqueDesignations = [...new Set(data.map(emp => emp.department).filter(Boolean))];
+    this.uniqueLocations = [
+      ...new Set(data.map((emp) => emp.location).filter(Boolean)),
+    ];
+    this.uniqueStatuses = [
+      ...new Set(data.map((emp) => emp.status).filter(Boolean)),
+    ];
+    this.uniqueDesignations = [
+      ...new Set(data.map((emp) => emp.department).filter(Boolean)),
+    ];
   }
 
   onFileChange(event: any): void {
@@ -71,65 +77,67 @@ export class PayrollEmployeeComponent implements OnInit {
       const ws: XLSX.WorkSheet = wb.Sheets[wsname];
       const data = XLSX.utils.sheet_to_json(ws);
 
-      // Map only the fields defined in the strict Employee interface you requested
-      this.excelEmployees = (data as any[]).map((row: any): Employee => ({
-        id: +row['ID'] || 0,
-        fullName: row['Full Name'] || '',
-        email: row['Email'] || '',
-        phone: row['Phone'] || '',
-        department: row['Department'] || '',
-        joiningDate: row['Joining Date'] || '',
-        employeeType: row['Employee Type'] || '',
-        location: row['Location'] || '',
-        status: row['Status'] || 'Active',
-        ctc: +row['CTC'] || 0,
-        basicSalary: +row['Basic Salary'] || 0,
-        inHandSalary: +row['In-Hand Salary'] || 0,
-        aadhaarNumber: row['Aadhaar Number'] || '',
-        panNumber: row['PAN Number'] || '',
-        bankDetails: {
-          bankName: row['Bank Name'] || '',
-          accountNumber: row['Account Number'] || '',
-          ifscCode: row['IFSC Code'] || '',
-          branch: row['Branch'] || ''
-        }
-      }));
+      this.excelEmployees = (data as any[]).map(
+        (row: any): Employee => ({
+          id: +row['ID'] || 0,
+          fullName: row['Full Name'] || '',
+          email: row['Email'] || '',
+          phone: row['Phone'] || '',
+          department: row['Department'] || '',
+          joiningDate: row['Joining Date'] || '',
+          employeeType: row['Employee Type'] || '',
+          location: row['Location'] || '',
+          status: row['Status'] || 'Active',
+          ctc: +row['CTC'] || 0,
+          basicSalary: +row['Basic Salary'] || 0,
+          inHandSalary: +row['In-Hand Salary'] || 0,
+          aadhaarNumber: row['Aadhaar Number'] || '',
+          panNumber: row['PAN Number'] || '',
+          bankDetails: {
+            bankName: row['Bank Name'] || '',
+            accountNumber: row['Account Number'] || '',
+            ifscCode: row['IFSC Code'] || '',
+            branch: row['Branch'] || '',
+          },
+        })
+      );
     };
 
     reader.readAsBinaryString(file);
   }
 
-uploadData(): void {
-  if (!this.excelEmployees.length) {
-    alert("No data to upload. Please import an Excel file first.");
-    return;
+  uploadData(): void {
+    if (!this.excelEmployees.length) {
+      alert('No data to upload. Please import an Excel file first.');
+      return;
+    }
+
+    const total = this.excelEmployees.length;
+    let uploaded = 0;
+
+    for (let emp of this.excelEmployees) {
+      this.employeeService.addEmployee(emp).subscribe({
+        next: () => {
+          uploaded++;
+          if (uploaded === total) {
+            alert(`✅ All ${total} employees imported successfully!`);
+            this.loadEmployees(); // refresh list
+          }
+        },
+        error: (err) => {
+          console.error('❌ Failed to upload employee:', emp.id, err);
+          alert(`Employee with ID ${emp.id} could not be imported.`);
+        },
+      });
+    }
   }
-
-  const total = this.excelEmployees.length;
-  let uploaded = 0;
-
-  for (let emp of this.excelEmployees) {
-    this.employeeService.addEmployee(emp).subscribe({
-      next: () => {
-        uploaded++;
-        if (uploaded === total) {
-          alert(`✅ All ${total} employees imported successfully!`);
-          this.loadEmployees(); // refresh list
-        }
-      },
-      error: (err) => {
-        console.error('❌ Failed to upload employee:', emp.id, err);
-        alert(`Employee with ID ${emp.id} could not be imported.`);
-      }
-    });
-  }
-}
-
 
   applyFilters(): void {
-    this.filteredEmployees = this.employees.filter(emp =>
-      (this.selectedLocation === '' || emp.location === this.selectedLocation) &&
-      (this.selectedStatus === '' || emp.status === this.selectedStatus) 
+    this.filteredEmployees = this.employees.filter(
+      (emp) =>
+        (this.selectedLocation === '' ||
+          emp.location === this.selectedLocation) &&
+        (this.selectedStatus === '' || emp.status === this.selectedStatus)
     );
     console.log('Filtered:', this.filteredEmployees);
   }

@@ -1,9 +1,7 @@
 <app-nav-display></app-nav-display>
 
 <div id="container">
-  <!-- Show KYC if data exists -->
   <div class="form-grid" *ngIf="kyc; else noKyc">
-    
     <div class="form-group">
       <label>Pan Card Number</label>
       <input type="text" [value]="kyc?.pan || 'Not Provided'" readonly />
@@ -40,14 +38,16 @@
     </div>
   </div>
 
-  <!-- Show this if no KYC exists -->
   <ng-template #noKyc>
     <p>No KYC data available for this employee.</p>
   </ng-template>
 
-  <!-- Navigation -->
   <div class="button-group">
-    <a [routerLink]="['/mainlayout/empdetails', employeeId]" class="prev-btn">&laquo; Previous</a>
-    <a [routerLink]="['/mainlayout/emppassport', employeeId]" class="prev-btn">Next &raquo;</a>
+    <a [routerLink]="['/mainlayout/empdetails', employeeId]" class="prev-btn"
+      >&laquo; Previous</a
+    >
+    <a [routerLink]="['/mainlayout/emppassport', employeeId]" class="prev-btn"
+      >Next &raquo;</a
+    >
   </div>
 </div>

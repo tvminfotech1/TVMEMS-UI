@@ -1,7 +1,7 @@
-import { Component, HostListener,OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
-import { MainlayoutService } from 'src/app/services/main-layout.service';  
+import { MainlayoutService } from 'src/app/services/main-layout.service';
 import { NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { MyProfileService } from 'src/app/services/my-profile.service';
@@ -9,10 +9,9 @@ import { MyProfileService } from 'src/app/services/my-profile.service';
 @Component({
   selector: 'app-mainlayout',
   templateUrl: './mainlayout.component.html',
-  styleUrls: ['./mainlayout.component.css']
+  styleUrls: ['./mainlayout.component.css'],
 })
 export class MainlayoutComponent implements OnInit {
-  // Dropdown visibility states
   showHomeDropdown = false;
   showWFHDropdown = false;
   showLeaveDropdown = false;
@@ -50,13 +49,13 @@ export class MainlayoutComponent implements OnInit {
     this.userName = this.authService.getfullName() || 'User';
     this.employeeId = this.authService.getEmployeeId();
     this.router.events
-    .pipe(filter(event => event instanceof NavigationEnd))
-    .subscribe(() => {
-      if (window.innerWidth <= 768) {
-        this.sidebarOpen = false;
-        document.body.classList.remove('noscroll');
-      }
-    });
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe(() => {
+        if (window.innerWidth <= 768) {
+          this.sidebarOpen = false;
+          document.body.classList.remove('noscroll');
+        }
+      });
 
   if (this.isUser && this.employeeId) {
     this.authService.checkOnboardingStatus(this.employeeId).subscribe({
@@ -72,19 +71,45 @@ export class MainlayoutComponent implements OnInit {
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent) {
     const target = event.target as HTMLElement;
-    const clickedInsideDropdown = target.closest('.dropdown') || target.closest('.settings-wrapper') || target.closest('.search-input');
+    const clickedInsideDropdown =
+      target.closest('.dropdown') ||
+      target.closest('.settings-wrapper') ||
+      target.closest('.search-input');
     if (!clickedInsideDropdown) {
       const parentMap: { [parent: string]: string[] } = {
         home: ['home', 'dashboard'],
         wfh: ['workfromhome', 'workfromhome '],
-        leave: ['leave','myleave','attendance-approval', 'attendance'],
+        leave: ['leave', 'myleave', 'attendance-approval', 'attendance'],
         timesheet: ['Timelog'],
         task: ['task', 'tasks'],
         okr: ['okr', 'goal'],
-        offboarding: ['offboarding','resignation'],
-        onboarding: ['signup','pendingUser','admin','personal','kyc','passport','family','previousEmployee','education','skills','certificate','document','resume','final','thankYou'],
+        offboarding: ['offboarding', 'resignation'],
+        onboarding: [
+          'signup',
+          'pendingUser',
+          'admin',
+          'personal',
+          'kyc',
+          'passport',
+          'family',
+          'previousEmployee',
+          'education',
+          'skills',
+          'certificate',
+          'document',
+          'resume',
+          'final',
+          'thankYou',
+        ],
         addJob: ['addopening', 'seeJobOpening'],
-        payroll: ['payroll', 'payruns', 'add-employee','reports', 'payroll-dashbord', 'payroll-employee']
+        payroll: [
+          'payroll',
+          'payruns',
+          'add-employee',
+          'reports',
+          'payroll-dashbord',
+          'payroll-employee',
+        ],
       };
       for (const parent of Object.keys(parentMap)) {
         if (this.isChildRouteActive(parentMap[parent])) {
@@ -106,7 +131,7 @@ export class MainlayoutComponent implements OnInit {
     this.showOffboardingDropdown = except === 'offboarding';
     this.showOnboardingDropdown = except === 'onboarding';
     this.showAddJobDropdown = except === 'addJob';
-    this.showPayrollDropdown = except === 'payroll'; 
+    this.showPayrollDropdown = except === 'payroll';
     this.showSettings = except === 'settings';
   }
 
@@ -115,7 +140,6 @@ export class MainlayoutComponent implements OnInit {
   toggleSidebar() {
     this.sidebarOpen = !this.sidebarOpen;
 
-    // optional: prevent background scrolling when open
     if (this.sidebarOpen) {
       document.body.classList.add('noscroll');
     } else {
@@ -127,7 +151,7 @@ export class MainlayoutComponent implements OnInit {
     const willShow = !this.showHomeDropdown;
     this.closeAllDropdowns(willShow ? 'home' : '');
   }
-  
+
   toggleWFHDropdown() {
     const willShow = !this.showWFHDropdown;
     this.closeAllDropdowns(willShow ? 'wfh' : '');
@@ -158,7 +182,6 @@ export class MainlayoutComponent implements OnInit {
     this.closeAllDropdowns(willShow ? 'offboarding' : '');
   }
 
-
   toggleOnboardingDropdown() {
     const willShow = !this.showOnboardingDropdown;
     this.closeAllDropdowns(willShow ? 'onboarding' : '');
@@ -188,31 +211,35 @@ export class MainlayoutComponent implements OnInit {
     localStorage.clear();
     sessionStorage.clear();
     if ('caches' in window) {
-      caches.keys().then(names => {
+      caches.keys().then((names) => {
         for (let name of names) caches.delete(name);
       });
     }
 
-    document.cookie.split(';').forEach(c => {
-      document.cookie = c.replace(/^ +/, '')
+    document.cookie.split(';').forEach((c) => {
+      document.cookie = c
+        .replace(/^ +/, '')
         .replace(/=.*/, '=;expires=' + new Date(0).toUTCString() + ';path=/');
     });
     this.router.navigateByUrl('/');
   }
-   goToProfile() {
-    console.log('Go to profile clicked');
-    this.router.navigate(['/mainlayout/myprofile',this.employeeId]);
+  goToProfile() {
+    this.router.navigate(['/mainlayout/myprofile', this.employeeId]);
   }
 
-goToAnnouncements() {
-  this.router.navigate(['/mainlayout/dashboard'], { queryParams: { section: 'announcement' } });
-  this.showSettings = false;
-}
+  goToAnnouncements() {
+    this.router.navigate(['/mainlayout/dashboard'], {
+      queryParams: { section: 'announcement' },
+    });
+    this.showSettings = false;
+  }
 
-goToHolidays() {
-  this.router.navigate(['/mainlayout/dashboard'], { queryParams: { section: 'holidays' } });
-  this.showSettings = false;
-}
+  goToHolidays() {
+    this.router.navigate(['/mainlayout/dashboard'], {
+      queryParams: { section: 'holidays' },
+    });
+    this.showSettings = false;
+  }
 
   isChildRouteActive(keywords: string[]): boolean {
     return keywords.some(path => this.router.url.includes(path));

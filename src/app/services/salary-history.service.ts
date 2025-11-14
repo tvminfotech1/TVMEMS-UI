@@ -3,12 +3,10 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { SalaryHistory } from '../models/salaryHistory';
 
-
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SalaryHistoryService {
-
   private apiUrl = 'http://localhost:8080/api/salaryHistory';
 
   constructor(private http: HttpClient) {}
@@ -17,19 +15,23 @@ export class SalaryHistoryService {
     return this.http.get<any>(this.apiUrl);
   }
 
-  // getSalaryHistoryByEmployeeId(employeeId: string): Observable<SalaryHistory[]> {
-  //   return this.http.get<SalaryHistory[]>(`${this.apiUrl}?employeeId=${employeeId}`);
-  // }
-  getSalaryByEmployeeAndMonth(empId: number, month: string): Observable<SalaryHistory[]> {
-  return this.http.get<SalaryHistory[]>(`${this.apiUrl}?id=${empId}&month=${month}`);
-}
-
+  getSalaryByEmployeeAndMonth(
+    empId: number,
+    month: string
+  ): Observable<SalaryHistory[]> {
+    return this.http.get<SalaryHistory[]>(
+      `${this.apiUrl}?id=${empId}&month=${month}`
+    );
+  }
 
   addSalaryHistory(data: SalaryHistory): Observable<SalaryHistory> {
     return this.http.post<SalaryHistory>(this.apiUrl, data);
   }
 
-  updateSalaryHistory(id: number, data: SalaryHistory): Observable<SalaryHistory> {
+  updateSalaryHistory(
+    id: number,
+    data: SalaryHistory
+  ): Observable<SalaryHistory> {
     return this.http.put<SalaryHistory>(`${this.apiUrl}/${id}`, data);
   }
 
@@ -37,15 +39,16 @@ export class SalaryHistoryService {
     return this.http.delete(`${this.apiUrl}/${id}`);
   }
 
-  downloadSalarySlip(id: number,month: string): Observable<any> {
+  downloadSalarySlip(id: number, month: string): Observable<any> {
     return this.http.get(`${this.apiUrl}/generate-payslip/${id}`, {
       params: { month },
-      responseType: 'blob'
+      responseType: 'blob',
     });
   }
 
- getJoiningDate(id: number): Observable<any> {
-  return this.http.get<any>(`http://localhost:8080/api/employeePayRole/joiningDate/${id}`);
-}
-
+  getJoiningDate(id: number): Observable<any> {
+    return this.http.get<any>(
+      `http://localhost:8080/api/employeePayRole/joiningDate/${id}`
+    );
+  }
 }

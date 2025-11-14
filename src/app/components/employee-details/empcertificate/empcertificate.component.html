@@ -1,11 +1,9 @@
 <app-nav-display></app-nav-display>
 
-<!-- Certificate List -->
 <div *ngIf="employeeDetails?.certification?.length === 0">
   <p>No certificates added.</p>
 </div>
 
-<!-- Certificate Form List -->
 <div *ngFor="let cert of employeeDetails?.certification">
   <form class="form-grid">
     <div class="form-group">
@@ -30,8 +28,13 @@
   </form>
 </div>
 
-<!-- Navigation Buttons -->
 <div class="button-group">
-  <a [routerLink]="['/mainlayout/empskills', employeeDetails?.id]">&laquo; Previous</a>
-  <a [routerLink]="['/mainlayout/empdocument', employeeDetails?.id]" class="update-button">Next &raquo;</a>
+  <a [routerLink]="['/mainlayout/empskills', employeeDetails?.id]"
+    >&laquo; Previous</a
+  >
+  <a
+    [routerLink]="['/mainlayout/empdocument', employeeDetails?.id]"
+    class="update-button"
+    >Next &raquo;</a
+  >
 </div>

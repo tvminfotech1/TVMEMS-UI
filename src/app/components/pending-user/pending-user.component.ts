@@ -7,15 +7,13 @@ import { PendingUserService } from 'src/app/services/pending-user.service';
 @Component({
   selector: 'app-pending-user',
   templateUrl: './pending-user.component.html',
-  styleUrls: ['./pending-user.component.css']
+  styleUrls: ['./pending-user.component.css'],
 })
 export class PendingUserComponent {
-  searchText: string = '';  
+  searchText: string = '';
   details: any[] = [];
-  filteredUser:any[]=[];
+  filteredUser: any[] = [];
   isAdmin = false;
-
-
 
   constructor(
     private authservice: AuthService,
@@ -23,38 +21,33 @@ export class PendingUserComponent {
   ) {}
 
   ngOnInit(): void {
-
-     this.isAdmin = this.authservice.isAdmin();
+    this.isAdmin = this.authservice.isAdmin();
     if (this.isAdmin) {
       this.fetchPendingUsers();
     }
-
   }
 
-  fetchPendingUsers(){
+  fetchPendingUsers() {
     this.pendingUserService.getUserPending().subscribe({
-      next:(response)=>{
-       this.details= (response.body || []).filter(
-        (u:any)=> u.role && u.role.includes('ROLE_USER')
-      );
-        console.log('pending user request :', this.details);
+      next: (response) => {
+        this.details = (response.body || []).filter(
+          (u: any) => u.role && u.role.includes('ROLE_USER')
+        );
       },
-      error:(err)=>{
-        console.error('error fetching pending users:',err);
-        this.details=[];
-      }
+      error: (err) => {
+        console.error('error fetching pending users:', err);
+        this.details = [];
+      },
     });
   }
-  
- 
+
   get filteredUsers() {
-    if(!this.searchText) return this.details;
-    return this.details.filter(req=>
-      req.fullName ?.toLowerCase().includes(this.searchText.toLowerCase()) ||
-      req.email ?.toLowerCase().includes(this.searchText.toLowerCase()) ||
-      req.aadhar?.includes(this.searchText)
+    if (!this.searchText) return this.details;
+    return this.details.filter(
+      (req) =>
+        req.fullName?.toLowerCase().includes(this.searchText.toLowerCase()) ||
+        req.email?.toLowerCase().includes(this.searchText.toLowerCase()) ||
+        req.aadhar?.includes(this.searchText)
     );
   }
-
-
 }

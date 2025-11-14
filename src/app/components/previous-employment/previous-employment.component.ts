@@ -170,12 +170,10 @@ export class PreviousEmploymentComponent implements OnInit {
   finalSave(): void {
     if (this.employmentList.length > 0) {
       this.userService.setFormData('previousEmployment', this.employmentList);
-      console.log('pre emp: ', this.employmentList);
       this.router.navigate(['/mainlayout/education']);
       this.mainlayoutService.markTabCompleted('previousEmployee', true);
     } else {
       this.userService.setFormData('previousEmployment', this.employmentList);
-      console.log('no emp: ', this.employmentList);
       this.mainlayoutService.markTabCompleted('previousEmployee', true);
       this.router.navigate(['/mainlayout/education']);
     }

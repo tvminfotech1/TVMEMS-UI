@@ -17,7 +17,9 @@ export class DateUtilsService {
   getCurrentMondayISO(): string {
     const today = new Date();
     const monday = new Date(today);
-    monday.setDate(today.getDate() - today.getDay() + (today.getDay() === 0 ? -6 : 1));
+    monday.setDate(
+      today.getDate() - today.getDay() + (today.getDay() === 0 ? -6 : 1)
+    );
     monday.setHours(0, 0, 0, 0);
     return monday.toISOString().split('T')[0];
   }

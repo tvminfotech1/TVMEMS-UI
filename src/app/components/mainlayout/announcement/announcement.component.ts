@@ -6,7 +6,7 @@ import { AuthService } from 'src/app/services/auth.service';
 @Component({
   selector: 'app-announcement',
   templateUrl: './announcement.component.html',
-  styleUrls: ['./announcement.component.css']
+  styleUrls: ['./announcement.component.css'],
 })
 export class AnnouncementComponent implements OnInit {
   announcements: any[] = [];
@@ -18,15 +18,18 @@ export class AnnouncementComponent implements OnInit {
 
   announcementForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private announcementService:AnnouncementService, private authservice:AuthService) {
+  constructor(
+    private fb: FormBuilder,
+    private announcementService: AnnouncementService,
+    private authservice: AuthService
+  ) {
     this.announcementForm = this.fb.group({
       title: ['', Validators.required],
       date: ['', Validators.required],
       startTime: ['', Validators.required],
       endTime: ['', Validators.required],
       place: ['', Validators.required],
-      description: ['']
-      
+      description: [''],
     });
   }
 
@@ -34,21 +37,20 @@ export class AnnouncementComponent implements OnInit {
     this.loadAnnouncements();
     this.isAdmin = this.authservice.isAdmin();
     this.isUser = this.authservice.isUser();
-
   }
 
- loadAnnouncements() {
-  this.announcementService.getAll().subscribe({
-    next: (data) => {
-      this.announcements = data.map(a => ({
-        ...a,
-        startTimeFormatted: this.formatTimeToAmPm(a.startTime),
-        endTimeFormatted: this.formatTimeToAmPm(a.endTime)
-      }));
-    },
-    error: (err) => console.error('Error loading announcements:', err)
-  });
-}
+  loadAnnouncements() {
+    this.announcementService.getAll().subscribe({
+      next: (data) => {
+        this.announcements = data.map((a) => ({
+          ...a,
+          startTimeFormatted: this.formatTimeToAmPm(a.startTime),
+          endTimeFormatted: this.formatTimeToAmPm(a.endTime),
+        }));
+      },
+      error: (err) => console.error('Error loading announcements:', err),
+    });
+  }
 
   openAddModal() {
     this.isEditMode = false;
@@ -64,17 +66,18 @@ export class AnnouncementComponent implements OnInit {
     this.showModal = true;
   }
   formatTimeToAmPm(time: string): string {
-  if (!time) return '';
-  const [hour, minute] = time.split(':').map(Number);
-  const ampm = hour >= 12 ? 'PM' : 'AM';
-  const hour12 = hour % 12 || 12;
-  return `${hour12}:${minute.toString().padStart(2, '0')} ${ampm}`;
-}
-
+    if (!time) return '';
+    const [hour, minute] = time.split(':').map(Number);
+    const ampm = hour >= 12 ? 'PM' : 'AM';
+    const hour12 = hour % 12 || 12;
+    return `${hour12}:${minute.toString().padStart(2, '0')} ${ampm}`;
+  }
 
   deleteAnnouncement(id: number) {
     if (confirm('Are you sure you want to delete this announcement?')) {
-      this.announcementService.delete(id).subscribe(() => this.loadAnnouncements());
+      this.announcementService
+        .delete(id)
+        .subscribe(() => this.loadAnnouncements());
     }
   }
 
@@ -97,10 +100,8 @@ export class AnnouncementComponent implements OnInit {
   }
 
   closeModal(): void {
-  this.showModal = false;
-  this.isEditMode = false;
-  this.announcementForm.reset();
-}
-
-
+    this.showModal = false;
+    this.isEditMode = false;
+    this.announcementForm.reset();
+  }
 }

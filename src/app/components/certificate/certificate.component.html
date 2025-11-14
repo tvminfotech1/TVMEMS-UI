@@ -6,12 +6,14 @@
     </button>
   </div>
 
-  <!-- Certificate List -->
   <div class="noCertificate" *ngIf="certificateList.length === 0">
     <p>No certificates added.</p>
   </div>
 
-  <mat-card class="employment-card" *ngFor="let cert of certificateList; let i = index">
+  <mat-card
+    class="employment-card"
+    *ngFor="let cert of certificateList; let i = index"
+  >
     <div class="employment-header">
       <div class="employment-info">
         <h3 class="company-name">{{ cert.certificateName }}</h3>
@@ -30,108 +32,199 @@
       </div>
 
       <div class="employment-actions">
-        <button mat-icon-button color="warn" (click)="deleteCertificate(i)" aria-label="Delete">
+        <button
+          mat-icon-button
+          color="warn"
+          (click)="deleteCertificate(i)"
+          aria-label="Delete"
+        >
           <mat-icon>delete</mat-icon>
         </button>
       </div>
     </div>
   </mat-card>
 
-  <!-- Navigation Buttons -->
-
   <div class="button-group">
     <div>
-      <button class="back-button" type="button" (click)="back()">&laquo; Back</button>
+      <button class="back-button" type="button" (click)="back()">
+        &laquo; Back
+      </button>
     </div>
     <div>
-      <button class="update-button" type="button" (click)="finalSubmit()">Next &raquo;</button>
+      <button class="update-button" type="button" (click)="finalSubmit()">
+        Next &raquo;
+      </button>
     </div>
   </div>
 
-  <!-- Certificate Form -->
   <div class="popup" *ngIf="showPopup">
     <div class="popup-content">
       <span class="close" (click)="closePopup()">&times;</span>
       <div>
-        <form class="form-grid" [formGroup]="certificateForm" (ngSubmit)="addCertificate()">
-
-          <!----Certificate Name----->
-          <mat-form-field appearance="outline" class="custom-form-field full-width">
+        <form
+          class="form-grid"
+          [formGroup]="certificateForm"
+          (ngSubmit)="addCertificate()"
+        >
+          <mat-form-field
+            appearance="outline"
+            class="custom-form-field full-width"
+          >
             <mat-label>Certificate Name</mat-label>
-            <input matInput type="text" formControlName="certificateName" placeholder="e.g., AWS Cloud Practitioner"
-              class="input-padding" (keydown)="blockCertificateNameInput($event)" />
+            <input
+              matInput
+              type="text"
+              formControlName="certificateName"
+              placeholder="e.g., AWS Cloud Practitioner"
+              class="input-padding"
+              (keydown)="blockCertificateNameInput($event)"
+            />
 
-            <!-----Error Handling for Certificate name------->
-            <mat-error *ngIf="certificateForm.get('certificateName')?.hasError('required')">
+            <mat-error
+              *ngIf="
+                certificateForm.get('certificateName')?.hasError('required')
+              "
+            >
               Certificate Name is required.
             </mat-error>
-            <mat-error *ngIf="certificateForm.get('certificateName')?.hasError('minlength')">
+            <mat-error
+              *ngIf="
+                certificateForm.get('certificateName')?.hasError('minlength')
+              "
+            >
               Minimum 3 characters allowed.
             </mat-error>
-            <mat-error *ngIf="certificateForm.get('certificateName')?.hasError('maxlength')">
+            <mat-error
+              *ngIf="
+                certificateForm.get('certificateName')?.hasError('maxlength')
+              "
+            >
               Maximum 20 characters allowed.
             </mat-error>
-            <mat-error *ngIf="certificateForm.get('certificateName')?.hasError('pattern')">
+            <mat-error
+              *ngIf="
+                certificateForm.get('certificateName')?.hasError('pattern')
+              "
+            >
               Only letters and numbers are allowed.
             </mat-error>
           </mat-form-field>
 
-          <mat-form-field appearance="outline" class="custom-form-field full-width">
+          <mat-form-field
+            appearance="outline"
+            class="custom-form-field full-width"
+          >
             <mat-label>Certified By</mat-label>
-            <input matInput type="text" formControlName="certifiedBy" placeholder="e.g., Amazon, Microsoft"
-              class="input-padding" (keydown)="blockCertifiedByInput($event)" />
+            <input
+              matInput
+              type="text"
+              formControlName="certifiedBy"
+              placeholder="e.g., Amazon, Microsoft"
+              class="input-padding"
+              (keydown)="blockCertifiedByInput($event)"
+            />
 
-            <mat-error *ngIf="certificateForm.get('certifiedBy')?.hasError('required')">
+            <mat-error
+              *ngIf="certificateForm.get('certifiedBy')?.hasError('required')"
+            >
               Certified By is required.
             </mat-error>
-            <mat-error *ngIf="certificateForm.get('certifiedBy')?.hasError('minlength')">
+            <mat-error
+              *ngIf="certificateForm.get('certifiedBy')?.hasError('minlength')"
+            >
               Minimum 3 characters allowed.
             </mat-error>
-            <mat-error *ngIf="certificateForm.get('certifiedBy')?.hasError('maxlength')">
+            <mat-error
+              *ngIf="certificateForm.get('certifiedBy')?.hasError('maxlength')"
+            >
               Maximum 20 characters allowed.
             </mat-error>
-            <mat-error *ngIf="certificateForm.get('certifiedBy')?.hasError('pattern')">
+            <mat-error
+              *ngIf="certificateForm.get('certifiedBy')?.hasError('pattern')"
+            >
               Only letters are allowed (no numbers or symbols).
             </mat-error>
           </mat-form-field>
 
-          <!-- Completion Date -->
-          <mat-form-field appearance="outline" class="custom-form-field full-width">
+          <mat-form-field
+            appearance="outline"
+            class="custom-form-field full-width"
+          >
             <mat-label>Completion Date</mat-label>
-            <input matInput [matDatepicker]="completionPicker" formControlName="completionDate" placeholder="DD-MM-YYYY"
-              [max]="today" class="input-padding" (click)="completionPicker.open()" readonly />
-            <button mat-icon-button matSuffix type="button" (click)="completionPicker.open()">
+            <input
+              matInput
+              [matDatepicker]="completionPicker"
+              formControlName="completionDate"
+              placeholder="DD-MM-YYYY"
+              [max]="today"
+              class="input-padding"
+              (click)="completionPicker.open()"
+              readonly
+            />
+            <button
+              mat-icon-button
+              matSuffix
+              type="button"
+              (click)="completionPicker.open()"
+            >
               <mat-icon>event</mat-icon>
             </button>
             <mat-datepicker #completionPicker></mat-datepicker>
 
-            <!----------Error Handling for Completion Date-------->
-            <mat-error *ngIf="certificateForm.get('completionDate')?.hasError('required')">
+            <mat-error
+              *ngIf="
+                certificateForm.get('completionDate')?.hasError('required')
+              "
+            >
               Completion date is required
             </mat-error>
-            <mat-error *ngIf="certificateForm.get('completionDate')?.hasError('matDatepickerMax')">
+            <mat-error
+              *ngIf="
+                certificateForm
+                  .get('completionDate')
+                  ?.hasError('matDatepickerMax')
+              "
+            >
               Future dates are not allowed
             </mat-error>
           </mat-form-field>
 
-          <!-- Marks -->
-          <mat-form-field appearance="outline" class="custom-form-field full-width">
+          <mat-form-field
+            appearance="outline"
+            class="custom-form-field full-width"
+          >
             <mat-label>Marks</mat-label>
-            <input matInput type="number" formControlName="marks" (keydown)="blockMarksInput($event)"
-              class="input-padding" />
-              
+            <input
+              matInput
+              type="number"
+              formControlName="marks"
+              (keydown)="blockMarksInput($event)"
+              class="input-padding"
+            />
 
-            <!----------Error Handling for Marks-------->
-            <mat-error *ngIf="certificateForm.get('marks')?.hasError('required')">
+            <mat-error
+              *ngIf="certificateForm.get('marks')?.hasError('required')"
+            >
               Marks are required
             </mat-error>
-            <mat-error *ngIf="certificateForm.get('marks')?.hasError('pattern')">
+            <mat-error
+              *ngIf="certificateForm.get('marks')?.hasError('pattern')"
+            >
               Enter a valid marks (0-99 or 100)
             </mat-error>
           </mat-form-field>
 
           <div class="full-width">
-            <button class="update-button" type="submit" style="margin-top: 20px;">Add Certificate</button>
+            <button
+              class="update-button"
+              type="submit"
+              style="margin-top: 20px"
+            >
+              Add Certificate
+            </button>
           </div>
         </form>
       </div>
+    </div>
+  </div>
+</div>

@@ -1,10 +1,8 @@
-
 .container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
 }
-
 
 .form-grid {
   display: grid;
@@ -13,15 +11,13 @@
   background: #fff;
   padding: 30px;
   border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
-
 
 .form-group {
   display: flex;
   flex-direction: column;
 }
-
 
 .full-width {
   grid-column: 1 / -1;
@@ -33,8 +29,9 @@
   color: #333;
 }
 
-
-input, select, textarea {
+input,
+select,
+textarea {
   padding: 10px 12px;
   border-radius: 6px;
   border: 1px solid #ccc;
@@ -44,16 +41,16 @@ input, select, textarea {
   transition: border-color 0.3s;
 }
 
-input:focus, select:focus, textarea:focus {
-  border-color: #007BFF;
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: #007bff;
 }
-
 
 textarea {
   resize: vertical;
   min-height: 100px;
 }
-
 
 .button-group {
   display: flex;
@@ -63,9 +60,8 @@ textarea {
   margin-top: 20px;
 }
 
-
 .update-button {
-  background-color: #007BFF;
+  background-color: #007bff;
   color: white;
   border: none;
   padding: 10px 24px;
@@ -88,15 +84,13 @@ textarea {
   font-weight: bold;
 }
 
-.button-group a:hover, .update-button:hover {
+.button-group a:hover,
+.update-button:hover {
   background-color: #004aad;
   color: white;
 }
 
-
-
 .save-warning {
-
   margin-top: 30px;
   background-color: #fff3cd;
   color: #856404;
@@ -107,9 +101,9 @@ textarea {
   text-align: center;
 }
 
-input[readonly]:hover{
-cursor: not-allowed;
+input[readonly]:hover {
+  cursor: not-allowed;
 }
-textarea:hover{
-cursor: not-allowed;
+textarea:hover {
+  cursor: not-allowed;
 }

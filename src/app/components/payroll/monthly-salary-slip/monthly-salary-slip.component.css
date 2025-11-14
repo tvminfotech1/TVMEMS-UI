@@ -1,15 +1,15 @@
 .slip-container {
   max-width: 800px;
-  margin:auto;
-  margin-top:20px ;
+  margin: auto;
+  margin-top: 20px;
   padding: 20px;
   font-family: Arial, sans-serif;
   background: #fff;
   border: 1px solid #ccc;
 }
-.logo{
-    width: 120px;
-    height: 70px;
+.logo {
+  width: 120px;
+  height: 70px;
 }
 .center {
   text-align: center;
@@ -30,8 +30,8 @@
   margin: 2px 0;
 }
 
-
-.details-table, .salary-table {
+.details-table,
+.salary-table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
@@ -46,7 +46,7 @@
   padding: 8px;
   text-align: left;
 }
-.details-table th{
+.details-table th {
   background-color: #6e6a6a;
   text-align: start;
   color: #fff;

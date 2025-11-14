@@ -32,7 +32,7 @@ export class OrganizationComponent implements OnInit {
   departmentHead: string = 'Suresh Vadivel';
   loggedInUserId: number = 3113;
 
-  // New Employee form model
+
   newEmployee: Partial<Employee> = {
     name: '',
     email: '',
@@ -50,7 +50,7 @@ export class OrganizationComponent implements OnInit {
 
   fetchEmployees(): void {
     this.isLoading = true;
-    this.http.get<Employee[]>('/assets/employees.json') // Replace with your API
+    this.http.get<Employee[]>('/assets/employees.json') 
       .subscribe({
         next: (data) => {
           this.employees = data;
@@ -110,12 +110,11 @@ export class OrganizationComponent implements OnInit {
   }
 
   aaddEmployee(): void {
-  // Generate next ID
+ 
   const newId = this.employees.length 
     ? Math.max(...this.employees.map(e => e.id)) + 1 
     : 1;
 
-  // Create an Employee object from form data
   const emp: Employee = {
     id: newId,
     name: this.newEmployee.name || '',
@@ -128,13 +127,11 @@ export class OrganizationComponent implements OnInit {
     team: undefined
   };
 
-  // Push locally for instant UI update
   this.employees.push(emp);
 
-  // Reapply filters & sorting
   this.filterEmployees();
 
-  // Reset form
+
   this.newEmployee = { 
     name: '', 
     email: '', 
@@ -144,7 +141,5 @@ export class OrganizationComponent implements OnInit {
     photo: '' 
   };
 
-  // Optional: send to API for persistence
-  // this.http.post<Employee>('https://api.example.com/employees', emp).subscribe();
 }
 }
