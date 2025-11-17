@@ -120,6 +120,19 @@
   letter-spacing: 0.5px;
 }
 
+.date-text2 {
+  background-color: #0a0f3c;
+  color: white;
+  padding: 6px 14px;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+/* =============================== */
+/* Leave Summary Cards */
+/* =============================== */
 .leave-cards-grid {
   display: flex;
   justify-content: space-around;
@@ -1358,4 +1371,45 @@ td {
   .page-title {
     font-size: 26px;
   }
+}
+
+.center-date {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-size: 20px;
+  font-weight: 500;
+  margin-bottom: 15px;
+}
+
+.icon-btn {
+  cursor: pointer;
+  padding: 4px 10px;
+  border-radius: 8px;
+  user-select: none;
+}
+
+.icon-btn2 {
+  cursor: pointer;
+  padding: 4px 10px;
+  border-radius: 8px;
+  user-select: none;
+}
+
+.icon-btn:hover {
+  background: #f1f1f1;
+}
+
+.calendar-icon {
+  font-size: 22px;
+  color: #2d8cf0;
+}
+
+.date-text {
+  font-size: 18px;
+}
+
+.icon-btn2 {
+  color: white;
 }

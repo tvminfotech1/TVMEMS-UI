@@ -8,6 +8,7 @@ import {
 import { AuthService } from 'src/app/services/auth.service';
 import { LeaveService, newLeaveRequest } from 'src/app/services/leave.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { UserInfo } from 'src/app/services/leave.service';
 
 interface LeaveBalance {
   leaveType: string;
@@ -28,11 +29,16 @@ export class LeaveComponent implements OnInit {
   showApplyLeaveModal = false;
   showCompOffModal = false;
   activeTab: 'leave' | 'compoff' = 'leave';
+  // joiningDate: Date | null = null;
 
   leaveForm!: FormGroup;
 
   leaveList: newLeaveRequest[] = [];
   filteredRequests: newLeaveRequest[] = [];
+  // compOffList: AddCompoffLeave[] = [];
+
+leaveRequests: newLeaveRequest[] = [];
+joiningDate!: Date;  // store employee joining date
 
   sortColumn: keyof newLeaveRequest | '' = '';
   sortKey: string = '';
@@ -48,7 +54,8 @@ export class LeaveComponent implements OnInit {
   ];
 
   leaveCards: any[] = [];
-  selectedDate = '';
+selectedDate: Date = new Date(); 
+selectedDate2: Date = new Date(); 
 
   constructor(
     private fb: FormBuilder,
@@ -59,29 +66,96 @@ export class LeaveComponent implements OnInit {
   ) {}
   private lastUpdatedMonth = new Date().getMonth();
 
-  ngOnInit(): void {
-    const token = this.authService.getToken();
-    if (!token) {
-      this.authService.logout();
-      return;
-    }
+//  ngOnInit(): void {
+//   const token = this.authService.getToken();
+//   if (!token) {
+//     this.authService.logout();
+//     return;
+//   }
 
-    this.employeeId = this.authService.getEmployeeId() || '';
-    this.isAdmin = this.authService.isAdmin();
-    this.isUser = this.authService.isUser();
+//   this.employeeId = this.authService.getEmployeeId() || '';
+//   this.isAdmin = this.authService.isAdmin();
+//   this.isUser = this.authService.isUser();
 
-    this.initForms();
-    this.loadLeaves();
-    this.checkYearEndReset();
-    setInterval(() => {
-      const currentMonth = new Date().getMonth();
-      if (currentMonth !== this.lastUpdatedMonth) {
-        this.lastUpdatedMonth = currentMonth;
-        this.calculateLeaveBalances();
-      }
-    }, 86400000);
-    this.updateLeaveCards();
+//   this.initForms();
+//   this.loadLeaves(); // after this, filters will apply
+//   this.checkYearEndReset();
+
+//   // Always start with current month
+//   const today = new Date();
+//   this.selectedDate = new Date(today.getFullYear(), today.getMonth(), 1);
+
+//   // Delay to ensure leaveList is loaded
+//   setTimeout(() => {
+//     this.applyFilters2();
+//   }, 100);
+
+//   this.updateLeaveCards();
+
+//   // Daily leave balance check
+//   setInterval(() => {
+//     const currentMonth = new Date().getMonth();
+//     if (currentMonth !== this.lastUpdatedMonth) {
+//       this.lastUpdatedMonth = currentMonth;
+//       this.calculateLeaveBalances();
+//     }
+//   }, 86400000);
+// }
+
+ngOnInit(): void {
+  const token = this.authService.getToken();
+  if (!token) {
+    this.authService.logout();
+    return;
   }
+
+  this.employeeId = this.authService.getEmployeeId() || '';
+  this.isAdmin = this.authService.isAdmin();
+  this.isUser = this.authService.isUser();
+
+  if (this.employeeId) {
+    this.leaveService.getLeaveByEmployeeId(Number(this.employeeId)).subscribe({
+      next: (res) => {
+
+        // Extract first record
+        const first = res.body?.[0];
+
+        if (first && first.user && first.user.joiningDate) {
+          this.joiningDate = new Date(first.user.joiningDate);
+          console.log("Joining Date:", this.joiningDate);
+        }
+
+        // Load leaves after joining date is set
+        this.leaveRequests = res.body || [];
+        this.processLeaveResponse(this.leaveRequests);
+      },
+      error: (err) => {
+        console.error("Failed to fetch joining date", err);
+      }
+    });
+
+    this.loadLeaves()
+  }
+
+  this.initForms();
+  this.checkYearEndReset();
+
+  // Always start with the current month
+  const today = new Date();
+  this.selectedDate = new Date(today.getFullYear(), today.getMonth(), 1);
+
+  setTimeout(() => this.applyFilters2(), 200);
+
+  this.updateLeaveCards();
+  
+  setInterval(() => {
+    const currentMonth = new Date().getMonth();
+    if (currentMonth !== this.lastUpdatedMonth) {
+      this.lastUpdatedMonth = currentMonth;
+      this.calculateLeaveBalances();
+    }
+  }, 86400000);
+}
 
   private initForms(): void {
     this.leaveForm = this.fb.group({
@@ -103,15 +177,21 @@ export class LeaveComponent implements OnInit {
     });
   }
 
-  loadLeaves(): void {
-    const obs = this.isAdmin
-      ? this.leaveService.getAllLeaveRequests()
-      : this.leaveService.getMyLeaveRequests();
-    obs.subscribe({
-      next: (res) => this.processLeaveResponse(res),
-      error: (err) => console.error('Error fetching leave requests:', err),
-    });
-  }
+
+ loadLeaves(): void {
+  const obs = this.isAdmin
+    ? this.leaveService.getAllLeaveRequests()
+    : this.leaveService.getMyLeaveRequests();
+
+  obs.subscribe({
+    next: (res: newLeaveRequest[]) => {
+      this.leaveRequests = res;
+      this.processLeaveResponse(this.leaveRequests);
+    },
+    error: err => console.error(err)
+  });
+}
+
 
   private processLeaveResponse(res: any): void {
     const data: any[] = res?.body ?? [];
@@ -289,7 +369,7 @@ export class LeaveComponent implements OnInit {
     status: 'Pending',
     totalDays,
     duration: `${totalDays} days`,
-    user: { employeeId: selectedEmployeeId },
+    employeeId: selectedEmployeeId,
   };
 
   this.leaveService.createLeaveRequest(newLeave).subscribe({
@@ -546,20 +626,19 @@ export class LeaveComponent implements OnInit {
           this.updateLeaveCards();
           this.calculateLeaveBalances();
 
-          sessionStorage.setItem('leaveLastResetYear', String(now.getFullYear()));
-        }
+        localStorage.setItem('leaveLastResetYear', String(now.getFullYear()));
+        console.log(' Leave balances auto-reset for new year:', now.getFullYear());
       }
-    }, 86400000);
-  }
+    }
+  }, 86400000); // check once every 24 hours
+}
 
-  openApplyLeaveModal(): void {
-    this.resetApplyLeaveForm();
-    this.showApplyLeaveModal = true;
-  }
-  closeApplyLeaveModal(): void {
-    this.showApplyLeaveModal = false;
-  }
+  /** ------------------- Modal Controls ------------------- */
+  openApplyLeaveModal(): void { this.resetApplyLeaveForm(); this.showApplyLeaveModal = true; }
+  closeApplyLeaveModal(): void { this.showApplyLeaveModal = false; }
 
+
+/** ------------------- Filtering, Sorting, Pagination ------------------- */
   applyFilters(): void {
     const term = (this.searchTerm || '').toLowerCase().trim();
     this.filteredRequests = this.leaveList.filter((r) => {
@@ -609,11 +688,13 @@ export class LeaveComponent implements OnInit {
       const valA = getValue(a, key);
       const valB = getValue(b, key);
 
-      if (valA < valB) return this.sortDirection === 'asc' ? -1 : 1;
-      if (valA > valB) return this.sortDirection === 'asc' ? 1 : -1;
-      return 0;
-    });
-  }
+    if (valA < valB) return this.sortDirection === 'asc' ? -1 : 1;
+    if (valA > valB) return this.sortDirection === 'asc' ? 1 : -1;
+    return 0;
+  });
+}
+
+
 
   private applySort(): void {
     if (!this.sortColumn) return;
@@ -723,19 +804,74 @@ export class LeaveComponent implements OnInit {
     this.calculateLeaveBalances();
     this.updateLeaveCards();
   }
+formatDateRange(): string {
+  const date = new Date(this.selectedDate);
+  const first = new Date(date.getFullYear(), date.getMonth(), 1);
+  const last = new Date(date.getFullYear(), date.getMonth() + 1, 0);
 
-  formatDateRange(): string {
-    const date = this.selectedDate ? new Date(this.selectedDate) : new Date();
-    const startOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
-    const endOfMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-    const options: Intl.DateTimeFormatOptions = {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-    };
-    return `${startOfMonth.toLocaleDateString(
-      undefined,
-      options
-    )} - ${endOfMonth.toLocaleDateString(undefined, options)}`;
+  const options: Intl.DateTimeFormatOptions = {
+    month: "short",
+    day: "numeric",
+    year: "numeric"
+  };
+
+  return `${first.toLocaleDateString('en-US', options)} - ${last.toLocaleDateString('en-US', options)}`;
+}
+
+formatDateRange2(): string {
+  const date = new Date(this.selectedDate2);
+  const first = new Date(date.getFullYear(), date.getMonth(), 1);
+  const last = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+
+  const options: Intl.DateTimeFormatOptions = {
+    month: "short",
+    day: "numeric",
+    year: "numeric"
+  };
+
+  return `${first.toLocaleDateString('en-US', options)} - ${last.toLocaleDateString('en-US', options)}`;
+}
+
+goToPreviousMonth(): void {
+  const date = new Date(this.selectedDate);
+  date.setMonth(date.getMonth() - 1);
+
+  // Prevent going before joining month
+  if (this.joiningDate && (date < new Date(this.joiningDate.getFullYear(), this.joiningDate.getMonth(), 1))) {
+    return; // block going before joining month
   }
+
+  this.selectedDate = date;
+  this.applyFilters2();
+}
+
+goToNextMonth(): void {
+  const date = new Date(this.selectedDate);
+  date.setMonth(date.getMonth() + 1);
+
+  this.selectedDate = date;
+  this.applyFilters2();   // refresh UI
+}
+
+applyFilters2(): void {
+  const month = this.selectedDate.getMonth();
+  const year = this.selectedDate.getFullYear();
+
+  this.filteredRequests = this.leaveList.filter(req => {
+    const d = new Date(req.startDate);
+    d.setHours(0, 0, 0, 0);
+
+    // Check month/year
+    const isMonthYearMatch = d.getMonth() === month && d.getFullYear() === year;
+
+    // Check if date is on/after joining date
+    const isAfterJoining = !this.joiningDate || d >= this.joiningDate;
+
+    return isMonthYearMatch && isAfterJoining;
+  });
+
+  this.currentPage = 1;
+}
+
+
 }

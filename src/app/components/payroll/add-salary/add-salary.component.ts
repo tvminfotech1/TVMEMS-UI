@@ -60,23 +60,46 @@ export class AddSalaryComponent implements OnInit {
       this.payYear = parseInt(selectedMonth.split('-')[0]);
     }
 
-    setTimeout(() => {
-      this.updateNWDFromMonth();
-    });
+  setTimeout(() => {
+    this.updateNWDFromMonth();
+  });
 
-    if (empIdParam) {
-      const empId = +empIdParam;
-      this.employeeService.getEmployeeById(empId).subscribe({
-        next: (emp) => {
-          this.employee = emp;
-          this.basicSalary = emp.basicSalary;
-          this.ctc = emp.ctc;
-          this.calculateSalary();
-        },
-        error: (err) => console.error('Error fetching employee:', err),
-      });
-    }
+  if (selectedMonth) {
+    this.payMonth = selectedMonth;
+    this.payYear = parseInt(selectedMonth.split('-')[0]);
+  } else {
+    this.payMonth = new Date().toISOString().substring(0, 7);
+    this.payYear = new Date().getFullYear();
   }
+
+  if (empIdParam) {
+  const empId = +empIdParam; // ✅ string to number
+
+  console.log('empId from route:', empId);
+
+  this.employeeService.getEmployeeById(empId).subscribe({
+    next: emp => {
+      console.log('Employee fetched:', emp);
+      this.employee = emp;
+      this.basicSalary = emp.basicSalary;
+      this.ctc = emp.ctc;
+      this.calculateSalary();
+    },
+    error: err => {
+      console.error('Error fetching employee:', err);
+    }
+  });
+}
+
+}
+
+allowOnlyNumbers(event: KeyboardEvent) {
+  const char = event.key;
+
+  if (!/^[0-9]$/.test(char)) {
+    event.preventDefault(); // Block non-numeric characters
+  }
+}
 
   updateNWDFromMonth(): void {
     const [year, month] = this.payMonth.split('-').map(Number);
@@ -158,15 +181,18 @@ export class AddSalaryComponent implements OnInit {
           return;
         }
 
-        this.salaryService.addSalaryHistory(salary).subscribe({
-          next: () => {
-            alert('Salary added successfully.');
-            this.router.navigate(['/mainlayout/payroll-employee']);
-          },
-          error: () => alert('Failed to add salary.'),
-        });
-      });
+  this.salaryService.addSalaryHistory(salary).subscribe({
+  next: () => {
+    alert('Salary added successfully.');
+    this.router.navigate(['/mainlayout/payroll-employee']);
+  },
+  error: () => {
+    alert('Failed to add salary.');
   }
+});
+
+  });
+}
 
   backbtn() {
     this.router.navigate(['/mainlayout/payroll-employee']);

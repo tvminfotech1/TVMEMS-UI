@@ -19,7 +19,7 @@
     <ng-container *ngIf="!isAdmin">
       <h2 class="page-title">Leave Details</h2>
       <div class="date-range">
-        <span class="date-text">{{ formatDateRange() }}</span>
+        <span class="date-text">{{ formatDateRange2() }}</span>
         <input
           type="date"
           [(ngModel)]="selectedDate"
@@ -73,8 +73,26 @@
         </div>
 
         <div class="table-controls top-controls">
-          <div *ngIf="isAdmin" class="date-range-inline">
-            <span class="date-text">{{ formatDateRange() }}</span>
+          <!-- <div *ngIf="isAdmin" class="date-range-inline"> -->
+            <div class="date-range-inline">
+            <div class="center-date">
+              <span class="material-icons icon-btn" (click)="goToPreviousMonth()" title="Previous Month">
+                chevron_left
+              </span>
+
+              <span class="calendar-icon material-icons">
+                calendar_today
+              </span>
+
+              <span class="date-text2">
+                {{ formatDateRange() }}
+              </span>
+
+              <span class="material-icons icon-btn" (click)="goToNextMonth()" title="Next Month">
+                chevron_right
+              </span>
+            </div>
+
             <input
               type="date"
               [(ngModel)]="selectedDate"
@@ -83,6 +101,8 @@
               style="display: none"
             />
           </div>
+
+
 
           <input
             type="text"

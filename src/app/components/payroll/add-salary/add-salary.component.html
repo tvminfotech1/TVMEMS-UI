@@ -28,13 +28,13 @@
           <td><strong>Department</strong></td>
           <td>{{ employee.department }}</td>
           <td><strong>NWD</strong></td>
-          <td><input type="number" [(ngModel)]="nwd" min="0" /></td>
+          <td><input type="text" [(ngModel)]="nwd" min="0" /></td>
         </tr>
         <tr>
           <td><strong>PAN No</strong></td>
           <td>{{ employee.panNumber }}</td>
           <td><strong>NOL</strong></td>
-          <td><input type="number" [(ngModel)]="nol" min="0" /></td>
+          <td><input type="text" [(ngModel)]="nol" min="0" /></td>
         </tr>
         <tr>
           <td><strong>Bank Acc No</strong></td>
@@ -63,67 +63,25 @@
       <tbody>
         <tr>
           <td><strong>Basic Salary</strong></td>
-          <td>
-            <input
-              type="number"
-              [(ngModel)]="basicSalary"
-              (input)="calculateSalary()"
-            />
-          </td>
+          <td><input type="text" [(ngModel)]="basicSalary" (input)="calculateSalary()" (keypress)="allowOnlyNumbers($event)"/></td>
           <td><strong>HRA</strong></td>
-          <td>
-            <input
-              type="number"
-              [(ngModel)]="hra"
-              (input)="calculateSalary()"
-            />
-          </td>
+          <td><input type="text" [(ngModel)]="hra" (input)="calculateSalary()" (keypress)="allowOnlyNumbers($event)"/></td>
         </tr>
         <tr>
           <td><strong>Medical Allowance</strong></td>
-          <td>
-            <input
-              type="number"
-              [(ngModel)]="medicalAllowance"
-              (input)="calculateSalary()"
-            />
-          </td>
+          <td><input type="text" [(ngModel)]="medicalAllowance" (input)="calculateSalary()" (keypress)="allowOnlyNumbers($event)"/></td>
           <td><strong>Conveyance Allowance</strong></td>
-          <td>
-            <input
-              type="number"
-              [(ngModel)]="conveyanceAllowance"
-              (input)="calculateSalary()"
-            />
-          </td>
+          <td><input type="text" [(ngModel)]="conveyanceAllowance" (input)="calculateSalary()" (keypress)="allowOnlyNumbers($event)"/></td>
         </tr>
         <tr>
           <td><strong>Flexi Benefit</strong></td>
-          <td>
-            <input
-              type="number"
-              [(ngModel)]="flexiBenefit"
-              (input)="calculateSalary()"
-            />
-          </td>
+          <td><input type="text" [(ngModel)]="flexiBenefit" (input)="calculateSalary()" (keypress)="allowOnlyNumbers($event)"/></td>
           <td><strong>Leave Travel</strong></td>
-          <td>
-            <input
-              type="number"
-              [(ngModel)]="leaveTravel"
-              (input)="calculateSalary()"
-            />
-          </td>
+          <td><input type="text" [(ngModel)]="leaveTravel" (input)="calculateSalary()" (keypress)="allowOnlyNumbers($event)"/></td>
         </tr>
         <tr>
           <td><strong>Special Allowance</strong></td>
-          <td colspan="3">
-            <input
-              type="number"
-              [(ngModel)]="specialAllowance"
-              (input)="calculateSalary()"
-            />
-          </td>
+          <td colspan="3"><input type="text" [(ngModel)]="specialAllowance" (input)="calculateSalary()" (keypress)="allowOnlyNumbers($event)"/></td>
         </tr>
       </tbody>
       <tfoot class="table-footer">
@@ -144,53 +102,21 @@
       <tbody>
         <tr>
           <td><strong>PF</strong></td>
-          <td>
-            <input type="number" [(ngModel)]="pf" (input)="calculateSalary()" />
-          </td>
+          <td><input type="text" [(ngModel)]="pf" (input)="calculateSalary()" (keypress)="allowOnlyNumbers($event)" /></td>
           <td><strong>ESI</strong></td>
-          <td>
-            <input
-              type="number"
-              [(ngModel)]="esi"
-              (input)="calculateSalary()"
-            />
-          </td>
+          <td><input type="text" [(ngModel)]="esi" (input)="calculateSalary()" (keypress)="allowOnlyNumbers($event)"/></td>
         </tr>
         <tr>
           <td><strong>Professional Tax</strong></td>
-          <td>
-            <input
-              type="number"
-              [(ngModel)]="professionalTax"
-              (input)="calculateSalary()"
-            />
-          </td>
+          <td><input type="text" [(ngModel)]="professionalTax" (input)="calculateSalary()" (keypress)="allowOnlyNumbers($event)"/></td>
           <td><strong>Income Tax</strong></td>
-          <td>
-            <input
-              type="number"
-              [(ngModel)]="incomeTax"
-              (input)="calculateSalary()"
-            />
-          </td>
+          <td><input type="text" [(ngModel)]="incomeTax" (input)="calculateSalary()" (keypress)="allowOnlyNumbers($event)"/></td>
         </tr>
         <tr>
           <td><strong>Leave Deduction</strong></td>
-          <td>
-            <input
-              type="number"
-              [(ngModel)]="leaveDeduction"
-              (input)="calculateSalary()"
-            />
-          </td>
+          <td><input type="text" [(ngModel)]="leaveDeduction" (input)="calculateSalary()" (keypress)="allowOnlyNumbers($event)"/></td>
           <td><strong>Other Deduction</strong></td>
-          <td>
-            <input
-              type="number"
-              [(ngModel)]="otherDeduction"
-              (input)="calculateSalary()"
-            />
-          </td>
+          <td><input type="text" [(ngModel)]="otherDeduction" (input)="calculateSalary()" (keypress)="allowOnlyNumbers($event)"/></td>
         </tr>
       </tbody>
       <tfoot class="table-footer">

@@ -202,8 +202,8 @@ export class AuthService {
     );
   }
 
-  checkOnboardingStatus(employeeId: string): Observable<boolean> {
-    const url = `http://localhost:8080/final/check-status/${employeeId}`;
-    return this.http.get<boolean>(url);
-  }
+checkOnboardingStatus(employeeId: string): Observable<boolean> {
+  const url = `http://localhost:8080/final/check-status/${employeeId}`;
+  return this.http.get<boolean>(url);
+}
 }

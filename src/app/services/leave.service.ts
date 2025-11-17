@@ -2,6 +2,21 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, Observable, throwError } from 'rxjs';
 
+
+export interface UserInfo {
+  fullName: string;
+  mobile: number;
+  email: string;
+  aadhar: string;
+  dob: string;
+  gender: string;
+  status: boolean;
+  joiningDate: string;
+  onboardingCompleted: boolean;
+  roles: string[];
+  employeeId: number;
+}
+
 export interface newLeaveRequest {
   id?: number;
   employeeId?: number;
@@ -12,7 +27,8 @@ export interface newLeaveRequest {
   status: string;
   totalDays: number;
   duration?: string;
-  user?: { employeeId: number };
+  // user?: { employeeId: number };
+  user?: UserInfo;   // << UPDATED PROPERLY
 }
 
 @Injectable({
@@ -30,19 +46,29 @@ export class LeaveService {
       'Content-Type': 'application/json',
     });
   }
-  updateLeaveStatus(
-    id: number,
-    status: 'APPROVED' | 'REJECTED'
-  ): Observable<any> {
-    return this.http.put(
-      `${this.apiUrl}/admin/${id}/status?status=${status}`,
-      {},
-      {
-        headers: this.getAuthHeaders(),
-      }
-    );
+  updateLeaveStatus(id: number, status: 'APPROVED' | 'REJECTED'): Observable<any> {
+    // Send an empty body because your backend only needs query param
+    return this.http.put(`${this.apiUrl}/admin/${id}/status?status=${status}`, {}, {
+      headers: this.getAuthHeaders()
+    });
   }
+//for user
+//   getLeaveByEmployeeId(employeeId: number): Observable<newLeaveRequest[]> {
+//   return this.http.get<newLeaveRequest[]>(
+//     `${this.apiUrl}/employee/${employeeId}`,
+//     { headers: this.getAuthHeaders() }
+//   );
+// }
 
+
+getLeaveByEmployeeId(employeeId: number): Observable<{ body: newLeaveRequest[] }> {
+  return this.http.get<{ body: newLeaveRequest[] }>(
+    `${this.apiUrl}/employee/${employeeId}`,
+    { headers: this.getAuthHeaders() }
+  );
+}
+  /** Get all leave requests (for logged-in user or admin) */
+  // for admin
   getAllLeaveRequests(): Observable<newLeaveRequest[]> {
     return this.http.get<newLeaveRequest[]>(`${this.apiUrl}/leaves`, {
       headers: this.getAuthHeaders(),

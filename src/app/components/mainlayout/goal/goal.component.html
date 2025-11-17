@@ -17,7 +17,7 @@
         <div class="year-circle">
           <div class="year-navigation">
             <span class="year-label">
-              <button class="year-btn" (click)="previousYear()">&lt;</button>
+              <button class="year-btn" (click)="previousYear()" [disabled]="isPreviousDisabled()">&lt;</button>
               🎯{{ selectedYear }} Goals
               <button
                 class="year-btn"
@@ -29,12 +29,9 @@
             >
           </div>
 
-          <div
-            *ngFor="let month of months; let i = index"
-            class="month-node"
-            [ngStyle]="getPosition(i)"
-            (click)="selectMonth(month)"
-          >
+          <div *ngFor="let month of months; let i = index" class="month-node" [ngStyle]="getPosition(i)"
+            [class.disabled]="!isMonthSelectable(i)" 
+     (click)="isMonthSelectable(i) ? selectMonth(month) : null">
             <div class="month-circle">
               {{ month }}
             </div>

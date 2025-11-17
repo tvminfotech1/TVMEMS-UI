@@ -1317,3 +1317,9 @@ button[disabled] {
     padding: 6px;
   }
 }
+
+
+.month-node.disabled {
+  pointer-events: none;
+  opacity: 0.4; /* visually indicate disabled */
+}

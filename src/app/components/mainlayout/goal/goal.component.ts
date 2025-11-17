@@ -68,6 +68,11 @@ export class GoalComponent implements OnInit {
   dateRange: string = '';
   currentPage = 1;
   itemsPerPage = 5;
+  joiningDate: Date | null = null;
+  selectedDate: Date = new Date();
+  joiningMonth!: number;       // 0–11 (0 = Jan, 11 = Dec)
+  joiningYear!: number; 
+
 
   constructor(
     private fb: FormBuilder,
@@ -92,10 +97,32 @@ export class GoalComponent implements OnInit {
         [Validators.required, Validators.min(0), Validators.max(100)],
       ],
     });
-    this.loadArchivedGoals();
+
+
+if (this.employeeId) {
+    this.goalService.getGoalByUserid(Number(this.employeeId)).subscribe({
+      next: (res) => {
+
+        const first = res.body?.[0];
+
+        if (first && first.user && first.user.joiningDate) {
+          this.joiningDate = new Date(first.user.joiningDate);
+           this.joiningMonth = this.joiningDate.getMonth(); // 0-11
+      this.joiningYear = this.joiningDate.getFullYear(); // 4-digit year
+        // this.selectedYear=this.joiningYear;
+
+        this.loadArchivedGoals();
     this.allUser();
     this.fetchGoals();
     this.updateDateRangeLabel();
+    this.filterEmployeesByGoalMonth();
+        }
+      },
+      error: (err) => {
+        console.error("Failed to fetch joining date", err);
+      }
+    });
+  }
   }
 
   fetchGoals() {
@@ -112,20 +139,50 @@ export class GoalComponent implements OnInit {
   }
 
   previousYear() {
+  if (this.selectedYear > this.joiningYear) {
     this.selectedYear--;
     this.filterGoalsByYear();
+
+     if (this.selectedYear === this.joiningYear && this.selectedDate.getMonth() < this.joiningMonth) {
+      this.selectedDate.setMonth(this.joiningMonth);
+    }
+
   }
 
-  nextYear() {
-    if (this.selectedYear < this.currentYear) {
-      this.selectedYear++;
-      this.filterGoalsByYear();
-    }
+}
+
+nextYear() {
+  if (this.selectedYear < this.currentYear) {
+    this.selectedYear++;
+    this.filterGoalsByYear();
   }
+}
 
   isNextDisabled(): boolean {
-    return this.selectedYear === this.currentYear;
+  return this.selectedYear === this.currentYear;
+}
+
+isPreviousDisabled(): boolean {
+  return this.selectedYear === this.joiningYear;
+}
+
+isMonthSelectable(index: number): boolean {
+  if (!this.joiningDate) return true; 
+
+  const month = index; 
+  const year = this.selectedYear;
+
+  if (year === this.joiningYear) {
+    return month >= this.joiningMonth;
   }
+
+  if (year > this.joiningYear && year <= this.currentYear) {
+    return true;
+  }
+
+  return false;
+}
+
 
   getPosition(index: number) {
     const total = 12;
@@ -346,6 +403,8 @@ export class GoalComponent implements OnInit {
     this.updateGoal(goal);
   }
 
+
+
   viewGoals(emp: any): void {
     this.goalService.getGoalByUserid(emp.employeeId).subscribe({
       next: (res: any) => {
@@ -498,6 +557,17 @@ export class GoalComponent implements OnInit {
   }
 
   goToPreviousMonth(): void {
+    const date = new Date(this.selectedDate);
+  date.setMonth(date.getMonth() - 1);
+
+  // Prevent going before joining month
+  if (this.joiningDate && 
+      date < new Date(this.joiningDate.getFullYear(), this.joiningDate.getMonth(), 1)) {
+    return; 
+  }
+
+  this.selectedDate = date;
+  this.fetchGoals();
     this.currentDate.setMonth(this.currentDate.getMonth() - 1);
     this.updateDateRangeLabel();
     this.filterEmployeesByGoalMonth();

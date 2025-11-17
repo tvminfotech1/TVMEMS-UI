@@ -94,8 +94,9 @@
   color: #444;
 }
 
-.employee-details-table input[type="number"],
-.salary-table input[type="number"] {
+/* === Inputs === */
+.employee-details-table input[type="text"],
+.salary-table input[type="text"] {
   width: 100%;
   padding: 8px 10px;
   border: 1px solid #ccc;

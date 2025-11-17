@@ -38,6 +38,10 @@ export class TimelogComponent implements OnInit {
     'Friday',
   ];
 
+  accordionStates: { [key: number]: boolean } = {};
+  
+   isFormEnabled: boolean = false; // Enable/Disable for HTML
+  today: number = new Date().getDay();
   timelog = {
     year: new Date().getFullYear(),
     month: '',
@@ -87,6 +91,8 @@ export class TimelogComponent implements OnInit {
     this.setCurrentWeek();
     this.resetEntry();
     this.loadTimelogs();
+    this.checkFormEnableCondition();
+
     this.loadWFH();
   }
   loadWFH(): void {
@@ -174,6 +180,14 @@ export class TimelogComponent implements OnInit {
     });
   }
 
+   checkFormEnableCondition() {
+    if (this.today === 5 || this.today === 6) {
+      this.isFormEnabled = true;
+    } else {
+      this.isFormEnabled = false;
+    }
+  }
+
   initializeYears(): void {
     const currentYear = new Date().getFullYear();
     this.years = Array.from({ length: 6 }, (_, i) => currentYear - 2 + i);
@@ -233,6 +247,7 @@ export class TimelogComponent implements OnInit {
 
   toggleAccordion(i: number): void {
     this.accordionState[i] = !this.accordionState[i];
+    this.accordionStates[i] = !this.accordionStates[i];
   }
 
   private extractEmployeeIdFromEntry(e: any): string {
