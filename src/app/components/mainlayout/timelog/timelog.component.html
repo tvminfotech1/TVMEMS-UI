@@ -237,19 +237,23 @@
                   ]
                 "
               >
-                <select
-                  [name]="'hours' + day"
-                  [(ngModel)]="timelogEntry.hours![day]"
-                  (change)="calculateTotalHours()"
-                  required
-                  [disabled]="entryExistsForWeek || isAdmin"
-                >
-                  <option value>--select--</option>
-                  <option value="WFO">WFO</option>
-                  <option value="WFH">WFH</option>
-                  <option value="Leave">Leave</option>
-                  <option value="Holiday">Holiday</option>
-                </select>
+              <select
+  [name]="'hours' + day"
+  [(ngModel)]="timelogEntry.hours![day]"
+  (change)="calculateTotalHours()"
+  required
+  [disabled]="entryExistsForWeek || isAdmin"
+>
+  <option value>--select--</option>
+  <option value="WFO">WFO</option>
+
+  <option value="WFH" [disabled]="!wfhDays.includes(day)">WFH</option>
+
+  <option value="Leave">Leave</option>
+  <option value="Holiday">Holiday</option>
+</select>
+
+
               </td>
               <td>
                 <input
@@ -359,14 +363,23 @@
     </h3>
 
     <div class="filter-history">
-      <label>
-        Month:
-        <select [(ngModel)]="historyMonthFilter" (change)="applyMonthFilter()">
-          <option value="">All</option>
-          <option *ngFor="let m of months" [value]="m">{{ m }}</option>
-        </select>
-      </label>
-    </div>
+
+  <label>
+    Year:
+    <select [(ngModel)]="historyYearFilter" (change)="applyHistoryMonthFilter()">
+      <option value="">All</option>
+      <option *ngFor="let y of years" [value]="y">{{ y }}</option>
+    </select>
+  </label>
+
+  <label>
+    Month:
+    <select [(ngModel)]="historyMonthFilter" (change)="applyHistoryMonthFilter()">
+      <option value="">All</option>
+      <option *ngFor="let m of months" [value]="m">{{ m }}</option>
+    </select>
+  </label>
+</div>
 
     <div class="table-wrapper">
       <table class="history-table">

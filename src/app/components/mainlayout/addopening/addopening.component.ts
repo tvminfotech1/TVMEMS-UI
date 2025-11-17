@@ -44,47 +44,52 @@ export class AddOpeningComponent implements OnInit {
   ngOnInit(): void {}
 
   onSubmit(): void {
-    if (this.jobForm.invalid) {
-      this.jobForm.markAllAsTouched();
-      return;
-    }
-
-    this.isSubmitting = true;
-    this.errorMessage = '';
-    this.successMessage = '';
-
-    const formData: JobPosting = {
-      ...this.jobForm.value,
-      qualifications: this.jobForm.value.qualifications
-        .split(',')
-        .map((q: string) => q.trim())
-        .filter((q: string) => q.length > 0),
-      skills: this.jobForm.value.skills
-        .split(',')
-        .map((s: string) => s.trim())
-        .filter((s: string) => s.length > 0),
-      yearOfPassout: Number(this.jobForm.value.yearOfPassout),
-      experience: Number(this.jobForm.value.experience),
-      status: 'OPEN',
-    };
-
-    this.mainLayoutService.postJobPostings(formData).subscribe({
-      next: (data: JobPosting) => {
-        this.successMessage = '✅ Job Posted Successfully!';
-        alert(this.successMessage);
-        this.jobPosted.emit(data);
-        this.jobForm.reset();
-      },
-      error: (err) => {
-        this.errorMessage = '❌ Failed to post job. Please try again.';
-        alert(this.errorMessage);
-        console.error('Error posting job:', err);
-      },
-      complete: () => {
-        this.isSubmitting = false;
-      },
-    });
+  if (this.jobForm.invalid) {
+    this.jobForm.markAllAsTouched();
+    return;
   }
+
+  this.isSubmitting = true;
+
+  const formData: JobPosting = {
+    ...this.jobForm.value,
+    qualifications: this.jobForm.value.qualifications
+      .split(',')
+      .map((q: string) => q.trim())
+      .filter((q: string) => q.length > 0),
+    skills: this.jobForm.value.skills
+      .split(',')
+      .map((s: string) => s.trim())
+      .filter((s: string) => s.length > 0),
+    yearOfPassout: Number(this.jobForm.value.yearOfPassout),
+    experience: Number(this.jobForm.value.experience),
+    status: 'OPEN',
+  };
+
+  this.mainLayoutService.postJobPostings(formData).subscribe({
+    next: (data: JobPosting) => {
+
+      alert('Job posted successfully');
+
+      this.jobForm.reset();
+
+      Object.values(this.jobForm.controls).forEach(control => {
+        control.setErrors(null);
+        control.markAsPristine();
+        control.markAsUntouched();
+      });
+
+      this.jobForm.updateValueAndValidity();
+    },
+    error: (err) => {
+      alert('Failed to post job');
+      console.error(err);
+    },
+    complete: () => {
+      this.isSubmitting = false;
+    }
+  });
+}
 
   allowOnlyLetters(event: KeyboardEvent): void {
     const char = event.key;

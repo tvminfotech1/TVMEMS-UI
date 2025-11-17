@@ -96,7 +96,6 @@ export class GoalComponent implements OnInit {
     this.allUser();
     this.fetchGoals();
     this.updateDateRangeLabel();
-    this.filterEmployeesByGoalMonth();
   }
 
   fetchGoals() {
@@ -141,15 +140,16 @@ export class GoalComponent implements OnInit {
     };
   }
 
-  allUser(): void {
-    this.userlistService.getAllUser().subscribe({
-      next: (response) => {
-        const allUsers = response.body || [];
+ allUser(): void{
+      this.userlistService.getAllUser().subscribe({
+        next:(response) => {
 
-        this.employees = allUsers.filter(
-          (user: any) =>
-            user.role?.toLowerCase() !== 'admin' &&
-            user.email?.toLowerCase() !== this.currentUserEmail?.toLowerCase()
+         const allUsers = response.body || [];
+
+       
+        this.employees = allUsers.filter((user: any) =>
+          user.role?.toLowerCase() !== 'admin' &&
+          user.email?.toLowerCase() !== this.currentUserEmail?.toLowerCase()
         );
 
         this.filterEmployeesByGoalMonth();

@@ -2,6 +2,21 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+export interface WorkFromHome {
+  requestId: number;
+  employeeId: number;
+  employeeEmail: string;
+  employeeName: string;
+  fromDate: string;
+  toDate: string;
+  days: number;
+  reason: string;
+  approver: string;
+  status: string;
+  action: string;
+}
+
+
 
 export interface Hours {
   Monday?: string;
@@ -33,6 +48,7 @@ export interface TimelogEntry {
 export class TimelogService {
   private readonly userApiUrl = 'http://localhost:8080/user/timesheet';
   private readonly adminAllUrl = 'http://localhost:8080/user/timesheet/all';
+  private baseUrl = 'http://localhost:8080';
 
   constructor(private http: HttpClient) {}
   getTimelogs(isAdmin: boolean = false): Observable<TimelogEntry[]> {
@@ -68,4 +84,10 @@ export class TimelogService {
       { status }
     );
   }
+
+   getApprovedWFHByEmployee(employeeId: number): Observable<WorkFromHome[]> {
+    const url = `${this.baseUrl}/WFH/approved/${employeeId}`;
+    return this.http.get<WorkFromHome[]>(url);
+  }
+
 }

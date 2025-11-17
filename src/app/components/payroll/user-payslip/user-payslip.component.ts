@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { SalaryHistory } from 'src/app/models/salaryHistory';
 import { AuthService } from 'src/app/services/auth.service';
 import { SalaryHistoryService } from 'src/app/services/salary-history.service';
 
@@ -16,6 +15,8 @@ export interface PayslipData {
 })
 export class UserPayslipComponent {
   displayedColumns: string[] = ['month', 'action'];
+
+  generatedPayslipMonths: Set<string> = new Set();
 
   payslipData: PayslipData[] = [
     { month: 'January', monthNumber: 1, action: 'download' },
@@ -45,28 +46,35 @@ export class UserPayslipComponent {
     private authService: AuthService
   ) {}
 
-
-ngOnInit(): void {
-  const empId = this.authService.getEmployeeId();
-  if (empId) {
-    this.employeeId = Number(empId);
-    this.salaryService.getJoiningDate(this.employeeId).subscribe({
-      next: (res) => {
-        if (res) {
-          const date = new Date(res.body.joiningDate);
-          this.joiningYear = date.getFullYear();
-          this.joiningMonth = date.getMonth();
-
+  ngOnInit(): void {
+    const empId = this.authService.getEmployeeId();
+    if (empId) {
+      this.employeeId = Number(empId);
+      this.salaryService.getJoiningDate(this.employeeId).subscribe({
+        next: (res) => {
+          if (res) {
+            const date = new Date(res.body.joiningDate);
+            this.joiningYear = date.getFullYear();
+            this.joiningMonth = date.getMonth() + 1;
             this.minYear = this.joiningYear;
           }
         },
         error: (err) => console.error('Failed to get joining date', err),
       });
+      this.salaryService.getSalaryByEmployeeId(this.employeeId).subscribe({
+  next: (res: any[]) => {
+    res.forEach((item: any) => {
+      const formatted = `${item.year}-${item.month.split('-')[1].padStart(2, '0')}`;
+      this.generatedPayslipMonths.add(formatted);
+    });
+  },
+  error: (err) => console.error('Failed to fetch salary history', err),
+});
     }
   }
 
   isPreviousYearDisabled(): boolean {
-    return this.selectedYear <= (this.minYear || this.currentYear);
+    return this.minYear !== null && this.selectedYear <= this.minYear;
   }
 
   isNextYearDisabled(): boolean {
@@ -74,72 +82,74 @@ ngOnInit(): void {
   }
 
   previousYear(): void {
-    if (this.selectedYear > (this.minYear || this.currentYear)) {
+    if (!this.isPreviousYearDisabled()) {
       this.selectedYear--;
     }
   }
 
   nextYear(): void {
-    if (this.selectedYear < this.currentYear) {
+    if (!this.isNextYearDisabled()) {
       this.selectedYear++;
     }
   }
 
-  isMonthDisabled(monthIndex: number): boolean {
-    if (!this.joiningYear || !this.joiningMonth) return true;
+  isMonthDisabled(index: number): boolean {
+    const monthNumber = index + 1;
 
-    const monthNumber = monthIndex + 1;
+    const formattedMonth = `${this.selectedYear}-${String(monthNumber).padStart(2, '0')}`;
+
+  
+    if (!this.generatedPayslipMonths.has(formattedMonth)) {
+      return true;
+    }
 
     if (
       this.selectedYear === this.joiningYear &&
-      monthNumber < this.joiningMonth
-    )
+      monthNumber < this.joiningMonth!
+    ) {
       return true;
+    }
 
     if (
       this.selectedYear === this.currentYear &&
       monthNumber > this.currentMonth
-    )
+    ) {
       return true;
+    }
 
     return false;
   }
 
   downloadPayslip(monthName: string): void {
-    if (!this.employeeId) {
-      alert('Employee ID not found. Please log in again.');
-      return;
-    }
+  if (!this.employeeId) return alert('Employee ID not found.');
 
-    const monthObj = this.payslipData.find((m) => m.month === monthName);
-    if (!monthObj) {
-      alert('Invalid month.');
-      return;
-    }
+  const monthObj = this.payslipData.find(m => m.month === monthName);
+  if (!monthObj) return alert('Invalid month.');
 
-    const formattedMonth = `${this.selectedYear}-${String(
-      monthObj.monthNumber
-    ).padStart(2, '0')}`;
+  const formattedMonth = `${this.selectedYear}-${String(monthObj.monthNumber).padStart(2, '0')}`;
 
-    this.salaryService
-      .downloadSalarySlip(this.employeeId, formattedMonth)
-      .subscribe({
-        next: (response: Blob) => {
-          const blob = new Blob([response], { type: 'application/pdf' });
-          const url = window.URL.createObjectURL(blob);
-
-          const link = document.createElement('a');
-          link.href = url;
-          link.download = `Payslip_${monthName}_${this.selectedYear}.pdf`;
-          link.click();
-
-          window.URL.revokeObjectURL(url);
-          link.remove();
-        },
-        error: (err) => {
-          console.error('Error downloading payslip', err);
-          alert('Failed to download payslip. Please try again later.');
-        },
-      });
+  if (!this.generatedPayslipMonths.has(formattedMonth)) {
+    return alert('Payslip not generated for this month.');
   }
+
+  this.salaryService.downloadSalarySlip(this.employeeId, formattedMonth).subscribe({
+    next: (response: Blob) => {
+      const blob = new Blob([response], { type: 'application/pdf' });
+      const url = window.URL.createObjectURL(blob);
+
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `Payslip_${monthName}_${this.selectedYear}.pdf`;
+      link.click();
+
+      window.URL.revokeObjectURL(url);
+      link.remove();
+    },
+    error: (err) => {
+      console.error('Error generating payslip', err);
+      alert('Failed to generate payslip.');
+    }
+  });
+}
+
 }

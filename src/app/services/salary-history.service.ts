@@ -23,7 +23,9 @@ export class SalaryHistoryService {
       `${this.apiUrl}?id=${empId}&month=${month}`
     );
   }
-
+  getSalaryByEmployeeId(employeeId: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/employee/${employeeId}`);
+  }
   addSalaryHistory(data: SalaryHistory): Observable<SalaryHistory> {
     return this.http.post<SalaryHistory>(this.apiUrl, data);
   }

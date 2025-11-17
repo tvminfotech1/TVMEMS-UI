@@ -13,6 +13,7 @@ type WeekDay = 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday';
   styleUrls: ['./timelog.component.css'],
 })
 export class TimelogComponent implements OnInit {
+  wfhDays: string[] = [];
   years: number[] = [];
   months: string[] = [
     'January',
@@ -50,6 +51,7 @@ export class TimelogComponent implements OnInit {
 
   allEmployeeTimelogs: TimelogEntry[] = [];
   filteredAllEmployeeTimelogs: TimelogEntry[] = [];
+  historyYearFilter: string = '';
 
   employeeIdSearch: string = '';
   employeeMonthFilter: string = '';
@@ -85,6 +87,49 @@ export class TimelogComponent implements OnInit {
     this.setCurrentWeek();
     this.resetEntry();
     this.loadTimelogs();
+    this.loadWFH();
+  }
+  loadWFH(): void {
+    const employeeId = Number(this.timelog.employeeId);
+
+    this.timelogService.getApprovedWFHByEmployee(employeeId).subscribe({
+      next: (res) => {
+        if (!res || res.length === 0) return;
+        this.processWFHDates(res);
+      }
+    });
+  }
+  processWFHDates(wfhList: any[]): void {
+    this.wfhDays = [];
+
+    const weekStart = new Date(this.timelog.weekendDate);
+    const weekEnd = new Date(weekStart);
+    weekEnd.setDate(weekEnd.getDate() + 4); // Fri
+
+    wfhList.forEach((wfh) => {
+      const start = new Date(wfh.fromDate);
+      const end = new Date(wfh.toDate);
+
+      for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+        const dateOnly = new Date(d.toDateString());
+
+        if (dateOnly >= weekStart && dateOnly <= weekEnd) {
+          const dayName = d
+            .toLocaleString("en-US", { weekday: "long" })
+            .toLowerCase();
+
+          if (['monday','tuesday','wednesday','thursday','friday'].includes(dayName)) {
+            this.wfhDays.push(dayName);
+
+            if (this.timelogEntry.hours) {
+              this.timelogEntry.hours[dayName] = 'WFH';
+            }
+          }
+        }
+      }
+    });
+
+    this.calculateTotalHours();
   }
 
   setEmployeeDetailsFromToken(): void {
@@ -154,6 +199,7 @@ export class TimelogComponent implements OnInit {
     if (!this.weekendDates.includes(this.timelog.weekendDate))
       this.timelog.weekendDate = this.weekendDates[0] || '';
     this.onWeekendDateSelect();
+    setTimeout(() => this.loadWFH(), 50);
   }
 
   onWeekendDateSelect(): void {
@@ -437,23 +483,24 @@ export class TimelogComponent implements OnInit {
       return monthName === this.historyMonthFilter;
     });
   }
-  applyHistoryMonthFilter(): void {
-    if (!this.selectedEmployeeHistory) return;
+applyHistoryMonthFilter(): void {
+  if (!this.selectedEmployeeHistory) return;
 
-    const selectedMonth = this.historyMonthFilter;
-    if (!selectedMonth) {
-      this.filteredEmployeeHistory = [...this.selectedEmployeeHistory];
-      return;
-    }
+  const selectedMonth = this.historyMonthFilter;
+  const selectedYear = this.historyYearFilter;
 
-    this.filteredEmployeeHistory = this.selectedEmployeeHistory.filter((e) => {
-      if (!e.weekendDate) return false;
-      const entryMonth = new Date(e.weekendDate).toLocaleString('default', {
-        month: 'long',
-      });
-      return entryMonth === selectedMonth;
-    });
-  }
+  this.filteredEmployeeHistory = this.selectedEmployeeHistory.filter((e) => {
+    if (!e.weekendDate) return false;
+    const date = new Date(e.weekendDate);
+    const entryMonth = date.toLocaleString('default', { month: 'long' });
+    const entryYear = date.getFullYear().toString();
+
+    const monthMatches = !selectedMonth || entryMonth === selectedMonth;
+    const yearMatches = !selectedYear || entryYear === selectedYear;
+
+    return monthMatches && yearMatches;
+  });
+}
 
   loadTimesheetForSelectedWeek(): void {
     const myEmpId = String(this.timelog.employeeId || '').trim();
@@ -495,6 +542,7 @@ export class TimelogComponent implements OnInit {
         thursday: '',
         friday: '',
       };
+       setTimeout(() => this.loadWFH(), 50);
       this.timelogEntry.totalhours = 0;
       this.calculateTotalHours();
     } else {
