@@ -26,7 +26,7 @@ export class UserService {
   constructor(private http: HttpClient, private authService: AuthService) {}
 
   private getEmployeeId(): number | null {
-    const empIdStr = localStorage.getItem('employeeId');
+    const empIdStr = sessionStorage.getItem('employeeId');
     return empIdStr ? Number(empIdStr) : null;
   }
   setFormData(step: string, data: any): void {
@@ -81,7 +81,7 @@ export class UserService {
   }
 
   submitJsonData(): Observable<any> {
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
     if (!token) throw new Error('Token not found');
 
     const headers = new HttpHeaders({
@@ -98,11 +98,11 @@ export class UserService {
   }
 
   uploadDocuments(): Observable<any> {
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
     if (!token) throw new Error('Token not found');
 
     const employeeId = this.getEmployeeId();
-    if (!employeeId) throw new Error('Employee ID missing in LocalStorage');
+    if (!employeeId) throw new Error('Employee ID missing in Session Storage');
 
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`,

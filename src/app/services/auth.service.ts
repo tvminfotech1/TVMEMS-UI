@@ -24,7 +24,7 @@ export class AuthService {
   constructor(private http: HttpClient, private router: Router) {}
 
   private saveToken(token: string): void {
-    localStorage.setItem('token', token);
+    sessionStorage.setItem('token', token);
   }
 
   loginAdmin(data: any): Observable<any> {
@@ -70,7 +70,7 @@ export class AuthService {
 
             const decoded: DecodedToken = jwtDecode(pureToken);
             if (decoded?.empId) {
-              localStorage.setItem('employeeId', decoded.empId.toString());
+              sessionStorage.setItem('employeeId', decoded.empId.toString());
             } else {
               console.warn('⚠ No employee ID found in token!');
             }
@@ -115,7 +115,7 @@ export class AuthService {
   }
 
   getToken(): string | null {
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
     if (token && this.isTokenExpired(token)) {
       console.warn('JWT token is expired. Logging out.');
       this.logout();
@@ -162,7 +162,7 @@ export class AuthService {
   }
 
   getUserEmail(): string | null {
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
     if (!token) return null;
     const decoded: any = jwtDecode(token);
     return decoded.sub || decoded.email || null;
@@ -187,7 +187,7 @@ export class AuthService {
   }
 
   logout(): void {
-    localStorage.removeItem('token');
+    localStorage.clear()
     sessionStorage.clear();
     this.router.navigateByUrl('/adminLogin');
   }

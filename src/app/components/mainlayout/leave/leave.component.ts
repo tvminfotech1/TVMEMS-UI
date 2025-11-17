@@ -497,7 +497,7 @@ export class LeaveComponent implements OnInit {
   }
   private checkYearEndReset(): void {
     const currentYear = new Date().getFullYear();
-    const storedYear = Number(localStorage.getItem('leaveLastResetYear'));
+    const storedYear = Number(sessionStorage.getItem('leaveLastResetYear'));
 
     if (storedYear !== currentYear) {
       //  Reset all balances
@@ -510,14 +510,14 @@ export class LeaveComponent implements OnInit {
       this.updateLeaveCards();
       this.calculateLeaveBalances();
 
-      localStorage.setItem('leaveLastResetYear', String(currentYear));
+      sessionStorage.setItem('leaveLastResetYear', String(currentYear));
     }
 
     setInterval(() => {
       const now = new Date();
       if (now.getMonth() === 0 && now.getDate() === 1) {
         const lastResetYear = Number(
-          localStorage.getItem('leaveLastResetYear')
+          sessionStorage.getItem('leaveLastResetYear')
         );
         if (lastResetYear !== now.getFullYear()) {
           this.leaveBalances.forEach((lb) => {
@@ -529,7 +529,7 @@ export class LeaveComponent implements OnInit {
           this.updateLeaveCards();
           this.calculateLeaveBalances();
 
-          localStorage.setItem('leaveLastResetYear', String(now.getFullYear()));
+          sessionStorage.setItem('leaveLastResetYear', String(now.getFullYear()));
         }
       }
     }, 86400000);

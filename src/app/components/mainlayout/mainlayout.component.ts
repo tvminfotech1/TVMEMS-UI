@@ -207,7 +207,6 @@ export class MainlayoutComponent implements OnInit {
   }
 
   onLogout(): void {
-    console.log('Logout clicked');
     localStorage.clear();
     sessionStorage.clear();
     if ('caches' in window) {

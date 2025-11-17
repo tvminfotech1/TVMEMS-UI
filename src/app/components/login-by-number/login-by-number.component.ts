@@ -55,7 +55,7 @@ export class LoginByNumberComponent implements OnInit {
             console.log('Login successful:', res);
             const token = (res as any).token;
             if (token) {
-              localStorage.setItem('token', token);
+              sessionStorage.setItem('token', token);
             } else {
               console.error('No token received from server:', res);
               this.snackBar.open('Login failed: No token received.', 'Close', {

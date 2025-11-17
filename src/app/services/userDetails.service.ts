@@ -11,7 +11,7 @@ export class UserDetailsService {
   constructor(private http: HttpClient) {}
 
   getformData(): Observable<any> {
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
     if (!token) throw new Error('Token not found');
 
     const headers = new HttpHeaders({
