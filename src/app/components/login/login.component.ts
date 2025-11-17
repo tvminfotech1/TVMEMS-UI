@@ -1,17 +1,17 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthService } from 'src/app/services/auth.service';
-import { Router } from '@angular/router';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { Component, OnInit } from "@angular/core";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { AuthService } from "src/app/services/auth.service";
+import { Router } from "@angular/router";
+import { MatSnackBar } from "@angular/material/snack-bar";
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css'],
+  selector: "app-login",
+  templateUrl: "./login.component.html",
+  styleUrls: ["./login.component.css"],
 })
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
-  errorMessage: string = '';
+  errorMessage: string = "";
   showPassword: boolean = false;
 
   constructor(
@@ -23,8 +23,8 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required],
+      email: ["", [Validators.required, Validators.email]],
+      password: ["", Validators.required],
     });
   }
 
@@ -33,11 +33,11 @@ export class LoginComponent implements OnInit {
   }
 
   back(): void {
-    this.router.navigate(['/']);
+    this.router.navigate(["/"]);
   }
 
   onSubmit(): void {
-    this.errorMessage = '';
+    this.errorMessage = "";
 
     if (this.loginForm.valid) {
       const loginData = this.loginForm.value;
@@ -47,37 +47,37 @@ export class LoginComponent implements OnInit {
         next: (res) => {
           const role = this.authService.getUserRole();
 
-          if (role === 'ROLE_USER') {
-            this.router.navigate(['/mainlayout/dashboard']);
-          } else if (role === 'ROLE_ADMIN') {
-            this.router.navigate(['/mainlayout/admin-dashboard']);
+          if (role === "ROLE_USER") {
+            this.router.navigate(["/mainlayout/dashboard"]);
+          } else if (role === "ROLE_ADMIN") {
+            this.router.navigate(["/mainlayout/admin-dashboard"]);
           } else {
-            this.errorMessage = 'Unauthorized role or no role found.';
+            this.errorMessage = "Unauthorized role or no role found.";
             this.authService.logout();
           }
         },
         error: (err) => {
-          console.error('Login error in component:', err);
+          console.error("Login error in component:", err);
 
           this.snackBar.open(
-            'Invalid credentials. Please check and try again',
-            'Close',
+            "Invalid credentials. Please check and try again",
+            "Close",
             {
               duration: 3000,
-              horizontalPosition: 'center',
-              verticalPosition: 'top',
-              panelClass: ['error-snackbar'],
+              horizontalPosition: "center",
+              verticalPosition: "top",
+              panelClass: ["error-snackbar"],
             }
           );
         },
       });
     } else {
       this.loginForm.markAllAsTouched();
-      this.snackBar.open('Please enter your credentials', 'Close', {
+      this.snackBar.open("Please enter your credentials", "Close", {
         duration: 3000,
-        horizontalPosition: 'center',
-        verticalPosition: 'top',
-        panelClass: ['error-snackbar'],
+        horizontalPosition: "center",
+        verticalPosition: "top",
+        panelClass: ["error-snackbar"],
       });
     }
   }

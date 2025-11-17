@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from "@angular/core";
 import {
   FormBuilder,
   FormGroup,
@@ -6,16 +6,16 @@ import {
   AbstractControl,
   ValidationErrors,
   ValidatorFn,
-} from '@angular/forms';
-import { WorkFromHomeService } from 'src/app/services/work-from-home.service';
-import { AuthService } from 'src/app/services/auth.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
+} from "@angular/forms";
+import { WorkFromHomeService } from "src/app/services/work-from-home.service";
+import { AuthService } from "src/app/services/auth.service";
+import { MatSnackBar } from "@angular/material/snack-bar";
 
 export const dateRangeValidator: ValidatorFn = (
   control: AbstractControl
 ): ValidationErrors | null => {
-  const fromDateValue = control.get('fromDate')?.value;
-  const toDateValue = control.get('toDate')?.value;
+  const fromDateValue = control.get("fromDate")?.value;
+  const toDateValue = control.get("toDate")?.value;
 
   if (!fromDateValue || !toDateValue) return null;
 
@@ -36,21 +36,21 @@ export const dateRangeValidator: ValidatorFn = (
 };
 
 @Component({
-  selector: 'app-wfh-apply-form',
-  templateUrl: './wfh-apply-form.component.html',
-  styleUrls: ['./wfh-apply-form.component.css'],
+  selector: "app-wfh-apply-form",
+  templateUrl: "./wfh-apply-form.component.html",
+  styleUrls: ["./wfh-apply-form.component.css"],
 })
 export class WfhApplyFormComponent implements OnInit {
   @Output() formSubmitted = new EventEmitter<any>();
   @Output() formCancelled = new EventEmitter<void>();
 
   wfhForm: FormGroup;
-  employeeEmail: string = 'Unknown Employee';
-  employeeName: string = 'Unknown Employee';
-  employeeId: string = 'Unknown Employee';
+  employeeEmail: string = "Unknown Employee";
+  employeeName: string = "Unknown Employee";
+  employeeId: string = "Unknown Employee";
   submissionError: string | null = null;
 
-  today: String = ' '; //
+  today: String = " "; //
 
   constructor(
     private fb: FormBuilder,
@@ -60,10 +60,10 @@ export class WfhApplyFormComponent implements OnInit {
   ) {
     this.wfhForm = this.fb.group(
       {
-        fromDate: ['', Validators.required],
-        toDate: ['', Validators.required],
+        fromDate: ["", Validators.required],
+        toDate: ["", Validators.required],
         reason: [
-          '',
+          "",
           [
             Validators.required,
             Validators.minLength(10),
@@ -71,7 +71,7 @@ export class WfhApplyFormComponent implements OnInit {
           ],
         ],
         approver: [
-          '',
+          "",
           [Validators.required, Validators.pattern(/^[A-Za-z\s]+$/)],
         ],
       },
@@ -83,57 +83,65 @@ export class WfhApplyFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.employeeEmail =
-      this.authService.getEmailFromToken() || 'Employee email';
-    this.employeeId = this.authService.getEmployeeId() || 'Employee Id';
-    this.employeeName = this.authService.getfullName() || 'Employee Name';
+      this.authService.getEmailFromToken() || "Employee email";
+    this.employeeId = this.authService.getEmployeeId() || "Employee Id";
+    this.employeeName = this.authService.getfullName() || "Employee Name";
     const now = new Date(); //
-    this.today = now.toISOString().split('T')[0]; //
+    this.today = now.toISOString().split("T")[0]; //
   }
 
-  onSubmit(): void {
+  onSubmit() {
     this.submissionError = null;
     if (this.wfhForm.valid) {
       const formValue = this.wfhForm.value;
-      const newWfhRequest = {
+      const toServerDate = (d: Date | string | null) => {
+        if (!d) return null;
+        const dt = new Date(d);
+        const y = dt.getFullYear();
+        const m = String(dt.getMonth() + 1).padStart(2, "0");
+        const day = String(dt.getDate()).padStart(2, "0");
+        return `${y}-${m}-${day}`;
+      };
+      const payload = {
         employeeEmail: this.employeeEmail,
         employeeId: this.employeeId,
         employeeName: this.employeeName,
-        fromDate: formValue.fromDate,
-        toDate: formValue.toDate,
+        fromDate: toServerDate(this.wfhForm.get("fromDate")?.value),
+        toDate: toServerDate(this.wfhForm.get("toDate")?.value),
         reason: formValue.reason,
         approver: formValue.approver,
-        status: 'pending',
-        action: 'N/A',
+        status: "pending",
+        action: "N/A",
       };
 
-      this.wfhService.createWfhRequest(newWfhRequest).subscribe({
+      this.wfhService.createWfhRequest(payload).subscribe({
         next: (response) => {
           this.wfhForm.reset();
 
           this.formSubmitted.emit(response);
           this.showSnackBar(
-            'WFH request submitted successfully!',
-            'success-snackbar'
+            "WFH request submitted successfully!",
+            "success-snackbar"
           );
         },
 
         error: (error) => {
-          console.error('Error submitting WFH Request:', error);
+          console.error("Error submitting WFH Request:", error);
 
           if (error.status === 400) {
             this.showSnackBar(
-              'Invalid data provided. Please check your inputs.',
-              'error-snackbar'
+              "Invalid data provided. Please check your inputs.",
+              "error-snackbar"
             );
           } else if (error.status === 500) {
             this.showSnackBar(
-              'Server error. Please try again later.',
-              'error-snackbar'
+              "Server error. Please try again later.",
+              "error-snackbar"
             );
           } else {
             this.showSnackBar(
-              'Failed to submit request. Please try again.',
-              'error-snackbar'
+              "Failed to submit request. Please try again.",
+              "error-snackbar"
             );
           }
         },
@@ -141,26 +149,26 @@ export class WfhApplyFormComponent implements OnInit {
     } else {
       this.wfhForm.markAllAsTouched();
       this.showSnackBar(
-        'Please fill all required fields correctly.',
-        'error-snackbar'
+        "Please fill all required fields correctly.",
+        "error-snackbar"
       );
     }
   }
 
   onCancel(): void {
     this.formCancelled.emit();
-    this.showSnackBar('WFH request cancelled.', 'error-snackbar');
+    this.showSnackBar("WFH request cancelled.", "error-snackbar");
   }
 
   blockApproverInput(event: KeyboardEvent) {
     const allowedKeys = [
-      'ArrowLeft',
-      'ArrowRight',
-      'ArrowUp',
-      'ArrowDown',
-      'Backspace',
-      'Delete',
-      'Tab',
+      "ArrowLeft",
+      "ArrowRight",
+      "ArrowUp",
+      "ArrowDown",
+      "Backspace",
+      "Delete",
+      "Tab",
     ];
     const pattern = /^[A-Za-z ]$/;
 
@@ -186,25 +194,25 @@ export class WfhApplyFormComponent implements OnInit {
   }
 
   private showSnackBar(message: string, panelClass: string) {
-    this.snackBar.open(message, 'Close', {
+    this.snackBar.open(message, "Close", {
       duration: 3000,
-      horizontalPosition: 'center',
-      verticalPosition: 'top',
+      horizontalPosition: "center",
+      verticalPosition: "top",
       panelClass: [panelClass],
     });
   }
   toBeforeFromValidator(group: FormGroup) {
-    const from = group.get('fromDate')?.value;
-    const to = group.get('toDate')?.value;
+    const from = group.get("fromDate")?.value;
+    const to = group.get("toDate")?.value;
 
     if (from && to && to < from) {
-      group.get('toDate')?.setErrors({ toBeforeFrom: true });
+      group.get("toDate")?.setErrors({ toBeforeFrom: true });
     } else {
-      const errors = group.get('toDate')?.errors;
+      const errors = group.get("toDate")?.errors;
       if (errors) {
-        delete errors['toBeforeFrom'];
+        delete errors["toBeforeFrom"];
         if (!Object.keys(errors).length) {
-          group.get('toDate')?.setErrors(null);
+          group.get("toDate")?.setErrors(null);
         }
       }
     }

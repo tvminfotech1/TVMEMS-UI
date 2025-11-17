@@ -82,88 +82,54 @@ export class WorkfromhomeComponent implements OnInit {
 
   lastKnownStatuses: { [key: string]: string } = {};
 
+  private parseDateOnly(dateStr: string | Date | undefined | null): Date | null {
+    if (!dateStr) return null;
+    if (dateStr instanceof Date) {
+      return new Date(dateStr.getFullYear(), dateStr.getMonth(), dateStr.getDate());
+    }
+    const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(dateStr);
+    if (m) {
+      const y = Number(m[1]), mo = Number(m[2]) - 1, d = Number(m[3]);
+      return new Date(y, mo, d);
+    }
+    const dt = new Date(dateStr);
+    return new Date(dt.getFullYear(), dt.getMonth(), dt.getDate());
+  }
+
   fetchUserWfhRequests(employeeId: number) {
     this.wfhService
-      .getRequestByMonthAndYear(
-        employeeId,
-        this.currentMonthIndex + 1,
-        this.year
-      )
+      .getRequestByMonthAndYear(employeeId, this.currentMonthIndex + 1, this.year)
       .subscribe({
         next: (response) => {
           let requests = response.body || [];
 
           for (const req of requests) {
-            const from = new Date(req.fromDate);
-            const to = new Date(req.toDate);
+            const fromLocal = this.parseDateOnly(req.fromDate);
+            const toLocal = this.parseDateOnly(req.toDate);
 
-            const fromNextDay = new Date(from);
-            fromNextDay.setDate(from.getDate() + 1);
-            req.fromNextDay = fromNextDay;
+            req.fromNextDay = fromLocal;
+            req.toNextDay = toLocal;
 
-            const toNextDay = new Date(to);
-            toNextDay.setDate(to.getDate() + 1);
-            req.toNextDay = toNextDay;
-
-            const diffTime = to.getTime() - from.getTime();
-            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1; // inclusive count
-            req.days = diffDays;
+            if (fromLocal && toLocal) {
+              const diffTime = toLocal.getTime() - fromLocal.getTime();
+              req.days = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1;
+            } else {
+              req.days = 0;
+            }
           }
+
 
           requests = requests.sort(
             (a: any, b: any) =>
               new Date(b.created).getTime() - new Date(a.created).getTime()
           );
           this.details = requests.slice(0, 10);
+          const currentMonthStart = new Date(this.year, this.currentMonthIndex, 1);
+          const currentMonthEnd = new Date(this.year, this.currentMonthIndex + 1, 0);
           this.approvalDetails = requests.filter((req: any) => {
-            const fromDate = new Date(req.fromDate);
-            const toDate = new Date(req.toDate);
-
-            const fromLocal = new Date(
-              fromDate.getFullYear(),
-              fromDate.getMonth(),
-              fromDate.getDate()
-            );
-            const toLocal = new Date(
-              toDate.getFullYear(),
-              toDate.getMonth(),
-              toDate.getDate()
-            );
-
-            return (
-              (fromLocal.getMonth() === this.currentMonthIndex &&
-                fromLocal.getFullYear() === this.year) ||
-              (toLocal.getMonth() === this.currentMonthIndex &&
-                toLocal.getFullYear() === this.year)
-            );
+            const from = this.parseDateOnly(req.fromDate);
+            return from && from >= currentMonthStart && from <= currentMonthEnd;
           });
-          let updatedStatusMessage = '';
-
-          for (const req of this.details) {
-            const previousStatus = this.lastKnownStatuses[req.requestId];
-
-            if (
-              previousStatus &&
-              previousStatus !== req.status &&
-              req.status !== 'pending'
-            ) {
-              updatedStatusMessage = `Your WFH request (${
-                req.requestId
-              }) has been ${req.status.toUpperCase()}`;
-              break;
-            }
-
-            this.lastKnownStatuses[req.requestId] = req.status;
-          }
-
-          if (updatedStatusMessage) {
-            this.snackBar.open(updatedStatusMessage, 'Close', {
-              duration: 4000,
-              horizontalPosition: 'center',
-              verticalPosition: 'top',
-              panelClass: ['success-snackbar'],
-            });
-          }
         },
         error: (err) => {
           console.error('Error fetching WFH requests for user:', err);

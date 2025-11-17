@@ -152,7 +152,7 @@ export class GoalComponent implements OnInit {
             user.email?.toLowerCase() !== this.currentUserEmail?.toLowerCase()
         );
 
-        this.filteredEmployees = [...this.employees];
+        this.filterEmployeesByGoalMonth();
       },
       error: (err) => {
         console.error('❌ Error fetching users', err);
@@ -164,7 +164,11 @@ export class GoalComponent implements OnInit {
 
   onSearch(): void {
     const term = this.searchText.trim().toLowerCase();
-    this.filteredEmployees = this.employees.filter(
+    if (!term) {
+      this.filterEmployeesByGoalMonth();
+      return;
+    }
+    this.filteredEmployees = this.filteredEmployees.filter(
       (emp) =>
         emp.employeeId?.toString().toLowerCase().includes(term) ||
         emp.fullName?.toLowerCase().includes(term)

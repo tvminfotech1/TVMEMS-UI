@@ -5,7 +5,7 @@
   padding: 10px;
   justify-content: center;
   box-sizing: border-box;
-  height: 300px
+  height: 300px;
 }
 
 .dashboard-wrapper {
@@ -29,12 +29,9 @@
 }
 
 .card:hover {
-
-  
-    transform: scale(1.05);
-      z-index: 2;
+  transform: scale(1.05);
+  z-index: 2;
 }
-
 
 .card::before {
   content: attr(data-category);
@@ -62,8 +59,6 @@
 
   border-radius: 4px;
 }
-
-
 
 .card[data-category="BirthDay"]::before {
   background: linear-gradient(90deg, #ff6a00, #ffb347);
@@ -139,7 +134,7 @@
 
 .card[data-category="Onboarded"]::before {
   background: linear-gradient(90deg, #00fae5, #0072ff);
-}  
+}
 
 .carousel-track {
   display: flex;
@@ -152,10 +147,10 @@
   flex-shrink: 0;
 }
 
-
 .birthday-text {
   background: linear-gradient(90deg, #ff4b2b, #ff416c);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   text-transform: capitalize;
   margin-top: 6px;
@@ -169,6 +164,7 @@
 .anniversary-text {
   background: linear-gradient(90deg, #00b09b, #96c93d);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   text-transform: capitalize;
   margin-top: 6px;
@@ -182,6 +178,7 @@
 .onboard-text {
   background: linear-gradient(90deg, #4776e6, #8e54e9);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   text-transform: capitalize;
   margin-top: 6px;
@@ -285,7 +282,7 @@
     transform: translateX(0);
   }
   to {
-        transform: translateX(var(--scroll-distance));
+    transform: translateX(var(--scroll-distance));
   }
 }
 
