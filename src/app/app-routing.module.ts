@@ -53,7 +53,6 @@ import { WorkfromhomeComponent } from './components/mainlayout/workfromhome/work
 import { TimelogComponent } from './components/mainlayout/timelog/timelog.component';
 import { TaskComponent } from './components/mainlayout/task/task.component';
 import { ResignationComponent } from './components/mainlayout/resignation/resignation.component';
-import { OkrComponent } from './components/mainlayout/okr/okr.component';
 import { AttendanceComponent } from './components/mainlayout/attendance/attendance.component';
 import { OrganizationComponent } from './components/mainlayout/organization/organization.component';
 import { AddOpeningComponent } from './components/mainlayout/addopening/addopening.component';
@@ -168,7 +167,6 @@ const routes: Routes = [
         component: ResignationComponent,
         canActivate: [AuthGuard],
       },
-      { path: 'okr', component: OkrComponent, canActivate: [adminAuthGuard] },
       {
         path: 'attendance',
         component: AttendanceComponent,

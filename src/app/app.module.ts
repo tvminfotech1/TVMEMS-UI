@@ -57,7 +57,6 @@ import { WorkfromhomeComponent } from './components/mainlayout/workfromhome/work
 import { TimelogComponent } from './components/mainlayout/timelog/timelog.component';
 import { TaskComponent } from './components/mainlayout/task/task.component';
 import { ResignationComponent } from './components/mainlayout/resignation/resignation.component';
-import { OkrComponent } from './components/mainlayout/okr/okr.component';
 import { AttendanceComponent } from './components/mainlayout/attendance/attendance.component';
 import { OrganizationComponent } from './components/mainlayout/organization/organization.component';
 import { AddOpeningComponent } from './components/mainlayout/addopening/addopening.component';
@@ -104,6 +103,7 @@ import { JobEditDialogComponent } from './components/mainlayout/job-opening-list
 import { CommonModule, DatePipe } from '@angular/common';
 import { MatDividerModule } from '@angular/material/divider';
 import { UserPayslipComponent } from './components/payroll/user-payslip/user-payslip.component';
+import { LoaderComponent } from './components/loader/loader.component';
 
 @NgModule({
   declarations: [
@@ -163,7 +163,6 @@ import { UserPayslipComponent } from './components/payroll/user-payslip/user-pay
     TimelogComponent,
     TaskComponent,
     ResignationComponent,
-    OkrComponent,
     AttendanceComponent,
     OrganizationComponent,
     AddOpeningComponent,
@@ -184,6 +183,8 @@ import { UserPayslipComponent } from './components/payroll/user-payslip/user-pay
     JobOpeningListComponent,
     JobEditDialogComponent,
     UserPayslipComponent,
+
+    LoaderComponent
   ],
   imports: [
     BrowserModule,

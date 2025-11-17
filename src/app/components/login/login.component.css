@@ -6,6 +6,8 @@
   display: flex;
   justify-content: center;
   align-items: start;
+    position: relative;
+
 }
 .custom-form-field {
   display: flex;

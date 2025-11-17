@@ -3,7 +3,6 @@ import { PayrollEmployeeService } from 'src/app/services/payroll-employee.servic
 import { Employee } from 'src/app/models/employee';
 import { Router } from '@angular/router';
 import * as XLSX from 'xlsx';
-import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-payroll-employee',
@@ -121,7 +120,7 @@ export class PayrollEmployeeComponent implements OnInit {
           uploaded++;
           if (uploaded === total) {
             alert(`✅ All ${total} employees imported successfully!`);
-            this.loadEmployees(); // refresh list
+            this.loadEmployees();
           }
         },
         error: (err) => {

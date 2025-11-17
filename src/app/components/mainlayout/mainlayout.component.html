@@ -120,8 +120,7 @@
                     class="nav-link sub"
                     routerLinkActive="active-sub-link"
                     [routerLinkActiveOptions]="{ exact: true }"
-                    ><span class="material-icons">calendar_today</span> My
-                    Leave</a
+                    ><span class="material-icons">calendar_today</span> {{isUser? 'My Leave':'Leave'}}</a
                   >
                 </li>
                 <li>
@@ -130,11 +129,10 @@
                     class="nav-link sub"
                     routerLinkActive="active-sub-link"
                     [routerLinkActiveOptions]="{ exact: true }"
-                    ><span class="material-icons">fact_check</span> My
-                    Attendance</a
+                    ><span class="material-icons">fact_check</span> {{isUser? 'My Attendance':'Attendance'}}</a
                   >
                 </li>
-                <li>
+                <li *ngIf="isUser">
                   <a
                     routerLink="attendance-approval"
                     class="nav-link sub"
@@ -210,7 +208,7 @@
                     class="nav-link sub"
                     routerLinkActive="active-sub-link"
                     [routerLinkActiveOptions]="{ exact: true }"
-                    ><span class="material-icons">task</span> My Tasks</a
+                    ><span class="material-icons">task</span>  {{isUser? 'My Tasks':'Tasks'}}</a
                   >
                 </li>
               </ul>
@@ -243,8 +241,7 @@
                     class="nav-link sub"
                     routerLinkActive="active-sub-link"
                     [routerLinkActiveOptions]="{ exact: true }"
-                    ><span class="material-icons">star_rate</span> My Goal
-                    Sheet</a
+                    ><span class="material-icons">star_rate</span>  {{isUser? 'My Goal Sheet':'Goal Sheet'}}</a
                   >
                 </li>
               </ul>

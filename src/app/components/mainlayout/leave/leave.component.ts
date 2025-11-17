@@ -88,13 +88,7 @@ export class LeaveComponent implements OnInit {
       leaveType: ['', Validators.required],
       employeeId: [
         { value: this.employeeId, disabled: !this.isAdmin },
-        this.isAdmin
-          ? [
-              Validators.required,
-              Validators.minLength(6),
-              Validators.maxLength(6),
-            ]
-          : [],
+        [],
       ],
       startDate: [null, Validators.required],
       endDate: [
