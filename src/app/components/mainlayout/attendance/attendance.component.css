@@ -141,8 +141,36 @@ input, select, textarea {
   color: white;
   font-size: 12px;
 }
+.row-3 {
+  grid-column: span 1;   
+}
 
+.row-2 {
+  grid-column: span 3;   
+}
 
+.row-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr; 
+  gap: 20px;
+  grid-column: span 3; 
+}
+
+.alert-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.alert {
+  max-width: 500px;  
+  width: 100%;       
+  font-size: 16px;
+  border-radius: 8px;
+  text-align: center;
+}
 
 
 

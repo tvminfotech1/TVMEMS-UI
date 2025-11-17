@@ -5,6 +5,8 @@ import {
   AttendanceService,
 } from 'src/app/services/attendance.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { ChangeDetectorRef } from '@angular/core';
+import { LeaveService } from 'src/app/services/leave.service';
 
 @Component({
   selector: 'app-attendance',
@@ -17,29 +19,33 @@ export class AttendanceComponent implements OnInit {
 
   currentMonthIndex = new Date().getMonth();
   currentYear = new Date().getFullYear();
+  isSubmitted = false;
+    isOnLeave = false; 
 
   constructor(
     private fb: FormBuilder,
     private attendanceService: AttendanceService,
-    private authService: AuthService
+    private authService: AuthService,
+    private cdr: ChangeDetectorRef,
+    private leaveService:LeaveService
   ) {}
 
   ngOnInit(): void {
     const empId = this.authService.getEmployeeId();
     const fullName = this.authService.getfullName();
 
+
     const currentTime = this.getCurrentTime();
     const currentDate = new Date();
-
     this.attendanceForm = this.fb.group({
       empId: [{ value: empId, disabled: true }, Validators.required],
       fullName: [{ value: fullName, disabled: true }, Validators.required],
       department: ['', Validators.required],
-      designation: ['', Validators.required],
       date: [currentDate, Validators.required],
       entryTime: [currentTime, Validators.required],
       remarks: [''],
     });
+      this.checkLeaveForToday();
   }
 
   getCurrentTime(): string {
@@ -50,7 +56,24 @@ export class AttendanceComponent implements OnInit {
       .padStart(2, '0')}`;
   }
 
+  checkLeaveForToday() {
+     const empId = Number(this.authService.getEmployeeId());
+       const today = new Date().toISOString().split('T')[0];
+
+
+    this.leaveService.checkLeave(empId, today).subscribe({
+      next: (isLeave) => {
+        this.isOnLeave = isLeave.body;
+
+        if (isLeave) {
+          this.attendanceForm.disable(); 
+        }
+      },
+      error: (err) => console.error('Leave check error:', err),
+    });
+  }
   submitAttendance(): void {
+    this.isSubmitted = true;
     if (this.attendanceForm.invalid) {
       alert('⚠️ Please fill in required fields');
       return;
@@ -62,7 +85,6 @@ export class AttendanceComponent implements OnInit {
       empId: Number(formValue.empId),
       name: formValue.fullName,
       department: formValue.department,
-      designation: formValue.designation,
       date: formValue.date,
       entryTime: formValue.entryTime,
       remarks: formValue.remarks || '',
@@ -72,10 +94,28 @@ export class AttendanceComponent implements OnInit {
     this.attendanceService.submitAttendance(record).subscribe({
       next: (res) => {
         alert('✅ Attendance submitted');
-        this.attendanceForm.patchValue({
-          remarks: '',
+
+        const empId = this.authService.getEmployeeId();
+        const fullName = this.authService.getfullName();
+
+        this.isSubmitted = false;
+
+        this.attendanceForm.reset({
+          empId: empId,
+          fullName: fullName,
+          department: null,
+          date: new Date(),
           entryTime: this.getCurrentTime(),
+          remarks: '',
         });
+       
+        this.attendanceForm.get('empId')?.disable();
+        this.attendanceForm.get('fullName')?.disable();
+        this.cdr.detectChanges();
+        this.attendanceForm.get('department')?.markAsPristine();
+        this.attendanceForm.get('department')?.markAsUntouched();
+        this.attendanceForm.get('department')?.setErrors(null);
+        this.cdr.detectChanges();
       },
       error: (err) => console.error('Submit error', err),
     });

@@ -3,6 +3,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { UserDetailsService } from 'src/app/services/userDetails.service';
 import { MyProfileService } from 'src/app/services/my-profile.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-my-profile',
@@ -21,7 +22,8 @@ export class MyProfileComponent implements OnInit {
     private authService: AuthService,
     private fb: FormBuilder,
     private userDetailsService: UserDetailsService,
-    private myprofileService: MyProfileService
+    private myprofileService: MyProfileService,
+  private location: Location 
   ) {}
 
   ngOnInit(): void {
@@ -123,6 +125,10 @@ export class MyProfileComponent implements OnInit {
         console.error('Error fetching user details:', err);
       }
     );
+  }
+
+  close(): void {
+  this.location.back();
   }
 
   getEmployeeIdFromToken(): number | null {

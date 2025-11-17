@@ -137,6 +137,7 @@ export class PayrollEmployeeComponent implements OnInit {
         (this.selectedLocation === '' ||
           emp.location === this.selectedLocation) &&
         (this.selectedStatus === '' || emp.status === this.selectedStatus)
+        &&  (this.selectedDesignation === '' || emp.department === this.selectedDesignation)
     );
     console.log('Filtered:', this.filteredEmployees);
   }

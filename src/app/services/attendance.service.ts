@@ -22,10 +22,8 @@ export interface AttendanceRecord {
   empId: number;
   remarks?: string;
   isApproved: boolean;
-  department: string;
-  designation: string;
+  department:string;
   status?: 'Present' | 'Absent' | 'Holiday' | 'Pending' | 'No Status';
-
   user?: User | null;
 }
 

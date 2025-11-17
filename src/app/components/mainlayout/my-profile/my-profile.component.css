@@ -93,3 +93,17 @@ h2 {
   font-family: "Poppins", sans-serif;
   margin-top: 50px;
 }
+
+.close-btn {
+  position: absolute;
+  top: 90px;
+  right: 50px;
+  background: white;
+  color: rgb(0, 0, 0);
+  border: none;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  font-size: 20px;
+  cursor: pointer;
+}

@@ -76,18 +76,24 @@ this.signupForm.get('confirmPassword')?.valueChanges.subscribe(() => {
     this.showConfirmPassword = !this.showConfirmPassword;
   }
 
-  passwordMatchValidator(group: FormGroup): { [key: string]: boolean } | null {
-  const password = group.get('password')?.value;
-  const confirmPassword = group.get('confirmPassword')?.value;
 
-  if (confirmPassword && password !== confirmPassword) {
-    group.get('confirmPassword')?.setErrors({ mismatch: true });
+ passwordMatchValidator(group: FormGroup): null {
+  const password = group.get('password');
+  const confirmPassword = group.get('confirmPassword');
+
+  if (!password || !confirmPassword) return null;
+
+  if (confirmPassword.value === '') {
+    confirmPassword.setErrors({ required: true });
+  } else if (password.value !== confirmPassword.value) {
+    confirmPassword.setErrors({ mismatch: true });
   } else {
-    group.get('confirmPassword')?.setErrors(null);
+    confirmPassword.setErrors(null);
   }
 
   return null;
 }
+
 
   blockFullNameInput(event: KeyboardEvent) {
     const allowedKeys = [
@@ -236,6 +242,12 @@ this.signupForm.get('confirmPassword')?.valueChanges.subscribe(() => {
   }
 
   goBack() {
-    window.history.back();
+    this.signupForm.reset();
+    this.signupForm.markAsPristine();
+    this.signupForm.markAsUntouched();
+    this.signupForm.updateValueAndValidity();
+    Object.keys(this.signupForm.controls).forEach((key) => {
+      this.signupForm.get(key)?.setErrors(null);
+    });
   }
 }

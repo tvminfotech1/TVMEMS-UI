@@ -1,12 +1,18 @@
 <div class="attendance-container">
   <h2 class="page-title">Employee Daily Attendance</h2>
 
+  <div class="alert-wrapper" *ngIf="isOnLeave">
+  <div class="alert alert-danger text-center" role="alert">
+    ❌ You are on approved leave today.
+  </div>
+</div>
+
   <form
     [formGroup]="attendanceForm"
     (ngSubmit)="submitAttendance()"
     class="attendance-form"
   >
-    <mat-form-field appearance="outline">
+    <mat-form-field appearance="outline" class="row-3">
       <mat-label>Employee ID</mat-label>
       <input
         matInput
@@ -20,7 +26,7 @@
       </mat-error>
     </mat-form-field>
 
-    <mat-form-field appearance="outline">
+    <mat-form-field appearance="outline" class="row-3">
       <mat-label>Name</mat-label>
       <input
         matInput
@@ -34,7 +40,7 @@
       </mat-error>
     </mat-form-field>
 
-    <mat-form-field appearance="outline">
+    <mat-form-field appearance="outline" class="row-3">
       <mat-label>Department</mat-label>
       <input
         matInput
@@ -42,27 +48,18 @@
         placeholder="Enter Department"
         class="input-padding"
       />
-      <mat-error *ngIf="attendanceForm.get('department')?.hasError('required')">
-        Department is required
-      </mat-error>
+ <mat-error *ngIf="
+  attendanceForm.get('department')?.hasError('required') &&
+  (attendanceForm.get('department')?.touched || isSubmitted)
+">
+
+    Department is required
+  </mat-error>
     </mat-form-field>
 
-    <mat-form-field appearance="outline">
-      <mat-label>Designation</mat-label>
-      <input
-        matInput
-        formControlName="designation"
-        placeholder="Enter Designation"
-        class="input-padding"
-      />
-      <mat-error
-        *ngIf="attendanceForm.get('designation')?.hasError('required')"
-      >
-        Designation is required
-      </mat-error>
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
+    
+<div class="row-2">
+    <mat-form-field appearance="outline" >
       <mat-label>Entry Time</mat-label>
       <input
         matInput
@@ -88,6 +85,7 @@
         Date is required
       </mat-error>
     </mat-form-field>
+    </div>
 
     <mat-form-field appearance="outline" class="remarks">
       <mat-label>Remarks</mat-label>
@@ -101,7 +99,8 @@
     </mat-form-field>
 
     <div class="form-actions">
-      <button mat-raised-button color="primary" type="submit">
+      <button mat-raised-button color="primary" type="submit"
+      [disabled]="attendanceForm.invalid || isOnLeave">
         Submit Attendance
       </button>
     </div>

@@ -223,6 +223,7 @@ export class MainlayoutComponent implements OnInit {
     this.router.navigateByUrl('/');
   }
   goToProfile() {
+      this.closeAllDropdowns(); 
     this.router.navigate(['/mainlayout/myprofile', this.employeeId]);
   }
 

@@ -141,10 +141,43 @@ export class LeaveComponent implements OnInit {
   }
 
   onSubmit(): void {
-    this.leaveForm.markAllAsTouched();
+  this.leaveForm.markAllAsTouched();
 
-    if (!this.leaveForm.valid) {
-      this.snackBar.open('Please fill all required fields', 'Close', {
+  if (!this.leaveForm.valid) {
+    this.snackBar.open('Please fill all required fields', 'Close', {
+      duration: 3000,
+      horizontalPosition: 'center',
+      verticalPosition: 'top',
+      panelClass: ['error-snackbar'],
+    });
+    return;
+  }
+
+  const formValue = this.leaveForm.getRawValue();
+  const leaveType = formValue.leaveType;
+
+  let selectedEmployeeId: number;
+  
+  // Admin CANNOT apply leave for themselves
+  if (this.isAdmin) {
+    selectedEmployeeId = Number(formValue.employeeId);
+
+    if (selectedEmployeeId === Number(this.employeeId)) {
+      this.snackBar.open(
+        'Admin cannot apply leave for themselves.',
+        'Close',
+        {
+          duration: 3000,
+          horizontalPosition: 'center',
+          verticalPosition: 'top',
+          panelClass: ['error-snackbar'],
+        }
+      );
+      return;
+    }
+
+    if (!selectedEmployeeId) {
+      this.snackBar.open('Please enter a valid Employee ID', 'Close', {
         duration: 3000,
         horizontalPosition: 'center',
         verticalPosition: 'top',
@@ -152,152 +185,136 @@ export class LeaveComponent implements OnInit {
       });
       return;
     }
-
-    const formValue = this.leaveForm.getRawValue();
-    const leaveType = formValue.leaveType;
-
-    let selectedEmployeeId: number;
-    if (this.isAdmin) {
-      selectedEmployeeId = Number(formValue.employeeId);
-      if (!selectedEmployeeId) {
-        this.snackBar.open('Please enter a valid Employee ID', 'Close', {
-          duration: 3000,
-          horizontalPosition: 'center',
-          verticalPosition: 'top',
-          panelClass: ['error-snackbar'],
-        });
-        return;
-      }
-    } else {
-      selectedEmployeeId = Number(this.employeeId);
-    }
-
-    const startDate: Date = formValue.startDate;
-    const endDate: Date = formValue.endDate;
-
-    const formatDate = (d: Date) => {
-      const y = d.getFullYear();
-      const m = String(d.getMonth() + 1).padStart(2, '0');
-      const day = String(d.getDate()).padStart(2, '0');
-      return `${y}-${m}-${day}`;
-    };
-
-    const startDateStr = formatDate(startDate);
-    const endDateStr = formatDate(endDate);
-    const totalDays = this.calculateDays(startDate, endDate);
-
-    const leaveBalance = this.leaveBalances.find(
-      (lb) => lb.leaveType === leaveType
-    );
-    if (leaveBalance) {
-      const available =
-        leaveBalance.total - leaveBalance.used + leaveBalance.carryOver;
-      if (available < totalDays) {
-        this.snackBar.open(
-          `You only have ${available} ${leaveType} days available, cannot apply for ${totalDays} days.`,
-          'Close',
-          {
-            duration: 4000,
-            horizontalPosition: 'center',
-            verticalPosition: 'top',
-            panelClass: ['error-snackbar'],
-          }
-        );
-        return;
-      }
-    }
-
-    const sameMonthConflict = this.leaveList.some((l) => {
-      if (l.user?.employeeId !== selectedEmployeeId) return false;
-      const existingStart = new Date(l.startDate);
-      const sameType = l.leaveType === leaveType;
-      const sameMonth =
-        existingStart.getMonth() === startDate.getMonth() &&
-        existingStart.getFullYear() === startDate.getFullYear();
-      const isRejected = (l.status || '').toLowerCase() === 'rejected';
-      return sameType && sameMonth && !isRejected;
-    });
-
-    if (sameMonthConflict) {
-      this.snackBar.open(
-        `You already have applied ${leaveType} for this month.`,
-        'Close',
-        {
-          duration: 4000,
-          horizontalPosition: 'center',
-          verticalPosition: 'top',
-          panelClass: ['error-snackbar'],
-        }
-      );
-      return;
-    }
-
-    const overlappingConflict = this.leaveList.some((l) => {
-      if (l.user?.employeeId !== selectedEmployeeId) return false;
-
-      const normalize = (d: Date) =>
-        new Date(d.getFullYear(), d.getMonth(), d.getDate());
-      const start = normalize(new Date(startDate));
-      const end = normalize(new Date(endDate));
-      const existingStart = normalize(new Date(l.startDate));
-      const existingEnd = normalize(new Date(l.endDate));
-
-      const overlaps = start <= existingEnd && end >= existingStart;
-      const isRejected = (l.status || '').toLowerCase() === 'rejected';
-
-      return overlaps && !isRejected;
-    });
-
-    if (overlappingConflict) {
-      this.snackBar.open(
-        'You already have a pending or approved leave for these dates.',
-        'Close',
-        {
-          duration: 4000,
-          horizontalPosition: 'center',
-          verticalPosition: 'top',
-          panelClass: ['error-snackbar'],
-        }
-      );
-      return;
-    }
-
-    const newLeave: newLeaveRequest = {
-      id: undefined,
-      leaveType,
-      startDate: startDateStr,
-      endDate: endDateStr,
-      reason: formValue.reason,
-      status: 'Pending',
-      totalDays,
-      duration: `${totalDays} days`,
-      user: { employeeId: selectedEmployeeId },
-    };
-
-    this.leaveService.createLeaveRequest(newLeave).subscribe({
-      next: (savedLeave) => {
-        this.loadLeaves();
-        this.snackBar.open('Leave applied successfully', 'Close', {
-          duration: 3000,
-          horizontalPosition: 'center',
-          verticalPosition: 'top',
-          panelClass: ['success-snackbar'],
-        });
-        this.closeApplyLeaveModal();
-        this.resetApplyLeaveForm();
-        this.calculateLeaveBalances();
-      },
-      error: (err) => {
-        console.error('Error applying leave:', err);
-        this.snackBar.open('please enter a valid employee Id', 'Close', {
-          duration: 3000,
-          horizontalPosition: 'center',
-          verticalPosition: 'top',
-          panelClass: ['error-snackbar'],
-        });
-      },
-    });
+  } else {
+    // Normal employees → always apply for themselves
+    selectedEmployeeId = Number(this.employeeId);
   }
+
+  const startDate: Date = formValue.startDate;
+  const endDate: Date = formValue.endDate;
+
+  const formatDate = (d: Date) => {
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${y}-${m}-${day}`;
+  };
+
+  const startDateStr = formatDate(startDate);
+  const endDateStr = formatDate(endDate);
+  const totalDays = this.calculateDays(startDate, endDate);
+
+  const leaveBalance = this.leaveBalances.find(
+    (lb) => lb.leaveType === leaveType
+  );
+  if (leaveBalance) {
+    const available =
+      leaveBalance.total - leaveBalance.used + leaveBalance.carryOver;
+    if (available < totalDays) {
+      this.snackBar.open(
+        `You only have ${available} ${leaveType} days available, cannot apply for ${totalDays} days.`,
+        'Close',
+        {
+          duration: 4000,
+          horizontalPosition: 'center',
+          verticalPosition: 'top',
+          panelClass: ['error-snackbar'],
+        }
+      );
+      return;
+    }
+  }
+
+  const sameMonthConflict = this.leaveList.some((l) => {
+    if (l.user?.employeeId !== selectedEmployeeId) return false;
+    const existingStart = new Date(l.startDate);
+    const sameType = l.leaveType === leaveType;
+    const sameMonth =
+      existingStart.getMonth() === startDate.getMonth() &&
+      existingStart.getFullYear() === startDate.getFullYear();
+    const isRejected = (l.status || '').toLowerCase() === 'rejected';
+    return sameType && sameMonth && !isRejected;
+  });
+
+  if (sameMonthConflict) {
+    this.snackBar.open(
+      `You already have applied ${leaveType} for this month.`,
+      'Close',
+      {
+        duration: 4000,
+        horizontalPosition: 'center',
+        verticalPosition: 'top',
+        panelClass: ['error-snackbar'],
+      }
+    );
+    return;
+  }
+
+  const overlappingConflict = this.leaveList.some((l) => {
+    if (l.user?.employeeId !== selectedEmployeeId) return false;
+
+    const normalize = (d: Date) =>
+      new Date(d.getFullYear(), d.getMonth(), d.getDate());
+    const start = normalize(new Date(startDate));
+    const end = normalize(new Date(endDate));
+    const existingStart = normalize(new Date(l.startDate));
+    const existingEnd = normalize(new Date(l.endDate));
+
+    const overlaps = start <= existingEnd && end >= existingStart;
+    const isRejected = (l.status || '').toLowerCase() === 'rejected';
+
+    return overlaps && !isRejected;
+  });
+
+  if (overlappingConflict) {
+    this.snackBar.open(
+      'You already have a pending or approved leave for these dates.',
+      'Close',
+      {
+        duration: 4000,
+        horizontalPosition: 'center',
+        verticalPosition: 'top',
+        panelClass: ['error-snackbar'],
+      }
+    );
+    return;
+  }
+
+  const newLeave: newLeaveRequest = {
+    id: undefined,
+    leaveType,
+    startDate: startDateStr,
+    endDate: endDateStr,
+    reason: formValue.reason,
+    status: 'Pending',
+    totalDays,
+    duration: `${totalDays} days`,
+    user: { employeeId: selectedEmployeeId },
+  };
+
+  this.leaveService.createLeaveRequest(newLeave).subscribe({
+    next: () => {
+      this.loadLeaves();
+      this.snackBar.open('Leave applied successfully', 'Close', {
+        duration: 3000,
+        horizontalPosition: 'center',
+        verticalPosition: 'top',
+        panelClass: ['success-snackbar'],
+      });
+      this.closeApplyLeaveModal();
+      this.resetApplyLeaveForm();
+      this.calculateLeaveBalances();
+    },
+    error: () => {
+      this.snackBar.open('please enter a valid employee Id', 'Close', {
+        duration: 3000,
+        horizontalPosition: 'center',
+        verticalPosition: 'top',
+        panelClass: ['error-snackbar'],
+      });
+    },
+  });
+}
 
   calculateDays(start: string | Date, end: string | Date): number {
     const s = start instanceof Date ? start : new Date(start);

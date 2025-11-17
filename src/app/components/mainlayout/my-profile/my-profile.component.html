@@ -1,6 +1,8 @@
 <div class="PV-container" *ngIf="userData">
   <h1>PROFILE INFORMATION</h1>
 
+
+
   <div class="profile-header">
     <div class="profile-image">
       <img
@@ -17,6 +19,8 @@
       <p><span>EmpID:</span> {{ employeeId }}</p>
     </div>
   </div>
+
+
 
   <div *ngIf="userDetails; else noInfo">
     <h3>Personal Details</h3>
@@ -290,7 +294,7 @@
       </tr>
     </table>
   </div>
-
+<button class="close-btn" (click)="close()">✖</button>
   <ng-template #noInfo>
     <div class="no-info">
       <h3>There is no information</h3>

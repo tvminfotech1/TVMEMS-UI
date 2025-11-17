@@ -14,7 +14,7 @@ import { SalaryHistory } from 'src/app/models/salaryHistory';
 })
 export class PayrunsComponent implements OnInit {
   employees: Employee[] = [];
-  filteredEmployees: Employee[] = [];
+  
   salaryHistory: SalaryHistory[] = [];
   payruns: Payruns[] = [];
   filteredData: Payruns[] = [];
@@ -66,10 +66,10 @@ export class PayrunsComponent implements OnInit {
 
   onSearch(): void {
     const text = this.searchText.toLowerCase().trim();
-    this.filteredEmployees = this.employees.filter(
+    this.filteredData = this.payruns.filter(
       (emp) =>
-        emp.id.toString().toLowerCase().includes(text) ||
-        `${emp.fullName}`.toLowerCase().includes(text)
+       emp.employeeId.toString().includes(text) ||
+    emp.employeeName.toLowerCase().includes(text)
     );
   }
 
