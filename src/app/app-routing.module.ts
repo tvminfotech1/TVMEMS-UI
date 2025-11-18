@@ -75,6 +75,7 @@ import { AuthGuard } from './guards/auth.guard';
 import { MyProfileComponent } from './components/mainlayout/my-profile/my-profile.component';
 import { JobOpeningListComponent } from './components/mainlayout/job-opening-list/job-opening-list.component';
 import { UserPayslipComponent } from './components/payroll/user-payslip/user-payslip.component';
+import { StepGuard } from './guards/step.guard';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -88,6 +89,7 @@ const routes: Routes = [
   { path: 'thankYou', component: ThankYouComponent },
   { path: 'onboarding', component: OnboardingComponent },
   { path: 'pendingUser', component: PendingUserComponent },
+
 
   {
     path: 'mainlayout',
@@ -194,53 +196,69 @@ const routes: Routes = [
       {
         path: 'personal',
         component: PersonalComponent,
-        canActivate: [userAuthGuard],
+        canActivate: [StepGuard, userAuthGuard],
+        data: { step: 1 }
       },
-      { path: 'kyc', component: KycComponent, canActivate: [userAuthGuard] },
+      {
+        path: 'kyc',
+        component: KycComponent,
+        canActivate: [StepGuard, userAuthGuard],
+        data: { step: 2 }
+      },
       {
         path: 'passport',
         component: PassportVisaComponent,
-        canActivate: [userAuthGuard],
+        canActivate: [StepGuard, userAuthGuard],
+        data: { step: 3 }
       },
       {
         path: 'family',
         component: FamilyComponent,
-        canActivate: [userAuthGuard],
+        canActivate: [StepGuard, userAuthGuard],
+        data: { step: 4 }
       },
+
       {
         path: 'previousEmployee',
         component: PreviousEmploymentComponent,
-        canActivate: [userAuthGuard],
+        canActivate: [ StepGuard,userAuthGuard],
+        data: { step: 5 }
       },
       {
         path: 'education',
         component: EducationComponent,
-        canActivate: [userAuthGuard],
+        canActivate: [ StepGuard,userAuthGuard],
+        data: { step: 6 }
       },
       {
         path: 'skills',
         component: SkillsComponent,
-        canActivate: [userAuthGuard],
+        canActivate: [ StepGuard,userAuthGuard],
+        data: { step: 7 }
       },
       {
         path: 'certificate',
         component: CertificateComponent,
-        canActivate: [userAuthGuard],
+        canActivate: [ StepGuard,userAuthGuard],
+        data: { step: 8 }
       },
       {
         path: 'document',
         component: DocumentComponent,
-        canActivate: [userAuthGuard],
+        canActivate: [ StepGuard,userAuthGuard],
+        data: { step: 9 }
       },
       {
         path: 'resume',
         component: ResumeComponent,
-        canActivate: [userAuthGuard],
+        canActivate: [ StepGuard,userAuthGuard],
+        data: { step: 10 }
       },
       {
         path: 'final',
         component: FinalComponent,
-        canActivate: [userAuthGuard],
+        canActivate: [ StepGuard,userAuthGuard],
+        data: { step: 11 }
       },
       {
         path: 'thankYou',
@@ -382,5 +400,6 @@ const routes: Routes = [
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
+  providers: [StepGuard]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

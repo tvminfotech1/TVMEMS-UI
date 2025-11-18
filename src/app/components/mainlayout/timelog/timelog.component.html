@@ -247,9 +247,10 @@
   <option value>--select--</option>
   <option value="WFO">WFO</option>
 
+  <!-- WFH only allowed for approved days -->
   <option value="WFH" [disabled]="!wfhDays.includes(day)">WFH</option>
 
-  <option value="Leave">Leave</option>
+  <option value="Leave" [disabled]="!leaveDays.includes(day)">Leave</option>
   <option value="Holiday">Holiday</option>
 </select>
 
@@ -364,6 +365,7 @@
 
     <div class="filter-history">
 
+  <!-- Year Filter -->
   <label>
     Year:
     <select [(ngModel)]="historyYearFilter" (change)="applyHistoryMonthFilter()">
@@ -372,6 +374,7 @@
     </select>
   </label>
 
+  <!-- Month Filter -->
   <label>
     Month:
     <select [(ngModel)]="historyMonthFilter" (change)="applyHistoryMonthFilter()">
@@ -379,7 +382,9 @@
       <option *ngFor="let m of months" [value]="m">{{ m }}</option>
     </select>
   </label>
+
 </div>
+
 
     <div class="table-wrapper">
       <table class="history-table">

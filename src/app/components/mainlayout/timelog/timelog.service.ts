@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+
 export interface WorkFromHome {
   requestId: number;
   employeeId: number;
@@ -43,6 +44,15 @@ export interface TimelogEntry {
   employeeId?: string;
   status?: 'Pending' | 'Approved' | 'Rejected' | string;
 }
+export interface LeaveRequest {
+  id?: number;
+  employeeId: string;
+  fullName?: string;
+  startDate: string;  
+  endDate: string;    
+  status: string;
+}
+
 
 @Injectable({ providedIn: 'root' })
 export class TimelogService {
@@ -50,7 +60,7 @@ export class TimelogService {
   private readonly adminAllUrl = 'http://localhost:8080/user/timesheet/all';
   private baseUrl = 'http://localhost:8080';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
   getTimelogs(isAdmin: boolean = false): Observable<TimelogEntry[]> {
     const url = isAdmin ? this.adminAllUrl : this.userApiUrl;
     return this.http.get<any>(url).pipe(
@@ -85,9 +95,16 @@ export class TimelogService {
     );
   }
 
-   getApprovedWFHByEmployee(employeeId: number): Observable<WorkFromHome[]> {
+  getApprovedWFHByEmployee(employeeId: number): Observable<WorkFromHome[]> {
     const url = `${this.baseUrl}/WFH/approved/${employeeId}`;
     return this.http.get<WorkFromHome[]>(url);
   }
+  getApprovedLeavesByEmployee(employeeId: number, weekStart: string, weekEnd: string): Observable<LeaveRequest[]> {
+    const url = `${this.baseUrl}/api/leave-requests/approved/${employeeId}`;
+    const params = new HttpParams().set('start', weekStart).set('end', weekEnd);
+    return this.http.get<LeaveRequest[]>(url, { params });
+  }
+
+
 
 }

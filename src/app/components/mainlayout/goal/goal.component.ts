@@ -209,7 +209,8 @@ isMonthSelectable(index: number): boolean {
           user.email?.toLowerCase() !== this.currentUserEmail?.toLowerCase()
         );
 
-        this.filterEmployeesByGoalMonth();
+       // this.filteredEmployees = [...this.employees];
+       this.filterEmployeesByGoalMonth();
       },
       error: (err) => {
         console.error('❌ Error fetching users', err);

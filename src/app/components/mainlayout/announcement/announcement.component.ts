@@ -81,23 +81,52 @@ export class AnnouncementComponent implements OnInit {
     }
   }
 
+  // submitForm() {
+  //   if (this.announcementForm.invalid) return;
+
+  //   const data = this.announcementForm.value;
+
+  //   if (this.isEditMode && this.selectedId) {
+  //     this.announcementService.update(this.selectedId, data).subscribe(() => {
+  //       this.loadAnnouncements();
+  //       this.closeModal();
+  //     });
+  //   } else {
+  //     this.announcementService.create(data).subscribe(() => {
+  //       this.loadAnnouncements();
+  //       this.closeModal();
+  //     });
+  //   }
+  // }
+
   submitForm() {
-    if (this.announcementForm.invalid) return;
+  if (this.announcementForm.invalid) return;
 
-    const data = this.announcementForm.value;
+  const formValue = this.announcementForm.value;
 
-    if (this.isEditMode && this.selectedId) {
-      this.announcementService.update(this.selectedId, data).subscribe(() => {
-        this.loadAnnouncements();
-        this.closeModal();
-      });
-    } else {
-      this.announcementService.create(data).subscribe(() => {
-        this.loadAnnouncements();
-        this.closeModal();
-      });
-    }
+  const dateObj = formValue.date; 
+  const yyyy = dateObj.getFullYear();
+  const mm = String(dateObj.getMonth() + 1).padStart(2, '0');
+  const dd = String(dateObj.getDate()).padStart(2, '0');
+  const finalDate = `${yyyy}-${mm}-${dd}`;   
+
+  const data = {
+    ...formValue,
+    date: finalDate  
+  };
+
+  if (this.isEditMode && this.selectedId) {
+    this.announcementService.update(this.selectedId, data).subscribe(() => {
+      this.loadAnnouncements();
+      this.closeModal();
+    });
+  } else {
+    this.announcementService.create(data).subscribe(() => {
+      this.loadAnnouncements();
+      this.closeModal();
+    });
   }
+}
 
   closeModal(): void {
     this.showModal = false;

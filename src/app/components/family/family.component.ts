@@ -10,6 +10,7 @@ import { UserService } from '../user-service.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MainlayoutService } from 'src/app/services/main-layout.service';
+import { FormProgressService } from 'src/app/services/form-progress.service';
 
 export function minimumAgeValidator(minAge: number) {
   return (control: AbstractControl): ValidationErrors | null => {
@@ -45,7 +46,8 @@ export class FamilyComponent {
     private userService: UserService,
     private router: Router,
     private snackBar: MatSnackBar,
-    private mainlayoutService: MainlayoutService
+    private mainlayoutService: MainlayoutService,
+     private progressService :FormProgressService,
   ) {
     this.familyForm = this.formBuilder.group({
       fatherName: [
@@ -146,8 +148,11 @@ export class FamilyComponent {
     if (this.familyForm.valid) {
       const fullFamilyData = this.familyForm.getRawValue();
       this.userService.setFormData('family', fullFamilyData);
-      this.router.navigate(['/mainlayout/previousEmployee']);
+       
+    this.progressService.markStepComplete(4);
+      
       this.mainlayoutService.markTabCompleted('family', true);
+      this.router.navigate(['/mainlayout/previousEmployee']);
     } else {
       this.snackBar.open('Please fill all required fields', 'Close', {
         duration: 3000,
