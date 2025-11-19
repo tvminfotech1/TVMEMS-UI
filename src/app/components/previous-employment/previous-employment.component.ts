@@ -4,6 +4,7 @@ import { UserService } from '../user-service.service';
 import { Router } from '@angular/router';
 import { AbstractControl, ValidatorFn } from '@angular/forms';
 import { MainlayoutService } from 'src/app/services/main-layout.service';
+import { FormProgressService } from 'src/app/services/form-progress.service';
 
 function startDateValidator(): ValidatorFn {
   return (control: AbstractControl) => {
@@ -61,7 +62,8 @@ export class PreviousEmploymentComponent implements OnInit {
     private fb: FormBuilder,
     private userService: UserService,
     private router: Router,
-    private mainlayoutService: MainlayoutService
+    private mainlayoutService: MainlayoutService,
+     private progressService :FormProgressService,
   ) {}
 
   ngOnInit(): void {
@@ -168,10 +170,12 @@ export class PreviousEmploymentComponent implements OnInit {
   }
 
   finalSave(): void {
-    if (this.employmentList.length > 0) {
+    if (this.employmentList.length >= 0) {
       this.userService.setFormData('previousEmployment', this.employmentList);
-      this.router.navigate(['/mainlayout/education']);
+           this.progressService.markStepComplete(5);
+     
       this.mainlayoutService.markTabCompleted('previousEmployee', true);
+       this.router.navigate(['/mainlayout/education']);
     } else {
       this.userService.setFormData('previousEmployment', this.employmentList);
       this.mainlayoutService.markTabCompleted('previousEmployee', true);

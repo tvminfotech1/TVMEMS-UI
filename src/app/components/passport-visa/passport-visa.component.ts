@@ -4,6 +4,7 @@ import { UserService } from '../user-service.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MainlayoutService } from 'src/app/services/main-layout.service';
+import { FormProgressService } from 'src/app/services/form-progress.service';
 
 @Component({
   selector: 'app-passport-visa',
@@ -19,7 +20,8 @@ export class PassportVisaComponent implements OnInit {
     private userService: UserService,
     private router: Router,
     private snackBar: MatSnackBar,
-    private mainlayoutService: MainlayoutService
+    private mainlayoutService: MainlayoutService,
+    private progressService :FormProgressService,
   ) {}
 
   ngOnInit(): void {
@@ -57,8 +59,10 @@ export class PassportVisaComponent implements OnInit {
   submitForm() {
     if (this.userForm.valid) {
       this.userService.setFormData('passport', this.userForm.value);
-      this.router.navigate(['/mainlayout/family']);
+           this.progressService.markStepComplete(3);
+     
       this.mainlayoutService.markTabCompleted('passport', true);
+       this.router.navigate(['/mainlayout/family']);
     } else {
       this.snackBar.open('Please fill all required fields', 'Close', {
         duration: 3000,

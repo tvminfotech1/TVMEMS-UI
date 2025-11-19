@@ -116,64 +116,79 @@ export class AdminAttendanceComponent implements OnInit {
   }
 
   loadUserAttendance() {
-    const empIdStr = this.authService.getEmployeeId();
-    const empId = empIdStr ? Number(empIdStr) : null;
+  const empIdStr = this.authService.getEmployeeId();
+  const empId = empIdStr ? Number(empIdStr) : null;
 
-    if (empId !== null && !isNaN(empId)) {
-      const selectedMonth =
-        this.filterMonth || new Date().toISOString().slice(0, 7);
-      const [yearStr, monthStr] = selectedMonth.split('-');
-      const year = parseInt(yearStr, 10);
-      const month = parseInt(monthStr, 10);
+  if (empId !== null && !isNaN(empId)) {
+    const selectedMonth =
+      this.filterMonth || new Date().toISOString().slice(0, 7);
 
-      this.attendanceService.getAttendanceByEmployeeId(empId).subscribe({
-        next: (data: any) => {
-          console.log('✅ Raw User Attendance:', data);
-          const attendanceList = Array.isArray(data) ? data : data.body;
+    const [yearStr, monthStr] = selectedMonth.split("-");
+    const year = parseInt(yearStr, 10);
+    const month = parseInt(monthStr, 10);
 
-          const today = new Date();
-          const daysInMonth = new Date(year, month, 0).getDate();
+    this.attendanceService.getAttendanceByEmployeeId(empId).subscribe({
+      next: (data: any) => {
+        const attendanceList = Array.isArray(data) ? data : data.body;
 
-          const monthAttendance: any[] = [];
-
-          for (let day = 1; day <= daysInMonth; day++) {
-            const currentDate = new Date(Date.UTC(year, month - 1, day));
-            const formattedDate = currentDate.toISOString().split('T')[0];
-
-            const record = attendanceList.find(
-              (a: any) => a.date === formattedDate
-            );
-
-            const isSunday = currentDate.getUTCDay() === 0;
-            const isFutureDate = currentDate > today;
-
-            let status = '-';
-            if (isSunday) status = 'Holiday';
-            else if (record) status = 'Present';
-            else if (formattedDate === today.toISOString().split('T')[0])
-              status = 'Pending';
-            else if (!isFutureDate) status = 'Absent';
-            else status = 'No Status';
-            monthAttendance.push({
-              date: formattedDate,
-              entryTime:
-                record?.entryTime && record.entryTime !== '00:00:00'
-                  ? record.entryTime
-                  : '-',
-              remarks: record?.remarks || '-',
-              status,
-            });
+        // 🔥 FIX: Get joining date from API response
+        const firstRecord = attendanceList[0];
+        let joiningDateStr = "";
+        if (firstRecord?.user?.joiningDate) {
+          const jd = new Date(firstRecord.user.joiningDate);
+          if (!isNaN(jd.getTime())) {
+            joiningDateStr = jd.toISOString().split("T")[0];
           }
+        }
+        
 
-          this.employeeAttendance = monthAttendance;
-        },
-        error: (err) =>
-          console.error('❌ Error fetching user attendance:', err),
-      });
-    } else {
-      console.error('❌ Invalid employee ID:', empIdStr);
-    }
+        const today = new Date();
+        const daysInMonth = new Date(year, month, 0).getDate();
+
+        const monthAttendance: any[] = [];
+
+        for (let day = 1; day <= daysInMonth; day++) {
+          const currentDate = new Date(Date.UTC(year, month - 1, day));
+          const formattedDate = currentDate.toISOString().split("T")[0];
+
+          // 🔥 Filter days BEFORE joining date
+          if (joiningDateStr && formattedDate < joiningDateStr) continue;
+
+          const record = attendanceList.find(
+            (a: any) => a.date === formattedDate
+          );
+
+          const isSunday = currentDate.getUTCDay() === 0;
+          const isFutureDate = currentDate > today;
+
+          let status = "-";
+          if (isSunday) status = "Holiday";
+          else if (record) status = "Present";
+          else if (formattedDate === today.toISOString().split("T")[0])
+            status = "Pending";
+          else if (!isFutureDate) status = "Absent";
+          else status = "No Status";
+
+          monthAttendance.push({
+            date: formattedDate,
+            entryTime:
+              record?.entryTime && record.entryTime !== "00:00:00"
+                ? record.entryTime
+                : "-",
+            remarks: record?.remarks || "-",
+            status,
+          });
+        }
+
+        this.employeeAttendance = monthAttendance;
+      },
+      error: (err) => console.error("❌ Error fetching user attendance:", err),
+    });
+  } else {
+    console.error("❌ Invalid employee ID:", empIdStr);
   }
+}
+
 
   openDialog(empId?: number) {
     if (!empId) return;
@@ -191,10 +206,35 @@ export class AdminAttendanceComponent implements OnInit {
 
     this.selectedEmployee = this.employees.find((e) => e.employeeId === empId);
     this.selectedMonthName = monthName;
-
+  
     this.attendanceService.getAttendanceByEmployeeId(empId).subscribe({
       next: (data: any) => {
         const attendanceList = Array.isArray(data) ? data : data.body;
+        const firstRecord = attendanceList[0];
+let joiningDateStr = "";
+
+if (firstRecord?.user?.joiningDate) {
+  const jd = new Date(firstRecord.user.joiningDate);
+  if (!isNaN(jd.getTime())) {
+    joiningDateStr = jd.toISOString().split("T")[0];
+  }
+}
+// ❗ If selected month < joining month → show empty message
+if (this.isBeforeJoining(this.filterMonth, joiningDateStr)) {
+  this.employeeAttendance = [];  // <-- IMPORTANT
+
+  this.dialog.open(this.attendanceDialog, {
+    width: "95%",
+    maxWidth: "800px",
+    disableClose: false,
+    panelClass: "custom-dialog-container",
+    autoFocus: false
+  });
+  return;
+}
+
+
+
 
         const daysInMonth = new Date(+year, +month, 0).getDate();
         const today = new Date();
@@ -202,8 +242,16 @@ export class AdminAttendanceComponent implements OnInit {
         const monthAttendance: any[] = [];
 
         for (let day = 1; day <= daysInMonth; day++) {
-          const currentDate = new Date(Date.UTC(+year, +month - 1, day));
-          const formattedDate = currentDate.toISOString().split('T')[0];
+         const currentDate = new Date(+year, +month - 1, day);
+ const currentDateStr =
+    `${year}-${month}-${String(day).padStart(2, "0")}`;
+
+// Only apply filter if joining date is valid
+if (joiningDateStr && currentDateStr < joiningDateStr) continue;
+
+const formattedDate = currentDateStr;
+
+
 
           const record = attendanceList.find(
             (a: any) => a.date === formattedDate
@@ -247,6 +295,25 @@ export class AdminAttendanceComponent implements OnInit {
         console.error('❌ Error fetching employee attendance:', err),
     });
   }
+  closedialog(){
+    this.dialog.closeAll();
+
+  }
+  isBeforeJoining(selectedMonth: string, joiningDateStr: string): boolean {
+  if (!joiningDateStr) return false;
+
+  const [selYear, selMonth] = selectedMonth.split("-").map(Number);
+  const [joinYear, joinMonth] = joiningDateStr.split("-").map(Number);
+
+  // If selected year < joining year → invalid
+  if (selYear < joinYear) return true;
+
+  // If same year, but selected month < joining month → invalid
+  if (selYear === joinYear && selMonth < joinMonth) return true;
+
+  return false;
+}
+
 
   applyFilters(): void {
     if (this.isUser) {

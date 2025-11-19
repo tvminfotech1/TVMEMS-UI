@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { UserService } from '../user-service.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MainlayoutService } from 'src/app/services/main-layout.service';
+import { FormProgressService } from 'src/app/services/form-progress.service';
 
 @Component({
   selector: 'app-skills',
@@ -20,7 +21,8 @@ export class SkillsComponent implements OnInit {
     private userService: UserService,
     private router: Router,
     private mainlayoutService: MainlayoutService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+     private progressService :FormProgressService,
   ) {
     this.skillForm = this.formBuilder.group({
       skillName: [
@@ -107,6 +109,7 @@ export class SkillsComponent implements OnInit {
     if (this.skillList.length >= 1) {
       this.userService.setFormData('skills', this.skillList);
       this.mainlayoutService.markTabCompleted('skills', true);
+           this.progressService.markStepComplete(7);
       this.router.navigate(['/mainlayout/certificate']);
     } else {
       this.snackBar.open('Minimum 1 skills is required', 'Close', {
