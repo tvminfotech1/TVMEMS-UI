@@ -45,8 +45,8 @@ export class TimelogComponent implements OnInit {
 
   accordionStates: { [key: number]: boolean } = {};
 
-  isFormEnabled: boolean = false; // Enable/Disable for HTML
-  today: number = new Date().getDay();
+  isFormEnabled: boolean = false;
+  today: number = new Date().getDay();  
   timelog = {
     year: new Date().getFullYear(),
     month: "",
@@ -96,6 +96,7 @@ export class TimelogComponent implements OnInit {
     this.setCurrentWeek();
     this.resetEntry();
     this.loadTimelogs();
+    this.checkFormEnableCondition();
     this.loadWFH();
     this.loadApprovedLeaves();
   }
