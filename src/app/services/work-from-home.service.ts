@@ -8,8 +8,9 @@ import { AuthService } from './auth.service';
 })
 export class WorkFromHomeService {
   private baseUrl = 'http://localhost:8080/WFH';
+  private apiUrl = 'http://localhost:8080/Holiday';
 
-  constructor(private http: HttpClient, private authService: AuthService) {}
+  constructor(private http: HttpClient, private authService: AuthService) { }
 
   private getAuthHeaders(): HttpHeaders {
     const token = this.authService.getToken();
@@ -19,6 +20,11 @@ export class WorkFromHomeService {
     return new HttpHeaders({ Authorization: `Bearer ${token}` });
   }
 
+  getHolidays(): Observable<any> {
+    return this.http.get<any>(this.apiUrl, {
+      headers: this.getAuthHeaders(),
+    });
+  }
   getWfhRequestsByMonth(): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/all`, {
       headers: this.getAuthHeaders(),
@@ -81,5 +87,9 @@ export class WorkFromHomeService {
     return this.http.delete(`${this.baseUrl}/${id}`, {
       headers: this.getAuthHeaders(),
     });
+  }
+
+  getApp_Pen_EmployeeWfh(employeeId: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}/employee/${employeeId}/wfh`)
   }
 }

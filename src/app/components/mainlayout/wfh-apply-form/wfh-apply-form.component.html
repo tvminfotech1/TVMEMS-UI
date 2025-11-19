@@ -7,51 +7,21 @@
     <div class="popup">
       <div class="popup-content">
         <form class="form-grid" [formGroup]="wfhForm" (ngSubmit)="onSubmit()">
-          <mat-form-field
-            appearance="outline"
-            class="custom-form-field full-width"
-          >
+          <mat-form-field appearance="outline" class="custom-form-field full-width">
             <mat-label>Employee ID</mat-label>
-            <input
-              matInput
-              [value]="employeeId"
-              readonly
-              class="disabled-look"
-            />
+            <input matInput [value]="employeeId" readonly class="disabled-look" />
           </mat-form-field>
 
-          <mat-form-field
-            appearance="outline"
-            class="custom-form-field full-width"
-          >
+          <mat-form-field appearance="outline" class="custom-form-field full-width">
             <mat-label>Employee Name</mat-label>
-            <input
-              matInput
-              [value]="employeeName"
-              readonly
-              class="disabled-look"
-            />
+            <input matInput [value]="employeeName" readonly class="disabled-look" />
           </mat-form-field>
 
-          <mat-form-field
-            appearance="outline"
-            class="custom-form-field full-width"
-          >
+          <mat-form-field appearance="outline" class="custom-form-field full-width">
             <mat-label>From Date</mat-label>
-            <input
-              matInput
-              [matDatepicker]="fromPicker"
-              formControlName="fromDate"
-              [min]="today"
-              placeholder="DD-MM-YYYY"
-              required
-              (click)="fromPicker.open()"
-              readonly
-            />
-            <mat-datepicker-toggle
-              matSuffix
-              [for]="fromPicker"
-            ></mat-datepicker-toggle>
+            <input matInput [matDatepicker]="fromPicker" [matDatepickerFilter]="disableDates" formControlName="fromDate"
+              [min]="today" placeholder="DD-MM-YYYY" required (click)="fromPicker.open()" readonly />
+            <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
             <mat-datepicker #fromPicker></mat-datepicker>
 
             <mat-error *ngIf="wfhForm.get('fromDate')?.hasError('required')">
@@ -62,25 +32,12 @@
             </mat-error>
           </mat-form-field>
 
-          <mat-form-field
-            appearance="outline"
-            class="custom-form-field full-width"
-          >
+          <mat-form-field appearance="outline" class="custom-form-field full-width">
             <mat-label>To Date</mat-label>
-            <input
-              matInput
-              [matDatepicker]="toPicker"
-              formControlName="toDate"
-              [min]="wfhForm.get('fromDate')?.value || today"
-              placeholder="DD-MM-YYYY"
-              required
-              (click)="toPicker.open()"
-              readonly
-            />
-            <mat-datepicker-toggle
-              matSuffix
-              [for]="toPicker"
-            ></mat-datepicker-toggle>
+            <input matInput [matDatepicker]="toPicker" [matDatepickerFilter]="disableToDate" formControlName="toDate"
+              [min]="wfhForm.get('fromDate')?.value || today" placeholder="DD-MM-YYYY" required
+              (click)="toPicker.open()" readonly />
+            <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
             <mat-datepicker #toPicker></mat-datepicker>
 
             <mat-error *ngIf="wfhForm.get('toDate')?.hasError('required')">
@@ -91,18 +48,10 @@
             </mat-error>
           </mat-form-field>
 
-          <mat-form-field
-            appearance="outline"
-            class="custom-form-field full-width"
-          >
+          <mat-form-field appearance="outline" class="custom-form-field full-width">
             <mat-label>Reason</mat-label>
-            <textarea
-              matInput
-              rows="4"
-              formControlName="reason"
-              placeholder="Enter reason for WFH..."
-              required
-            ></textarea>
+            <textarea matInput rows="4" formControlName="reason" placeholder="Enter reason for WFH..."
+              required></textarea>
 
             <mat-error *ngIf="wfhForm.get('reason')?.hasError('required')">
               Reason is required.
@@ -115,20 +64,10 @@
             </mat-error>
           </mat-form-field>
 
-          <mat-form-field
-            appearance="outline"
-            class="custom-form-field full-width"
-          >
+          <mat-form-field appearance="outline" class="custom-form-field full-width">
             <mat-label>Approver</mat-label>
-            <input
-              matInput
-              type="text"
-              formControlName="approver"
-              placeholder="Enter approver's name"
-              class="input-padding"
-              (keydown)="blockApproverInput($event)"
-              required
-            />
+            <input matInput type="text" formControlName="approver" placeholder="Enter approver's name"
+              class="input-padding" (keydown)="blockApproverInput($event)" required />
             <mat-error *ngIf="wfhForm.get('approver')?.hasError('required')">
               Approver is required.
             </mat-error>
@@ -142,12 +81,7 @@
           </div>
 
           <div class="full-width">
-            <button
-              type="submit"
-              class="update-button"
-              color="accent"
-              [disabled]="wfhForm.invalid"
-            >
+            <button type="submit" class="update-button" color="accent" [disabled]="wfhForm.invalid">
               Submit
             </button>
           </div>

@@ -19,21 +19,22 @@ export class WorkfromhomeComponent implements OnInit {
   approvalDetails: any[] = [];
   isProcessing: boolean = false;
   loadingStatus: { [key: number]: 'approve' | 'reject' | null } = {};
-
   canApplyWfh: boolean = true;
 
   constructor(
     private authservice: AuthService,
     private wfhService: WorkFromHomeService,
     private snackBar: MatSnackBar
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.isAdmin = this.authservice.isAdmin();
     this.isUser = this.authservice.isUser();
     this.refreshRequests();
-    this.fetchAllApprovalRequests();
     this.fetchAllWfhRequests();
+    if(this.isAdmin){
+      this.fetchAllApprovalRequests();
+    }
   }
 
   getMonthName(): string {
@@ -96,29 +97,37 @@ export class WorkfromhomeComponent implements OnInit {
     return new Date(dt.getFullYear(), dt.getMonth(), dt.getDate());
   }
 
+  private calculateWorkingDaysExcludingSundays(fromDate: Date, toDate: Date): number {
+    if (!fromDate || !toDate) return 0;
+    let count = 0;
+    const current = new Date(fromDate);
+    while (current <= toDate) {
+      if (current.getDay() !== 0) {
+        count++;
+      }
+      current.setDate(current.getDate() + 1);
+    }
+    return count;
+  }
+
+
   fetchUserWfhRequests(employeeId: number) {
     this.wfhService
       .getRequestByMonthAndYear(employeeId, this.currentMonthIndex + 1, this.year)
       .subscribe({
         next: (response) => {
           let requests = response.body || [];
-
           for (const req of requests) {
             const fromLocal = this.parseDateOnly(req.fromDate);
             const toLocal = this.parseDateOnly(req.toDate);
-
             req.fromNextDay = fromLocal;
             req.toNextDay = toLocal;
-
             if (fromLocal && toLocal) {
-              const diffTime = toLocal.getTime() - fromLocal.getTime();
-              req.days = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1;
+              req.days = this.calculateWorkingDaysExcludingSundays(fromLocal, toLocal);
             } else {
               req.days = 0;
             }
           }
-
-
           requests = requests.sort(
             (a: any, b: any) =>
               new Date(b.created).getTime() - new Date(a.created).getTime()
@@ -142,22 +151,12 @@ export class WorkfromhomeComponent implements OnInit {
     this.wfhService.getWfhAllApprovalRequests().subscribe({
       next: (response) => {
         this.approvalDetails = response?.body || response || [];
-
         for (const req of this.approvalDetails) {
           const from = new Date(req.fromDate);
           const to = new Date(req.toDate);
-
-          const fromNextDay = new Date(from);
-          fromNextDay.setDate(from.getDate() + 1);
-          req.fromNextDay = fromNextDay;
-
-          const toNextDay = new Date(to);
-          toNextDay.setDate(to.getDate() + 1);
-          req.toNextDay = toNextDay;
-
-          const diffTime = to.getTime() - from.getTime();
-          const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1; // inclusive count
-          req.days = diffDays;
+          req.fromNextDay = from;
+          req.toNextDay = to;
+          req.days = this.calculateWorkingDaysExcludingSundays(from, to);
         }
 
         if (this.isAdmin) {
@@ -190,20 +189,10 @@ export class WorkfromhomeComponent implements OnInit {
           for (const req of allRequests) {
             const from = new Date(req.fromDate);
             const to = new Date(req.toDate);
-
-            const fromNextDay = new Date(from);
-            fromNextDay.setDate(from.getDate() + 1);
-            req.fromNextDay = fromNextDay;
-
-            const toNextDay = new Date(to);
-            toNextDay.setDate(to.getDate() + 1);
-            req.toNextDay = toNextDay;
-
-            const diffTime = to.getTime() - from.getTime();
-            const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1; // inclusive count
-            req.days = diffDays;
+            req.fromNextDay = from;
+            req.toNextDay = to;
+            req.days = this.calculateWorkingDaysExcludingSundays(from, to);
           }
-
           this.details = allRequests.filter((r: any) => r.status === 'pending');
 
           this.approvedRequests = allRequests
@@ -228,14 +217,12 @@ export class WorkfromhomeComponent implements OnInit {
   isInCurrentMonthView(request: any): boolean {
     const from = new Date(request.fromDate);
     const to = new Date(request.toDate);
-
     const fromLocal = new Date(
       from.getFullYear(),
       from.getMonth(),
       from.getDate()
     );
     const toLocal = new Date(to.getFullYear(), to.getMonth(), to.getDate());
-
     const startOfMonth = new Date(this.year, this.currentMonthIndex, 1);
     const endOfMonth = new Date(this.year, this.currentMonthIndex + 1, 0);
 
@@ -247,10 +234,8 @@ export class WorkfromhomeComponent implements OnInit {
     newStatus: 'approved' | 'rejected' | 'pending'
   ): void {
     if (!this.isAdmin) return;
-
     this.loadingStatus[request.requestId] =
       newStatus === 'approved' ? 'approve' : 'reject';
-
     const updatedRequest = {
       ...request,
       status: newStatus,
@@ -263,10 +248,8 @@ export class WorkfromhomeComponent implements OnInit {
         );
         this.fetchAllApprovalRequests();
         this.refreshRequests();
-
         this.snackBar.open(
-          `WFH Request ${
-            request.requestId
+          `WFH Request ${request.requestId
           } status updated to ${newStatus.toUpperCase()}`,
           'Close',
           {
@@ -302,7 +285,6 @@ export class WorkfromhomeComponent implements OnInit {
 
   onFormSubmitted(newRequest: any) {
     this.showApplyForm = false;
-
     if (newRequest) {
       this.details.unshift(newRequest);
 
