@@ -84,6 +84,9 @@ export class EducationComponent implements OnInit {
   }
 
   ngOnInit(): void {
+      this.educationForm.get('educationType')?.valueChanges.subscribe(value => {
+    this.userService.setEducationType(value);
+  });
     const savedData = this.userService.getFormData('education');
     if (savedData) {
       this.educationForm.patchValue(savedData);
