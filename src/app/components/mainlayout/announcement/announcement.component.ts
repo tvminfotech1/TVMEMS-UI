@@ -59,12 +59,24 @@ export class AnnouncementComponent implements OnInit {
     this.showModal = true;
   }
 
+  // openEditModal(announcement: any) {
+  //   this.isEditMode = true;
+  //   this.selectedId = announcement.id;
+  //   this.announcementForm.patchValue(announcement);
+  //   this.showModal = true;
+  // }
   openEditModal(announcement: any) {
-    this.isEditMode = true;
-    this.selectedId = announcement.id;
-    this.announcementForm.patchValue(announcement);
-    this.showModal = true;
-  }
+  this.isEditMode = true;
+  this.selectedId = announcement.id;
+  const dateOnly = announcement.date.includes('T')
+    ? announcement.date.split('T')[0]
+    : announcement.date;
+  this.announcementForm.patchValue({
+    ...announcement,
+    date: new Date(dateOnly)
+  });
+  this.showModal = true;
+}
   formatTimeToAmPm(time: string): string {
     if (!time) return '';
     const [hour, minute] = time.split(':').map(Number);
@@ -72,6 +84,7 @@ export class AnnouncementComponent implements OnInit {
     const hour12 = hour % 12 || 12;
     return `${hour12}:${minute.toString().padStart(2, '0')} ${ampm}`;
   }
+  
 
   deleteAnnouncement(id: number) {
     if (confirm('Are you sure you want to delete this announcement?')) {
@@ -81,23 +94,52 @@ export class AnnouncementComponent implements OnInit {
     }
   }
 
+  // submitForm() {
+  //   if (this.announcementForm.invalid) return;
+
+  //   const data = this.announcementForm.value;
+
+  //   if (this.isEditMode && this.selectedId) {
+  //     this.announcementService.update(this.selectedId, data).subscribe(() => {
+  //       this.loadAnnouncements();
+  //       this.closeModal();
+  //     });
+  //   } else {
+  //     this.announcementService.create(data).subscribe(() => {
+  //       this.loadAnnouncements();
+  //       this.closeModal();
+  //     });
+  //   }
+  // }
+
   submitForm() {
-    if (this.announcementForm.invalid) return;
+  if (this.announcementForm.invalid) return;
 
-    const data = this.announcementForm.value;
+  const formValue = this.announcementForm.value;
 
-    if (this.isEditMode && this.selectedId) {
-      this.announcementService.update(this.selectedId, data).subscribe(() => {
-        this.loadAnnouncements();
-        this.closeModal();
-      });
-    } else {
-      this.announcementService.create(data).subscribe(() => {
-        this.loadAnnouncements();
-        this.closeModal();
-      });
-    }
+  const dateObj = formValue.date; 
+  const yyyy = dateObj.getFullYear();
+  const mm = String(dateObj.getMonth() + 1).padStart(2, '0');
+  const dd = String(dateObj.getDate()).padStart(2, '0');
+  const finalDate = `${yyyy}-${mm}-${dd}`;   
+
+  const data = {
+    ...formValue,
+    date: finalDate  
+  };
+
+  if (this.isEditMode && this.selectedId) {
+    this.announcementService.update(this.selectedId, data).subscribe(() => {
+      this.loadAnnouncements();
+      this.closeModal();
+    });
+  } else {
+    this.announcementService.create(data).subscribe(() => {
+      this.loadAnnouncements();
+      this.closeModal();
+    });
   }
+}
 
   closeModal(): void {
     this.showModal = false;

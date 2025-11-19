@@ -10,6 +10,7 @@ import {
 import { UserService } from '../user-service.service';
 import { Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
+import { FormProgressService } from 'src/app/services/form-progress.service';
 
 @Component({
   templateUrl: './final.component.html',
@@ -23,7 +24,8 @@ export class FinalComponent {
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private userService: UserService
+    private userService: UserService,
+     private progressService :FormProgressService,
   ) {
     this.declarationForm = this.fb.group({
       checked: [false, Validators.requiredTrue],
@@ -54,6 +56,8 @@ export class FinalComponent {
 
   submitForm(): void {
     this.userService.setFormData('aFinal', this.declarationForm.value);
+         this.progressService.markStepComplete(11);
+
 
     if (!this.userService.isAllFormsValid()) {
       const incompleteSteps = this.userService.getInvalidSteps();
