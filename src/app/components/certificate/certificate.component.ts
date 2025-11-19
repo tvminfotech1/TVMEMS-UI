@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { UserService } from '../user-service.service';
 import { Router } from '@angular/router';
 import { MainlayoutService } from 'src/app/services/main-layout.service';
+import { FormProgressService } from 'src/app/services/form-progress.service';
 
 @Component({
   selector: 'app-certificate',
@@ -20,7 +21,8 @@ export class CertificateComponent {
     private formBuilder: FormBuilder,
     private router: Router,
     private userService: UserService,
-    private mainlayoutService: MainlayoutService
+    private mainlayoutService: MainlayoutService,
+     private progressService :FormProgressService,
   ) {
     this.certificateForm = this.formBuilder.group({
       certificateName: ['', Validators.required],
@@ -94,10 +96,11 @@ export class CertificateComponent {
   }
 
   finalSubmit(): void {
-    if (this.certificateList.length > 0) {
+    if (this.certificateList.length >=0) {
       this.userService.setFormData('certification', this.certificateList);
-      this.router.navigate(['/mainlayout/document']);
+           this.progressService.markStepComplete(8);
       this.mainlayoutService.markTabCompleted('certificate', true);
+       this.router.navigate(['/mainlayout/document']);
     } else {
       this.userService.setFormData('certification', this.certificateList);
       this.mainlayoutService.markTabCompleted('certificate', true);

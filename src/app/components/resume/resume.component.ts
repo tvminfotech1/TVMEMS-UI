@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { UserService } from '../user-service.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MainlayoutService } from 'src/app/services/main-layout.service';
+import { FormProgressService } from 'src/app/services/form-progress.service';
 
 @Component({
   selector: 'app-resume',
@@ -20,7 +21,8 @@ export class ResumeComponent implements OnInit {
     private http: HttpClient,
     private userService: UserService,
     private snackBar: MatSnackBar,
-    private mainlayoutService: MainlayoutService
+    private mainlayoutService: MainlayoutService,
+     private progressService :FormProgressService,
   ) {}
 
   ngOnInit(): void {
@@ -42,8 +44,9 @@ export class ResumeComponent implements OnInit {
   submitForm() {
     if (this.resumeForm.valid) {
       this.userService.setFormData('resume', this.resumeForm.value);
-      this.router.navigate(['/mainlayout/final']);
+           this.progressService.markStepComplete(10);
       this.mainlayoutService.markTabCompleted('resume', true);
+            this.router.navigate(['/mainlayout/final']);
     } else {
       this.snackBar.open('Please fill all required fields', 'Close', {
         duration: 3000,

@@ -19,7 +19,7 @@
     <ng-container *ngIf="!isAdmin">
       <h2 class="page-title">Leave Details</h2>
       <div class="date-range">
-        <span class="date-text">{{ formatDateRange2() }}</span>
+        <span class="date-text">{{ leavemonth() }}</span>
         <input
           type="date"
           [(ngModel)]="selectedDate"
@@ -73,7 +73,6 @@
         </div>
 
         <div class="table-controls top-controls">
-          <!-- <div *ngIf="isAdmin" class="date-range-inline"> -->
             <div class="date-range-inline">
             <div class="center-date">
               <span class="material-icons icon-btn" (click)="goToPreviousMonth()" title="Previous Month">
@@ -101,8 +100,6 @@
               style="display: none"
             />
           </div>
-
-
 
           <input
             type="text"
@@ -279,9 +276,6 @@
               <mat-select formControlName="leaveType">
                 <mat-option value="Casual Leave">Casual Leave</mat-option>
                 <mat-option value="Sick Leave">Sick Leave</mat-option>
-                <mat-option value="Leave without Pay"
-                  >Leave without Pay</mat-option
-                >
               </mat-select>
               <mat-error
                 *ngIf="leaveForm.get('leaveType')?.hasError('required')"

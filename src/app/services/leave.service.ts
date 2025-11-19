@@ -1,7 +1,6 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { catchError, Observable, throwError } from 'rxjs';
-
+import { Injectable } from "@angular/core";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { Observable } from "rxjs";
 
 export interface UserInfo {
   fullName: string;
@@ -27,48 +26,51 @@ export interface newLeaveRequest {
   status: string;
   totalDays: number;
   duration?: string;
-  // user?: { employeeId: number };
-  user?: UserInfo;   // << UPDATED PROPERLY
+  user?: UserInfo;
 }
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class LeaveService {
-  private apiUrl = 'http://localhost:8080/api/leave-requests';
+  private apiUrl = "http://localhost:8080/api/leave-requests";
+  private API_URL = "http://localhost:8080/Holiday";
 
   constructor(private http: HttpClient) {}
 
   private getAuthHeaders(): HttpHeaders {
-    const token = sessionStorage.getItem('token');
+    const token = sessionStorage.getItem("token");
     return new HttpHeaders({
       Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     });
   }
-  updateLeaveStatus(id: number, status: 'APPROVED' | 'REJECTED'): Observable<any> {
-    // Send an empty body because your backend only needs query param
-    return this.http.put(`${this.apiUrl}/admin/${id}/status?status=${status}`, {}, {
-      headers: this.getAuthHeaders()
+  updateLeaveStatus(
+    id: number,
+    status: "APPROVED" | "REJECTED"
+  ): Observable<any> {
+    return this.http.put(
+      `${this.apiUrl}/admin/${id}/status?status=${status}`,
+      {},
+      {
+        headers: this.getAuthHeaders(),
+      }
+    );
+  }
+  getHolidays(): Observable<any> {
+    return this.http.get<any>(this.API_URL, {
+      headers: this.getAuthHeaders(),
     });
   }
-//for user
-//   getLeaveByEmployeeId(employeeId: number): Observable<newLeaveRequest[]> {
-//   return this.http.get<newLeaveRequest[]>(
-//     `${this.apiUrl}/employee/${employeeId}`,
-//     { headers: this.getAuthHeaders() }
-//   );
-// }
 
-
-getLeaveByEmployeeId(employeeId: number): Observable<{ body: newLeaveRequest[] }> {
-  return this.http.get<{ body: newLeaveRequest[] }>(
-    `${this.apiUrl}/employee/${employeeId}`,
-    { headers: this.getAuthHeaders() }
-  );
-}
-  /** Get all leave requests (for logged-in user or admin) */
-  // for admin
+  getLeaveByEmployeeId(
+    employeeId: number
+  ): Observable<{ body: newLeaveRequest[] }> {
+    return this.http.get<{ body: newLeaveRequest[] }>(
+      `${this.apiUrl}/employee/${employeeId}`,
+      { headers: this.getAuthHeaders() }
+    );
+  }
   getAllLeaveRequests(): Observable<newLeaveRequest[]> {
     return this.http.get<newLeaveRequest[]>(`${this.apiUrl}/leaves`, {
       headers: this.getAuthHeaders(),
@@ -112,10 +114,9 @@ getLeaveByEmployeeId(employeeId: number): Observable<{ body: newLeaveRequest[] }
   }
 
   checkLeave(empId: number, date: string): Observable<{ body: boolean }> {
-  return this.http.get<{ body: boolean }>(
-    `${this.apiUrl}/check-leave-status/${empId}?date=${date}`,
-    { headers: this.getAuthHeaders() }
-  );
-}
-
+    return this.http.get<{ body: boolean }>(
+      `${this.apiUrl}/check-leave-status/${empId}?date=${date}`,
+      { headers: this.getAuthHeaders() }
+    );
+  }
 }

@@ -9,6 +9,7 @@ import { UserService } from '../user-service.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MainlayoutService } from 'src/app/services/main-layout.service';
+import { FormProgressService } from 'src/app/services/form-progress.service';
 
 export function fileRequired(
   control: AbstractControl
@@ -32,7 +33,8 @@ export class DocumentComponent {
     private userService: UserService,
     private snackBar: MatSnackBar,
     private router: Router,
-    private mainlayoutService: MainlayoutService
+    private mainlayoutService: MainlayoutService,
+     private progressService :FormProgressService,
   ) {
     this.documentForm = this.fb.group({
       panCard: [null, fileRequired],
@@ -137,8 +139,10 @@ export class DocumentComponent {
         }
       });
       this.userService.setUploadDoc('documents', formData);
-      this.router.navigate(['/mainlayout/resume']);
+           this.progressService.markStepComplete(9);
+      
       this.mainlayoutService.markTabCompleted('document', true);
+      this.router.navigate(['/mainlayout/resume']);
     } else {
       this.snackBar.open('Please upload all the documents', 'Close', {
         duration: 3000,

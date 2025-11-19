@@ -12,6 +12,7 @@ import { MatCheckboxChange } from '@angular/material/checkbox';
 import { Subscription } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MainlayoutService } from 'src/app/services/main-layout.service';
+import { FormProgressService } from 'src/app/services/form-progress.service';
 
 export function minimumAgeValidator(minAge: number) {
   return (control: AbstractControl): ValidationErrors | null => {
@@ -50,7 +51,9 @@ export class PersonalComponent implements OnInit {
     private userService: UserService,
     private router: Router,
     private snackBar: MatSnackBar,
-    private mainLayoutService: MainlayoutService
+    private mainLayoutService: MainlayoutService,
+     private progressService: FormProgressService,
+  
   ) {
     this.userForm = this.formBuilder.group({
       fname: [
@@ -303,6 +306,7 @@ allowTenDigitNumber(event: KeyboardEvent): void {
       };
 
       this.userService.setFormData('personal', formValue);
+       this.progressService.markStepComplete(1);
       this.mainLayoutService.markTabCompleted('personal', true);
       this.router.navigate(['/mainlayout/kyc']);
     } else {
