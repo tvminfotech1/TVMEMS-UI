@@ -59,12 +59,24 @@ export class AnnouncementComponent implements OnInit {
     this.showModal = true;
   }
 
+  // openEditModal(announcement: any) {
+  //   this.isEditMode = true;
+  //   this.selectedId = announcement.id;
+  //   this.announcementForm.patchValue(announcement);
+  //   this.showModal = true;
+  // }
   openEditModal(announcement: any) {
-    this.isEditMode = true;
-    this.selectedId = announcement.id;
-    this.announcementForm.patchValue(announcement);
-    this.showModal = true;
-  }
+  this.isEditMode = true;
+  this.selectedId = announcement.id;
+  const dateOnly = announcement.date.includes('T')
+    ? announcement.date.split('T')[0]
+    : announcement.date;
+  this.announcementForm.patchValue({
+    ...announcement,
+    date: new Date(dateOnly)
+  });
+  this.showModal = true;
+}
   formatTimeToAmPm(time: string): string {
     if (!time) return '';
     const [hour, minute] = time.split(':').map(Number);
@@ -72,6 +84,7 @@ export class AnnouncementComponent implements OnInit {
     const hour12 = hour % 12 || 12;
     return `${hour12}:${minute.toString().padStart(2, '0')} ${ampm}`;
   }
+  
 
   deleteAnnouncement(id: number) {
     if (confirm('Are you sure you want to delete this announcement?')) {
