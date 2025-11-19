@@ -1,14 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from "@angular/core";
 import {
   FormBuilder,
   FormGroup,
   Validators,
   AbstractControl,
-} from '@angular/forms';
-import { AuthService } from 'src/app/services/auth.service';
-import { LeaveService, newLeaveRequest } from 'src/app/services/leave.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { UserInfo } from 'src/app/services/leave.service';
+} from "@angular/forms";
+import { AuthService } from "src/app/services/auth.service";
+import { LeaveService, newLeaveRequest } from "src/app/services/leave.service";
+import { MatSnackBar } from "@angular/material/snack-bar";
 
 interface LeaveBalance {
   leaveType: string;
@@ -16,182 +15,149 @@ interface LeaveBalance {
   used: number;
   carryOver: number;
 }
+interface Holiday {
+  id: number;
+  name: string;
+  date: string;
+  day_Name: string;
+}
 
 @Component({
-  selector: 'app-leave',
-  templateUrl: './leave.component.html',
-  styleUrls: ['./leave.component.css'],
+  selector: "app-leave",
+  templateUrl: "./leave.component.html",
+  styleUrls: ["./leave.component.css"],
 })
 export class LeaveComponent implements OnInit {
   isAdmin = false;
   isUser = false;
-  employeeId = '';
+  employeeId = "";
   showApplyLeaveModal = false;
   showCompOffModal = false;
-  activeTab: 'leave' | 'compoff' = 'leave';
-  // joiningDate: Date | null = null;
+  activeTab: "leave" | "compoff" = "leave";
 
   leaveForm!: FormGroup;
 
   leaveList: newLeaveRequest[] = [];
   filteredRequests: newLeaveRequest[] = [];
-  // compOffList: AddCompoffLeave[] = [];
-
-leaveRequests: newLeaveRequest[] = [];
-joiningDate!: Date;  // store employee joining date
-
-  sortColumn: keyof newLeaveRequest | '' = '';
-  sortKey: string = '';
-  sortDirection: 'asc' | 'desc' = 'asc';
-  searchTerm = '';
-  statusFilter = '';
+  holidays: Date[] = [];
+  fixedmonth: Date = new Date();
+  leaveRequests: newLeaveRequest[] = [];
+  joiningDate!: Date;
+  currentUserId: string = "";
+  sortColumn: keyof newLeaveRequest | "" = "";
+  sortKey: string = "";
+  sortDirection: "asc" | "desc" = "asc";
+  searchTerm = "";
+  statusFilter = "";
   currentPage = 1;
   itemsPerPage = 5;
 
   leaveBalances: LeaveBalance[] = [
-    { leaveType: 'Casual Leave', total: 12, used: 0, carryOver: 0 },
-    { leaveType: 'Sick Leave', total: 10, used: 0, carryOver: 0 },
+    { leaveType: "Casual Leave", total: 12, used: 0, carryOver: 0 },
+    { leaveType: "Sick Leave", total: 10, used: 0, carryOver: 0 },
   ];
 
   leaveCards: any[] = [];
-selectedDate: Date = new Date(); 
-selectedDate2: Date = new Date(); 
+  selectedDate: Date = new Date();
 
   constructor(
     private fb: FormBuilder,
     private leaveService: LeaveService,
     private authService: AuthService,
-
     private snackBar: MatSnackBar
   ) {}
   private lastUpdatedMonth = new Date().getMonth();
 
-//  ngOnInit(): void {
-//   const token = this.authService.getToken();
-//   if (!token) {
-//     this.authService.logout();
-//     return;
-//   }
-
-//   this.employeeId = this.authService.getEmployeeId() || '';
-//   this.isAdmin = this.authService.isAdmin();
-//   this.isUser = this.authService.isUser();
-
-//   this.initForms();
-//   this.loadLeaves(); // after this, filters will apply
-//   this.checkYearEndReset();
-
-//   // Always start with current month
-//   const today = new Date();
-//   this.selectedDate = new Date(today.getFullYear(), today.getMonth(), 1);
-
-//   // Delay to ensure leaveList is loaded
-//   setTimeout(() => {
-//     this.applyFilters2();
-//   }, 100);
-
-//   this.updateLeaveCards();
-
-//   // Daily leave balance check
-//   setInterval(() => {
-//     const currentMonth = new Date().getMonth();
-//     if (currentMonth !== this.lastUpdatedMonth) {
-//       this.lastUpdatedMonth = currentMonth;
-//       this.calculateLeaveBalances();
-//     }
-//   }, 86400000);
-// }
-
-ngOnInit(): void {
-  const token = this.authService.getToken();
-  if (!token) {
-    this.authService.logout();
-    return;
-  }
-
-  this.employeeId = this.authService.getEmployeeId() || '';
-  this.isAdmin = this.authService.isAdmin();
-  this.isUser = this.authService.isUser();
-
-  if (this.employeeId) {
-    this.leaveService.getLeaveByEmployeeId(Number(this.employeeId)).subscribe({
-      next: (res) => {
-
-        // Extract first record
-        const first = res.body?.[0];
-
-        if (first && first.user && first.user.joiningDate) {
-          this.joiningDate = new Date(first.user.joiningDate);
-          console.log("Joining Date:", this.joiningDate);
-        }
-
-        // Load leaves after joining date is set
-        this.leaveRequests = res.body || [];
-        this.processLeaveResponse(this.leaveRequests);
-      },
-      error: (err) => {
-        console.error("Failed to fetch joining date", err);
-      }
-    });
-
-    this.loadLeaves()
-  }
-
-  this.initForms();
-  this.checkYearEndReset();
-
-  // Always start with the current month
-  const today = new Date();
-  this.selectedDate = new Date(today.getFullYear(), today.getMonth(), 1);
-
-  setTimeout(() => this.applyFilters2(), 200);
-
-  this.updateLeaveCards();
-  
-  setInterval(() => {
-    const currentMonth = new Date().getMonth();
-    if (currentMonth !== this.lastUpdatedMonth) {
-      this.lastUpdatedMonth = currentMonth;
-      this.calculateLeaveBalances();
+  ngOnInit(): void {
+    const token = this.authService.getToken();
+    if (!token) {
+      this.authService.logout();
+      return;
     }
-  }, 86400000);
-}
+    this.employeeId = this.authService.getEmployeeId() || "";
+    this.isAdmin = this.authService.isAdmin();
+    this.isUser = this.authService.isUser();
+    this.currentUserId = String(
+      this.authService.getEmployeeId() ??
+        localStorage.getItem("employeeId") ??
+        ""
+    );
+
+    this.loadHolidays();
+    if (this.employeeId) {
+      this.leaveService
+        .getLeaveByEmployeeId(Number(this.employeeId))
+        .subscribe({
+          next: (res) => {
+            const first = res.body?.[0];
+
+            if (first && first.user && first.user.joiningDate) {
+              this.joiningDate = new Date(first.user.joiningDate);
+            }
+            this.leaveRequests = res.body || [];
+            this.processLeaveResponse(this.leaveRequests);
+          },
+          error: (err) => {
+            console.error("Failed to fetch joining date", err);
+          },
+        });
+
+      this.loadLeaves();
+    }
+
+    this.initForms();
+    this.checkYearEndReset();
+    const today = new Date();
+    this.selectedDate = new Date(today.getFullYear(), today.getMonth(), 1);
+
+    setTimeout(() => this.applyFilters(), 200);
+
+    this.updateLeaveCards();
+
+    setInterval(() => {
+      const currentMonth = new Date().getMonth();
+      if (currentMonth !== this.lastUpdatedMonth) {
+        this.lastUpdatedMonth = currentMonth;
+        this.calculateLeaveBalances();
+      }
+    }, 86400000);
+  }
 
   private initForms(): void {
     this.leaveForm = this.fb.group({
-      leaveType: ['', Validators.required],
+      leaveType: ["", Validators.required],
       employeeId: [
         { value: this.employeeId, disabled: !this.isAdmin },
-        [],
+        this.isAdmin
+          ? [
+              Validators.required,
+              Validators.minLength(6),
+              Validators.maxLength(6),
+            ]
+          : [],
       ],
       startDate: [null, Validators.required],
       endDate: [
         null,
         [Validators.required, this.endDateAfterStartDateValidator.bind(this)],
       ],
-      reason: ['', [Validators.required, Validators.minLength(5)]],
+      reason: ["", [Validators.required, Validators.minLength(5)]],
     });
 
-    this.leaveForm.get('startDate')?.valueChanges.subscribe(() => {
-      this.leaveForm.get('endDate')?.updateValueAndValidity();
+    this.leaveForm.get("startDate")?.valueChanges.subscribe(() => {
+      this.leaveForm.get("endDate")?.updateValueAndValidity();
     });
   }
 
-
- loadLeaves(): void {
-  const obs = this.isAdmin
-    ? this.leaveService.getAllLeaveRequests()
-    : this.leaveService.getMyLeaveRequests();
-
-  obs.subscribe({
-    next: (res: newLeaveRequest[]) => {
-      this.leaveRequests = res;
-      this.processLeaveResponse(this.leaveRequests);
-    },
-    error: err => console.error(err)
-  });
-}
-
+  loadLeaves(): void {
+    const obs = this.isAdmin
+      ? this.leaveService.getAllLeaveRequests()
+      : this.leaveService.getMyLeaveRequests();
+    obs.subscribe({
+      next: (res) => this.processLeaveResponse(res),
+      error: (err) => console.error("Error fetching leave requests:", err),
+    });
+  }
 
   private processLeaveResponse(res: any): void {
     const data: any[] = res?.body ?? [];
@@ -209,9 +175,9 @@ ngOnInit(): void {
         status: this.formatStatus(l.status),
         duration: `${totalDays} days`,
         totalDays,
-
-        user:
-          l.user ?? (l.employeeId ? { employeeId: l.employeeId } : undefined),
+        user: {
+          employeeId: l.user?.employeeId ?? l.employeeId,
+        },
       } as newLeaveRequest;
     });
 
@@ -221,180 +187,181 @@ ngOnInit(): void {
   }
 
   onSubmit(): void {
-  this.leaveForm.markAllAsTouched();
+    this.leaveForm.markAllAsTouched();
 
-  if (!this.leaveForm.valid) {
-    this.snackBar.open('Please fill all required fields', 'Close', {
-      duration: 3000,
-      horizontalPosition: 'center',
-      verticalPosition: 'top',
-      panelClass: ['error-snackbar'],
-    });
-    return;
-  }
-
-  const formValue = this.leaveForm.getRawValue();
-  const leaveType = formValue.leaveType;
-
-  let selectedEmployeeId: number;
-  
-  // Admin CANNOT apply leave for themselves
-  if (this.isAdmin) {
-    selectedEmployeeId = Number(formValue.employeeId);
-
-    if (selectedEmployeeId === Number(this.employeeId)) {
-      this.snackBar.open(
-        'Admin cannot apply leave for themselves.',
-        'Close',
-        {
-          duration: 3000,
-          horizontalPosition: 'center',
-          verticalPosition: 'top',
-          panelClass: ['error-snackbar'],
-        }
-      );
-      return;
-    }
-
-    if (!selectedEmployeeId) {
-      this.snackBar.open('Please enter a valid Employee ID', 'Close', {
+    if (!this.leaveForm.valid) {
+      this.snackBar.open("Please fill all required fields", "Close", {
         duration: 3000,
-        horizontalPosition: 'center',
-        verticalPosition: 'top',
-        panelClass: ['error-snackbar'],
+        horizontalPosition: "center",
+        verticalPosition: "top",
+        panelClass: ["error-snackbar"],
       });
       return;
     }
-  } else {
-    // Normal employees → always apply for themselves
-    selectedEmployeeId = Number(this.employeeId);
-  }
 
-  const startDate: Date = formValue.startDate;
-  const endDate: Date = formValue.endDate;
+    const formValue = this.leaveForm.getRawValue();
+    const leaveType = formValue.leaveType;
 
-  const formatDate = (d: Date) => {
-    const y = d.getFullYear();
-    const m = String(d.getMonth() + 1).padStart(2, '0');
-    const day = String(d.getDate()).padStart(2, '0');
-    return `${y}-${m}-${day}`;
-  };
+    let selectedEmployeeId: number;
+    if (this.isAdmin) {
+      selectedEmployeeId = Number(formValue.employeeId);
+      if (!selectedEmployeeId) {
+        this.snackBar.open("Please enter a valid Employee ID", "Close", {
+          duration: 3000,
+          horizontalPosition: "center",
+          verticalPosition: "top",
+          panelClass: ["error-snackbar"],
+        });
+        return;
+      }
+      if (selectedEmployeeId === Number(this.isAdmin)) {
+        this.snackBar.open(
+          "Admins cannot apply leave for themselves.",
+          "Close",
+          {
+            duration: 3000,
+            horizontalPosition: "center",
+            verticalPosition: "top",
+            panelClass: ["error-snackbar"],
+          }
+        );
+        return;
+      }
+    } else {
+      selectedEmployeeId = Number(this.employeeId);
+    }
 
-  const startDateStr = formatDate(startDate);
-  const endDateStr = formatDate(endDate);
-  const totalDays = this.calculateDays(startDate, endDate);
+    const startDate: Date = formValue.startDate;
+    const endDate: Date = formValue.endDate;
 
-  const leaveBalance = this.leaveBalances.find(
-    (lb) => lb.leaveType === leaveType
-  );
-  if (leaveBalance) {
-    const available =
-      leaveBalance.total - leaveBalance.used + leaveBalance.carryOver;
-    if (available < totalDays) {
+    const formatDate = (d: Date) => {
+      const y = d.getFullYear();
+      const m = String(d.getMonth() + 1).padStart(2, "0");
+      const day = String(d.getDate()).padStart(2, "0");
+      return `${y}-${m}-${day}`;
+    };
+
+    const startDateStr = formatDate(startDate);
+    const endDateStr = formatDate(endDate);
+    const totalDays = this.calculateDays(startDate, endDate);
+
+    const leaveBalance = this.leaveBalances.find(
+      (lb) => lb.leaveType === leaveType
+    );
+    if (leaveBalance) {
+      const available =
+        leaveBalance.total - leaveBalance.used + leaveBalance.carryOver;
+      if (available < totalDays) {
+        this.snackBar.open(
+          `You only have ${available} ${leaveType} days available, cannot apply for ${totalDays} days.`,
+          "Close",
+          {
+            duration: 4000,
+            horizontalPosition: "center",
+            verticalPosition: "top",
+            panelClass: ["error-snackbar"],
+          }
+        );
+        return;
+      }
+    }
+    const sameMonthConflict = this.leaveList.some((l) => {
+      if (l.user?.employeeId !== selectedEmployeeId) return false;
+      const existingStart = new Date(l.startDate);
+      const sameType = l.leaveType === leaveType;
+      const sameMonth =
+        existingStart.getMonth() === startDate.getMonth() &&
+        existingStart.getFullYear() === startDate.getFullYear();
+      const isRejected = (l.status || "").toLowerCase() === "rejected";
+      return sameType && sameMonth && !isRejected;
+    });
+
+    if (sameMonthConflict) {
       this.snackBar.open(
-        `You only have ${available} ${leaveType} days available, cannot apply for ${totalDays} days.`,
-        'Close',
+        `You already have applied ${leaveType} for this month.`,
+        "Close",
         {
           duration: 4000,
-          horizontalPosition: 'center',
-          verticalPosition: 'top',
-          panelClass: ['error-snackbar'],
+          horizontalPosition: "center",
+          verticalPosition: "top",
+          panelClass: ["error-snackbar"],
         }
       );
       return;
     }
+
+    const overlappingConflict = this.leaveList.some((l) => {
+      if (l.user?.employeeId !== selectedEmployeeId) return false;
+
+      const normalize = (d: Date) =>
+        new Date(d.getFullYear(), d.getMonth(), d.getDate());
+      const start = normalize(new Date(startDate));
+      const end = normalize(new Date(endDate));
+      const existingStart = normalize(new Date(l.startDate));
+      const existingEnd = normalize(new Date(l.endDate));
+
+      const overlaps = start <= existingEnd && end >= existingStart;
+      const isRejected = (l.status || "").toLowerCase() === "rejected";
+
+      return overlaps && !isRejected;
+    });
+
+    if (overlappingConflict) {
+      this.snackBar.open(
+        "You already have a pending or approved leave for these dates.",
+        "Close",
+        {
+          duration: 4000,
+          horizontalPosition: "center",
+          verticalPosition: "top",
+          panelClass: ["error-snackbar"],
+        }
+      );
+      return;
+    }
+
+    const newLeave: newLeaveRequest = {
+      id: undefined,
+      leaveType,
+      startDate: startDateStr,
+      endDate: endDateStr,
+      reason: formValue.reason,
+      status: "Pending",
+      totalDays,
+      duration: `${totalDays} days`,
+      user: {
+        employeeId: selectedEmployeeId,
+        fullName: "",
+        mobile: "",
+        email: "",
+        aadhar: "",
+      } as any,
+    };
+
+    this.leaveService.createLeaveRequest(newLeave).subscribe({
+      next: (savedLeave) => {
+        this.loadLeaves();
+        this.snackBar.open("Leave applied successfully", "Close", {
+          duration: 3000,
+          horizontalPosition: "center",
+          verticalPosition: "top",
+          panelClass: ["success-snackbar"],
+        });
+        this.closeApplyLeaveModal();
+        this.resetApplyLeaveForm();
+        this.calculateLeaveBalances();
+      },
+      error: (err) => {
+        console.error("Error applying leave:", err);
+        this.snackBar.open("please enter a valid employee Id", "Close", {
+          duration: 3000,
+          horizontalPosition: "center",
+          verticalPosition: "top",
+          panelClass: ["error-snackbar"],
+        });
+      },
+    });
   }
-
-  const sameMonthConflict = this.leaveList.some((l) => {
-    if (l.user?.employeeId !== selectedEmployeeId) return false;
-    const existingStart = new Date(l.startDate);
-    const sameType = l.leaveType === leaveType;
-    const sameMonth =
-      existingStart.getMonth() === startDate.getMonth() &&
-      existingStart.getFullYear() === startDate.getFullYear();
-    const isRejected = (l.status || '').toLowerCase() === 'rejected';
-    return sameType && sameMonth && !isRejected;
-  });
-
-  if (sameMonthConflict) {
-    this.snackBar.open(
-      `You already have applied ${leaveType} for this month.`,
-      'Close',
-      {
-        duration: 4000,
-        horizontalPosition: 'center',
-        verticalPosition: 'top',
-        panelClass: ['error-snackbar'],
-      }
-    );
-    return;
-  }
-
-  const overlappingConflict = this.leaveList.some((l) => {
-    if (l.user?.employeeId !== selectedEmployeeId) return false;
-
-    const normalize = (d: Date) =>
-      new Date(d.getFullYear(), d.getMonth(), d.getDate());
-    const start = normalize(new Date(startDate));
-    const end = normalize(new Date(endDate));
-    const existingStart = normalize(new Date(l.startDate));
-    const existingEnd = normalize(new Date(l.endDate));
-
-    const overlaps = start <= existingEnd && end >= existingStart;
-    const isRejected = (l.status || '').toLowerCase() === 'rejected';
-
-    return overlaps && !isRejected;
-  });
-
-  if (overlappingConflict) {
-    this.snackBar.open(
-      'You already have a pending or approved leave for these dates.',
-      'Close',
-      {
-        duration: 4000,
-        horizontalPosition: 'center',
-        verticalPosition: 'top',
-        panelClass: ['error-snackbar'],
-      }
-    );
-    return;
-  }
-
-  const newLeave: newLeaveRequest = {
-    id: undefined,
-    leaveType,
-    startDate: startDateStr,
-    endDate: endDateStr,
-    reason: formValue.reason,
-    status: 'Pending',
-    totalDays,
-    duration: `${totalDays} days`,
-    employeeId: selectedEmployeeId,
-  };
-
-  this.leaveService.createLeaveRequest(newLeave).subscribe({
-    next: () => {
-      this.loadLeaves();
-      this.snackBar.open('Leave applied successfully', 'Close', {
-        duration: 3000,
-        horizontalPosition: 'center',
-        verticalPosition: 'top',
-        panelClass: ['success-snackbar'],
-      });
-      this.closeApplyLeaveModal();
-      this.resetApplyLeaveForm();
-      this.calculateLeaveBalances();
-    },
-    error: () => {
-      this.snackBar.open('please enter a valid employee Id', 'Close', {
-        duration: 3000,
-        horizontalPosition: 'center',
-        verticalPosition: 'top',
-        panelClass: ['error-snackbar'],
-      });
-    },
-  });
-}
 
   calculateDays(start: string | Date, end: string | Date): number {
     const s = start instanceof Date ? start : new Date(start);
@@ -404,13 +371,21 @@ ngOnInit(): void {
 
   approveRequest(id?: number): void {
     if (!id) return;
+    const request = this.leaveList.find((l) => l.id === id);
+    if (
+      request &&
+      String(request.user?.employeeId) === String(this.currentUserId)
+    ) {
+      alert("You cannot approve or reject your own leave request.");
+      return;
+    }
 
-    this.leaveService.updateLeaveStatus(id, 'APPROVED').subscribe({
+    this.leaveService.updateLeaveStatus(id, "APPROVED").subscribe({
       next: () => {
         const request = this.leaveList.find((l) => l.id === id);
         if (!request) return;
 
-        request.status = 'Approved';
+        request.status = "Approved";
 
         const balance = this.leaveBalances.find(
           (lb) => lb.leaveType === request.leaveType
@@ -419,23 +394,32 @@ ngOnInit(): void {
         this.calculateLeaveBalances();
         this.updateLeaveCards();
         this.applyFilters();
+        this.loadLeaves();
       },
-      error: (err) => console.error('Error approving leave:', err),
+      error: (err) => console.error("Error approving leave:", err),
     });
   }
 
   rejectRequest(id?: number): void {
     if (!id) return;
+    const request = this.leaveList.find((l) => l.id === id);
+    if (
+      request &&
+      String(request.user?.employeeId) === String(this.currentUserId)
+    ) {
+      alert("You cannot approve or reject your own leave request.");
+      return;
+    }
 
-    this.leaveService.updateLeaveStatus(id, 'REJECTED').subscribe({
+    this.leaveService.updateLeaveStatus(id, "REJECTED").subscribe({
       next: () => {
         const request = this.leaveList.find((l) => l.id === id);
-        if (request) request.status = 'Rejected';
-
-        this.calculateLeaveBalances();
+        if (request) request.status = "Rejected";
         this.applyFilters();
+        this.calculateLeaveBalances();
+        this.loadLeaves();
       },
-      error: (err) => console.error('Error rejecting leave:', err),
+      error: (err) => console.error("Error rejecting leave:", err),
     });
   }
 
@@ -445,7 +429,7 @@ ngOnInit(): void {
         .filter(
           (l) =>
             l.leaveType === lb.leaveType &&
-            l.status === 'Approved' &&
+            l.status === "Approved" &&
             (!this.isAdmin || l.user?.employeeId === Number(this.employeeId))
         )
         .reduce((sum, l) => sum + (l.totalDays ?? 0), 0);
@@ -460,26 +444,27 @@ ngOnInit(): void {
 
   resetApplyLeaveForm(): void {
     this.leaveForm.reset({
-      employeeId: this.isAdmin ? '' : this.employeeId,
+      employeeId: this.isAdmin ? "" : this.employeeId,
     });
   }
 
   endDateAfterStartDateValidator(control: AbstractControl) {
     if (!this.leaveForm) return null;
-    const start = this.leaveForm.get('startDate')?.value;
+    const start = this.leaveForm.get("startDate")?.value;
     const end = control.value;
     if (!start || !end) return null;
     return new Date(end) < new Date(start) ? { endBeforeStart: true } : null;
   }
 
   formatStatus(status: string): string {
-    const s = (status || '').toLowerCase();
-    if (s === 'pending') return 'Pending';
-    if (s === 'approved') return 'Approved';
-    if (s === 'rejected') return 'Rejected';
+    const s = (status || "").toLowerCase();
+    if (s === "pending") return "Pending";
+    if (s === "approved") return "Approved";
+    if (s === "rejected") return "Rejected";
     return status;
   }
 
+  // Leave Cards for user
   updateLeaveCards(): void {
     this.leaveCards = this.leaveBalances.map((lb) => {
       const available = lb.total - lb.used + lb.carryOver;
@@ -495,33 +480,40 @@ ngOnInit(): void {
     });
   }
 
+  private normalize(date: Date | string): Date {
+    const d = new Date(date);
+    d.setHours(0, 0, 0, 0);
+    return d;
+  }
+
   dateFilter = (date: Date | null): boolean => {
     if (!date) return false;
 
-    const leaveType = this.leaveForm.get('leaveType')?.value;
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    const leaveType = this.leaveForm.get("leaveType")?.value;
+    const today = this.normalize(new Date());
     const yesterday = new Date(today);
     yesterday.setDate(today.getDate() - 1);
 
     const maxDate = new Date(today);
     maxDate.setMonth(today.getMonth() + 6);
-    const isWeekend = date.getDay() === 0 || date.getDay() === 6;
 
-    const d = new Date(date);
-    d.setHours(0, 0, 0, 0);
+    const d = this.normalize(date);
+
+    const isHoliday = this.holidays.some(
+      (h) => this.normalize(h).getTime() === d.getTime()
+    );
+    if (isHoliday) return false;
+
+    const isWeekend = d.getDay() === 0 || d.getDay() === 6;
 
     switch (leaveType) {
-      case 'Sick Leave':
+      case "Sick Leave":
         return (
           d.getTime() === today.getTime() || d.getTime() === yesterday.getTime()
         );
 
-      case 'Casual Leave':
+      case "Casual Leave":
         return d >= today && d <= maxDate && !isWeekend;
-
-      case 'Leave without Pay':
-        return d >= today && d <= maxDate;
 
       default:
         return true;
@@ -531,27 +523,24 @@ ngOnInit(): void {
   endDateFilter = (date: Date | null): boolean => {
     if (!date) return false;
 
-    const leaveType = this.leaveForm.get('leaveType')?.value;
-    const startDateControl = this.leaveForm.get('startDate')?.value;
-    if (!startDateControl) return false;
+    const leaveType = this.leaveForm.get("leaveType")?.value;
+    const startDateValue = this.leaveForm.get("startDate")?.value;
+    if (!startDateValue) return false;
 
-    const normalize = (d: Date | string) => {
-      const nd = new Date(d);
-      nd.setHours(0, 0, 0, 0);
-      return nd;
-    };
-
-    const start = normalize(startDateControl);
-    const end = normalize(date);
+    const start = this.normalize(startDateValue);
+    const end = this.normalize(date);
 
     if (end.getDay() === 0) return false;
 
+    const isHoliday = this.holidays.some(
+      (h) => this.normalize(h).getTime() === end.getTime()
+    );
+    if (isHoliday) return false;
+
     let maxDays = 0;
     switch (leaveType) {
-      case 'Sick Leave':
-      case 'Casual Leave':
-      case 'Earned Leave':
-      case 'Leave without Pay':
+      case "Sick Leave":
+      case "Casual Leave":
         maxDays = 1;
         break;
       default:
@@ -562,44 +551,37 @@ ngOnInit(): void {
     maxEndDate.setDate(start.getDate() + (maxDays - 1));
     maxEndDate.setHours(0, 0, 0, 0);
 
-    return (
-      end.getTime() >= start.getTime() && end.getTime() <= maxEndDate.getTime()
-    );
+    return end >= start && end <= maxEndDate;
   };
 
   getLeaveIcon(type: string) {
     switch (type) {
-      case 'Casual Leave':
-        return 'fas fa-calendar-day';
-      case 'Sick Leave':
-        return 'fas fa-user-injured';
-      case 'Leave without Pay':
-        return 'fas fa-calendar-times';
+      case "Casual Leave":
+        return "fas fa-calendar-day";
+      case "Sick Leave":
+        return "fas fa-user-injured";
       default:
-        return 'fas fa-calendar';
+        return "fas fa-calendar";
     }
   }
 
   getLeaveColor(type: string) {
     switch (type) {
-      case 'Casual Leave':
-        return 'bg-info';
-      case 'Sick Leave':
-        return 'bg-warning';
-      case 'Leave without Pay':
-        return 'bg-danger';
+      case "Casual Leave":
+        return "bg-info";
+      case "Sick Leave":
+        return "bg-warning";
       default:
-        return 'bg-secondary';
+        return "bg-secondary";
     }
   }
   private checkYearEndReset(): void {
     const currentYear = new Date().getFullYear();
-    const storedYear = Number(sessionStorage.getItem('leaveLastResetYear'));
+    const storedYear = Number(localStorage.getItem("leaveLastResetYear"));
 
     if (storedYear !== currentYear) {
-      //  Reset all balances
       this.leaveBalances.forEach((lb) => {
-        lb.total = lb.leaveType === 'Casual Leave' ? 12 : 10;
+        lb.total = lb.leaveType === "Casual Leave" ? 12 : 10;
         lb.used = 0;
         lb.carryOver = 0;
       });
@@ -607,18 +589,18 @@ ngOnInit(): void {
       this.updateLeaveCards();
       this.calculateLeaveBalances();
 
-      sessionStorage.setItem('leaveLastResetYear', String(currentYear));
+      sessionStorage.setItem("leaveLastResetYear", String(currentYear));
     }
 
     setInterval(() => {
       const now = new Date();
       if (now.getMonth() === 0 && now.getDate() === 1) {
         const lastResetYear = Number(
-          sessionStorage.getItem('leaveLastResetYear')
+          localStorage.getItem("leaveLastResetYear")
         );
         if (lastResetYear !== now.getFullYear()) {
           this.leaveBalances.forEach((lb) => {
-            lb.total = lb.leaveType === 'Casual Leave' ? 12 : 10;
+            lb.total = lb.leaveType === "Casual Leave" ? 12 : 10;
             lb.used = 0;
             lb.carryOver = 0;
           });
@@ -626,75 +608,83 @@ ngOnInit(): void {
           this.updateLeaveCards();
           this.calculateLeaveBalances();
 
-        localStorage.setItem('leaveLastResetYear', String(now.getFullYear()));
-        console.log(' Leave balances auto-reset for new year:', now.getFullYear());
+          sessionStorage.setItem(
+            "leaveLastResetYear",
+            String(now.getFullYear())
+          );
+        }
       }
-    }
-  }, 86400000); // check once every 24 hours
-}
+    }, 86400000);
+  }
 
   /** ------------------- Modal Controls ------------------- */
-  openApplyLeaveModal(): void { this.resetApplyLeaveForm(); this.showApplyLeaveModal = true; }
-  closeApplyLeaveModal(): void { this.showApplyLeaveModal = false; }
+  openApplyLeaveModal(): void {
+    this.resetApplyLeaveForm();
+    this.showApplyLeaveModal = true;
+  }
+  closeApplyLeaveModal(): void {
+    this.showApplyLeaveModal = false;
+  }
 
-
-/** ------------------- Filtering, Sorting, Pagination ------------------- */
   applyFilters(): void {
-    const term = (this.searchTerm || '').toLowerCase().trim();
-    this.filteredRequests = this.leaveList.filter((r) => {
+    const term = (this.searchTerm || "").toLowerCase().trim();
+
+    const month = this.selectedDate.getMonth();
+    const year = this.selectedDate.getFullYear();
+
+    this.filteredRequests = this.leaveList.filter((req) => {
+      const d = new Date(req.startDate);
+      d.setHours(0, 0, 0, 0);
+      const matchesMonth = d.getMonth() === month && d.getFullYear() === year;
+      const matchesJoining = !this.joiningDate || d >= this.joiningDate;
       const matchesStatus = this.statusFilter
-        ? r.status === this.statusFilter
+        ? req.status.toLowerCase() === this.statusFilter.toLowerCase()
         : true;
+
       const matchesSearch =
         !term ||
         [
-          r.leaveType,
-          r.duration,
-          r.user?.employeeId,
-          r.reason,
-          r.status,
-          r.startDate,
-          r.endDate,
-        ].some((f) => String(f).toLowerCase().includes(term));
-      const matchesDate =
-        !this.selectedDate ||
-        (new Date(this.selectedDate) >= new Date(r.startDate) &&
-          new Date(this.selectedDate) <= new Date(r.endDate));
-      return matchesStatus && matchesSearch && matchesDate;
+          req.leaveType,
+          req.duration,
+          req.reason,
+          req.status,
+          req.startDate,
+          req.endDate,
+          req.user?.employeeId,
+        ].some((v) => String(v).toLowerCase().includes(term));
+
+      return matchesMonth && matchesJoining && matchesStatus && matchesSearch;
     });
 
     this.filteredRequests.sort((a, b) => {
-      if (a.status === 'Pending' && b.status !== 'Pending') return -1;
-      if (a.status !== 'Pending' && b.status === 'Pending') return 1;
+      if (a.status === "Pending" && b.status !== "Pending") return -1;
+      if (a.status !== "Pending" && b.status === "Pending") return 1;
       return 0;
     });
-
-    this.currentPage = 1;
     if (this.sortColumn) this.applySort();
+    this.currentPage = 1;
   }
 
   sortBy(key: string): void {
     if (this.sortKey === key) {
-      this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+      this.sortDirection = this.sortDirection === "asc" ? "desc" : "asc";
     } else {
       this.sortKey = key;
-      this.sortDirection = 'asc';
+      this.sortDirection = "asc";
     }
 
     this.paginatedRequests.sort((a: any, b: any) => {
       const getValue = (obj: any, path: string) =>
-        path.split('.').reduce((o, k) => (o ? o[k] : ''), obj);
+        path.split(".").reduce((o, k) => (o ? o[k] : ""), obj);
 
       const valA = getValue(a, key);
       const valB = getValue(b, key);
 
-    if (valA < valB) return this.sortDirection === 'asc' ? -1 : 1;
-    if (valA > valB) return this.sortDirection === 'asc' ? 1 : -1;
-    return 0;
-  });
-}
-
-
+      if (valA < valB) return this.sortDirection === "asc" ? -1 : 1;
+      if (valA > valB) return this.sortDirection === "asc" ? 1 : -1;
+      return 0;
+    });
+  }
 
   private applySort(): void {
     if (!this.sortColumn) return;
@@ -702,11 +692,11 @@ ngOnInit(): void {
     const dir = this.sortDirection;
 
     this.filteredRequests.sort((a, b) => {
-      if (a.status === 'Pending' && b.status !== 'Pending') return -1;
-      if (a.status !== 'Pending' && b.status === 'Pending') return 1;
+      if (a.status === "Pending" && b.status !== "Pending") return -1;
+      if (a.status !== "Pending" && b.status === "Pending") return 1;
 
-      const valA = a[col] ?? '';
-      const valB = b[col] ?? '';
+      const valA = a[col] ?? "";
+      const valB = b[col] ?? "";
 
       const aNum = parseFloat(valA as any);
       const bNum = parseFloat(valB as any);
@@ -722,13 +712,13 @@ ngOnInit(): void {
           .toLowerCase()
           .localeCompare(String(valB).toLowerCase());
 
-      return dir === 'asc' ? result : -result;
+      return dir === "asc" ? result : -result;
     });
   }
 
   getSortClass(column: string): string {
-    if (this.sortColumn !== column) return '';
-    return this.sortDirection === 'asc' ? 'sort-asc' : 'sort-desc';
+    if (this.sortColumn !== column) return "";
+    return this.sortDirection === "asc" ? "sort-asc" : "sort-desc";
   }
 
   get paginatedRequests(): newLeaveRequest[] {
@@ -749,29 +739,25 @@ ngOnInit(): void {
 
   getLeaveTypeBadgeClass(type?: string): string {
     switch (type) {
-      case 'Earned Leave':
-        return 'leave-type-badge leave-earned';
-      case 'Casual Leave':
-        return 'leave-type-badge leave-casual';
-      case 'Sick Leave':
-        return 'leave-type-badge leave-sick';
-      case 'Leave without Pay':
-        return 'leave-type-badge leave-compoff';
+      case "Earned Leave":
+        return "leave-type-badge leave-earned";
+      case "Sick Leave":
+        return "leave-type-badge leave-sick";
       default:
-        return 'leave-type-badge';
+        return "leave-type-badge";
     }
   }
 
   getStatusBadgeClass(status?: string): string {
     switch (status) {
-      case 'Approved':
-        return 'status-badge status-approved';
-      case 'Rejected':
-        return 'status-badge status-rejected';
-      case 'Pending':
-        return 'status-badge status-pending';
+      case "Approved":
+        return "status-badge status-approved";
+      case "Rejected":
+        return "status-badge status-rejected";
+      case "Pending":
+        return "status-badge status-pending";
       default:
-        return 'status-badge';
+        return "status-badge";
     }
   }
 
@@ -797,81 +783,81 @@ ngOnInit(): void {
     });
   }
 
-  switchTab(tab: 'leave' | 'compoff'): void {
+  switchTab(tab: "leave" | "compoff"): void {
     this.activeTab = tab;
-
     this.loadLeaves();
     this.calculateLeaveBalances();
     this.updateLeaveCards();
   }
-formatDateRange(): string {
-  const date = new Date(this.selectedDate);
-  const first = new Date(date.getFullYear(), date.getMonth(), 1);
-  const last = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+  formatDateRange(): string {
+    const date = new Date(this.selectedDate);
+    const first = new Date(date.getFullYear(), date.getMonth(), 1);
+    const last = new Date(date.getFullYear(), date.getMonth() + 1, 0);
 
-  const options: Intl.DateTimeFormatOptions = {
-    month: "short",
-    day: "numeric",
-    year: "numeric"
-  };
+    const options: Intl.DateTimeFormatOptions = {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    };
 
-  return `${first.toLocaleDateString('en-US', options)} - ${last.toLocaleDateString('en-US', options)}`;
-}
+    return `${first.toLocaleDateString(
+      "en-US",
+      options
+    )} - ${last.toLocaleDateString("en-US", options)}`;
+  }
+  leavemonth() {
+    const date = new Date(this.fixedmonth);
+    const first = new Date(date.getFullYear(), date.getMonth(), 1);
+    const last = new Date(date.getFullYear(), date.getMonth() + 1, 0);
 
-formatDateRange2(): string {
-  const date = new Date(this.selectedDate2);
-  const first = new Date(date.getFullYear(), date.getMonth(), 1);
-  const last = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+    const options: Intl.DateTimeFormatOptions = {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    };
 
-  const options: Intl.DateTimeFormatOptions = {
-    month: "short",
-    day: "numeric",
-    year: "numeric"
-  };
-
-  return `${first.toLocaleDateString('en-US', options)} - ${last.toLocaleDateString('en-US', options)}`;
-}
-
-goToPreviousMonth(): void {
-  const date = new Date(this.selectedDate);
-  date.setMonth(date.getMonth() - 1);
-
-  // Prevent going before joining month
-  if (this.joiningDate && (date < new Date(this.joiningDate.getFullYear(), this.joiningDate.getMonth(), 1))) {
-    return; // block going before joining month
+    return `${first.toLocaleDateString(
+      "en-US",
+      options
+    )} - ${last.toLocaleDateString("en-US", options)}`;
   }
 
-  this.selectedDate = date;
-  this.applyFilters2();
-}
+  goToPreviousMonth(): void {
+    const d = new Date(this.selectedDate);
+    d.setMonth(d.getMonth() - 1);
 
-goToNextMonth(): void {
-  const date = new Date(this.selectedDate);
-  date.setMonth(date.getMonth() + 1);
+    if (this.joiningDate) {
+      const limit = new Date(
+        this.joiningDate.getFullYear(),
+        this.joiningDate.getMonth(),
+        1
+      );
+      if (d < limit) return;
+    }
 
-  this.selectedDate = date;
-  this.applyFilters2();   // refresh UI
-}
+    this.selectedDate = d;
+    this.applyFilters();
+  }
 
-applyFilters2(): void {
-  const month = this.selectedDate.getMonth();
-  const year = this.selectedDate.getFullYear();
+  goToNextMonth(): void {
+    const d = new Date(this.selectedDate);
+    d.setMonth(d.getMonth() + 1);
 
-  this.filteredRequests = this.leaveList.filter(req => {
-    const d = new Date(req.startDate);
-    d.setHours(0, 0, 0, 0);
+    this.selectedDate = d;
+    this.applyFilters();
+  }
 
-    // Check month/year
-    const isMonthYearMatch = d.getMonth() === month && d.getFullYear() === year;
-
-    // Check if date is on/after joining date
-    const isAfterJoining = !this.joiningDate || d >= this.joiningDate;
-
-    return isMonthYearMatch && isAfterJoining;
-  });
-
-  this.currentPage = 1;
-}
-
-
+  loadHolidays() {
+    this.leaveService.getHolidays().subscribe({
+      next: (res: Holiday[]) => {
+        this.holidays = res
+          .map((h: Holiday) => {
+            const d = new Date(h.date);
+            return isNaN(d.getTime()) ? null : d;
+          })
+          .filter((d): d is Date => d !== null);
+      },
+      error: (err) => console.error("Holiday load failed", err),
+    });
+  }
 }
