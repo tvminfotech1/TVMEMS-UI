@@ -71,7 +71,13 @@ export class GoalComponent implements OnInit {
   joiningDate: Date | null = null;
   selectedDate: Date = new Date();
   joiningMonth!: number;       // 0–11 (0 = Jan, 11 = Dec)
-  joiningYear!: number; 
+  joiningYear!: number;
+  requireDueDate: boolean = false;
+  pendingDueGoal: any = null; // the goal that has startDate but no dueDate
+  previousStartDate: string | null = null;
+  goalBackup: any = null;
+
+
 
 
   constructor(
@@ -80,7 +86,7 @@ export class GoalComponent implements OnInit {
     private userlistService: UserlistService,
     private goalService: GoalService,
     private dialog: MatDialog
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.isAdmin = this.authService.isAdmin();
@@ -99,31 +105,37 @@ export class GoalComponent implements OnInit {
     });
 
 
-if (this.employeeId) {
-    this.goalService.getGoalByUserid(Number(this.employeeId)).subscribe({
-      next: (res) => {
+    if (this.isUser) {
+      this.goalService.getGoalByUserid(Number(this.employeeId)).subscribe({
+        next: (res) => {
 
-        const first = res.body?.[0];
+          const first = res.body?.[0];
 
-        if (first && first.user && first.user.joiningDate) {
-          this.joiningDate = new Date(first.user.joiningDate);
-           this.joiningMonth = this.joiningDate.getMonth(); // 0-11
-      this.joiningYear = this.joiningDate.getFullYear(); // 4-digit year
-        // this.selectedYear=this.joiningYear;
+          if (first && first.user && first.user.joiningDate) {
+            this.joiningDate = new Date(first.user.joiningDate);
+            this.joiningMonth = this.joiningDate.getMonth(); // 0-11
+            this.joiningYear = this.joiningDate.getFullYear(); // 4-digit year
+            // this.selectedYear=this.joiningYear;
 
-        this.loadArchivedGoals();
-    this.allUser();
-    this.fetchGoals();
-    this.updateDateRangeLabel();
-    this.filterEmployeesByGoalMonth();
+            this.loadArchivedGoals();
+            // this.allUser();
+            // this.fetchGoals();
+
+            this.filterEmployeesByGoalMonth();
+          }
+        },
+        error: (err) => {
+          console.error("Failed to fetch joining date", err);
         }
-      },
-      error: (err) => {
-        console.error("Failed to fetch joining date", err);
-      }
-    });
+      });
+    }
+    if (this.isAdmin) {
+      this.allUser();
+      this.updateDateRangeLabel();
+      // this.fetchGoals();
+    }
   }
-  }
+
 
   fetchGoals() {
     this.goalService.getGoals().subscribe((data) => {
@@ -139,49 +151,49 @@ if (this.employeeId) {
   }
 
   previousYear() {
-  if (this.selectedYear > this.joiningYear) {
-    this.selectedYear--;
-    this.filterGoalsByYear();
+    if (this.selectedYear > this.joiningYear) {
+      this.selectedYear--;
+      this.filterGoalsByYear();
 
-     if (this.selectedYear === this.joiningYear && this.selectedDate.getMonth() < this.joiningMonth) {
-      this.selectedDate.setMonth(this.joiningMonth);
+      if (this.selectedYear === this.joiningYear && this.selectedDate.getMonth() < this.joiningMonth) {
+        this.selectedDate.setMonth(this.joiningMonth);
+      }
+
     }
 
   }
 
-}
-
-nextYear() {
-  if (this.selectedYear < this.currentYear) {
-    this.selectedYear++;
-    this.filterGoalsByYear();
+  nextYear() {
+    if (this.selectedYear < this.currentYear) {
+      this.selectedYear++;
+      this.filterGoalsByYear();
+    }
   }
-}
 
   isNextDisabled(): boolean {
-  return this.selectedYear === this.currentYear;
-}
-
-isPreviousDisabled(): boolean {
-  return this.selectedYear === this.joiningYear;
-}
-
-isMonthSelectable(index: number): boolean {
-  if (!this.joiningDate) return true; 
-
-  const month = index; 
-  const year = this.selectedYear;
-
-  if (year === this.joiningYear) {
-    return month >= this.joiningMonth;
+    return this.selectedYear === this.currentYear;
   }
 
-  if (year > this.joiningYear && year <= this.currentYear) {
-    return true;
+  isPreviousDisabled(): boolean {
+    return this.selectedYear === this.joiningYear;
   }
 
-  return false;
-}
+  isMonthSelectable(index: number): boolean {
+    if (!this.joiningDate) return true;
+
+    const month = index;
+    const year = this.selectedYear;
+
+    if (year === this.joiningYear) {
+      return month >= this.joiningMonth;
+    }
+
+    if (year > this.joiningYear && year <= this.currentYear) {
+      return true;
+    }
+
+    return false;
+  }
 
 
   getPosition(index: number) {
@@ -197,20 +209,20 @@ isMonthSelectable(index: number): boolean {
     };
   }
 
- allUser(): void{
-      this.userlistService.getAllUser().subscribe({
-        next:(response) => {
+  allUser(): void {
+    this.userlistService.getAllUser().subscribe({
+      next: (response) => {
 
-         const allUsers = response.body || [];
+        const allUsers = response.body || [];
 
-       
+
         this.employees = allUsers.filter((user: any) =>
           user.role?.toLowerCase() !== 'admin' &&
           user.email?.toLowerCase() !== this.currentUserEmail?.toLowerCase()
         );
 
-       // this.filteredEmployees = [...this.employees];
-       this.filterEmployeesByGoalMonth();
+        // this.filteredEmployees = [...this.employees];
+        this.filterEmployeesByGoalMonth();
       },
       error: (err) => {
         console.error('❌ Error fetching users', err);
@@ -251,10 +263,25 @@ isMonthSelectable(index: number): boolean {
   }
 
   closeGoalPopup(): void {
+    if (this.pendingDueGoal) {
+      this.goalService.updateGoal(this.pendingDueGoal.id, this.goalBackup).subscribe({
+        next: () => {
+          alert("You cannot close this modal until a due date is set!");
+          this.pendingDueGoal = null;
+          this.goalBackup = null;
+          this.showGoalPopup = true;
+        },
+        error: (err) => console.error("Error reverting goal", err)
+      });
+      return;
+    }
     this.showGoalPopup = false;
     this.selectedMonth = null;
     this.selectedMonthGoals = [];
   }
+
+
+
 
   goBack(): void {
     this.currentView = 'goalType';
@@ -264,7 +291,9 @@ isMonthSelectable(index: number): boolean {
     if (confirm('Are you sure you want to delete this goal?')) {
       this.goalService.deleteGoal(goal.id).subscribe(
         () => {
-          this.goals = this.goals.filter((g) => g.id !== goal.id);
+          this.archivedGoals = this.archivedGoals.filter(g => g.id !== goal.id);
+          this.allGoals = this.allGoals.filter(g => g.id !== goal.id);
+          this.completedGoals = this.completedGoals.filter(g => g.id !== goal.id);
           alert('Goal deleted successfully!');
         },
         (error) => {
@@ -303,17 +332,32 @@ isMonthSelectable(index: number): boolean {
   }
 
   startGoal(goal: any) {
-    if (goal.startDate) {
-      return;
-    }
-
+    if (goal.startDate) return;
+    this.goalBackup = { ...goal };
     goal.startDate = new Date().toISOString().split('T')[0];
     goal.isStarted = true;
-    goal.isEditing = false;
+
+    if (!goal.dueDate) {
+      this.pendingDueGoal = goal;
+      alert("You must set a due date for this goal before closing the modal!");
+      this.showGoalPopup = true;
+    } else {
+      this.saveGoalToBackend(goal);
+    }
+  }
+
+  saveGoalToBackend(goal: any) {
     this.goalService.updateGoal(goal.id, goal).subscribe({
-      next: () => {},
+      next: () => {
+        console.log("Goal saved successfully");
+        this.pendingDueGoal = null;
+        this.goalBackup = null;
+      },
       error: (err) => {
-        console.error('Error saving start date', err);
+        console.error("Error saving goal", err);
+        Object.assign(goal, this.goalBackup); // revert from backup
+        this.pendingDueGoal = null;
+        this.goalBackup = null;
       },
     });
   }
@@ -326,15 +370,17 @@ isMonthSelectable(index: number): boolean {
 
   validateDueDate(goal: any) {
     const today = new Date().toISOString().split('T')[0];
-    if (goal.dueDate < today) {
-      goal.isOverdue = true;
-    } else {
+    if (!goal.dueDate) {
       goal.isOverdue = false;
     }
+    const due = new Date(goal.dueDate).toISOString().split('T')[0];
+
+
+    goal.isOverdue = due < today;
   }
 
   isOverDue(goal: any) {
-    return goal.isOverdue;
+    return !!goal.isOverdue;
   }
 
   submitGoal(): void {
@@ -493,6 +539,15 @@ isMonthSelectable(index: number): boolean {
     this.goalService.getAllGoals().subscribe({
       next: (res) => {
         this.allGoals = res.body || [];
+        this.allGoals.forEach((g: any) => {
+          if (g.dueDate) {
+            g.isDueDateLocked = true;
+            this.validateDueDate(g);
+          } else {
+            g.isDueDateLocked = false;
+          }
+        });
+
         this.archivedGoals = this.allGoals.filter(
           (g: any) => g.status !== 'Completed'
         );
@@ -507,17 +562,18 @@ isMonthSelectable(index: number): boolean {
   }
 
   onDueDateChange(goal: any, event: any) {
-    const selectedDate = event.value
-      ? event.value.toISOString().split('T')[0]
-      : null;
-    if (!confirm('Do you want to save this due date?')) {
-      goal.dueDate = this.previousDueDate;
-      return;
+    const selected = new Date(event.value);
+    selected.setMinutes(selected.getMinutes() - selected.getTimezoneOffset());
+    if (!selected) return;
+    goal.dueDate = selected.toISOString().split("T")[0];
+    if (this.pendingDueGoal && this.pendingDueGoal.id === goal.id) {
+      this.pendingDueGoal = null;
+      this.previousStartDate = null;
     }
-    goal.dueDate = selectedDate;
     goal.isDueDateLocked = true;
+    this.validateDueDate(goal);
     this.goalService.updateGoal(goal.id, goal).subscribe({
-      next: (res) => {},
+      next: (res) => { goal.isDueDateLocked = true; },
       error: (err) => {
         console.error('Error saving due date', err);
       },
@@ -559,16 +615,16 @@ isMonthSelectable(index: number): boolean {
 
   goToPreviousMonth(): void {
     const date = new Date(this.selectedDate);
-  date.setMonth(date.getMonth() - 1);
+    date.setMonth(date.getMonth() - 1);
 
-  // Prevent going before joining month
-  if (this.joiningDate && 
+    // Prevent going before joining month
+    if (this.joiningDate &&
       date < new Date(this.joiningDate.getFullYear(), this.joiningDate.getMonth(), 1)) {
-    return; 
-  }
+      return;
+    }
 
-  this.selectedDate = date;
-  this.fetchGoals();
+    this.selectedDate = date;
+    this.fetchGoals();
     this.currentDate.setMonth(this.currentDate.getMonth() - 1);
     this.updateDateRangeLabel();
     this.filterEmployeesByGoalMonth();
@@ -654,7 +710,7 @@ isMonthSelectable(index: number): boolean {
             });
           }
         },
-        error: () => {},
+        error: () => { },
       });
     });
   }
