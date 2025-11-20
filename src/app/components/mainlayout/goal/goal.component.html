@@ -7,8 +7,7 @@
           <button
             type="button"
             (click)="goToGoalType()"
-            style="background-color: #3f51b5; color: #fff"
-          >
+            style="background-color: #3f51b5; color: #fff">
             Add Goal
           </button>
         </div>
@@ -17,21 +16,21 @@
         <div class="year-circle">
           <div class="year-navigation">
             <span class="year-label">
-              <button class="year-btn" (click)="previousYear()" [disabled]="isPreviousDisabled()">&lt;</button>
+              <button class="year-btn" (click)="previousYear()"
+                [disabled]="isPreviousDisabled()">&lt;</button>
               🎯{{ selectedYear }} Goals
               <button
                 class="year-btn"
                 (click)="nextYear()"
-                [disabled]="isNextDisabled()"
-              >
+                [disabled]="isNextDisabled()">
                 &gt;
-              </button></span
-            >
+              </button></span>
           </div>
 
-          <div *ngFor="let month of months; let i = index" class="month-node" [ngStyle]="getPosition(i)"
-            [class.disabled]="!isMonthSelectable(i)" 
-     (click)="isMonthSelectable(i) ? selectMonth(month) : null">
+          <div *ngFor="let month of months; let i = index" class="month-node"
+            [ngStyle]="getPosition(i)"
+            [class.disabled]="!isMonthSelectable(i)"
+            (click)="isMonthSelectable(i) ? selectMonth(month) : null">
             <div class="month-circle">
               {{ month }}
             </div>
@@ -49,16 +48,16 @@
 
             <div class="goal-row">
               <div class="goal-col">
-                <span><strong>Start:</strong> {{ goal.startDate || "—" }}</span
-                ><br />
-                <span><strong>Due:</strong> {{ goal.dueDate || "—" }}</span
-                ><br />
-                <span><strong>End:</strong> {{ goal.endDate || "—" }}</span>
+                <span><strong>Start:</strong> {{
+                  goal.startDate|date:'dd-MM-yyyy' || "—" }}</span><br />
+                <span><strong>Due:</strong> {{ goal.dueDate |date:'dd-MM-yyyy'
+                  || "—" }}</span><br />
+                <span><strong>End:</strong> {{ goal.endDate |date:'dd-MM-yyyy'
+                  || "—" }}</span>
               </div>
 
               <div class="goal-col">
-                <span><strong>Description</strong></span
-                ><br />
+                <span><strong>Description</strong></span><br />
                 <p class="goal-description-month">{{ goal.description }}</p>
               </div>
 
@@ -70,8 +69,7 @@
                     cy="60"
                     [attr.r]="radius"
                     stroke-width="12"
-                    fill="none"
-                  ></circle>
+                    fill="none"></circle>
                   <circle
                     class="fg"
                     cx="60"
@@ -82,14 +80,12 @@
                     [attr.stroke-dasharray]="circumference"
                     [attr.stroke-dashoffset]="
                       getOffset(getProgressValue(goal.progress))
-                    "
-                  ></circle>
+                    "></circle>
                   <text
                     x="60"
                     y="68"
                     class="progress-text"
-                    text-anchor="middle"
-                  >
+                    text-anchor="middle">
                     {{ getProgressValue(goal.progress) }}%
                   </text>
                 </svg>
@@ -122,9 +118,9 @@
                 <h4 class="goal-description">{{ goal.description }}</h4>
 
                 <div class="goal-dates">
-                  <p>Start: {{ goal.startDate || "—" }}</p>
-                  <p>Due: {{ goal.dueDate || "—" }}</p>
-                  <p>End: {{ goal.endDate || "—" }}</p>
+                  <p>Start: {{ goal.startDate | date:'dd-MM-yyyy'|| "—" }}</p>
+                  <p>Due: {{ goal.dueDate | date:'dd-MM-yyyy' || "—" }}</p>
+                  <p>End: {{ goal.endDate | date:'dd-MM-yyyy'|| "—" }}</p>
                 </div>
 
                 <div class="progress-circle-wrapper">
@@ -135,8 +131,7 @@
                       cy="60"
                       [attr.r]="radius"
                       stroke-width="12"
-                      fill="none"
-                    ></circle>
+                      fill="none"></circle>
                     <circle
                       class="fg"
                       cx="60"
@@ -147,14 +142,12 @@
                       [attr.stroke-dasharray]="circumference"
                       [attr.stroke-dashoffset]="
                         getOffset(getProgressValue(goal.progress))
-                      "
-                    ></circle>
+                      "></circle>
                     <text
                       x="60"
                       y="68"
                       class="progress-text"
-                      text-anchor="middle"
-                    >
+                      text-anchor="middle">
                       {{ getProgressValue(goal.progress) }}%
                     </text>
                   </svg>
@@ -190,16 +183,14 @@
 
     <div
       *ngIf="currentView === 'newGoal'"
-      class="new-goal mat-elevation-z4 p-6 rounded-lg bg-white max-w-lg mx-auto"
-    >
+      class="new-goal mat-elevation-z4 p-6 rounded-lg bg-white max-w-lg mx-auto">
       <div class="newGoal-content" *ngIf="isUser">
         <button class="close-btn" (click)="goClose()">&#10006;</button>
 
         <form
           [formGroup]="goalForm"
           (ngSubmit)="submitGoal()"
-          class="space-y-4"
-        >
+          class="space-y-4">
           <h3 class="text-center mb-4 text-primary">Add New Goal</h3>
 
           <mat-form-field appearance="outline" class="w-full">
@@ -213,8 +204,7 @@
               *ngIf="
                 goalForm.get('category')?.touched &&
                 goalForm.get('category')?.invalid
-              "
-            >
+              ">
               Category is required
             </mat-error>
           </mat-form-field>
@@ -225,18 +215,15 @@
               matInput
               formControlName="description"
               maxlength="35"
-              placeholder="Enter goal description"
-            />
-            <mat-hint align="end"
-              >{{ goalForm.get("description")?.value?.length || 0 }} /
-              35</mat-hint
-            >
+              placeholder="Enter goal description" />
+            <mat-hint align="end">{{ goalForm.get("description")?.value?.length
+              || 0 }} /
+              35</mat-hint>
             <mat-error
               *ngIf="
                 goalForm.get('description')?.touched &&
                 goalForm.get('description')?.invalid
-              "
-            >
+              ">
               Description is required (max 35 characters)
             </mat-error>
           </mat-form-field>
@@ -249,14 +236,12 @@
               formControlName="weight"
               min="0"
               max="100"
-              placeholder="Enter goal weight (0-100)"
-            />
+              placeholder="Enter goal weight (0-100)" />
             <mat-error
               *ngIf="
                 goalForm.get('weight')?.touched &&
                 goalForm.get('weight')?.invalid
-              "
-            >
+              ">
               Weight must be between 0 and 100
             </mat-error>
           </mat-form-field>
@@ -266,8 +251,7 @@
               mat-raised-button
               color="primary"
               type="submit"
-              class="cancel-btn"
-            >
+              class="cancel-btn">
               Submit
             </button>
             <button
@@ -275,8 +259,7 @@
               color="primary"
               type="button"
               class="cancel-btn"
-              (click)="goBack()"
-            >
+              (click)="goBack()">
               Cancel
             </button>
           </div>
@@ -296,8 +279,7 @@
             <table
               mat-table
               [dataSource]="archivedGoals"
-              class="mat-elevation-z8 custom-table"
-            >
+              class="mat-elevation-z8 custom-table">
               <ng-container matColumnDef="category">
                 <th mat-header-cell *matHeaderCellDef>Category</th>
                 <td mat-cell *matCellDef="let goal">{{ goal.category }}</td>
@@ -316,7 +298,7 @@
               <ng-container matColumnDef="startDate">
                 <th mat-header-cell *matHeaderCellDef>Start Date</th>
                 <td mat-cell *matCellDef="let goal">
-                  {{ goal.startDate || "-" }}
+                  {{ goal.startDate| date:'dd-MM-yyyy' || "-" }}
                 </td>
               </ng-container>
 
@@ -324,8 +306,7 @@
                 <th mat-header-cell *matHeaderCellDef>Due Date</th>
                 <td mat-cell *matCellDef="let goal">
                   <ng-container
-                    *ngIf="!goal.isDueDateLocked; else showDueDateText"
-                  >
+                    *ngIf="!goal.isDueDateLocked; else showDueDateText">
                     <mat-form-field appearance="outline">
                       <input
                         matInput
@@ -333,16 +314,16 @@
                         [(ngModel)]="goal.dueDate"
                         [min]="goal.startDate"
                         (dateChange)="onDueDateChange(goal, $event)"
-                      />
+                        (focus)="picker.open()"
+                        readonly />
                       <mat-datepicker-toggle
                         matSuffix
-                        [for]="picker"
-                      ></mat-datepicker-toggle>
+                        [for]="picker"></mat-datepicker-toggle>
                       <mat-datepicker #picker></mat-datepicker>
                     </mat-form-field>
                   </ng-container>
                   <ng-template #showDueDateText>
-                    <span>{{ goal.dueDate || "-" }}</span>
+                    <span>{{ goal.dueDate| date:'dd-MM-yyyy'|| "-" }}</span>
                   </ng-template>
                 </td>
               </ng-container>
@@ -353,8 +334,7 @@
                   <mat-form-field
                     appearance="outline"
                     class="progress-field"
-                    *ngIf="goal.isEditing"
-                  >
+                    *ngIf="goal.isEditing">
                     <mat-select [(ngModel)]="goal.progress">
                       <mat-option value="25%">25%</mat-option>
                       <mat-option value="50%">50%</mat-option>
@@ -364,7 +344,7 @@
                   </mat-form-field>
                   <span *ngIf="!goal.isEditing">{{
                     goal.progress || "-"
-                  }}</span>
+                    }}</span>
                 </td>
               </ng-container>
 
@@ -375,8 +355,7 @@
                     mat-button
                     style="color: black; font-size: 16px"
                     (click)="startGoal(goal)"
-                    [disabled]="goal.startDate != null"
-                  >
+                    [disabled]="goal.startDate != null">
                     Start
                   </button>
 
@@ -384,8 +363,7 @@
                     mat-button
                     style="color: #3f51b5; font-size: 16px"
                     (click)="editGoal(goal)"
-                    [disabled]="goal.startDate == null"
-                  >
+                    [disabled]="goal.startDate == null">
                     Edit
                   </button>
 
@@ -393,18 +371,15 @@
                     mat-button
                     style="color: green; font-size: 16px"
                     *ngIf="goal.isEditing"
-                    (click)="saveGoal(goal)"
-                  >
+                    (click)="saveGoal(goal)">
                     Save
                   </button>
                   <button
                     (click)="deleteGoal(goal)"
-                    style="background: none; border: none; cursor: pointer"
-                  >
+                    style="background: none; border: none; cursor: pointer">
                     <i
                       class="ri-delete-bin-fill"
-                      style="color: red; font-size: 20px"
-                    ></i>
+                      style="color: red; font-size: 20px"></i>
                   </button>
                 </td>
               </ng-container>
@@ -437,15 +412,13 @@
               id="search"
               [(ngModel)]="searchText"
               (input)="onSearch()"
-              placeholder="Search by name or ID"
-            />
+              placeholder="Search by name or ID" />
           </div>
         </div>
         <div class="table-wrapperrr">
           <table
             class="table"
-            *ngIf="filteredEmployees.length > 0; else noData"
-          >
+            *ngIf="filteredEmployees.length > 0; else noData">
             <thead>
               <tr>
                 <th>Employee ID</th>
@@ -468,8 +441,7 @@
                         padding: 8px 16px;
                         border: none;
                         border-radius: 4px;
-                      "
-                    >
+                      ">
                       View Goals
                     </button>
                   </td>
@@ -486,15 +458,13 @@
       <div class="pagination">
         <button
           (click)="changePage(currentPage - 1)"
-          [disabled]="currentPage === 1"
-        >
+          [disabled]="currentPage === 1">
           Prev
         </button>
         <span>{{ currentPage }} / {{ totalPages }}</span>
         <button
           (click)="changePage(currentPage + 1)"
-          [disabled]="currentPage === totalPages"
-        >
+          [disabled]="currentPage === totalPages">
           Next
         </button>
       </div>

@@ -1,14 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AuthService } from 'src/app/services/auth.service';
-import { GoalService } from './goal.service';
-import { UserlistService } from 'src/app/services/admin.service';
-import { MatDialog } from '@angular/material/dialog';
+import { Component, OnInit } from "@angular/core";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { AuthService } from "src/app/services/auth.service";
+import { GoalService } from "./goal.service";
+import { UserlistService } from "src/app/services/admin.service";
+import { MatDialog } from "@angular/material/dialog";
 
 @Component({
-  selector: 'app-goal',
-  templateUrl: './goal.component.html',
-  styleUrls: ['./goal.component.css'],
+  selector: "app-goal",
+  templateUrl: "./goal.component.html",
+  styleUrls: ["./goal.component.css"],
 })
 export class GoalComponent implements OnInit {
   isAdmin = false;
@@ -16,9 +16,9 @@ export class GoalComponent implements OnInit {
   employeeId: string | null = null;
   fullName: string | null = null;
   previousDueDate: any = null;
-  currentView: 'main' | 'goalType' | 'newGoal' | 'archived' = 'main';
+  currentView: "main" | "goalType" | "newGoal" | "archived" = "main";
   isTableVisible: boolean = true;
-  searchText: string = '';
+  searchText: string = "";
   allGoals: any[] = [];
   goalList: any[] = [];
   public employees: any[] = [];
@@ -28,29 +28,29 @@ export class GoalComponent implements OnInit {
   archivedGoals: any[] = [];
   selectedGoal: any;
   displayedColumns = [
-    'category',
-    'description',
-    'weight',
-    'startDate',
-    'dueDate',
-    'progress',
-    'action',
+    "category",
+    "description",
+    "weight",
+    "startDate",
+    "dueDate",
+    "progress",
+    "action",
   ];
   goalData: any[] = [];
   showHistoryMap = false;
   months: string[] = [
-    'Jan',
-    'Feb',
-    'Mar',
-    'Apr',
-    'May',
-    'June',
-    'July',
-    'Aug',
-    'Sep',
-    'Oct',
-    'Nov',
-    'Dec',
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "June",
+    "July",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
   ];
   private currentUserEmail: string | null = null;
   goals: any[] = [];
@@ -65,14 +65,17 @@ export class GoalComponent implements OnInit {
   readonly radius = 54;
   readonly circumference: number = 2 * Math.PI * this.radius;
   currentDate: Date = new Date();
-  dateRange: string = '';
+  dateRange: string = "";
   currentPage = 1;
   itemsPerPage = 5;
   joiningDate: Date | null = null;
   selectedDate: Date = new Date();
   joiningMonth!: number;
-  joiningYear!: number; 
-
+  joiningYear!: number;
+  requireDueDate: boolean = false;
+  pendingDueGoal: any = null;
+  previousStartDate: string | null = null;
+  goalBackup: any = null;
 
   constructor(
     private fb: FormBuilder,
@@ -90,39 +93,33 @@ export class GoalComponent implements OnInit {
     this.currentUserEmail = this.authService.getUserEmail?.();
 
     this.goalForm = this.fb.group({
-      category: ['', Validators.required],
-      description: ['', [Validators.required, Validators.maxLength(35)]],
+      category: ["", Validators.required],
+      description: ["", [Validators.required, Validators.maxLength(35)]],
       weight: [
-        '',
+        "",
         [Validators.required, Validators.min(0), Validators.max(100)],
       ],
     });
-
-
-if (this.employeeId) {
-    this.goalService.getGoalByUserid(Number(this.employeeId)).subscribe({
-      next: (res) => {
-
-        const first = res.body?.[0];
-
-        if (first && first.user && first.user.joiningDate) {
-          this.joiningDate = new Date(first.user.joiningDate);
-           this.joiningMonth = this.joiningDate.getMonth(); // 0-11
-      this.joiningYear = this.joiningDate.getFullYear(); // 4-digit year
-        // this.selectedYear=this.joiningYear;
-
-        this.loadArchivedGoals();
-    this.allUser();
-    this.fetchGoals();
-    this.updateDateRangeLabel();
-    this.filterEmployeesByGoalMonth();
-        }
-      },
-      error: (err) => {
-        console.error("Failed to fetch joining date", err);
-      }
-    });
-  }
+    if (this.isUser) {
+      this.goalService.getGoalByUserid(Number(this.employeeId)).subscribe({
+        next: (res) => {
+          const first = res.body?.[0];
+          if (first && first.user && first.user.joiningDate) {
+            this.joiningDate = new Date(first.user.joiningDate);
+            this.joiningMonth = this.joiningDate.getMonth();
+            this.loadArchivedGoals();
+            this.filterEmployeesByGoalMonth();
+          }
+        },
+        error: (err) => {
+          console.error("Failed to fetch joining date", err);
+        },
+      });
+    }
+    if (this.isAdmin) {
+      this.allUser();
+      this.updateDateRangeLabel();
+    }
   }
 
   fetchGoals() {
@@ -139,50 +136,49 @@ if (this.employeeId) {
   }
 
   previousYear() {
-  if (this.selectedYear > this.joiningYear) {
-    this.selectedYear--;
-    this.filterGoalsByYear();
-
-     if (this.selectedYear === this.joiningYear && this.selectedDate.getMonth() < this.joiningMonth) {
-      this.selectedDate.setMonth(this.joiningMonth);
+    if (this.selectedYear > this.joiningYear) {
+      this.selectedYear--;
+      this.filterGoalsByYear();
+      if (
+        this.selectedYear === this.joiningYear &&
+        this.selectedDate.getMonth() < this.joiningMonth
+      ) {
+        this.selectedDate.setMonth(this.joiningMonth);
+      }
     }
-
   }
 
-}
-
-nextYear() {
-  if (this.selectedYear < this.currentYear) {
-    this.selectedYear++;
-    this.filterGoalsByYear();
+  nextYear() {
+    if (this.selectedYear < this.currentYear) {
+      this.selectedYear++;
+      this.filterGoalsByYear();
+    }
   }
-}
 
   isNextDisabled(): boolean {
-  return this.selectedYear === this.currentYear;
-}
-
-isPreviousDisabled(): boolean {
-  return this.selectedYear === this.joiningYear;
-}
-
-isMonthSelectable(index: number): boolean {
-  if (!this.joiningDate) return true; 
-
-  const month = index; 
-  const year = this.selectedYear;
-
-  if (year === this.joiningYear) {
-    return month >= this.joiningMonth;
+    return this.selectedYear === this.currentYear;
   }
 
-  if (year > this.joiningYear && year <= this.currentYear) {
-    return true;
+  isPreviousDisabled(): boolean {
+    return this.selectedYear === this.joiningYear;
   }
 
-  return false;
-}
+  isMonthSelectable(index: number): boolean {
+    if (!this.joiningDate) return true;
 
+    const month = index;
+    const year = this.selectedYear;
+
+    if (year === this.joiningYear) {
+      return month >= this.joiningMonth;
+    }
+
+    if (year > this.joiningYear && year <= this.currentYear) {
+      return true;
+    }
+
+    return false;
+  }
 
   getPosition(index: number) {
     const total = 12;
@@ -197,23 +193,20 @@ isMonthSelectable(index: number): boolean {
     };
   }
 
- allUser(): void{
-      this.userlistService.getAllUser().subscribe({
-        next:(response) => {
+  allUser(): void {
+    this.userlistService.getAllUser().subscribe({
+      next: (response) => {
+        const allUsers = response.body || [];
 
-         const allUsers = response.body || [];
-
-       
-        this.employees = allUsers.filter((user: any) =>
-          user.role?.toLowerCase() !== 'admin' &&
-          user.email?.toLowerCase() !== this.currentUserEmail?.toLowerCase()
+        this.employees = allUsers.filter(
+          (user: any) =>
+            user.role?.toLowerCase() !== "admin" &&
+            user.email?.toLowerCase() !== this.currentUserEmail?.toLowerCase()
         );
-
-       // this.filteredEmployees = [...this.employees];
-       this.filterEmployeesByGoalMonth();
+        this.filterEmployeesByGoalMonth();
       },
       error: (err) => {
-        console.error('❌ Error fetching users', err);
+        console.error(" Error fetching users", err);
         this.employees = [];
         this.filteredEmployees = [];
       },
@@ -234,42 +227,62 @@ isMonthSelectable(index: number): boolean {
   }
 
   goToGoalType(): void {
-    this.currentView = 'goalType';
+    this.currentView = "goalType";
   }
 
   move(goalType: string): void {
-    if (goalType === 'personal') {
-      this.currentView = 'newGoal';
-    } else if (goalType === 'archived') {
-      this.currentView = 'archived';
+    if (goalType === "personal") {
+      this.currentView = "newGoal";
+    } else if (goalType === "archived") {
+      this.currentView = "archived";
       this.loadArchivedGoals();
     }
   }
 
   goClose(): void {
-    this.currentView = this.currentView === 'newGoal' ? 'goalType' : 'main';
+    this.currentView = this.currentView === "newGoal" ? "goalType" : "main";
   }
 
   closeGoalPopup(): void {
+    if (this.pendingDueGoal) {
+      this.goalService
+        .updateGoal(this.pendingDueGoal.id, this.goalBackup)
+        .subscribe({
+          next: () => {
+            alert("You cannot close this modal until a due date is set!");
+            this.pendingDueGoal = null;
+            this.goalBackup = null;
+            this.showGoalPopup = true;
+          },
+          error: (err) => console.error("Error reverting goal", err),
+        });
+      return;
+    }
     this.showGoalPopup = false;
     this.selectedMonth = null;
     this.selectedMonthGoals = [];
   }
 
   goBack(): void {
-    this.currentView = 'goalType';
+    this.currentView = "goalType";
   }
 
   deleteGoal(goal: any) {
-    if (confirm('Are you sure you want to delete this goal?')) {
+    if (confirm("Are you sure you want to delete this goal?")) {
       this.goalService.deleteGoal(goal.id).subscribe(
         () => {
-          this.goals = this.goals.filter((g) => g.id !== goal.id);
-          alert('Goal deleted successfully!');
+          this.archivedGoals = this.archivedGoals.filter(
+            (g) => g.id !== goal.id
+          );
+          this.allGoals = this.allGoals.filter((g) => g.id !== goal.id);
+          this.completedGoals = this.completedGoals.filter(
+            (g) => g.id !== goal.id
+          );
+          alert("Goal deleted successfully!");
         },
         (error) => {
           console.error(error);
-          alert('Error deleting goal');
+          alert("Error deleting goal");
         }
       );
     }
@@ -279,23 +292,23 @@ isMonthSelectable(index: number): boolean {
     const term = this.searchText.trim().toLowerCase();
     if (!term) {
       this.archivedGoals = this.allGoals.filter(
-        (g: any) => g.status !== 'Completed'
+        (g: any) => g.status !== "Completed"
       );
       this.completedGoals = this.allGoals.filter(
-        (g: any) => g.status === 'Completed'
+        (g: any) => g.status === "Completed"
       );
       return;
     }
     this.archivedGoals = this.allGoals.filter(
       (g: any) =>
-        g.status !== 'Completed' &&
+        g.status !== "Completed" &&
         ((g.employeeId && g.employeeId.toString().includes(term)) ||
           (g.employeeName && g.employeeName.toLowerCase().includes(term)) ||
           (g.category && g.category.toLowerCase().includes(term)))
     );
     this.completedGoals = this.allGoals.filter(
       (g: any) =>
-        g.status === 'Completed' &&
+        g.status === "Completed" &&
         ((g.employeeId && g.employeeId.toString().includes(term)) ||
           (g.employeeName && g.employeeName.toLowerCase().includes(term)) ||
           (g.category && g.category.toLowerCase().includes(term)))
@@ -303,17 +316,31 @@ isMonthSelectable(index: number): boolean {
   }
 
   startGoal(goal: any) {
-    if (goal.startDate) {
-      return;
-    }
-
-    goal.startDate = new Date().toISOString().split('T')[0];
+    if (goal.startDate) return;
+    this.goalBackup = { ...goal };
+    goal.startDate = new Date().toISOString().split("T")[0];
     goal.isStarted = true;
-    goal.isEditing = false;
+
+    if (!goal.dueDate) {
+      this.pendingDueGoal = goal;
+      alert("You must set a due date for this goal before closing the modal!");
+      this.showGoalPopup = true;
+    } else {
+      this.saveGoalToBackend(goal);
+    }
+  }
+
+  saveGoalToBackend(goal: any) {
     this.goalService.updateGoal(goal.id, goal).subscribe({
-      next: () => {},
+      next: () => {
+        this.pendingDueGoal = null;
+        this.goalBackup = null;
+      },
       error: (err) => {
-        console.error('Error saving start date', err);
+        console.error("Error saving goal", err);
+        Object.assign(goal, this.goalBackup);
+        this.pendingDueGoal = null;
+        this.goalBackup = null;
       },
     });
   }
@@ -325,21 +352,22 @@ isMonthSelectable(index: number): boolean {
   }
 
   validateDueDate(goal: any) {
-    const today = new Date().toISOString().split('T')[0];
-    if (goal.dueDate < today) {
-      goal.isOverdue = true;
-    } else {
+    const today = new Date().toISOString().split("T")[0];
+    if (!goal.dueDate) {
       goal.isOverdue = false;
     }
+    const due = new Date(goal.dueDate).toISOString().split("T")[0];
+
+    goal.isOverdue = due < today;
   }
 
   isOverDue(goal: any) {
-    return goal.isOverdue;
+    return !!goal.isOverdue;
   }
 
   submitGoal(): void {
     if (this.goalForm.valid) {
-      const confirmed = confirm('Are you sure you want to save this new goal?');
+      const confirmed = confirm("Are you sure you want to save this new goal?");
       if (!confirmed) return;
 
       const newGoal = {
@@ -351,19 +379,19 @@ isMonthSelectable(index: number): boolean {
         startDate: null,
         endDate: null,
         progress: null,
-        status: 'Pending',
+        status: "Pending",
         isStarted: false,
       };
 
       this.goalService.createGoal(newGoal).subscribe({
         next: (res: any) => {
           this.goalForm.reset();
-          this.currentView = 'archived';
+          this.currentView = "archived";
           this.loadArchivedGoals();
         },
         error: (err) => {
-          console.error('Error creating goal:', err);
-          alert('Failed to save goal!');
+          console.error("Error creating goal:", err);
+          alert("Failed to save goal!");
         },
       });
     } else {
@@ -372,39 +400,36 @@ isMonthSelectable(index: number): boolean {
   }
 
   updateGoal(goal: any): void {
-    const confirmed = confirm('Do you want to save changes to this goal?');
+    const confirmed = confirm("Do you want to save changes to this goal?");
     if (!confirmed) return;
 
     this.goalService.updateGoal(goal.id, goal).subscribe({
-      next: () => console.log('Goal updated successfully'),
-      error: (err) => console.error('Error updating goal:', err),
+      error: (err) => console.error("Error updating goal:", err),
     });
   }
 
   onStatusChange(goal: any) {
-    if (goal.status === 'Started') {
+    if (goal.status === "Started") {
       goal.isStarted = true;
-      goal.startDate = new Date().toISOString().split('T')[0];
+      goal.startDate = new Date().toISOString().split("T")[0];
     }
 
-    if (goal.status === 'Pending') {
+    if (goal.status === "Pending") {
       goal.isStarted = false;
       goal.startDate = null;
       goal.endDate = null;
       goal.progress = null;
     }
 
-    if (goal.status === 'Completed') {
-      goal.endDate = new Date().toISOString().split('T')[0];
-      goal.progress = '100%';
+    if (goal.status === "Completed") {
+      goal.endDate = new Date().toISOString().split("T")[0];
+      goal.progress = "100%";
 
       this.archivedGoals = this.archivedGoals.filter((g) => g.id !== goal.id);
       this.completedGoals.push(goal);
     }
     this.updateGoal(goal);
   }
-
-
 
   viewGoals(emp: any): void {
     this.goalService.getGoalByUserid(emp.employeeId).subscribe({
@@ -423,7 +448,7 @@ isMonthSelectable(index: number): boolean {
         }
       },
       error: (err) => {
-        console.error('Error fetching goals:', err);
+        console.error("Error fetching goals:", err);
       },
     });
   }
@@ -437,8 +462,8 @@ isMonthSelectable(index: number): boolean {
     let value: number;
 
     if (progress == null) value = 0;
-    else if (typeof progress === 'string' && progress.includes('%'))
-      value = parseFloat(progress.replace('%', ''));
+    else if (typeof progress === "string" && progress.includes("%"))
+      value = parseFloat(progress.replace("%", ""));
     else value = Number(progress);
 
     const valid = Math.min(Math.max(value, 0), 100);
@@ -448,8 +473,8 @@ isMonthSelectable(index: number): boolean {
   getProgressValue(progress: any): number {
     if (!progress) return 0;
     const val =
-      typeof progress === 'string' && progress.includes('%')
-        ? parseFloat(progress.replace('%', ''))
+      typeof progress === "string" && progress.includes("%")
+        ? parseFloat(progress.replace("%", ""))
         : Number(progress);
     return Math.min(Math.max(val, 0), 100);
   }
@@ -459,13 +484,13 @@ isMonthSelectable(index: number): boolean {
   }
 
   saveGoal(goal: any) {
-    if (!confirm('Are you sure you want to save changes for this goal?')) {
+    if (!confirm("Are you sure you want to save changes for this goal?")) {
       return;
     }
 
-    if (goal.progress === '100%') {
-      goal.status = 'Completed';
-      goal.endDate = new Date().toISOString().split('T')[0];
+    if (goal.progress === "100%") {
+      goal.status = "Completed";
+      goal.endDate = new Date().toISOString().split("T")[0];
       this.archivedGoals = this.archivedGoals.filter((g) => g.id !== goal.id);
       this.completedGoals.push(goal);
       goal.isEditing = false;
@@ -477,7 +502,7 @@ isMonthSelectable(index: number): boolean {
 
         this.validateDueDate(goal);
       },
-      error: (err) => console.error('Error updating goal:', err),
+      error: (err) => console.error("Error updating goal:", err),
     });
   }
 
@@ -486,40 +511,52 @@ isMonthSelectable(index: number): boolean {
   }
 
   isPopupView(): boolean {
-    return this.currentView === 'goalType' || this.currentView === 'newGoal';
+    return this.currentView === "goalType" || this.currentView === "newGoal";
   }
 
   loadArchivedGoals() {
     this.goalService.getAllGoals().subscribe({
       next: (res) => {
         this.allGoals = res.body || [];
+        this.allGoals.forEach((g: any) => {
+          if (g.dueDate) {
+            g.isDueDateLocked = true;
+            this.validateDueDate(g);
+          } else {
+            g.isDueDateLocked = false;
+          }
+        });
+
         this.archivedGoals = this.allGoals.filter(
-          (g: any) => g.status !== 'Completed'
+          (g: any) => g.status !== "Completed"
         );
         this.completedGoals = this.allGoals.filter(
-          (g: any) => g.status === 'Completed'
+          (g: any) => g.status === "Completed"
         );
       },
       error: (err) => {
-        console.error('Error fetching archived goals', err);
+        console.error("Error fetching archived goals", err);
       },
     });
   }
 
   onDueDateChange(goal: any, event: any) {
-    const selectedDate = event.value
-      ? event.value.toISOString().split('T')[0]
-      : null;
-    if (!confirm('Do you want to save this due date?')) {
-      goal.dueDate = this.previousDueDate;
-      return;
+    const selected = new Date(event.value);
+    selected.setMinutes(selected.getMinutes() - selected.getTimezoneOffset());
+    if (!selected) return;
+    goal.dueDate = selected.toISOString().split("T")[0];
+    if (this.pendingDueGoal && this.pendingDueGoal.id === goal.id) {
+      this.pendingDueGoal = null;
+      this.previousStartDate = null;
     }
-    goal.dueDate = selectedDate;
     goal.isDueDateLocked = true;
+    this.validateDueDate(goal);
     this.goalService.updateGoal(goal.id, goal).subscribe({
-      next: (res) => {},
+      next: (res) => {
+        goal.isDueDateLocked = true;
+      },
       error: (err) => {
-        console.error('Error saving due date', err);
+        console.error("Error saving due date", err);
       },
     });
   }
@@ -552,23 +589,24 @@ isMonthSelectable(index: number): boolean {
   }
 
   updateDateRangeLabel(): void {
-    const month = this.currentDate.toLocaleString('default', { month: 'long' });
+    const month = this.currentDate.toLocaleString("default", { month: "long" });
     const year = this.currentDate.getFullYear();
     this.dateRange = `${month} ${year}`;
   }
 
   goToPreviousMonth(): void {
     const date = new Date(this.selectedDate);
-  date.setMonth(date.getMonth() - 1);
+    date.setMonth(date.getMonth() - 1);
+    if (
+      this.joiningDate &&
+      date <
+        new Date(this.joiningDate.getFullYear(), this.joiningDate.getMonth(), 1)
+    ) {
+      return;
+    }
 
-  // Prevent going before joining month
-  if (this.joiningDate && 
-      date < new Date(this.joiningDate.getFullYear(), this.joiningDate.getMonth(), 1)) {
-    return; 
-  }
-
-  this.selectedDate = date;
-  this.fetchGoals();
+    this.selectedDate = date;
+    this.fetchGoals();
     this.currentDate.setMonth(this.currentDate.getMonth() - 1);
     this.updateDateRangeLabel();
     this.filterEmployeesByGoalMonth();
@@ -583,7 +621,7 @@ isMonthSelectable(index: number): boolean {
   filterGoalsBySelectedMonth(goals: any[]): any[] {
     if (!goals || goals.length === 0) return [];
 
-    const selectedMonth = this.currentDate.getMonth(); // 0–11
+    const selectedMonth = this.currentDate.getMonth();
     const selectedYear = this.currentDate.getFullYear();
 
     return goals.filter((goal) => {
