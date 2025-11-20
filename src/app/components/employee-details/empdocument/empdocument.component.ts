@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { EmployeeService } from 'src/app/services/employee.service';
 import { EmployeeDataService } from 'src/app/services/employee-data.service';
+import { BASE_URL } from 'src/app/models/baseurl/constant';
 
 @Component({
   selector: 'app-empdocument',
@@ -35,7 +36,8 @@ export class EmpdocumentComponent implements OnInit {
   }
 
   getFileUrl(filePath: string): string {
-    return `http://localhost:8080/uploads/${filePath}`;
+    debugger;
+    return `${BASE_URL}/uploads/${filePath}`;
   }
 
   downloadFile(fileNameOrId: string | number) {

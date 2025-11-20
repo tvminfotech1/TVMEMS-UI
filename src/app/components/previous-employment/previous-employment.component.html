@@ -73,7 +73,6 @@
               Company name is required
             </mat-error>
 
-            <!-- Error: Minimum Length -->
             <mat-error
               *ngIf="
                 employmentForm.get('companyName')?.hasError('minlength') &&
@@ -83,7 +82,6 @@
               Company name must be at least 2 characters
             </mat-error>
 
-            <!-- Error: Pattern -->
             <mat-error
               *ngIf="
                 employmentForm.get('companyName')?.hasError('pattern') &&
@@ -95,7 +93,6 @@
             </mat-error>
           </mat-form-field>
 
-          <!-- Designation -->
           <mat-form-field
             appearance="outline"
             class="custom-form-field full-width"
@@ -164,7 +161,6 @@
               <mat-option value="consultant">Consultant</mat-option>
             </mat-select>
 
-            <!-- Validation Error -->
             <mat-error
               *ngIf="
                 employmentForm.get('employmentType')?.hasError('required') &&
@@ -176,7 +172,7 @@
           </mat-form-field>
 
           <div class="date-fields">
-            <!-- Start Date -->
+
             <mat-form-field appearance="outline" class="custom-form-field">
               <mat-label>Start Date:</mat-label>
               <input

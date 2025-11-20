@@ -171,7 +171,6 @@ export class TaskComponent implements OnInit {
     } else if (dateInput instanceof Date) {
       date = dateInput;
     } else {
-      console.error('Unexpected date input:', dateInput);
       return '';
     }
 
@@ -211,14 +210,6 @@ export class TaskComponent implements OnInit {
       const taskEnd = new Date(task.dueDate);
 
       const isInRange = taskStart <= endDateOnly && taskEnd >= startDateOnly;
-
-      if (isInRange) {
-        console.log('✅ Task included:', {
-          title: task.title,
-          assignedDate: taskDateOnly.toDateString(),
-          month: taskDateOnly.getMonth() + 1,
-        });
-      }
 
       return isInRange;
     });

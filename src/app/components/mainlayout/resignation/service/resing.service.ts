@@ -26,7 +26,4 @@ export class ResingService {
     return this.http.put<any>(`${this.apiUrl}/${data.id}`, data);
   }
 
-  deleteOffboarding(data: any) {
-    return this.http.delete<any>(`${this.apiUrl}/${data.id}`);
-  }
 }

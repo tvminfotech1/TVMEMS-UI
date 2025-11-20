@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { BASE_URL } from 'src/app/models/baseurl/constant';
 
 @Component({
   selector: 'app-login-by-number',
@@ -49,7 +50,7 @@ export class LoginByNumberComponent implements OnInit {
       };
 
       this.http
-        .post('http://localhost:8080/userlogin/mobile', loginData)
+        .post(`${BASE_URL}/userlogin/mobile`, loginData)
         .subscribe({
           next: (res) => {
             console.log('Login successful:', res);
@@ -66,7 +67,7 @@ export class LoginByNumberComponent implements OnInit {
               });
             }
 
-            this.router.navigate(['/mainlayout/personal']);
+            this.router.navigate(['/mainlayout/dashboard']);
           },
           error: (err) => {
             console.error('Login failed:', err);

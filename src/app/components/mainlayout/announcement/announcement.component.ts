@@ -59,12 +59,6 @@ export class AnnouncementComponent implements OnInit {
     this.showModal = true;
   }
 
-  // openEditModal(announcement: any) {
-  //   this.isEditMode = true;
-  //   this.selectedId = announcement.id;
-  //   this.announcementForm.patchValue(announcement);
-  //   this.showModal = true;
-  // }
   openEditModal(announcement: any) {
   this.isEditMode = true;
   this.selectedId = announcement.id;
@@ -93,24 +87,6 @@ export class AnnouncementComponent implements OnInit {
         .subscribe(() => this.loadAnnouncements());
     }
   }
-
-  // submitForm() {
-  //   if (this.announcementForm.invalid) return;
-
-  //   const data = this.announcementForm.value;
-
-  //   if (this.isEditMode && this.selectedId) {
-  //     this.announcementService.update(this.selectedId, data).subscribe(() => {
-  //       this.loadAnnouncements();
-  //       this.closeModal();
-  //     });
-  //   } else {
-  //     this.announcementService.create(data).subscribe(() => {
-  //       this.loadAnnouncements();
-  //       this.closeModal();
-  //     });
-  //   }
-  // }
 
   submitForm() {
   if (this.announcementForm.invalid) return;

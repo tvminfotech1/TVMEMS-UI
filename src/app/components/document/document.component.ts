@@ -77,21 +77,6 @@ this.userService.educationType$.subscribe((type) => {
 
   }
 
-  private getAllowedTypes(controlName: string): string[] {
-      if (controlName === 'postGraduation') {
-    return this.isPgDocEnabled ? ['application/pdf'] : [];
-  }
-    const pdfFields = [
-      'matric',
-      'intermediate',
-      'graduationMarksheet',
-      'postGraduation',
-    ];
-    return pdfFields.includes(controlName)
-      ? ['application/pdf']
-      : ['image/jpeg', 'image/png'];
-  }
-
   triggerFileInput(input: HTMLInputElement) {
     input.click();
   }

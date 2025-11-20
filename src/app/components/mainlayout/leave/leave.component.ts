@@ -423,24 +423,27 @@ export class LeaveComponent implements OnInit {
     });
   }
 
-  private calculateLeaveBalances(): void {
-    this.leaveBalances.forEach((lb) => {
-      const used = this.leaveList
-        .filter(
-          (l) =>
-            l.leaveType === lb.leaveType &&
-            l.status === "Approved" &&
-            (!this.isAdmin || l.user?.employeeId === Number(this.employeeId))
-        )
-        .reduce((sum, l) => sum + (l.totalDays ?? 0), 0);
+private calculateLeaveBalances(): void {
+  const currentYear = new Date().getFullYear();
 
-      lb.used = used;
-      lb.carryOver = lb.carryOver || 0;
+  this.leaveBalances.forEach((lb) => {
+    const used = this.leaveList
+      .filter((l) => {
+        const leaveYear = new Date(l.startDate).getFullYear();
 
-      const available = lb.total - used + lb.carryOver;
-      if (available < 0) lb.carryOver = 0;
-    });
-  }
+        return (
+          l.leaveType === lb.leaveType &&
+          l.status === "Approved" &&
+          leaveYear === currentYear && 
+          (!this.isAdmin ||
+            l.user?.employeeId === Number(this.employeeId))
+        );
+      })
+      .reduce((sum, l) => sum + (l.totalDays ?? 0), 0);
+
+    lb.used = used;
+  });
+}
 
   resetApplyLeaveForm(): void {
     this.leaveForm.reset({
@@ -464,7 +467,6 @@ export class LeaveComponent implements OnInit {
     return status;
   }
 
-  // Leave Cards for user
   updateLeaveCards(): void {
     this.leaveCards = this.leaveBalances.map((lb) => {
       const available = lb.total - lb.used + lb.carryOver;
@@ -617,7 +619,6 @@ export class LeaveComponent implements OnInit {
     }, 86400000);
   }
 
-  /** ------------------- Modal Controls ------------------- */
   openApplyLeaveModal(): void {
     this.resetApplyLeaveForm();
     this.showApplyLeaveModal = true;

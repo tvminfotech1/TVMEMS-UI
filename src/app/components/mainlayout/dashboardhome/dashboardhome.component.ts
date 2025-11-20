@@ -4,8 +4,6 @@ import {
   style,
   animate,
   transition,
-  query,
-  animateChild,
 } from '@angular/animations';
 import { AuthService } from 'src/app/services/auth.service';
 import { ActivatedRoute } from '@angular/router';

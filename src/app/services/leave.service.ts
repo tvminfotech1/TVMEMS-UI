@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Observable } from "rxjs";
+import { BASE_URL } from "../models/baseurl/constant";
 
 export interface UserInfo {
   fullName: string;
@@ -34,7 +35,6 @@ export interface newLeaveRequest {
 })
 export class LeaveService {
   private apiUrl = "http://localhost:8080/api/leave-requests";
-  private API_URL = "http://localhost:8080/Holiday";
 
   constructor(private http: HttpClient) {}
 
@@ -58,7 +58,7 @@ export class LeaveService {
     );
   }
   getHolidays(): Observable<any> {
-    return this.http.get<any>(this.API_URL, {
+    return this.http.get<any>(`${BASE_URL}/Holiday`, {
       headers: this.getAuthHeaders(),
     });
   }
@@ -83,12 +83,6 @@ export class LeaveService {
     });
   }
 
-  getLeaveTypes(): Observable<string[]> {
-    return this.http.get<string[]>(`${this.apiUrl}/leavetype`, {
-      headers: this.getAuthHeaders(),
-    });
-  }
-
   createLeaveRequest(
     leaveRequest: newLeaveRequest
   ): Observable<newLeaveRequest> {
@@ -99,18 +93,6 @@ export class LeaveService {
         headers: this.getAuthHeaders(),
       }
     );
-  }
-
-  applyLeaveForUser(leaveRequest: newLeaveRequest): Observable<any> {
-    return this.http.post(`${this.apiUrl}/admin/apply`, leaveRequest, {
-      headers: this.getAuthHeaders(),
-    });
-  }
-
-  deleteLeaveRequest(id: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/${id}`, {
-      headers: this.getAuthHeaders(),
-    });
   }
 
   checkLeave(empId: number, date: string): Observable<{ body: boolean }> {

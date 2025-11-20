@@ -27,10 +27,6 @@ export class GoalService {
     return this.http.delete(`${this.baseUrl}/${id}`);
   }
 
-  getArchivedGoals(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/archived`);
-  }
-
   getAllGoals(): Observable<any> {
     return this.http.get(`${this.baseUrl}/all`);
   }

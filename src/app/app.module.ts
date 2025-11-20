@@ -24,7 +24,6 @@ import { AdminComponent } from './components/admin/admin.component';
 import { AdminLoginComponent } from './components/admin-login/admin-login.component';
 import { EmployeeDataComponent } from './components/employee-data/employee-data.component';
 import { LoginByNumberComponent } from './components/login-by-number/login-by-number.component';
-import { OnboardingComponent } from './components/onboarding/onboarding.component';
 import { PendingUserComponent } from './components/pending-user/pending-user.component';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 
@@ -40,18 +39,13 @@ import { EmpcertificateComponent } from './components/employee-details/empcertif
 import { EmpdocumentComponent } from './components/employee-details/empdocument/empdocument.component';
 import { EmpresumeComponent } from './components/employee-details/empresume/empresume.component';
 import { EmpfinalComponent } from './components/employee-details/empfinal/empfinal.component';
-import { TimeSheetComponent } from './components/time-sheet/time-sheet.component';
-import { TimeSheetViewComponent } from './components/time-sheet/time-sheet-view/time-sheet-view.component';
 import { HolidayCalendarComponent } from './components/mainlayout/hoilday-calendar/hoilday-calendar.component';
 import { DashboardhomeComponent } from './components/mainlayout/dashboardhome/dashboardhome.component';
 import { MainlayoutComponent } from './components/mainlayout/mainlayout.component';
-import { FeedbacksComponent } from './components/mainlayout/feedbacks/feedbacks.component';
 import { WorkhoursComponent } from './components/mainlayout/workhours/workhours.component';
-import { HiringComponent } from './components/mainlayout/hiring/hiring.component';
 import { WorkHistoryComponent } from './components/mainlayout/work-history/work-history.component';
 import { WishcardComponent } from './components/mainlayout/wishcard/wishcard.component';
 import { AnnouncementComponent } from './components/mainlayout/announcement/announcement.component';
-import { ApplyLeaveComponent } from './components/mainlayout/apply-leave/apply-leave.component';
 import { LeaveComponent } from './components/mainlayout/leave/leave.component';
 import { WorkfromhomeComponent } from './components/mainlayout/workfromhome/workfromhome.component';
 import { TimelogComponent } from './components/mainlayout/timelog/timelog.component';
@@ -70,7 +64,6 @@ import { PayrunsComponent } from './components/payroll/payruns/payruns.component
 import { ReportComponent } from './components/payroll/report/report.component';
 import { YearlySalarySlipComponent } from './components/payroll/yearly-salary-slip/yearly-salary-slip.component';
 import { AddEmployeeComponent } from './components/payroll/add-employee/add-employee.component';
-import { AddAnnouncementComponent } from './components/mainlayout/add-announcement/add-announcement.component';
 import { MyProfileComponent } from './components/mainlayout/my-profile/my-profile.component';
 import { AdminAttendanceComponent } from './components/mainlayout/admin-attendance/admin-attendance.component';
 import { WfhApplyFormComponent } from './components/mainlayout/wfh-apply-form/wfh-apply-form.component';
@@ -128,7 +121,6 @@ import { LoaderComponent } from './components/loader/loader.component';
     AdminLoginComponent,
     EmployeeDataComponent,
     LoginByNumberComponent,
-    OnboardingComponent,
     PendingUserComponent,
     ThankYouComponent,
 
@@ -144,20 +136,13 @@ import { LoaderComponent } from './components/loader/loader.component';
     EmpdocumentComponent,
     EmpresumeComponent,
     EmpfinalComponent,
-
-    TimeSheetComponent,
-    TimeSheetComponent,
-    TimeSheetViewComponent,
     HolidayCalendarComponent,
     DashboardhomeComponent,
     MainlayoutComponent,
-    FeedbacksComponent,
     WorkhoursComponent,
-    HiringComponent,
     WorkHistoryComponent,
     WishcardComponent,
     AnnouncementComponent,
-    ApplyLeaveComponent,
     LeaveComponent,
     WorkfromhomeComponent,
     TimelogComponent,
@@ -176,14 +161,12 @@ import { LoaderComponent } from './components/loader/loader.component';
     ReportComponent,
     YearlySalarySlipComponent,
     AddEmployeeComponent,
-    AddAnnouncementComponent,
     MyProfileComponent,
     AdminAttendanceComponent,
     WfhApplyFormComponent,
     JobOpeningListComponent,
     JobEditDialogComponent,
     UserPayslipComponent,
-
     LoaderComponent
   ],
   imports: [

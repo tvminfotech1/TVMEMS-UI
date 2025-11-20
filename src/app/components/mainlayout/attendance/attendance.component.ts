@@ -92,7 +92,7 @@ export class AttendanceComponent implements OnInit {
     };
 
     this.attendanceService.submitAttendance(record).subscribe({
-      next: (res) => {
+      next: () => {
         alert('✅ Attendance submitted');
 
         const empId = this.authService.getEmployeeId();

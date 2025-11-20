@@ -21,10 +21,7 @@ import { AdminLoginComponent } from './components/admin-login/admin-login.compon
 import { EmployeeDataComponent } from './components/employee-data/employee-data.component';
 import { LoginByNumberComponent } from './components/login-by-number/login-by-number.component';
 import { ThankYouComponent } from './components/thank-you/thank-you.component';
-import { OnboardingComponent } from './components/onboarding/onboarding.component';
 import { PendingUserComponent } from './components/pending-user/pending-user.component';
-import { TimeSheetComponent } from './components/time-sheet/time-sheet.component';
-import { TimeSheetViewComponent } from './components/time-sheet/time-sheet-view/time-sheet-view.component';
 
 import { EmployeeDetailsComponent } from './components/employee-details/employee-details.component';
 import { EmpkycComponent } from './components/employee-details/empkyc/empkyc.component';
@@ -41,13 +38,10 @@ import { EmpfinalComponent } from './components/employee-details/empfinal/empfin
 import { MainlayoutComponent } from './components/mainlayout/mainlayout.component';
 import { DashboardhomeComponent } from './components/mainlayout/dashboardhome/dashboardhome.component';
 import { HolidayCalendarComponent } from './components/mainlayout/hoilday-calendar/hoilday-calendar.component';
-import { FeedbacksComponent } from './components/mainlayout/feedbacks/feedbacks.component';
 import { WorkhoursComponent } from './components/mainlayout/workhours/workhours.component';
-import { HiringComponent } from './components/mainlayout/hiring/hiring.component';
 import { WorkHistoryComponent } from './components/mainlayout/work-history/work-history.component';
 import { WishcardComponent } from './components/mainlayout/wishcard/wishcard.component';
 import { AnnouncementComponent } from './components/mainlayout/announcement/announcement.component';
-import { ApplyLeaveComponent } from './components/mainlayout/apply-leave/apply-leave.component';
 import { LeaveComponent } from './components/mainlayout/leave/leave.component';
 import { WorkfromhomeComponent } from './components/mainlayout/workfromhome/workfromhome.component';
 import { TimelogComponent } from './components/mainlayout/timelog/timelog.component';
@@ -69,8 +63,6 @@ import { YearlySalarySlipComponent } from './components/payroll/yearly-salary-sl
 import { adminAuthGuard } from './guards/admin-auth.guard';
 import { userAuthGuard } from './guards/user-auth.guard';
 import { AdminAttendanceComponent } from './components/mainlayout/admin-attendance/admin-attendance.component';
-
-import { AddAnnouncementComponent } from './components/mainlayout/add-announcement/add-announcement.component';
 import { AuthGuard } from './guards/auth.guard';
 import { MyProfileComponent } from './components/mainlayout/my-profile/my-profile.component';
 import { JobOpeningListComponent } from './components/mainlayout/job-opening-list/job-opening-list.component';
@@ -87,7 +79,6 @@ const routes: Routes = [
   { path: 'adminLogin', component: AdminLoginComponent },
   { path: 'employeeData/:id', component: EmployeeDataComponent },
   { path: 'thankYou', component: ThankYouComponent },
-  { path: 'onboarding', component: OnboardingComponent },
   { path: 'pendingUser', component: PendingUserComponent },
 
 
@@ -116,11 +107,7 @@ const routes: Routes = [
         component: HolidayCalendarComponent,
         canActivate: [AuthGuard],
       },
-      {
-        path: 'feedbacks',
-        component: FeedbacksComponent,
-        canActivate: [AuthGuard],
-      },
+  
       {
         path: 'organization',
         component: OrganizationComponent,
@@ -146,22 +133,13 @@ const routes: Routes = [
         component: AnnouncementComponent,
         canActivate: [adminAuthGuard],
       },
-      {
-        path: 'applyleave',
-        component: ApplyLeaveComponent,
-        canActivate: [adminAuthGuard],
-      },
       { path: 'myleave', component: LeaveComponent, canActivate: [AuthGuard] },
       {
         path: 'workfromhome',
         component: WorkfromhomeComponent,
         canActivate: [AuthGuard],
       },
-      {
-        path: 'hiring',
-        component: HiringComponent,
-        canActivate: [adminAuthGuard],
-      },
+  
       { path: 'Timelog', component: TimelogComponent },
       { path: 'task', component: TaskComponent, canActivate: [AuthGuard] },
       {
@@ -186,11 +164,6 @@ const routes: Routes = [
       },
       { path: 'seeJobOpening', component: JobOpeningListComponent },
       { path: 'goal', component: GoalComponent, canActivate: [AuthGuard] },
-      {
-        path: 'add-announcement',
-        component: AddAnnouncementComponent,
-        canActivate: [adminAuthGuard],
-      },
       { path: 'payslip', component: UserPayslipComponent },
 
       {

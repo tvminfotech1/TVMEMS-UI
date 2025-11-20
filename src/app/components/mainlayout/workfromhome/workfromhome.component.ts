@@ -267,7 +267,7 @@ export class WorkfromhomeComponent implements OnInit {
     };
 
     this.wfhService.updateWfhStatus(updatedRequest).subscribe({
-      next: (response) => {
+      next: () => {
         this.details = this.details.filter(
           (d) => d.requestId !== request.requestId
         );
@@ -279,7 +279,7 @@ export class WorkfromhomeComponent implements OnInit {
           } status updated to ${newStatus.toUpperCase()}`,
           "Close",
           {
-            duration: 2000,
+            duration: 3000,
             horizontalPosition: "center",
             verticalPosition: "top",
             panelClass: ["error-snackbar"],

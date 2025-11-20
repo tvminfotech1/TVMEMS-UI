@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { BASE_URL } from 'src/app/models/baseurl/constant';
 interface Holiday {
   id: number;
   name: string;
@@ -16,7 +17,6 @@ export class HolidayCalendarComponent implements OnInit {
   isLoading = true;
   errorMessage = '';
 
-  private apiUrl = 'http://localhost:8080/Holiday';
 
   constructor(private http: HttpClient) {}
 
@@ -25,7 +25,7 @@ export class HolidayCalendarComponent implements OnInit {
   }
 
   loadHolidays(): void {
-    this.http.get<Holiday[]>(this.apiUrl).subscribe({
+    this.http.get<Holiday[]>(`${BASE_URL}/Holiday`).subscribe({
       next: (data) => {
         this.holidays = data.sort(
           (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()

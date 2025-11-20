@@ -3,12 +3,12 @@ import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth.service';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { BASE_URL } from '../models/baseurl/constant';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
-  private readonly BASE_URL = 'http://localhost:8080';
 
   private formData: Record<string, any> = {};
   private formGroups: Record<string, FormGroup> = {};
@@ -100,7 +100,7 @@ export class UserService {
     const employeeId = this.getEmployeeId();
     const jsonBody = { employeeId: employeeId, ...this.getAllFormData() };
 
-    return this.http.post(`${this.BASE_URL}/personal/savejson`, jsonBody, {
+    return this.http.post(`${BASE_URL}/personal/savejson`, jsonBody, {
       headers,
     });
   }
@@ -117,7 +117,7 @@ export class UserService {
     });
 
     return this.http.post(
-      `${this.BASE_URL}/documents/upload/${employeeId}`,
+      `${BASE_URL}/documents/upload/${employeeId}`,
       this.documentData,
       { headers }
     );

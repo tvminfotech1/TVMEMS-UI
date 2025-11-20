@@ -9,7 +9,6 @@ import { JobPosting } from '../../goal/interface/job-openingDto';
 })
 export class MainLayoutService {
   private apiUrl = 'http://localhost:8080/api/hiring/jobs';
-  private apiUrl1 = '';
   constructor(private http: HttpClient) {}
 
   postJobPostings(job: JobPosting): Observable<JobPosting> {

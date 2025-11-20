@@ -1,9 +1,10 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable, of, throwError } from 'rxjs';
-import { map, catchError, tap } from 'rxjs/operators';
-import { jwtDecode } from 'jwt-decode';
-import { Router } from '@angular/router';
+import { Injectable } from "@angular/core";
+import { HttpClient, HttpResponse } from "@angular/common/http";
+import { Observable, of, throwError } from "rxjs";
+import { map, catchError, tap } from "rxjs/operators";
+import { jwtDecode } from "jwt-decode";
+import { Router } from "@angular/router";
+import { BASE_URL } from "../models/baseurl/constant";
 
 interface DecodedToken {
   sub: string;
@@ -16,40 +17,40 @@ interface DecodedToken {
 }
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class AuthService {
-  private baseUrl = 'http://localhost:8080';
+  private baseUrl = "http://localhost:8080";
 
   constructor(private http: HttpClient, private router: Router) {}
 
   private saveToken(token: string): void {
-    sessionStorage.setItem('token', token);
+    sessionStorage.setItem("token", token);
   }
 
   loginAdmin(data: any): Observable<any> {
     return this.http
-      .post(`${this.baseUrl}/adminlogin`, data, { observe: 'response' })
+      .post(`${this.baseUrl}/adminlogin`, data, { observe: "response" })
       .pipe(
         tap((response: HttpResponse<any>) => {
           const token =
-            response.headers.get('Authorization') || response.body?.token;
+            response.headers.get("Authorization") || response.body?.token;
           if (token) {
             this.saveToken(
-              token.startsWith('Bearer ') ? token.substring(7) : token
+              token.startsWith("Bearer ") ? token.substring(7) : token
             );
           } else {
             console.warn(
-              'Login Admin: Token not found in response header or body.'
+              "Login Admin: Token not found in response header or body."
             );
-            throw new Error('Authentication failed: Token not received.');
+            throw new Error("Authentication failed: Token not received.");
           }
         }),
         map((response) => response.body),
         catchError((error) => {
-          console.error('Login Admin failed:', error);
+          console.error("Login Admin failed:", error);
           return throwError(
-            () => new Error('Admin login failed. Please check credentials.')
+            () => new Error("Admin login failed. Please check credentials.")
           );
         })
       );
@@ -57,35 +58,35 @@ export class AuthService {
 
   loginUser(data: any): Observable<any> {
     return this.http
-      .post(`${this.baseUrl}/userlogin`, data, { observe: 'response' })
+      .post(`${this.baseUrl}/userlogin`, data, { observe: "response" })
       .pipe(
         tap((response: HttpResponse<any>) => {
           const token =
-            response.headers.get('Authorization') || response.body?.token;
+            response.headers.get("Authorization") || response.body?.token;
           if (token) {
-            const pureToken = token.startsWith('Bearer ')
+            const pureToken = token.startsWith("Bearer ")
               ? token.substring(7)
               : token;
             this.saveToken(pureToken);
 
             const decoded: DecodedToken = jwtDecode(pureToken);
             if (decoded?.empId) {
-              sessionStorage.setItem('employeeId', decoded.empId.toString());
+              sessionStorage.setItem("employeeId", decoded.empId.toString());
             } else {
-              console.warn('⚠ No employee ID found in token!');
+              console.warn("⚠ No employee ID found in token!");
             }
           } else {
             console.warn(
-              'Login User: Token not found in response header or body.'
+              "Login User: Token not found in response header or body."
             );
-            throw new Error('Authentication failed: Token not received.');
+            throw new Error("Authentication failed: Token not received.");
           }
         }),
         map((response) => response.body),
         catchError((error) => {
-          console.error('Login User failed:', error);
+          console.error("Login User failed:", error);
           return throwError(
-            () => new Error('User login failed. Please check credentials.')
+            () => new Error("User login failed. Please check credentials.")
           );
         })
       );
@@ -94,11 +95,11 @@ export class AuthService {
   register(data: any): Observable<any> {
     return this.http
       .post(`${this.baseUrl}/admin/newuser`, data, {
-        responseType: 'json',
+        responseType: "json",
       })
       .pipe(
         catchError((error) => {
-          console.error('Registration failed:', error);
+          console.error("Registration failed:", error);
           return throwError(() => error);
         })
       );
@@ -115,9 +116,9 @@ export class AuthService {
   }
 
   getToken(): string | null {
-    const token = sessionStorage.getItem('token');
+    const token = sessionStorage.getItem("token");
     if (token && this.isTokenExpired(token)) {
-      console.warn('JWT token is expired. Logging out.');
+      console.warn("JWT token is expired. Logging out.");
       this.logout();
       return null;
     }
@@ -131,7 +132,7 @@ export class AuthService {
     try {
       return jwtDecode<DecodedToken>(token);
     } catch (err) {
-      console.error('JWT decode error:', err);
+      console.error("JWT decode error:", err);
       return null;
     }
   }
@@ -145,7 +146,7 @@ export class AuthService {
       const currentTime = Date.now() / 1000;
       return decoded.exp < currentTime;
     } catch (e) {
-      console.error('Error checking token expiry:', e);
+      console.error("Error checking token expiry:", e);
       return true;
     }
   }
@@ -162,7 +163,7 @@ export class AuthService {
   }
 
   getUserEmail(): string | null {
-    const token = sessionStorage.getItem('token');
+    const token = sessionStorage.getItem("token");
     if (!token) return null;
     const decoded: any = jwtDecode(token);
     return decoded.sub || decoded.email || null;
@@ -174,11 +175,11 @@ export class AuthService {
   }
 
   isAdmin(): boolean {
-    return this.getUserRole() === 'ROLE_ADMIN';
+    return this.getUserRole() === "ROLE_ADMIN";
   }
 
   isUser(): boolean {
-    return this.getUserRole() === 'ROLE_USER';
+    return this.getUserRole() === "ROLE_USER";
   }
 
   checkRole(): Observable<any> {
@@ -187,9 +188,9 @@ export class AuthService {
   }
 
   logout(): void {
-    localStorage.clear()
+    localStorage.clear();
     sessionStorage.clear();
-    this.router.navigateByUrl('/adminLogin');
+    this.router.navigateByUrl("/adminLogin");
   }
   getEmailFromToken(): string | null {
     const decoded = this.getDecodedToken();
@@ -202,8 +203,8 @@ export class AuthService {
     );
   }
 
-checkOnboardingStatus(employeeId: string | null): Observable<boolean> {
-  const url = `http://localhost:8080/final/check-status/${employeeId}`;
-  return this.http.get<boolean>(url);
-}
+  checkOnboardingStatus(employeeId: string | null): Observable<boolean> {
+    const url = `${BASE_URL}/final/check-status/${employeeId}`;
+    return this.http.get<boolean>(url);
+  }
 }

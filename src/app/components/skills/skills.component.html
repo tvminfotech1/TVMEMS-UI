@@ -2,19 +2,16 @@
 
 <div class="container">
 
-  <!-- Add Skill Button -->
   <div class="header">
     <button type="submit" mat-raised-button (click)="openPopup()">
       <mat-icon>add</mat-icon> Add
     </button>
   </div>
 
-  <!-- No Skills -->
   <div *ngIf="skillList.length === 0" class="no-data">
     <p>No skills added.</p>
   </div>
 
-  <!-- Skills List -->
   <div class="skills-list">
     <mat-card class="skill-card" *ngFor="let skill of skillList; let i = index">
       <div class="skill-card-header">
@@ -36,7 +33,6 @@
   </div>
 
 
-  <!-- Popup Form -->
   <div class="popup" *ngIf="showPopup">
     <div class="popup-content">
       <span class="close" (click)="closePopup()">&times;</span>
@@ -44,7 +40,6 @@
       <form [formGroup]="skillForm" (ngSubmit)="addSkill()">
         <div class="form-grid">
 
-          <!-- Skill Name -->
           <mat-form-field appearance="outline" class="full-width">
             <mat-label>Skill Name</mat-label>
             <input matInput formControlName="skillName">
@@ -59,7 +54,6 @@
             </mat-error>
           </mat-form-field>
 
-          <!-- Skill Category -->
           <mat-form-field appearance="outline" class="full-width">
             <mat-label>Skill Category</mat-label>
             <input matInput formControlName="skillCategories">
@@ -74,7 +68,6 @@
             </mat-error>
           </mat-form-field>
 
-          <!-- Version -->
           <mat-form-field appearance="outline">
             <mat-label>Version</mat-label>
             <input matInput formControlName="versionNum" (keydown)="preventInvalidInput($event)">
@@ -86,7 +79,6 @@
             </mat-error>
           </mat-form-field>
 
-          <!-- Self Rating -->
           <mat-form-field appearance="outline" class="custom-form-field">
             <mat-label>Self Rating</mat-label>
             <mat-select formControlName="selfRate">
@@ -97,7 +89,6 @@
             </mat-error>
           </mat-form-field>
 
-          <!-- Experience Years -->
           <mat-form-field appearance="outline">
             <mat-label>Years of Experience</mat-label>
             <input matInput type="number" formControlName="experience_year" (keydown)="preventInvalidInput($event)"
@@ -113,7 +104,6 @@
             </mat-error>
           </mat-form-field>
 
-          <!-- Experience Months -->
           <mat-form-field appearance="outline">
             <mat-label>Additional Months</mat-label>
             <input matInput type="number" formControlName="experience_month" (keydown)="preventInvalidInput($event)"
@@ -129,7 +119,6 @@
 
 
 
-          <!-- Submit -->
           <div class="full-width">
             <button mat-raised-button color="primary" type="submit">
               Save Skill

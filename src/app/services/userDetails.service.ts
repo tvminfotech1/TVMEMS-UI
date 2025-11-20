@@ -1,12 +1,12 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { BASE_URL } from '../models/baseurl/constant';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserDetailsService {
-  private readonly BASE_URL = 'http://localhost:8080';
 
   constructor(private http: HttpClient) {}
 
@@ -18,6 +18,6 @@ export class UserDetailsService {
       Authorization: `Bearer ${token}`,
     });
 
-    return this.http.get(`${this.BASE_URL}/userDetails`, { headers });
+    return this.http.get(`${BASE_URL}/userDetails`, { headers });
   }
 }

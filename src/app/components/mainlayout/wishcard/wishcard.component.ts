@@ -5,28 +5,29 @@ import {
   ViewChild,
   ElementRef,
   OnDestroy,
-} from '@angular/core';
-import Swal from 'sweetalert2';
-import { HttpClient } from '@angular/common/http';
-import { EmployeeService } from 'src/app/services/employee.service';
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { ViewEncapsulation } from '@angular/core';
+} from "@angular/core";
+import Swal from "sweetalert2";
+import { HttpClient } from "@angular/common/http";
+import { EmployeeService } from "src/app/services/employee.service";
+import { DomSanitizer, SafeUrl } from "@angular/platform-browser";
+import { ViewEncapsulation } from "@angular/core";
+import { BASE_URL } from "src/app/models/baseurl/constant";
 
 @Component({
-  selector: 'app-wishcard',
-  templateUrl: './wishcard.component.html',
-  styleUrls: ['./wishcard.component.css'],
+  selector: "app-wishcard",
+  templateUrl: "./wishcard.component.html",
+  styleUrls: ["./wishcard.component.css"],
   encapsulation: ViewEncapsulation.None,
 })
 export class WishcardComponent implements AfterViewInit, OnDestroy {
-    @ViewChild('carouselTrack') carouselTrack!: ElementRef;
+  @ViewChild("carouselTrack") carouselTrack!: ElementRef;
   private scrollSpeed = 1.0;
   private animationFrame: number = 0;
   private isPaused = false;
   isLoading = true;
-  readonly CATEGORY_ONBOARDING = 'Onboarded'; 
-  readonly CATEGORY_BIRTHDAY = 'BirthDay'; 
-  readonly CATEGORY_ANNIVERSARY = 'Anniversary'; 
+  readonly CATEGORY_ONBOARDING = "Onboarded";
+  readonly CATEGORY_BIRTHDAY = "BirthDay";
+  readonly CATEGORY_ANNIVERSARY = "Anniversary";
 
   allWishes: any[] = [];
   today = new Date();
@@ -65,7 +66,7 @@ export class WishcardComponent implements AfterViewInit, OnDestroy {
 
   ngOnInit() {
     this.isLoading = true;
-    this.http.get<any>('http://localhost:8080/personal/wishes').subscribe({
+    this.http.get<any>(`${BASE_URL}/personal/wishes`).subscribe({
       next: (data) => {
         if (
           data &&
@@ -73,13 +74,11 @@ export class WishcardComponent implements AfterViewInit, OnDestroy {
             data.Onboarded?.length ||
             data.Anniversary?.length)
         ) {
-          console.log('Loaded data from backend');
           this.prepareWishes(data);
         }
         this.isLoading = false;
       },
       error: (err) => {
-        console.error('Error fetching wishes:', err);
         this.isLoading = false;
       },
     });
@@ -90,8 +89,6 @@ export class WishcardComponent implements AfterViewInit, OnDestroy {
   }
 
   prepareWishes(backendData: any) {
-    console.log('🎉 Raw wishes:', backendData);
-
     this.birthdayWishes = backendData.BirthDay || [];
     this.anniversaryWishes = backendData.Anniversary || [];
     this.onboardingWishes = backendData.Onboarded || [];
@@ -101,11 +98,11 @@ export class WishcardComponent implements AfterViewInit, OnDestroy {
         ...p,
         category: this.CATEGORY_BIRTHDAY,
         date: p.dob
-          ? new Date(p.dob).toLocaleDateString('en-GB', {
-              day: '2-digit',
-              month: 'short',
+          ? new Date(p.dob).toLocaleDateString("en-GB", {
+              day: "2-digit",
+              month: "short",
             })
-          : p.date || '',
+          : p.date || "",
       })),
 
       ...this.anniversaryWishes.map((p) => {
@@ -133,11 +130,11 @@ export class WishcardComponent implements AfterViewInit, OnDestroy {
           ...p,
           category,
           date: p.joiningDate
-            ? new Date(p.joiningDate).toLocaleDateString('en-GB', {
-                day: '2-digit',
-                month: 'short',
+            ? new Date(p.joiningDate).toLocaleDateString("en-GB", {
+                day: "2-digit",
+                month: "short",
               })
-            : p.date || '',
+            : p.date || "",
         };
       }),
     ];
@@ -146,11 +143,11 @@ export class WishcardComponent implements AfterViewInit, OnDestroy {
 
     this.allWishes.forEach((p) => {
       if (p.pSizePhoto) {
-        if (p.pSizePhoto.startsWith('data:image')) {
+        if (p.pSizePhoto.startsWith("data:image")) {
           p.image = this.sanitizer.bypassSecurityTrustUrl(p.pSizePhoto);
         } else {
           p.image = this.sanitizer.bypassSecurityTrustUrl(
-            'data:image/jpeg;base64,' + p.pSizePhoto
+            "data:image/jpeg;base64," + p.pSizePhoto
           );
         }
       } else if (p.employeeId) {
@@ -160,41 +157,38 @@ export class WishcardComponent implements AfterViewInit, OnDestroy {
             p.image = this.sanitizer.bypassSecurityTrustUrl(objectURL);
           },
           error: (err) => {
-            console.error('❌ Error loading photo for', p.name, err);
-            p.image = 'assets/userimg/OIP.jpg';
+            console.error(" Error loading photo for", p.name, err);
+            p.image = "assets/userimg/OIP.jpg";
           },
         });
       } else {
-        p.image = 'assets/userimg/OIP.jpg';
+        p.image = "assets/userimg/OIP.jpg";
       }
     });
 
-    console.log('✅ All wishes prepared:', this.allWishes);
-
     const today = new Date();
-    const todayStr = today.toLocaleDateString('en-GB', {
-      day: '2-digit',
-      month: 'short',
+    const todayStr = today.toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "short",
     });
 
-  this.filteredWishes = this.allWishes.filter(p => p.date === todayStr);
-  console.log('🎯 Filtered (today):', this.filteredWishes);
-  setTimeout(() => {
-    const track = this.carouselTrack?.nativeElement;
-    if (!track) return;
+    this.filteredWishes = this.allWishes.filter((p) => p.date === todayStr);
+    setTimeout(() => {
+      const track = this.carouselTrack?.nativeElement;
+      if (!track) return;
 
-    const cardCount = this.filteredWishes.length;
-    if (cardCount > 3) {
-      const clone = track.cloneNode(true);
-      track.parentNode.appendChild(clone);
-    } else {
-      this.isPaused = true;
-      track.style.transform = 'translateX(0)';
-      track.style.animation = 'none';
-      if (track.nextSibling) track.nextSibling.remove();
-    }
-  }, 500);
-}
+      const cardCount = this.filteredWishes.length;
+      if (cardCount > 3) {
+        const clone = track.cloneNode(true);
+        track.parentNode.appendChild(clone);
+      } else {
+        this.isPaused = true;
+        track.style.transform = "translateX(0)";
+        track.style.animation = "none";
+        if (track.nextSibling) track.nextSibling.remove();
+      }
+    }, 500);
+  }
 
   filterWishes() {
     const today = new Date();
@@ -203,7 +197,7 @@ export class WishcardComponent implements AfterViewInit, OnDestroy {
 
     const matchDate = (dateStr: string) => {
       if (!dateStr) return false;
-      const parts = dateStr.split(' ');
+      const parts = dateStr.split(" ");
       if (parts.length < 2) return false;
 
       const day = parseInt(parts[0]);
@@ -241,11 +235,11 @@ export class WishcardComponent implements AfterViewInit, OnDestroy {
 
   sendWishes(name: string) {
     Swal.fire({
-      title: 'Wishes Sent!',
+      title: "Wishes Sent!",
       text: `You have sent wishes to ${name}.`,
-      icon: 'success',
-      confirmButtonColor: '#3085d6',
-      confirmButtonText: 'OK',
+      icon: "success",
+      confirmButtonColor: "#3085d6",
+      confirmButtonText: "OK",
     });
   }
 
@@ -290,52 +284,53 @@ export class WishcardComponent implements AfterViewInit, OnDestroy {
 
     this.autoScrollInterval = setInterval(() => {
       this.nextPage();
-    }, 2500); 
+    }, 2500);
   }
 
-ngAfterViewInit() {
-  setTimeout(() => {
-    const track = this.carouselTrack.nativeElement as HTMLElement;
-    const cards = Array.from(track.querySelectorAll('.card')) as HTMLElement[];
-    if (!track || cards.length === 0) return;
+  ngAfterViewInit() {
+    setTimeout(() => {
+      const track = this.carouselTrack.nativeElement as HTMLElement;
+      const cards = Array.from(
+        track.querySelectorAll(".card")
+      ) as HTMLElement[];
+      if (!track || cards.length === 0) return;
 
-    track.querySelectorAll('.clone').forEach(c => c.remove());
+      track.querySelectorAll(".clone").forEach((c) => c.remove());
 
-    const trackWidth = track.scrollWidth;
+      const trackWidth = track.scrollWidth;
 
-    const clones = cards.map(c => {
-      const clone = c.cloneNode(true) as HTMLElement;
-      clone.classList.add('clone');
-      track.appendChild(clone);
-      return clone;
-    });
+      const clones = cards.map((c) => {
+        const clone = c.cloneNode(true) as HTMLElement;
+        clone.classList.add("clone");
+        track.appendChild(clone);
+        return clone;
+      });
 
-    const totalScrollWidth = track.scrollWidth / 2; 
-    this.startContinuousScroll(track, totalScrollWidth);
-  }, 800);
-}
+      const totalScrollWidth = track.scrollWidth / 2;
+      this.startContinuousScroll(track, totalScrollWidth);
+    }, 800);
+  }
 
-startContinuousScroll(track: HTMLElement, originalWidth: number) {
-  let translateX = 0;
+  startContinuousScroll(track: HTMLElement, originalWidth: number) {
+    let translateX = 0;
 
-  const loop = () => {
-    if (!this.isPaused) {
-      translateX -= this.scrollSpeed;
+    const loop = () => {
+      if (!this.isPaused) {
+        translateX -= this.scrollSpeed;
 
-      if (Math.abs(translateX) >= originalWidth) {
-        translateX = 0;
+        if (Math.abs(translateX) >= originalWidth) {
+          translateX = 0;
+        }
+
+        track.style.transform = `translateX(${translateX}px)`;
       }
 
-      track.style.transform = `translateX(${translateX}px)`;
-    }
+      this.animationFrame = requestAnimationFrame(loop);
+    };
 
-    this.animationFrame = requestAnimationFrame(loop);
-  };
-
-  cancelAnimationFrame(this.animationFrame);
-  loop();
-}
-
+    cancelAnimationFrame(this.animationFrame);
+    loop();
+  }
 
   pauseScroll() {
     this.isPaused = true;

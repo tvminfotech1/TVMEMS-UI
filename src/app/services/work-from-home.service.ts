@@ -2,13 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, Observer, throwError } from 'rxjs';
 import { AuthService } from './auth.service';
+import { BASE_URL } from '../models/baseurl/constant';
 
 @Injectable({
   providedIn: 'root',
 })
 export class WorkFromHomeService {
   private baseUrl = 'http://localhost:8080/WFH';
-  private apiUrl = 'http://localhost:8080/Holiday';
 
   constructor(private http: HttpClient, private authService: AuthService) { }
 
@@ -21,7 +21,7 @@ export class WorkFromHomeService {
   }
 
   getHolidays(): Observable<any> {
-    return this.http.get<any>(this.apiUrl, {
+    return this.http.get<any>(`${BASE_URL}/Holiday`, {
       headers: this.getAuthHeaders(),
     });
   }
@@ -83,11 +83,6 @@ export class WorkFromHomeService {
     });
   }
 
-  deleteWfhRequest(id: number): Observable<any> {
-    return this.http.delete(`${this.baseUrl}/${id}`, {
-      headers: this.getAuthHeaders(),
-    });
-  }
 
   getApp_Pen_EmployeeWfh(employeeId: number): Observable<any> {
     return this.http.get(`${this.baseUrl}/employee/${employeeId}/wfh`)

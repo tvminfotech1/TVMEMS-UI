@@ -53,7 +53,9 @@ export class WfhApplyFormComponent implements OnInit {
   disabledDates: string[] = [];
   wfhList: any[] = [];
 
+
   approvedWfhRanges: { start: Date; end: Date }[] = [];
+
 
   constructor(
     private fb: FormBuilder,
@@ -85,55 +87,50 @@ export class WfhApplyFormComponent implements OnInit {
   }
 
   formatDate(date: Date): string {
-    return (
-      date.getFullYear() +
-      "-" +
-      String(date.getMonth() + 1).padStart(2, "0") +
-      "-" +
-      String(date.getDate()).padStart(2, "0")
-    );
+    return date.getFullYear() +
+      '-' +
+      String(date.getMonth() + 1).padStart(2, '0') +
+      '-' +
+      String(date.getDate()).padStart(2, '0');
   }
 
   ngOnInit(): void {
-    this.employeeEmail =
-      this.authService.getEmailFromToken() || "Employee email";
+    this.employeeEmail = this.authService.getEmailFromToken() || "Employee email";
     this.employeeId = this.authService.getEmployeeId() || "Employee Id";
     this.employeeName = this.authService.getfullName() || "Employee Name";
     this.disabledDates = [];
     this.approvedWfhRanges = [];
-    this.wfhService
-      .getApp_Pen_EmployeeWfh(Number(this.employeeId))
-      .subscribe((data) => {
-        this.wfhList = data;
-        this.approvedWfhRanges = data.map((item: any) => ({
-          start: new Date(item.fromDate),
-          end: new Date(item.toDate),
-        }));
-
-        data.forEach((item: any) => {
-          const start = new Date(item.fromDate);
-          const end = new Date(item.toDate);
-          let current = new Date(start);
-          while (current <= end) {
-            const formatted = this.formatDate(current);
-            this.disabledDates.push(formatted);
-            current.setDate(current.getDate() + 1);
-          }
+       this.wfhService.getHolidays().subscribe(holidays => {
+        holidays.forEach((holiday: any) => {
+          if (!holiday.date) return;
+          const dateObj = new Date(holiday.date);
+          if (isNaN(dateObj.getTime())) return;
+          const formatted = this.formatDate(dateObj);
+          this.disabledDates.push(formatted);
         });
 
-        this.wfhService.getHolidays().subscribe((holidays) => {
-          holidays.forEach((holiday: any) => {
-            if (!holiday.date) return;
-            const dateObj = new Date(holiday.date);
-            if (isNaN(dateObj.getTime())) return;
-            const formatted = this.formatDate(dateObj);
-            this.disabledDates.push(formatted);
-          });
-
-          this.disabledDates = Array.from(new Set(this.disabledDates));
-          console.log("Final Disabled Dates:", this.disabledDates);
-        });
+        this.disabledDates = Array.from(new Set(this.disabledDates));
       });
+
+    this.wfhService.getApp_Pen_EmployeeWfh(Number(this.employeeId)).subscribe(data => {
+    this.wfhList = data;
+      this.approvedWfhRanges = data.map((item: any) => ({
+        start: new Date(item.fromDate),
+        end: new Date(item.toDate),
+      }));
+
+      data.forEach((item: any) => {
+        const start = new Date(item.fromDate);
+        const end = new Date(item.toDate);
+        let current = new Date(start);
+        while (current <= end) {
+          const formatted = this.formatDate(current);
+          this.disabledDates.push(formatted);
+          current.setDate(current.getDate() + 1);
+        }
+      });
+
+       });
   }
 
   disableDates = (date: Date | null): boolean => {
@@ -152,7 +149,7 @@ export class WfhApplyFormComponent implements OnInit {
 
   disableToDate = (date: Date | null): boolean => {
     if (!date) return false;
-    const fromValue = this.wfhForm.get("fromDate")?.value;
+    const fromValue = this.wfhForm.get('fromDate')?.value;
     if (!fromValue) return false;
     const fromDate = this.normalize(new Date(fromValue));
     const checkDate = this.normalize(new Date(date));
@@ -161,14 +158,14 @@ export class WfhApplyFormComponent implements OnInit {
       return false;
     }
     const candidates: Date[] = [];
-    this.disabledDates.forEach((dStr) => {
+    this.disabledDates.forEach(dStr => {
       const d = new Date(dStr);
       if (!isNaN(d.getTime())) {
         const nd = this.normalize(d);
         if (nd >= fromDate) candidates.push(nd);
       }
     });
-    this.approvedWfhRanges.forEach((range) => {
+    this.approvedWfhRanges.forEach(range => {
       const rangeStart = this.normalize(new Date(range.start));
       const rangeEnd = this.normalize(new Date(range.end));
       if (rangeEnd >= fromDate) {
@@ -222,23 +219,6 @@ export class WfhApplyFormComponent implements OnInit {
         },
         error: (error) => {
           console.error("Error submitting WFH Request:", error);
-
-          if (error.status === 400) {
-            this.showSnackBar(
-              "Invalid data provided. Please check your inputs.",
-              "error-snackbar"
-            );
-          } else if (error.status === 500) {
-            this.showSnackBar(
-              "Server error. Please try again later.",
-              "error-snackbar"
-            );
-          } else {
-            this.showSnackBar(
-              "Failed to submit request. Please try again.",
-              "error-snackbar"
-            );
-          }
         },
       });
     } else {
@@ -284,7 +264,7 @@ export class WfhApplyFormComponent implements OnInit {
     }
   }
 
-  onOverlayClick(event: MouseEvent) {
+  onOverlayClick(_event: MouseEvent) {
     this.onCancel();
   }
 
