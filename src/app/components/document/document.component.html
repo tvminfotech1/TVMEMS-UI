@@ -280,6 +280,8 @@
               color="primary"
               type="button"
               (click)="triggerFileInput(postGraduation)"
+                [disabled]="!isPgDocEnabled"
+                (change)="onFileChange($event, 'postGraduation')"
             >
               <mat-icon>upload</mat-icon>
               Upload

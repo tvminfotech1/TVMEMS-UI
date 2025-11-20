@@ -65,7 +65,7 @@ export class AttendanceComponent implements OnInit {
       next: (isLeave) => {
         this.isOnLeave = isLeave.body;
 
-        if (isLeave) {
+        if (this.isOnLeave) {
           this.attendanceForm.disable(); 
         }
       },

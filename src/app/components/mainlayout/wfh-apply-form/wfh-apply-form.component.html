@@ -41,6 +41,7 @@
             <input
               matInput
               [matDatepicker]="fromPicker"
+              [matDatepickerFilter]="disableDates"
               formControlName="fromDate"
               [min]="today"
               placeholder="DD-MM-YYYY"
@@ -70,6 +71,7 @@
             <input
               matInput
               [matDatepicker]="toPicker"
+              [matDatepickerFilter]="disableToDate"
               formControlName="toDate"
               [min]="wfhForm.get('fromDate')?.value || today"
               placeholder="DD-MM-YYYY"

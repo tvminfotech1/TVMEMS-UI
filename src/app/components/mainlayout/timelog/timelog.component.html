@@ -108,19 +108,13 @@
   </div>
 
   <div class="accordion-item">
-    <h2 class="accordion-header" (click)="toggleAccordion(0)">
+    <h2 class="accordion-header">
       Timesheet Summary
-      <span
-        [style.transform]="
-          accordionState[0] ? 'rotate(180deg)' : 'rotate(0deg)'
-        "
-        style="display: inline-block; transition: 0.3s"
-        >⯆</span
-      >
+     
     </h2>
 
     <div class="accordion-content">
-      <table class="classic-table" *ngIf="accordionState[0]">
+      <table class="classic-table" >
         <thead class="header-table">
           <tr>
             <th>Employee Name</th>
@@ -183,18 +177,12 @@
   </div>
 
   <div class="accordion-item" *ngIf="!isAdmin">
-    <h2 class="accordion-header" (click)="toggleAccordion(2)">
+    <h2 class="accordion-header" >
       Fill Your Timesheet
-      <span
-        [style.transform]="
-          accordionState[2] ? 'rotate(180deg)' : 'rotate(0deg)'
-        "
-        style="display: inline-block; transition: 0.3s"
-        >⯆</span
-      >
+     
     </h2>
 
-    <div class="accordion-content" *ngIf="accordionState[2]">
+    <div class="accordion-content">
       <form
         #timelogForm="ngForm"
         (ngSubmit)="onSubmit(timelogForm)"
@@ -291,19 +279,13 @@
   </div>
 
   <div class="employee-history" *ngIf="isAdmin">
-    <h2 class="accordion-header" (click)="toggleAccordion(3)">
+    <h2 class="accordion-header" >
       Timesheet Details of All Employees
-      <span
-        [style.transform]="
-          accordionState[3] ? 'rotate(180deg)' : 'rotate(0deg)'
-        "
-        style="display: inline-block; transition: 0.3s"
-        >⯆</span
-      >
+     
     </h2>
 
     <div class="accordion-content">
-      <div *ngIf="accordionState[3]">
+      <div >
         <div class="filter-bar">
           <input
             type="text"

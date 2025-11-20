@@ -54,7 +54,7 @@
 
 .header h2 {
   font-size: 18px;
-  color: #007bff;
+  color: #0a0f3c;
   margin: 0;
 }
 
@@ -89,7 +89,7 @@
 .section h3 {
   color: #333;
   font-size: 14px;
-  border-left: 3px solid #007bff;
+  border-left: 3px solid #0a0f3c;
   padding-left: 8px;
   margin-bottom: 4px;
 }
@@ -98,7 +98,7 @@
   background: #f7f9fc;
   padding: 6px 10px;
   border-radius: 6px;
-  font-size: 13px;
+  font-size: 15px;
   color: #555;
   margin: 0;
 }
@@ -107,7 +107,7 @@
   background: #f9fafc;
   padding: 6px 10px;
   border-radius: 6px;
-  font-size: 13px;
+  font-size: 15px;
   color: #555;
   margin: 0;
 }
@@ -116,7 +116,7 @@
   display: flex;
   justify-content: flex-end;
   gap: 10px;
-  margin-top: auto;
+  margin-top: 10px;
   border-top: 1px solid #eee;
   padding-top: 10px;
 }
@@ -130,34 +130,47 @@ button {
   font-size: 13px;
   font-weight: 500;
   border-radius: 6px;
-  padding: 6px 10px;
+  padding: 2px 14px 1px 6px;
   transition: background 0.2s ease;
 }
 
 .edit-btn {
-  background: #e8f2ff;
-  color: #007bff;
+  background: linear-gradient(135deg, #eef7fc, #eaeff2);
+  filter: drop-shadow(2px 2px 2px #07296c);
+  color: #0a0f3c !important;
+  padding: 10px;
 }
 
 .edit-btn:hover {
-  background: #007bff;
-  color: #fff;
+  background: linear-gradient(135deg, #eef7fc, #eaeff2);
+  filter: drop-shadow(1px 1px 1px #07296c);
+  color: black;
 }
 
 .delete-btn {
-  background: #fdeaea;
-  color: #c0392b;
+  background: linear-gradient(135deg, #0a0f3c, #1c2b8c);
+  filter: drop-shadow(2px 2px 2px #07296c);
+  color: #fff;
+  padding: 10px;
 }
 
 .delete-btn:hover {
-  background: #c0392b;
+  background: linear-gradient(135deg, #0a0f3c, #1c2b8c);
+  filter: drop-shadow(2px 2px 2px #07296c);
   color: #fff;
 }
 
 .material-icons {
   font-size: 30px;
   vertical-align: middle;
-  height: 2.2rem;
+  color: #0a0f3c;
+}
+.material-icon {
+  font-family: 'Material Icons';
+  font-size: 20px;
+  align-items: center;
+    color: #0a0f3c;
+
 }
 
 .loader {
@@ -186,4 +199,131 @@ button {
 }
 .page-title {
   font-weight: bolder;
+  color: #0a0f3c;
 }
+@media (max-width: 768px) {
+  .page-container {
+    padding: 15px;
+  }
+
+  .card-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+  }
+
+  .job-card {
+    padding: 12px;
+  }
+
+  .header h2 {
+    font-size: 16px;
+  }
+
+  .details p,
+  .list-text,
+  .desc {
+    font-size: 14px;
+  }
+
+  button {
+    font-size: 12px;
+    padding: 8px 12px;
+  }
+
+  .material-icons {
+    font-size: 24px;
+  }
+}
+@media (max-width: 480px) {
+  .page-container {
+    padding: 10px;
+  }
+
+  .card-grid {
+    grid-template-columns: 1fr; /* 1 card per row */
+    gap: 12px;
+  }
+
+  .job-card {
+    padding: 12px;
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .header h2 {
+    font-size: 15px;
+  }
+
+  .status {
+    font-size: 11px;
+    padding: 3px 8px;
+  }
+
+  .list-text,
+  .desc {
+    font-size: 14px;
+  }
+
+  .actions {
+    justify-content: center;
+    gap: 15px;
+  }
+
+  button {
+    font-size: 12px;
+    padding: 6px 10px;
+  }
+
+  .material-icons {
+    font-size: 22px;
+  }
+}
+@media (max-width: 320px) {
+  .page-container {
+    padding: 8px;
+  }
+
+  .card-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .job-card {
+    padding: 10px;
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .header h2 {
+    font-size: 14px;
+  }
+
+  .status {
+    font-size: 10px;
+    padding: 3px 6px;
+  }
+
+  .details p,
+  .list-text,
+  .desc {
+    font-size: 13px;
+  }
+
+  button {
+    font-size: 11px;
+    padding: 6px 8px;
+    gap: 3px;
+  }
+
+  .material-icons {
+    font-size: 18px;
+  }
+}
+

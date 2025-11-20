@@ -13,7 +13,7 @@
 h2 {
   text-align: center;
   margin-bottom: 25px;
-  color: #2c3e50;
+  color: #0a0f3c;
   font-size: 22px;
   font-weight: 600;
 }
@@ -36,6 +36,7 @@ h2 {
   border-radius: 6px;
   outline: none;
   transition: 0.3s;
+  font-family: sans-serif;
 }
 
 .filters-bar input:focus {
@@ -45,6 +46,7 @@ h2 {
 
 .table-responsive {
   overflow-x: auto;
+  border-radius: 10px 10px 0 0;
 }
 
 .salary-table {
@@ -62,8 +64,10 @@ h2 {
 .salary-table td {
   padding: 12px 15px;
   border-bottom: 1px solid #ddd;
-  text-align: left;
-  border-radius: 1px solid white;
+  border-right: 1px solid #ddd;
+  border-left: 1px solid #ddd;
+  text-align: center;
+  font-family: sans-serif;
 }
 
 .salary-table tbody tr:hover {
@@ -111,9 +115,9 @@ h2 {
 }
 
 .btn-slip {
-  display: flex;
-  align-items: center;
-  gap: 6px;
+  background: linear-gradient(135deg, #0a0f3c, #1c2b8c);
+  color: #fff;
+  filter: drop-shadow(1px 1px 1px #07296c);
   padding: 6px 12px;
   border: none;
   border-radius: 6px;
@@ -137,18 +141,82 @@ h2 {
 }
 
 @media (max-width: 768px) {
+  .payruns-container {
+    max-width: 95%;
+    padding: 18px;
+  }
+  h2 {
+    font-size: 20px;
+  }
   .filters-bar {
     flex-direction: column;
+    gap: 12px;
   }
-
+  .filters-bar input[type="text"],
+  .filters-bar input[type="month"] {
+    width: 100%;
+  }
   .salary-table th,
   .salary-table td {
     padding: 10px;
+    font-size: 14px;
+  }
+  .avatar {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+@media (max-width: 480px) {
+  .payruns-container {
+    padding: 14px;
+  }
+  h2 {
+    font-size: 18px;
+  }
+  .filters-bar input[type="text"],
+  .filters-bar input[type="month"] {
+    padding: 9px 12px;
     font-size: 13px;
   }
-
+  .salary-table th,
+  .salary-table td {
+    padding: 8px;
+    font-size: 12px;
+  }
   .avatar {
-    width: 30px;
-    height: 30px;
+    width: 28px;
+    height: 28px;
+  }
+  .btn-slip {
+    padding: 5px 8px;
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 320px) {
+  .payruns-container {
+    padding: 10px;
+  }
+  h2 {
+    font-size: 16px;
+  }
+  .filters-bar input[type="text"],
+  .filters-bar input[type="month"] {
+    padding: 8px 10px;
+    font-size: 12px;
+  }
+  .salary-table th,
+  .salary-table td {
+    padding: 6px;
+    font-size: 11px;
+  }
+  .avatar {
+    width: 24px;
+    height: 24px;
+  }
+  .btn-slip {
+    padding: 5px 8px;
+    font-size: 8px;
   }
 }

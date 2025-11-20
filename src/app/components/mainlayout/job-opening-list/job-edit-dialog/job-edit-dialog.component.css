@@ -12,7 +12,7 @@
 
 h2 {
   text-align: center;
-  color: #007bff;
+  color: #0a0f3c !important;
   font-size: 22px;
   margin-bottom: 18px;
   font-weight: 600;
@@ -24,7 +24,7 @@ label {
   margin-top: 12px;
   margin-bottom: 4px;
   font-size: 14px;
-  color: #333;
+  color: #0a0f3c;
 }
 
 input,
@@ -43,7 +43,7 @@ mat-select {
 input:focus,
 textarea:focus,
 mat-select:focus {
-  border-color: #007bff;
+  border-color: #0a0f3c;
   box-shadow: 0 0 6px rgba(0, 123, 255, 0.3);
   outline: none;
   background-color: #fff;
@@ -67,20 +67,149 @@ button[mat-raised-button] {
 }
 
 button[mat-raised-button] {
-  background: linear-gradient(135deg, #007bff, #0056b3);
+  background: linear-gradient(135deg, #0a0f3c, #1c2b8c);
+  filter: drop-shadow(1px 1px 1px #07296c);
   color: #fff;
-  box-shadow: 0 3px 6px rgba(0, 123, 255, 0.3);
 }
 
 button[mat-raised-button]:hover {
-  background: linear-gradient(135deg, #0056b3, #004494);
-  box-shadow: 0 5px 10px rgba(0, 123, 255, 0.4);
+  background: linear-gradient(135deg, #0a0f3c, #1c2b8c);
+  filter: drop-shadow(1px 1px 1px #07296c);
+  color: #fff;
 }
 
 button[mat-button] {
-  color: #555;
+  background: linear-gradient(135deg, #eef7fc, #eaeff2);
+  filter: drop-shadow(2px 2px 2px #07296c);
+  color: black;
 }
 
 button[mat-button]:hover {
-  color: #000;
+  background: linear-gradient(135deg, #eef7fc, #eaeff2);
+  filter: drop-shadow(1px 1px 1px #07296c);
+  color: black;
+}
+@media (max-width: 1024px) {
+  .mat-mdc-dialog-surface {
+    width: 80% !important;
+    padding: 20px;
+  }
+
+  h2 {
+    font-size: 20px;
+  }
+
+  input,
+  textarea,
+  mat-select {
+    font-size: 14px;
+    padding: 7px 10px;
+  }
+}
+@media (max-width: 768px) {
+  .mat-mdc-dialog-surface {
+    width: 90% !important;
+    padding: 18px;
+  }
+
+  h2 {
+    font-size: 18px;
+    margin-bottom: 14px;
+  }
+
+  label {
+    font-size: 13px;
+  }
+
+  input,
+  textarea,
+  mat-select {
+    font-size: 13px;
+    padding: 7px 9px;
+  }
+
+  textarea {
+    height: 80px;
+  }
+
+  .mat-mdc-dialog-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  button[mat-button],
+  button[mat-raised-button] {
+    width: 100%;
+    margin: auto !important;
+  }
+}
+@media (max-width: 480px) {
+  .mat-mdc-dialog-surface {
+    width: 95% !important;
+    padding: 16px;
+  }
+
+  h2 {
+    font-size: 17px;
+  }
+
+  label {
+    font-size: 12px;
+  }
+
+  input,
+  textarea,
+  mat-select {
+    font-size: 13px;
+    padding: 6px 8px;
+  }
+
+  textarea {
+    height: 75px;
+  }
+
+  .mat-mdc-dialog-actions {
+    flex-direction: column;
+  }
+
+  button[mat-button],
+  button[mat-raised-button] {
+    width: 100%;
+    font-size: 13px;
+    padding: 8px;
+    margin: auto !important;
+  }
+}
+@media (max-width: 320px) {
+  .mat-mdc-dialog-surface {
+    width: 98% !important;
+    padding: 12px;
+  }
+
+  h2 {
+    font-size: 16px;
+  }
+
+  label {
+    font-size: 11px;
+  }
+
+  input,
+  textarea,
+  mat-select {
+    font-size: 12px;
+    padding: 6px;
+  }
+
+  textarea {
+    height: 70px;
+  }
+
+  button[mat-button],
+  button[mat-raised-button] {
+    font-size: 12px;
+    padding: 6px;
+    width: 100%;
+    margin: auto !important;
+  }
 }

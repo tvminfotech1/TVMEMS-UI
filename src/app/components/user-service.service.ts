@@ -22,6 +22,14 @@ export class UserService {
 
   private maritalStatusSubject = new BehaviorSubject<string>('');
   maritalStatus$ = this.maritalStatusSubject.asObservable();
+  
+    private educationTypeSubject = new BehaviorSubject<string | null>(null);
+
+  educationType$ = this.educationTypeSubject.asObservable();
+
+  setEducationType(type: string) {
+    this.educationTypeSubject.next(type);
+  }
 
   constructor(private http: HttpClient, private authService: AuthService) {}
 

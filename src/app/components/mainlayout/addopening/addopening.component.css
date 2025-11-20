@@ -12,6 +12,7 @@
   margin-bottom: 25px;
   font-weight: 600;
   font-size: 22px;
+  color: #0a0f3c;
 }
 
 .form-grid {
@@ -31,7 +32,8 @@
 }
 
 .button-group button {
-  background-color: #1976d2;
+  background: linear-gradient(135deg, #0a0f3c, #1c2b8c);
+  filter: drop-shadow(2px 2px 2px #07296c);
   color: #fff;
   border: none;
   padding: 10px 22px;

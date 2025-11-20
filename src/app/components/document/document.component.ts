@@ -28,6 +28,8 @@ export class DocumentComponent {
 
   private readonly MAX_FILE_SIZE_MB = 1;
 
+  isPgDocEnabled: boolean = false;
+
   constructor(
     private fb: FormBuilder,
     private userService: UserService,
@@ -59,9 +61,26 @@ export class DocumentComponent {
         }
       });
     }
+this.userService.educationType$.subscribe((type) => {
+
+  this.isPgDocEnabled = (type === 'postgraduate' || type === 'phd');
+
+  if (!this.isPgDocEnabled) {
+    this.documentForm.get('postGraduation')?.reset();
+    this.documentForm.get('postGraduation')?.disable();
+    this.documentForm.get('postGraduation')?.setValue(null);
+  } else {
+    this.documentForm.get('postGraduation')?.enable();
+  }
+
+});
+
   }
 
   private getAllowedTypes(controlName: string): string[] {
+      if (controlName === 'postGraduation') {
+    return this.isPgDocEnabled ? ['application/pdf'] : [];
+  }
     const pdfFields = [
       'matric',
       'intermediate',
