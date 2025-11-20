@@ -14,6 +14,7 @@ type WeekDay = "Monday" | "Tuesday" | "Wednesday" | "Thursday" | "Friday";
   styleUrls: ["./timelog.component.css"],
 })
 export class TimelogComponent implements OnInit {
+  isSubmitting = false;
   wfhDays: string[] = [];
   leaveDays: string[] = [];
 
@@ -622,6 +623,7 @@ export class TimelogComponent implements OnInit {
   }
 
   onSubmit(form: NgForm): void {
+    if(this.isSubmitting)return;
     if (!form.valid) {
       this.snackBar.open("Please fill all required fields", "Close", {
         duration: 3000,
@@ -640,6 +642,7 @@ export class TimelogComponent implements OnInit {
       });
       return;
     }
+    this.isSubmitting=true;
 
     this.timelogEntry.hours = this.normalizeHoursObject(
       this.timelogEntry.hours
@@ -674,6 +677,7 @@ export class TimelogComponent implements OnInit {
           verticalPosition: "top",
           panelClass: ["error-snackbar"],
         });
+        this.isSubmitting=false;
       },
     });
   }

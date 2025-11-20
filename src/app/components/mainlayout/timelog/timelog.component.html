@@ -269,7 +269,7 @@
           type="submit"
           class="submit-btn"
           [disabled]="
-            !timelogForm.valid || isFutureOrPastDateSelected || isAdmin || !isFormEnabled
+            !timelogForm.valid || isFutureOrPastDateSelected || isAdmin || !isFormEnabled || isSubmitting
           "
         >
           Submit
