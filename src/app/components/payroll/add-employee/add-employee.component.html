@@ -20,10 +20,12 @@
             [(ngModel)]="searchId"
             placeholder="Enter Employee ID"
             name="employeeId"
+            [disabled]="isEditMode"
           />
           <button
             mat-icon-button
             matSuffix
+            *ngIf="!isEditMode"
             color="primary"
             type="button"
             (click)="searchEmployee()"
@@ -33,7 +35,7 @@
         </mat-form-field>
 
         <div
-          *ngIf="searchedEmployee"
+          *ngIf="searchedEmployee && !isEditMode"
           class="employee-suggestion"
           (click)="selectEmployee()"
         >

@@ -1,31 +1,32 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { forkJoin } from 'rxjs';
-
-import { PayrollEmployeeService } from 'src/app/services/payroll-employee.service';
-import { SalaryHistoryService } from 'src/app/services/salary-history.service';
-import { Employee, Payruns } from 'src/app/models/employee';
-import { SalaryHistory } from 'src/app/models/salaryHistory';
+import { Component, OnInit } from "@angular/core";
+import { Router } from "@angular/router";
+import { forkJoin } from "rxjs";
+import { PayrollEmployeeService } from "src/app/services/payroll-employee.service";
+import { SalaryHistoryService } from "src/app/services/salary-history.service";
+import { Employee, Payruns } from "src/app/models/employee";
+import { SalaryHistory } from "src/app/models/salaryHistory";
+import { MatSnackBar } from "@angular/material/snack-bar";
 
 @Component({
-  selector: 'app-payruns',
-  templateUrl: './payruns.component.html',
-  styleUrls: ['./payruns.component.css'],
+  selector: "app-payruns",
+  templateUrl: "./payruns.component.html",
+  styleUrls: ["./payruns.component.css"],
 })
 export class PayrunsComponent implements OnInit {
   employees: Employee[] = [];
-  
+
   salaryHistory: SalaryHistory[] = [];
   payruns: Payruns[] = [];
   filteredData: Payruns[] = [];
 
-  searchText: string = '';
+  searchText: string = "";
   selectedMonth: string = new Date().toISOString().slice(0, 7);
 
   constructor(
     private employeeService: PayrollEmployeeService,
     private salaryService: SalaryHistoryService,
-    private router: Router
+    private router: Router,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -40,7 +41,7 @@ export class PayrunsComponent implements OnInit {
       salaries: this.salaryService.getAllSalaryHistory(),
     }).subscribe(({ emps, salaries }) => {
       const activeEmployees = (emps || []).filter(
-        (emp) => emp.status === 'Active'
+        (emp) => emp.status === "Active"
       );
       this.payruns = [...activeEmployees];
       this.filteredData = [...this.payruns];
@@ -49,9 +50,9 @@ export class PayrunsComponent implements OnInit {
   }
 
   getMonthName(): string {
-    const [year, month] = this.selectedMonth.split('-').map(Number);
+    const [year, month] = this.selectedMonth.split("-").map(Number);
     const date = new Date(year, month - 1);
-    return date.toLocaleString('default', { month: 'long', year: 'numeric' });
+    return date.toLocaleString("default", { month: "long", year: "numeric" });
   }
 
   onMonthChange() {
@@ -68,8 +69,8 @@ export class PayrunsComponent implements OnInit {
     const text = this.searchText.toLowerCase().trim();
     this.filteredData = this.payruns.filter(
       (emp) =>
-       emp.employeeId.toString().includes(text) ||
-    emp.employeeName.toLowerCase().includes(text)
+        emp.employeeId.toString().includes(text) ||
+        emp.employeeName.toLowerCase().includes(text)
     );
   }
 
@@ -79,8 +80,8 @@ export class PayrunsComponent implements OnInit {
     if (salaryRecord) {
       this.downloadSalarySlip(emp.employeeId, month);
     } else {
-      if (emp.status === 'Active') {
-        this.router.navigate(['/mainlayout/payruns', emp.employeeId], {
+      if (emp.status === "Active") {
+        this.router.navigate(["/mainlayout/payruns", emp.employeeId], {
           queryParams: { month: this.selectedMonth },
         });
       } else {
@@ -103,24 +104,68 @@ export class PayrunsComponent implements OnInit {
     this.salaryService.downloadSalarySlip(employeeId, month).subscribe(
       (data: Blob) => {
         if (!data || data.size === 0) {
-          alert('Payslip file is empty or not generated.');
+          alert("Payslip file is empty or not generated.");
           return;
         }
-        const blob = new Blob([data], { type: 'application/pdf' });
+        const blob = new Blob([data], { type: "application/pdf" });
         const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
+        const a = document.createElement("a");
         a.href = url;
         a.download = `Payslip_${employeeId}_${month}.pdf`;
-        a.style.display = 'none';
+        a.style.display = "none";
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
         window.URL.revokeObjectURL(url);
       },
       (err) => {
-        console.error('Error downloading salary slip:', err);
-        alert('Failed to download salary slip. Please try again later.');
+        console.error("Error downloading salary slip:", err);
+        alert("Failed to download salary slip. Please try again later.");
       }
     );
+  }
+
+  hasSalary(empId: number): boolean {
+    return this.salaryHistory.some(
+      (sal) =>
+        sal.salaryId?.startsWith(empId.toString()) &&
+        sal.month === this.selectedMonth
+    );
+  }
+
+  getSalaryId(empId: number): string | null {
+    const record = this.salaryHistory.find(
+      (sal) =>
+        sal.salaryId?.startsWith(empId.toString()) &&
+        sal.month === this.selectedMonth
+    );
+
+    return record ? record.salaryId : null;
+  }
+
+  deleteSalary(salaryId: string | null) {
+    if (!salaryId) {
+      this.showPopup("Invalid salary record. Cannot delete.");
+      return;
+    }
+
+    if (confirm("Are you sure you want to delete this salary record?")) {
+      this.salaryService.deleteSalaryBySalaryId(salaryId).subscribe({
+        next: () => {
+          this.showPopup("Salary deleted successfully.");
+          this.loadData();
+        },
+        error: () => alert("Failed to delete salary."),
+      });
+    }
+  }
+
+  showPopup(message: string) {
+    this.snackBar.open(message, "Close", {
+      duration: 4000,
+      horizontalPosition: "center",
+      verticalPosition: "top",
+      panelClass: ["error-snackbar"],
+    });
   }
 }

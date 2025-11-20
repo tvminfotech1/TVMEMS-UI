@@ -53,4 +53,10 @@ export class SalaryHistoryService {
       `http://localhost:8080/api/employeePayRole/joiningDate/${id}`
     );
   }
+  
+
+  deleteSalaryBySalaryId(salaryId: string) {
+  return this.http.delete<any>(`${this.apiUrl}/${salaryId}`);
+}
+
 }

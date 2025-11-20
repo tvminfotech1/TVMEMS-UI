@@ -190,6 +190,16 @@ button:active {
   transform: scale(0.98);
 }
 
+.error-snackbar {
+  background-color: #d32f2f !important;
+  color: white !important;
+  font-weight: 500;
+  text-align: center;
+}
+.mat-snack-bar-container {
+  margin: 0 auto !important;
+}
+
 @media (max-width: 768px) {
   .page-header h2 {
     font-size: 18px;
