@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { PayrollEmployeeService } from 'src/app/services/payroll-employee.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Employee } from 'src/app/models/employee';
-import { UserService } from './user.service';
+import { Component, OnInit } from "@angular/core";
+import { PayrollEmployeeService } from "src/app/services/payroll-employee.service";
+import { ActivatedRoute, Router } from "@angular/router";
+import { Employee } from "src/app/models/employee";
+import { UserService } from "./user.service";
 
 export interface EmployeePayload {
   id?: number;
@@ -30,9 +30,9 @@ export interface EmployeePayload {
 }
 
 @Component({
-  selector: 'app-add-employee',
-  templateUrl: './add-employee.component.html',
-  styleUrls: ['./add-employee.component.css'],
+  selector: "app-add-employee",
+  templateUrl: "./add-employee.component.html",
+  styleUrls: ["./add-employee.component.css"],
 })
 export class AddEmployeeComponent implements OnInit {
   searchId: number = 0;
@@ -40,25 +40,25 @@ export class AddEmployeeComponent implements OnInit {
   isEditMode: boolean = false;
   hasPayrollRecord: boolean = false;
   employee: Employee = {
-    fullName: '',
-    email: '',
-    phone: '',
-    department: '',
-    joiningDate: '',
-    employeeType: '',
-    location: '',
-    status: 'Active',
+    fullName: "",
+    email: "",
+    phone: "",
+    department: "",
+    joiningDate: "",
+    employeeType: "",
+    location: "",
+    status: "Active",
     ctc: 0,
     basicSalary: 0,
     inHandSalary: 0,
-    aadhaarNumber: '',
-    panNumber: '',
+    aadhaarNumber: "",
+    panNumber: "",
 
     bankDetails: {
-      bankName: '',
-      accountNumber: '',
-      ifscCode: '',
-      branch: '',
+      bankName: "",
+      accountNumber: "",
+      ifscCode: "",
+      branch: "",
     },
     id: 0,
   };
@@ -71,25 +71,24 @@ export class AddEmployeeComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.employee.status = 'Active';
+    this.employee.status = "Active";
     this.route.queryParams.subscribe((params) => {
-      const id = params['id'];
-      const mode = params['mode'];
+      const id = params["id"];
+      const mode = params["mode"];
 
-      // ✅ Explicitly control edit/add mode
-      if (mode === 'edit' && id) {
+      if (mode === "edit" && id) {
         this.isEditMode = true;
         this.loadEmployeeForEdit(+id);
       } else {
         this.isEditMode = false;
-        this.employee.status = 'Active';
+        this.employee.status = "Active";
       }
     });
   }
 
   searchEmployee() {
     if (!this.searchId) {
-      alert('Please enter an Employee ID');
+      alert("Please enter an Employee ID");
       return;
     }
 
@@ -98,14 +97,14 @@ export class AddEmployeeComponent implements OnInit {
     this.userService.getUserById(empId).subscribe(
       (userData: any) => {
         if (!userData || Object.keys(userData).length === 0) {
-          alert('Employee not found!');
+          alert("Employee not found!");
           this.searchedEmployee = null;
         } else {
           this.searchedEmployee = userData;
         }
       },
       (error) => {
-        alert('Employee not found!');
+        alert("Employee not found!");
         this.searchedEmployee = null;
         console.error(error);
       }
@@ -116,11 +115,12 @@ export class AddEmployeeComponent implements OnInit {
     this.empService.getEmployeeById(id).subscribe({
       next: (data) => {
         this.employee = data;
+        this.searchId = data.id;
         this.hasPayrollRecord = true;
       },
       error: (err) => {
-        console.error('Error loading employee for edit:', err);
-        alert('Failed to load employee details.');
+        console.error("Error loading employee for edit:", err);
+        alert("Failed to load employee details.");
       },
     });
   }
@@ -135,20 +135,17 @@ export class AddEmployeeComponent implements OnInit {
     this.employee.joiningDate = this.searchedEmployee.joiningDate;
     this.employee.panNumber = this.searchedEmployee.pan;
 
-
-
-
     this.searchedEmployee = null;
   }
 
   onSubmit(empForm: any): void {
     if (!empForm.valid) {
-      alert('Please fill out all required fields before submitting.');
+      alert("Please fill out all required fields before submitting.");
       return;
     }
 
     if (!this.employee.id && !this.searchId) {
-      alert('Please enter or select a valid Employee ID.');
+      alert("Please enter or select a valid Employee ID.");
       return;
     }
 
@@ -159,29 +156,29 @@ export class AddEmployeeComponent implements OnInit {
         .updateEmployee(this.employee.id, this.employee)
         .subscribe({
           next: () => {
-            alert('Employee Updated Successfully!');
-            this.router.navigate(['/mainlayout/payroll-employee']);
+            alert("Employee Updated Successfully!");
+            this.router.navigate(["/mainlayout/payroll-employee"]);
           },
           error: (err) => {
-            console.error('Error updating employee:', err);
-            alert('Failed to update employee.');
+            console.error("Error updating employee:", err);
+            alert("Failed to update employee.");
           },
         });
     } else {
       this.empService.addEmployee(this.employee).subscribe({
         next: () => {
-          alert('Employee Added Successfully!');
-          this.router.navigate(['/mainlayout/payroll-employee']);
+          alert("Employee Added Successfully!");
+          this.router.navigate(["/mainlayout/payroll-employee"]);
         },
         error: (err) => {
-          console.error('Error while adding employee:', err);
-          alert('Failed to add employee. Please try again.');
+          console.error("Error while adding employee:", err);
+          alert("Failed to add employee. Please try again.");
         },
       });
     }
   }
 
   onCancel() {
-    this.router.navigate(['/mainlayout/payroll-employee']);
+    this.router.navigate(["/mainlayout/payroll-employee"]);
   }
 }

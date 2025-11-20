@@ -1,17 +1,18 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { PayrollEmployeeService } from 'src/app/services/payroll-employee.service';
-import { SalaryHistoryService } from 'src/app/services/salary-history.service';
-import { Employee } from 'src/app/models/employee';
-import { SalaryHistory } from 'src/app/models/salaryHistory';
+import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
+import { ActivatedRoute, Router } from "@angular/router";
+import { PayrollEmployeeService } from "src/app/services/payroll-employee.service";
+import { SalaryHistoryService } from "src/app/services/salary-history.service";
+import { Employee } from "src/app/models/employee";
+import { SalaryHistory } from "src/app/models/salaryHistory";
+import { MatSnackBar } from "@angular/material/snack-bar";
 
 @Component({
-  selector: 'app-add-salary',
-  templateUrl: './add-salary.component.html',
-  styleUrls: ['./add-salary.component.css'],
+  selector: "app-add-salary",
+  templateUrl: "./add-salary.component.html",
+  styleUrls: ["./add-salary.component.css"],
 })
 export class AddSalaryComponent implements OnInit {
-  @ViewChild('paySlip', { static: false }) paySlipElement!: ElementRef;
+  @ViewChild("paySlip", { static: false }) paySlipElement!: ElementRef;
 
   employee!: Employee;
 
@@ -48,61 +49,61 @@ export class AddSalaryComponent implements OnInit {
     private route: ActivatedRoute,
     private employeeService: PayrollEmployeeService,
     private salaryService: SalaryHistoryService,
-    private router: Router
+    private router: Router,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
-    const empIdParam = this.route.snapshot.paramMap.get('id');
-    const selectedMonth = this.route.snapshot.queryParamMap.get('month');
+    const empIdParam = this.route.snapshot.paramMap.get("id");
+    const selectedMonth = this.route.snapshot.queryParamMap.get("month");
 
     if (selectedMonth) {
       this.payMonth = selectedMonth;
-      this.payYear = parseInt(selectedMonth.split('-')[0]);
+      this.payYear = parseInt(selectedMonth.split("-")[0]);
     }
 
-  setTimeout(() => {
-    this.updateNWDFromMonth();
-  });
+    setTimeout(() => {
+      this.updateNWDFromMonth();
+    });
 
-  if (selectedMonth) {
-    this.payMonth = selectedMonth;
-    this.payYear = parseInt(selectedMonth.split('-')[0]);
-  } else {
-    this.payMonth = new Date().toISOString().substring(0, 7);
-    this.payYear = new Date().getFullYear();
-  }
-
-  if (empIdParam) {
-  const empId = +empIdParam; // ✅ string to number
-
-  console.log('empId from route:', empId);
-
-  this.employeeService.getEmployeeById(empId).subscribe({
-    next: emp => {
-      console.log('Employee fetched:', emp);
-      this.employee = emp;
-      this.basicSalary = emp.basicSalary;
-      this.ctc = emp.ctc;
-      this.calculateSalary();
-    },
-    error: err => {
-      console.error('Error fetching employee:', err);
+    if (selectedMonth) {
+      this.payMonth = selectedMonth;
+      this.payYear = parseInt(selectedMonth.split("-")[0]);
+    } else {
+      this.payMonth = new Date().toISOString().substring(0, 7);
+      this.payYear = new Date().getFullYear();
     }
-  });
-}
 
-}
+    if (empIdParam) {
+      const empId = +empIdParam;
 
-allowOnlyNumbers(event: KeyboardEvent) {
-  const char = event.key;
+      console.log("empId from route:", empId);
 
-  if (!/^[0-9]$/.test(char)) {
-    event.preventDefault(); // Block non-numeric characters
+      this.employeeService.getEmployeeById(empId).subscribe({
+        next: (emp) => {
+          console.log("Employee fetched:", emp);
+          this.employee = emp;
+          this.basicSalary = emp.basicSalary;
+          this.ctc = emp.ctc;
+          this.calculateSalary();
+        },
+        error: (err) => {
+          console.error("Error fetching employee:", err);
+        },
+      });
+    }
   }
-}
+
+  allowOnlyNumbers(event: KeyboardEvent) {
+    const char = event.key;
+
+    if (!/^[0-9]$/.test(char)) {
+      event.preventDefault();
+    }
+  }
 
   updateNWDFromMonth(): void {
-    const [year, month] = this.payMonth.split('-').map(Number);
+    const [year, month] = this.payMonth.split("-").map(Number);
     const daysInMonth = new Date(year, month, 0).getDate();
     this.nwd = daysInMonth;
     this.calculateSalary();
@@ -143,10 +144,10 @@ allowOnlyNumbers(event: KeyboardEvent) {
         }
 
         const salary: SalaryHistory = {
-          salaryId: `${empId}-${monthStr.replace('-', '')}`,
+          salaryId: `${empId}-${monthStr.replace("-", "")}`,
           id: empId,
           month: monthStr,
-          year: parseInt(monthStr.split('-')[0]),
+          year: parseInt(monthStr.split("-")[0]),
           basicSalary: this.basicSalary,
           hra: this.hra,
           medicalAllowance: this.medicalAllowance,
@@ -169,32 +170,46 @@ allowOnlyNumbers(event: KeyboardEvent) {
         };
 
         const jd = this.employee.joiningDate;
-        const [jDay, jMonth, jYear] = jd.split('-').map(Number);
+        const [jDay, jMonth, jYear] = jd.split("-").map(Number);
 
-        const [sYear, sMonth] = monthStr.split('-').map(Number);
+        const [sYear, sMonth] = monthStr.split("-").map(Number);
 
         const isBeforeJoiningMonth =
           sYear < jYear || (sYear === jYear && sMonth < jMonth);
 
         if (isBeforeJoiningMonth) {
-          alert('Cannot add salary before joining date.');
+          alert("Cannot add salary before joining date.");
           return;
         }
 
-  this.salaryService.addSalaryHistory(salary).subscribe({
-  next: () => {
-    alert('Salary added successfully.');
-    this.router.navigate(['/mainlayout/payroll-employee']);
-  },
-  error: () => {
-    alert('Failed to add salary.');
-  }
-});
+        this.salaryService.addSalaryHistory(salary).subscribe({
+          next: () => {
+            this.showPopup("Salary added successfully.");
+            this.router.navigate(["/mainlayout/payroll-employee"]);
+          },
+          error: (err) => {
+            const msg =
+              (typeof err.error === "string" ? err.error : null) ||
+              err.error?.message ||
+              err.error?.error ||
+              "Failed to add salary.";
 
-  });
-}
+            this.showPopup(msg);
+          },
+        });
+      });
+  }
 
   backbtn() {
-    this.router.navigate(['/mainlayout/payroll-employee']);
+    this.router.navigate(["/mainlayout/payroll-employee"]);
+  }
+
+  showPopup(message: string) {
+    this.snackBar.open(message, "Close", {
+      duration: 4000,
+      horizontalPosition: "center",
+      verticalPosition: "top",
+      panelClass: ["error-snackbar"],
+    });
   }
 }
