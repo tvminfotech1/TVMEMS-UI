@@ -31,11 +31,11 @@
 }
 
 .filter-header h2 {
-  font-size: 1.2rem;
-  font-weight: 700;
-  padding: 10px;
-  color: #002b80;
-  margin-bottom: 8px;
+  text-align: center;
+  margin-bottom: 25px;
+  color: #0a0f3c;
+  font-size: 22px;
+  font-weight: 600;
 }
 
 .filter-header .subtitle {
@@ -67,7 +67,7 @@
 }
 
 :host ::ng-deep .mat-mdc-icon-button {
-  color: #004aad !important;
+  color: #0a0f3c !important;
   transition: transform 0.2s ease;
 }
 
@@ -91,7 +91,8 @@
 }
 
 .summary-cards .card {
-  background: linear-gradient(135deg, #001f54, #004aad);
+  background: linear-gradient(135deg, #0a0f3c, #1c2b8c);
+  filter: drop-shadow(1px 1px 1px #07296c);
   color: #fff;
   border-radius: 15px;
   padding: 15px 25px;
@@ -103,7 +104,7 @@
 .summary-cards .card h4 {
   font-size: 1rem;
   margin-bottom: 8px;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .summary-cards .card p {
@@ -117,6 +118,9 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   padding: 20px;
 }
+.slip-container h2{
+  color: #0a0f3c;
+}
 
 .details-table {
   width: 100%;
@@ -129,11 +133,12 @@
   border: 1px solid #e0e0e0;
   padding: 10px;
   text-align: center;
+  font-weight: 600;
 }
 
 .details-table th {
   color: white;
-  font-weight: 500;
+  font-weight: 600;
 }
 .details-table thead {
   background: linear-gradient(135deg, #0a0f3c, #1c2b8c);
@@ -147,7 +152,7 @@
   text-align: center;
   color: #666;
   font-size: 18px;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .no-data p {
@@ -192,23 +197,96 @@
 }
 
 @media (max-width: 768px) {
+  .report-container {
+    width: 95%;
+    margin: 20px auto;
+  }
+  .page-title {
+    font-size: 1.4rem;
+  }
   .filter-container {
     flex-direction: column;
     gap: 15px;
   }
-
-  .year-field {
-    width: 100% !important;
+  .year-select-field {
+    width: 100%;
   }
-
   .summary-cards {
     flex-direction: column;
+    gap: 15px;
     align-items: center;
   }
-
+  .summary-cards .card {
+    width: 100%;
+    max-width: 350px;
+  }
+  .slip-container {
+    padding: 15px;
+    overflow-x: auto;
+  }
+  .details-table {
+    font-size: 0.85rem;
+    min-width: 650px;
+  }
   .details-table th,
   .details-table td {
-    font-size: 0.85rem;
+    padding: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-title {
+    font-size: 1.2rem;
+  }
+  .filter-section {
+    padding: 15px;
+  }
+  .filter-header h2 {
+    font-size: 18px;
+  }
+  .summary-cards .card h4 {
+    font-size: 0.9rem;
+  }
+  .summary-cards .card p {
+    font-size: 1.1rem;
+  }
+  .slip-container {
+    padding: 12px;
+  }
+  .details-table th,
+  .details-table td {
+    font-size: 0.75rem;
     padding: 6px;
+  }
+  .download-btn button {
+    width: 100%;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 320px) {
+  .page-title {
+    font-size: 1rem;
+  }
+  .filter-header h2 {
+    font-size: 16px;
+  }
+  .summary-cards .card {
+    padding: 12px;
+    min-width: 150px;
+  }
+  .summary-cards .card p {
+    font-size: 1rem;
+  }
+  .details-table {
+    font-size: 0.7rem;
+  }
+  .details-table th,
+  .details-table td {
+    padding: 4px;
+  }
+  .download-btn button {
+    font-size: 0.85rem;
+    padding: 8px 14px;
   }
 }

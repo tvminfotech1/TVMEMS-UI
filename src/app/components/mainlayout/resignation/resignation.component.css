@@ -29,12 +29,12 @@
   margin: 0 0 8px 0;
   font-size: 2rem;
   font-weight: 700;
-  color: #074d96;
+  color: #0a0f3c;
   letter-spacing: 0.01rem;
 }
 
 .resignation-desc {
-  color: #50709b;
+  color: #0a0f3c;
   font-size: 1.08rem;
   line-height: 1.55;
   margin-bottom: 0;
@@ -66,14 +66,14 @@
 }
 
 .apply-btn {
-  background: linear-gradient(90deg, #037aff 0%, #004aad 100%);
+  background: linear-gradient(135deg, #0a0f3c, #1c2b8c);
+  filter: drop-shadow(1px 1px 1px #07296c);
   color: #fff;
   border: none;
   padding: 11px 17px;
   font-size: 16px;
   border-radius: 6px;
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(3, 122, 255, 0.06);
   font-weight: 600;
   transition: background 0.22s, box-shadow 0.22s;
 }
@@ -121,7 +121,7 @@ th {
   font-size: 16px;
   font-weight: 700;
   border-bottom: 2px solid #e6e6e6;
-  color: #1561d9;
+  color: #0a0f3c;
   letter-spacing: 0.02em;
 }
 
@@ -192,7 +192,7 @@ tr:last-child td {
   text-align: left;
   font-size: 24px;
   letter-spacing: 0.01em;
-  color: #004aad;
+  color: #0a0f3c;
   font-weight: 700;
 }
 
@@ -209,7 +209,7 @@ tr:last-child td {
   transition: color 0.2s;
 }
 .close-btn:hover {
-  color: #037aff;
+  color: #0a0f3c;
 }
 
 .form-group {
@@ -218,7 +218,7 @@ tr:last-child td {
 
 label {
   font-weight: 500;
-  color: #27427c;
+  color: #0a0f3c;
   margin-bottom: 4px;
   display: block;
 }
@@ -237,7 +237,7 @@ select {
   border: 1.6px solid #d9e4f5;
   background: #f6f9fc;
   font-size: 15px;
-  color: #2a3958;
+  color: #0a0f3c;
   transition: border-color 0.18s, box-shadow 0.17s;
   margin-top: 6px;
   box-sizing: border-box;
@@ -248,7 +248,7 @@ input[type="text"]:focus,
 textarea:focus,
 select:focus {
   outline: none;
-  border-color: #004aad;
+  border-color: #0a0f3c;
   box-shadow: 0 0 0 2px rgba(3, 122, 255, 0.1);
   background: #eef6ff;
 }
@@ -401,6 +401,6 @@ th {
   margin: 0 0 8px 0;
   font-size: 2rem;
   font-weight: 700;
-  color: #074d96;
+  color: #0a0f3c;
   letter-spacing: 0.01rem;
 }

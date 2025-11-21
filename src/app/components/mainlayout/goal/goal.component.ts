@@ -70,7 +70,7 @@ export class GoalComponent implements OnInit {
   itemsPerPage = 5;
   joiningDate: Date | null = null;
   selectedDate: Date = new Date();
-  joiningMonth!: number;       // 0–11 (0 = Jan, 11 = Dec)
+  joiningMonth!: number;
   joiningYear!: number; 
 
 

@@ -22,12 +22,12 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: linear-gradient(135deg, #3f51b5, #1a237e);
+  background: linear-gradient(135deg, #0a0f3c, #1c2b8c);
   color: #fff;
-  padding: 18px 24px;
+  padding: 15px 20px;
 }
 
-.card-header h3 {
+.card-header h2 {
   margin: 0;
   font-weight: 600;
   display: flex;
@@ -37,7 +37,6 @@
 
 .close-btn {
   color: white;
-  background: rgba(255, 255, 255, 0.15);
   border-radius: 50%;
   transition: all 0.2s;
 }
@@ -109,7 +108,8 @@
 }
 
 .status-btn.danger {
-  background-color: #dc3545;
+  background-color: #0a0f3c;
+  filter: drop-shadow(2px 2px 2px #07296c);
   color: white;
 }
 
@@ -142,9 +142,9 @@
   align-items: center;
   gap: 6px;
   font-weight: 600;
-  color: #3f51b5;
+  color: #0a0f3c;
   font-size: 16px;
-  border-left: 4px solid #3f51b5;
+  border-left: 4px solid #0a0f3c;
   padding-left: 10px;
   margin-bottom: 10px;
 }
@@ -184,14 +184,248 @@
   font-weight: 600;
 }
 
-@media (max-width: 600px) {
+.edit-btn {
+  background: linear-gradient(135deg, #eef7fc, #eaeff2);
+  filter: drop-shadow(1px 1px 1px);
+  color: #0a0f3c !important;
+}
+.delete-btn {
+  background: linear-gradient(135deg, #0a0f3c, #1c2b8c);
+  filter: drop-shadow(1px 1px 1px #07296c);
+  color: #fff;
+}
+
+@media (max-width: 768px) {
+  .container {
+    max-width: 95%;
+    padding: 18px;
+  }
+
+  .card {
+    border-radius: 14px;
+  }
+
+  .card-header {
+    padding: 12px 16px;
+  }
+
+  .card-header h2 {
+    font-size: 18px;
+  }
+
   .employee-header-row {
-    flex-direction: column;
-    align-items: flex-start;
+    padding: 14px 16px;
+    gap: 14px;
+  }
+
+  .emp-name {
+    font-size: 20px;
+  }
+
+  .emp-id {
+    margin-top: 16px;
+    font-size: 13px;
+  }
+
+  .employee-actions {
+    margin-top: 16px;
     gap: 10px;
   }
+
+  .emp-status {
+    font-size: 14px;
+  }
+
+  .status-btn {
+    padding: 6px 14px;
+    font-size: 13px;
+  }
+
+  .card-body {
+    padding: 20px;
+  }
+
+  .row {
+    gap: 20px;
+  }
+
+  .col-right {
+    min-width: 300px;
+  }
+
+  .section-title {
+    font-size: 15px;
+    padding-left: 8px;
+  }
+
+  .custom-table th {
+    width: 180px;
+    padding: 8px;
+    font-size: 13px;
+  }
+
+  .custom-table td {
+    padding: 8px;
+    font-size: 13px;
+  }
+}
+@media (max-width: 480px) {
+  .container {
+    padding: 14px;
+  }
+
+  .card-header {
+    padding: 10px 14px;
+  }
+
+  .card-header h2 {
+    font-size: 16px;
+    line-height: normal;
+  }
+
+  .employee-header-row {
+    padding: 12px 14px;
+    gap: 10px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .emp-name {
+    font-size: 18px;
+  }
+
+  .emp-id {
+    margin-top: 12px;
+    font-size: 13px;
+  }
+
+  .employee-actions {
+    width: 100%;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 12px;
+  }
+
   .emp-status-container {
     width: 100%;
+    display: flex;
     justify-content: space-between;
+    align-items: center;
+  }
+
+  .status-btn {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+
+  .card-body {
+    padding: 16px;
+  }
+
+  .row {
+    gap: 16px;
+  }
+
+  .col-right {
+    min-width: 0;
+    flex: 1 1 100%;
+  }
+
+  .section-title {
+    font-size: 14px;
+    padding-left: 8px;
+  }
+
+  .custom-table th {
+    width: 150px;
+    padding: 7px;
+    font-size: 12px;
+  }
+
+  .custom-table td {
+    padding: 7px;
+    font-size: 10px;
+  }
+
+  .custom-table {
+    font-size: 12px;
+  }
+
+  .edit-btn,
+  .delete-btn {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+}
+@media (max-width: 320px) {
+  .container {
+    padding: 10px;
+  }
+
+  .card-header {
+    padding: 8px 10px;
+  }
+
+  .card-header h2 {
+    font-size: 15px;
+    line-height: normal;
+  }
+
+  .employee-header-row {
+    padding: 10px 12px;
+    gap: 8px;
+  }
+
+  .emp-name {
+    font-size: 16px;
+  }
+
+  .emp-id {
+    margin-top: 10px;
+    font-size: 12px;
+  }
+
+  .employee-actions {
+    gap: 6px;
+    margin-top: 10px;
+  }
+
+  .status-btn {
+    padding: 5px 10px;
+    font-size: 11px;
+  }
+
+  .card-body {
+    padding: 12px;
+  }
+
+  .row {
+    gap: 12px;
+  }
+
+  .col-right {
+    min-width: 0;
+  }
+
+  .section-title {
+    font-size: 13px;
+    padding-left: 8px;
+  }
+
+  .custom-table th {
+    width: 140px;
+    padding: 6px;
+    font-size: 11px;
+  }
+
+  .custom-table td {
+    padding: 6px;
+    font-size: 10px;
+  }
+
+  .edit-btn,
+  .delete-btn {
+    padding: 5px 8px;
+    font-size: 11px;
   }
 }

@@ -19,13 +19,13 @@
 .year-text {
   font-size: 22px;
   font-weight: bold;
-  color: #3f51b5;
+  color: #0a0f3c;
   width: 80px;
   text-align: center;
 }
 
 button[mat-icon-button] {
-  color: #3f51b5;
+  color: #0a0f3c;
   transition: 0.3s ease;
 }
 
@@ -42,7 +42,7 @@ button[mat-icon-button]:disabled {
   margin-bottom: 24px;
   font-size: 26px;
   font-weight: 600;
-  color: #3f51b5;
+  color: #0a0f3c;
 }
 
 .table-container {
@@ -63,7 +63,7 @@ table {
 .mdc-data-table__header-cell {
   position: sticky;
   top: 0;
-  background-color: #1a237e;
+  background-color: #0a0f3c;
   z-index: 2;
   font-size: 20px;
   font-weight: bold;
@@ -85,12 +85,21 @@ table {
 
 ::ng-deep tr.mat-mdc-header-row {
   background-color: #1a237e !important;
+  color: #fff !important;
 }
 
-::ng-deep tr.mat-mdc-header-row th.mat-mdc-header-cell {
-  color: white !important;
+::ng-deep tr.mat-mdc-header-row th.mat-mdc-header-cell thead.mat-mdc-table thead {
+  background: linear-gradient(135deg, #0a0f3c, #1c2b8c) !important;
   font-weight: bold;
   text-align: center;
+  color: #ffffff !important;
+}
+
+::ng-deep button.mat-mdc-raised-button:not(:disabled) {
+  background: linear-gradient(135deg, #0a0f3c, #1c2b8c) !important;
+  filter: drop-shadow(1px 1px 1px #07296c);
+  color: #fff;
+
 }
 
 .btn {
@@ -99,4 +108,130 @@ table {
   min-width: 100px;
   height: 35px;
   font-size: 13px;
+}
+
+@media (max-width: 768px) {
+  .payslip-container {
+    padding: 18px 22px;
+  }
+  .year-selector {
+    gap: 8px;
+  }
+  .year-text {
+    font-size: 20px;
+    width: 70px;
+  }
+  .title {
+    font-size: 22px;
+  }
+  .table-container {
+    max-height: 360px;
+  }
+  table {
+    width: 90%;
+  }
+  .mdc-data-table__header-cell {
+    font-size: 18px;
+    padding: 10px 12px;
+  }
+  .mdc-data-table__cell {
+    font-size: 16px;
+    padding: 8px 10px;
+  }
+  input[type="month"] {
+    width: 160px;
+  }
+  .btn {
+    width: 120px;
+    height: 34px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .payslip-container {
+    padding: 14px 16px;
+  }
+  .year-selector {
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .year-text {
+    font-size: 18px;
+    width: 64px;
+  }
+  .title {
+    font-size: 20px;
+  }
+  .table-container {
+    max-height: 320px;
+    overflow-x: auto;
+  }
+  table {
+    width: 100%;
+  }
+  .mdc-data-table__header-cell {
+    font-size: 16px;
+    padding: 8px 10px;
+  }
+  .mdc-data-table__cell {
+    font-size: 14px;
+    padding: 6px 8px;
+  }
+  input[type="month"] {
+    width: 140px;
+    padding: 6px 8px;
+  }
+  ::ng-deep tr.mat-mdc-header-row th.mat-mdc-header-cell thead.mat-mdc-table thead {
+    font-size: 15px;
+    padding: 8px 10px !important;
+  }
+  .btn {
+    width: 110px;
+    height: 32px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 320px) {
+  .payslip-container {
+    padding: 10px 12px;
+  }
+  .year-selector {
+    gap: 6px;
+    flex-direction: column;
+    align-items: center;
+  }
+  .year-text {
+    font-size: 16px;
+    width: 56px;
+  }
+  .title {
+    font-size: 18px;
+  }
+  .table-container {
+    max-height: 260px;
+    overflow-x: auto;
+  }
+  table {
+    width: 100%;
+  }
+  .mdc-data-table__header-cell {
+    font-size: 14px;
+    padding: 6px 8px;
+  }
+  .mdc-data-table__cell {
+    font-size: 13px;
+    padding: 5px 6px;
+  }
+  input[type="month"] {
+    width: 120px;
+    padding: 5px 6px;
+    font-size: 12px;
+  }
+  .btn {
+    width: 100px;
+    height: 30px;
+    font-size: 12px;
+  }
 }
