@@ -71,8 +71,7 @@ export class FinalComponent {
       this.userService.uploadDocuments(),
       this.userService.submitJsonData(),
     ]).subscribe({
-      next: ([res, document]) => {
-        console.log('Submission success:', res);
+      next: ([]) => {
         this.userService.clearFormData();
         this.router.navigate(['/mainlayout/thankYou']);
       },

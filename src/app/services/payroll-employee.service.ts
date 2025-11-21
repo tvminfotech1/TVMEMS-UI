@@ -3,17 +3,17 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { Employee } from '../models/employee';
 import { tap, catchError, map } from 'rxjs/operators';
+import { BASE_URL } from '../models/baseurl/constant';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PayrollEmployeeService {
-  private apiUrl = 'http://localhost:8080/api/employeePayRole';
 
   constructor(private http: HttpClient) {}
 
   getEmployees(): Observable<Employee[]> {
-    return this.http.get<{ body: Employee[] }>(this.apiUrl).pipe(
+    return this.http.get<{ body: Employee[] }>(`${BASE_URL}/api/employeePayRole`).pipe(
       map((res) => res.body),
       catchError((err) => {
         console.error('Error fetching employees', err);
@@ -23,7 +23,7 @@ export class PayrollEmployeeService {
   }
 
   getEmployeeById(id: number): Observable<Employee> {
-    return this.http.get<{ body: Employee }>(`${this.apiUrl}/${id}`).pipe(
+    return this.http.get<{ body: Employee }>(`${BASE_URL}/api/employeePayRole/${id}`).pipe(
       map((res) => res.body),
       catchError((err) => {
         console.error('Error fetching employee by id', err);
@@ -34,23 +34,23 @@ export class PayrollEmployeeService {
 
   addEmployee(employee: Employee): Observable<Employee> {
     return this.http
-      .post<{ body: Employee }>(this.apiUrl, employee)
+      .post<{ body: Employee }>(`${BASE_URL}/api/employeePayRole`, employee)
       .pipe(map((res) => res.body));
   }
 
   updateEmployee(id: number, employee: Employee): Observable<Employee> {
     return this.http
-      .put<{ body: Employee }>(`${this.apiUrl}/${id}`, employee)
+      .put<{ body: Employee }>(`${BASE_URL}/api/employeePayRole/${id}`, employee)
       .pipe(map((res) => res.body));
   }
 
   updateEmployeeStatus(id: number, status: string): Observable<any> {
-    return this.http.patch(`${this.apiUrl}/${id}/status`, { status });
+    return this.http.patch(`${BASE_URL}/api/employeePayRole/${id}/status`, { status });
   }
 
   getPayRunData(month: string): Observable<any[]> {
     return this.http
-      .get<any[]>(`${this.apiUrl}/getPayRunData`, {
+      .get<any[]>(`${BASE_URL}/api/employeePayRole/getPayRunData`, {
         params: { month },
       })
       .pipe(
@@ -63,6 +63,6 @@ export class PayrollEmployeeService {
   }
 
   deleteEmployee(id: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/${id}`);
+    return this.http.delete(`${BASE_URL}/api/employeePayRole/${id}`);
   }
 }

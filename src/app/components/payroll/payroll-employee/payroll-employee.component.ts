@@ -49,7 +49,6 @@ export class PayrollEmployeeComponent implements OnInit {
       this.employees = data;
       this.filteredEmployees = [...data];
       this.extractUniqueFilters(data);
-      console.log('Employees Loaded:', this.employees);
     });
   }
 
@@ -119,12 +118,12 @@ export class PayrollEmployeeComponent implements OnInit {
         next: () => {
           uploaded++;
           if (uploaded === total) {
-            alert(`✅ All ${total} employees imported successfully!`);
+            alert(`All ${total} employees imported successfully!`);
             this.loadEmployees();
           }
         },
         error: (err) => {
-          console.error('❌ Failed to upload employee:', emp.id, err);
+          console.error(' Failed to upload employee:', emp.id, err);
           alert(`Employee with ID ${emp.id} could not be imported.`);
         },
       });
@@ -139,7 +138,6 @@ export class PayrollEmployeeComponent implements OnInit {
         (this.selectedStatus === '' || emp.status === this.selectedStatus)
         &&  (this.selectedDesignation === '' || emp.department === this.selectedDesignation)
     );
-    console.log('Filtered:', this.filteredEmployees);
   }
 
   resetFilters(): void {

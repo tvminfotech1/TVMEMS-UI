@@ -2,12 +2,12 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AuthService } from './auth.service';
 import { Observable } from 'rxjs';
+import { BASE_URL } from '../models/baseurl/constant';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserlistService {
-  private baseUrl = 'http://localhost:8080/userlist';
 
   constructor(private http: HttpClient, private authService: AuthService) {}
 
@@ -20,14 +20,14 @@ export class UserlistService {
   }
 
   getAllUser(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/all`, {
+    return this.http.get(`${BASE_URL}/userlist/all`, {
       headers: this.getAuthHeaders(),
       observe: 'response',
     });
   }
 
   deleteUser(employeeId: number): Observable<any> {
-    return this.http.delete(`${this.baseUrl}/delete/${employeeId}`, {
+    return this.http.delete(`${BASE_URL}/userlist/delete/${employeeId}`, {
       headers: this.getAuthHeaders(),
       observe: 'response',
     });

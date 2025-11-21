@@ -63,7 +63,7 @@ export class AdminComponent implements OnInit {
     if (!confirm('Are you sure you want to delete this user?')) return;
 
     this.userlistService.deleteUser(employeeId).subscribe({
-      next: (res) => {
+      next: () => {
         alert('User deleted successfully!');
         this.filteredEmployees = this.filteredEmployees.filter(
           (emp) => emp.employeeId !== employeeId

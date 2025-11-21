@@ -77,11 +77,8 @@ export class AddSalaryComponent implements OnInit {
     if (empIdParam) {
       const empId = +empIdParam;
 
-      console.log("empId from route:", empId);
-
       this.employeeService.getEmployeeById(empId).subscribe({
         next: (emp) => {
-          console.log("Employee fetched:", emp);
           this.employee = emp;
           this.basicSalary = emp.basicSalary;
           this.ctc = emp.ctc;

@@ -20,7 +20,6 @@ interface DecodedToken {
   providedIn: "root",
 })
 export class AuthService {
-  private baseUrl = "http://localhost:8080";
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -30,7 +29,7 @@ export class AuthService {
 
   loginAdmin(data: any): Observable<any> {
     return this.http
-      .post(`${this.baseUrl}/adminlogin`, data, { observe: "response" })
+      .post(`${BASE_URL}/adminlogin`, data, { observe: "response" })
       .pipe(
         tap((response: HttpResponse<any>) => {
           const token =
@@ -58,7 +57,7 @@ export class AuthService {
 
   loginUser(data: any): Observable<any> {
     return this.http
-      .post(`${this.baseUrl}/userlogin`, data, { observe: "response" })
+      .post(`${BASE_URL}/userlogin`, data, { observe: "response" })
       .pipe(
         tap((response: HttpResponse<any>) => {
           const token =
@@ -94,7 +93,7 @@ export class AuthService {
 
   register(data: any): Observable<any> {
     return this.http
-      .post(`${this.baseUrl}/admin/newuser`, data, {
+      .post(`${BASE_URL}/admin/newuser`, data, {
         responseType: "json",
       })
       .pipe(
@@ -106,12 +105,12 @@ export class AuthService {
   }
 
   checkEmailExists(email: string) {
-    return this.http.get<boolean>(`${this.baseUrl}/users/check-email/${email}`);
+    return this.http.get<boolean>(`${BASE_URL}/users/check-email/${email}`);
   }
 
   checkMobileExists(mobile: string) {
     return this.http.get<boolean>(
-      `${this.baseUrl}/users/check-mobile/${mobile}`
+      `${BASE_URL}/users/check-mobile/${mobile}`
     );
   }
 
@@ -199,7 +198,7 @@ export class AuthService {
 
   getUserId(email: string): Observable<number> {
     return this.http.get<number>(
-      `${this.baseUrl}/WFH/employeeId?email=${email}`
+      `${BASE_URL}/WFH/employeeId?email=${email}`
     );
   }
 

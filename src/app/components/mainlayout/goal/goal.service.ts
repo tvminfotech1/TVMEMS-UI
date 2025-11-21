@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { BASE_URL } from 'src/app/models/baseurl/constant';
 
 @Injectable({
   providedIn: 'root',
 })
 export class GoalService {
-  private baseUrl = 'http://localhost:8080/goals';
-  private apiUrl = 'http://localhost:8080/goals/user';
+  private baseUrl = `${BASE_URL}/goals`;
+  private apiUrl = `${BASE_URL}/goals/user`;
 
   constructor(private http: HttpClient) {}
 

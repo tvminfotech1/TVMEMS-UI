@@ -56,8 +56,6 @@ export class AdminAttendanceComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log('🟢 AdminAttendanceComponent initialized');
-
     this.isUser = this.authService.isUser();
     this.isAdmin = this.authService.isAdmin();
     const currentMonth = new Date().toISOString().slice(0, 7);
@@ -76,7 +74,6 @@ export class AdminAttendanceComponent implements OnInit {
     this.attendanceService.getAllAttendance().subscribe({
       next: (response: any) => {
         const data = response.body;
-        console.log('✅ Attendance data:', data);
         const currentEmpIdStr = this.authService.getEmployeeId();
         const currentEmpId = currentEmpIdStr ? Number(currentEmpIdStr) : null;
 
@@ -280,8 +277,6 @@ const formattedDate = currentDateStr;
         }
 
         this.employeeAttendance = monthAttendance;
-        console.log('🟢 Final month attendance:', this.employeeAttendance);
-
         this.dialog.open(this.attendanceDialog, {
           width: '95%',
           maxWidth: '800px',
@@ -305,15 +300,12 @@ const formattedDate = currentDateStr;
   const [selYear, selMonth] = selectedMonth.split("-").map(Number);
   const [joinYear, joinMonth] = joiningDateStr.split("-").map(Number);
 
-  // If selected year < joining year → invalid
   if (selYear < joinYear) return true;
 
-  // If same year, but selected month < joining month → invalid
   if (selYear === joinYear && selMonth < joinMonth) return true;
 
   return false;
 }
-
 
   applyFilters(): void {
     if (this.isUser) {

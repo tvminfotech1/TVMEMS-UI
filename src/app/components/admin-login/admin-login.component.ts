@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { BASE_URL } from 'src/app/models/baseurl/constant';
 
 @Component({
   selector: 'app-admin-login',
@@ -33,7 +34,7 @@ export class AdminLoginComponent {
     if (this.adminLoginForm.valid) {
       const loginData = this.adminLoginForm.value;
       this.http
-        .post<any>('http://localhost:8080/adminlogin', loginData)
+        .post<any>(`${BASE_URL}/adminlogin`, loginData)
         .subscribe({
           next: (res) => {
             const token = res.token;

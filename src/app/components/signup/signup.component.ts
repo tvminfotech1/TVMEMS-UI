@@ -232,8 +232,6 @@ this.signupForm.get('confirmPassword')?.valueChanges.subscribe(() => {
             this.emailError = 'Email already exists';
           }
         }
-        console.log('email error' + this.emailError);
-        console.log('mobile exists' + this.mobileError);
       },
       complete: () => {
         this.loading = false;

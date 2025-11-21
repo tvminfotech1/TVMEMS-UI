@@ -57,8 +57,8 @@ export interface LeaveRequest {
 
 @Injectable({ providedIn: 'root' })
 export class TimelogService {
-  private readonly userApiUrl = 'http://localhost:8080/user/timesheet';
-  private readonly adminAllUrl = 'http://localhost:8080/user/timesheet/all';
+  private readonly userApiUrl = `${BASE_URL}/user/timesheet`;
+  private readonly adminAllUrl = `${BASE_URL}/user/timesheet/all`;
 
   constructor(private http: HttpClient) { }
   getTimelogs(isAdmin: boolean = false): Observable<TimelogEntry[]> {

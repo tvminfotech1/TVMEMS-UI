@@ -84,26 +84,27 @@ export class LeaveComponent implements OnInit {
     );
 
     this.loadHolidays();
-    if (this.employeeId) {
-      this.leaveService
-        .getLeaveByEmployeeId(Number(this.employeeId))
-        .subscribe({
-          next: (res) => {
-            const first = res.body?.[0];
+if (this.employeeId) {
+  this.leaveService.getLeaveByEmployeeId(Number(this.employeeId)).subscribe({
+    next: (res) => {
+      const first = res.body?.[0];
 
-            if (first && first.user && first.user.joiningDate) {
-              this.joiningDate = new Date(first.user.joiningDate);
-            }
-            this.leaveRequests = res.body || [];
-            this.processLeaveResponse(this.leaveRequests);
-          },
-          error: (err) => {
-            console.error("Failed to fetch joining date", err);
-          },
-        });
+      if (first?.user?.joiningDate) {
+        this.joiningDate = new Date(first.user.joiningDate);
+      }
 
-      this.loadLeaves();
+      this.leaveRequests = res.body || [];
+      this.processLeaveResponse(this.leaveRequests);
+    },
+
+    error: (err) => {
+      console.error("Failed to fetch joining date", err);
     }
+  });
+
+  this.loadLeaves();
+}
+
 
     this.initForms();
     this.checkYearEndReset();
@@ -152,7 +153,7 @@ export class LeaveComponent implements OnInit {
   loadLeaves(): void {
     const obs = this.isAdmin
       ? this.leaveService.getAllLeaveRequests()
-      : this.leaveService.getMyLeaveRequests();
+      : this.leaveService.getLeaveByEmployeeId(Number(this.employeeId));
     obs.subscribe({
       next: (res) => this.processLeaveResponse(res),
       error: (err) => console.error("Error fetching leave requests:", err),
