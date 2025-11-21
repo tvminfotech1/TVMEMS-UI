@@ -18,8 +18,6 @@ export interface WorkFromHome {
   action: string;
 }
 
-
-
 export interface Hours {
   Monday?: string;
   Tuesday?: string;
@@ -104,7 +102,4 @@ export class TimelogService {
     const params = new HttpParams().set('start', weekStart).set('end', weekEnd);
     return this.http.get<LeaveRequest[]>(url, { params });
   }
-
-
-
 }
