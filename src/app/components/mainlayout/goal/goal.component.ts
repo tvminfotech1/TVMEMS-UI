@@ -111,6 +111,7 @@ export class GoalComponent implements OnInit {
             this.joiningMonth = this.joiningDate.getMonth();
             this.joiningYear = this.joiningDate.getFullYear();
             this.filterEmployeesByGoalMonth();
+            this.loadArchivedGoals();
           }
         },
         error: (err) => {
@@ -206,8 +207,6 @@ export class GoalComponent implements OnInit {
             user.role?.toLowerCase() !== "admin" &&
             user.email?.toLowerCase() !== this.currentUserEmail?.toLowerCase()
         );
-
-        // this.filteredEmployees = [...this.employees];
         this.filterEmployeesByGoalMonth();
       },
       error: (err) => {

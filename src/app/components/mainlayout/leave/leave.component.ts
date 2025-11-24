@@ -8,6 +8,7 @@ import {
 import { AuthService } from "src/app/services/auth.service";
 import { LeaveService, newLeaveRequest } from "src/app/services/leave.service";
 import { MatSnackBar } from "@angular/material/snack-bar";
+import { UserlistService } from "src/app/services/admin.service";
 
 interface LeaveBalance {
   leaveType: string;
@@ -36,7 +37,9 @@ export class LeaveComponent implements OnInit {
   activeTab: "leave" | "compoff" = "leave";
 
   leaveForm!: FormGroup;
-
+  allUsers: any[] = [];
+  employeeSearch: string = "";
+  employeeSuggestions: any[] = [];
   leaveList: newLeaveRequest[] = [];
   filteredRequests: newLeaveRequest[] = [];
   holidays: Date[] = [];
@@ -59,12 +62,14 @@ export class LeaveComponent implements OnInit {
 
   leaveCards: any[] = [];
   selectedDate: Date = new Date();
+  queryData: any;
 
   constructor(
     private fb: FormBuilder,
     private leaveService: LeaveService,
     private authService: AuthService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private UserlistService: UserlistService
   ) {}
   private lastUpdatedMonth = new Date().getMonth();
 
@@ -84,27 +89,35 @@ export class LeaveComponent implements OnInit {
     );
 
     this.loadHolidays();
-if (this.employeeId) {
-  this.leaveService.getLeaveByEmployeeId(Number(this.employeeId)).subscribe({
-    next: (res) => {
-      const first = res.body?.[0];
+    if (this.employeeId) {
+      this.leaveService
+        .getLeaveByEmployeeId(Number(this.employeeId))
+        .subscribe({
+          next: (res) => {
+            const first = res.body?.[0];
 
-      if (first?.user?.joiningDate) {
-        this.joiningDate = new Date(first.user.joiningDate);
-      }
+            if (first?.user?.joiningDate) {
+              this.joiningDate = new Date(first.user.joiningDate);
+            }
 
-      this.leaveRequests = res.body || [];
-      this.processLeaveResponse(this.leaveRequests);
-    },
+            this.leaveRequests = res.body || [];
+            this.processLeaveResponse(this.leaveRequests);
+          },
 
-    error: (err) => {
-      console.error("Failed to fetch joining date", err);
+          error: (err) => {
+            console.error("Failed to fetch joining date", err);
+          },
+        });
+
+      this.loadLeaves();
     }
-  });
 
-  this.loadLeaves();
-}
-
+    this.UserlistService.getAllUser().subscribe({
+      next: (res) => {
+        this.allUsers = res.body || [];
+      },
+      error: (error) => console.error("Failed to load user list", error),
+    });
 
     this.initForms();
     this.checkYearEndReset();
@@ -129,13 +142,7 @@ if (this.employeeId) {
       leaveType: ["", Validators.required],
       employeeId: [
         { value: this.employeeId, disabled: !this.isAdmin },
-        this.isAdmin
-          ? [
-              Validators.required,
-              Validators.minLength(6),
-              Validators.maxLength(6),
-            ]
-          : [],
+        this.isAdmin ? [Validators.required] : [],
       ],
       startDate: [null, Validators.required],
       endDate: [
@@ -424,27 +431,26 @@ if (this.employeeId) {
     });
   }
 
-private calculateLeaveBalances(): void {
-  const currentYear = new Date().getFullYear();
+  private calculateLeaveBalances(): void {
+    const currentYear = new Date().getFullYear();
 
-  this.leaveBalances.forEach((lb) => {
-    const used = this.leaveList
-      .filter((l) => {
-        const leaveYear = new Date(l.startDate).getFullYear();
+    this.leaveBalances.forEach((lb) => {
+      const used = this.leaveList
+        .filter((l) => {
+          const leaveYear = new Date(l.startDate).getFullYear();
 
-        return (
-          l.leaveType === lb.leaveType &&
-          l.status === "Approved" &&
-          leaveYear === currentYear && 
-          (!this.isAdmin ||
-            l.user?.employeeId === Number(this.employeeId))
-        );
-      })
-      .reduce((sum, l) => sum + (l.totalDays ?? 0), 0);
+          return (
+            l.leaveType === lb.leaveType &&
+            l.status === "Approved" &&
+            leaveYear === currentYear &&
+            (!this.isAdmin || l.user?.employeeId === Number(this.employeeId))
+          );
+        })
+        .reduce((sum, l) => sum + (l.totalDays ?? 0), 0);
 
-    lb.used = used;
-  });
-}
+      lb.used = used;
+    });
+  }
 
   resetApplyLeaveForm(): void {
     this.leaveForm.reset({
@@ -861,5 +867,27 @@ private calculateLeaveBalances(): void {
       },
       error: (err) => console.error("Holiday load failed", err),
     });
+  }
+  searchEmployee() {
+    const query = this.employeeSearch.trim().toLowerCase();
+
+    if (!query) {
+      this.employeeSuggestions = [];
+      return;
+    }
+
+    this.employeeSuggestions = this.allUsers.filter((user) =>
+      user.employeeId.toString().toLowerCase().includes(query)
+    );
+  }
+  selectEmployee(user: any) {
+    this.leaveForm.patchValue({ employeeId: user.employeeId });
+    this.employeeSearch = user.employeeId;
+    this.employeeSuggestions = [];
+  }
+
+  onEmployeeSearch(event: any) {
+    this.employeeSearch = event.target.value;
+    this.searchEmployee();
   }
 }

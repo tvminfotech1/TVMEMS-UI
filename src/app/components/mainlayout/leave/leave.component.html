@@ -73,21 +73,27 @@
         </div>
 
         <div class="table-controls top-controls">
-            <div class="date-range-inline">
+          <div class="date-range-inline">
             <div class="center-date">
-              <span class="material-icons icon-btn" (click)="goToPreviousMonth()" title="Previous Month">
+              <span
+                class="material-icons icon-btn"
+                (click)="goToPreviousMonth()"
+                title="Previous Month"
+              >
                 chevron_left
               </span>
 
-              <span class="calendar-icon material-icons">
-                calendar_today
-              </span>
+              <span class="calendar-icon material-icons"> calendar_today </span>
 
               <span class="date-text2">
                 {{ formatDateRange() }}
               </span>
 
-              <span class="material-icons icon-btn" (click)="goToNextMonth()" title="Next Month">
+              <span
+                class="material-icons icon-btn"
+                (click)="goToNextMonth()"
+                title="Next Month"
+              >
                 chevron_right
               </span>
             </div>
@@ -239,16 +245,16 @@
 
         <div class="modal-body">
           <form [formGroup]="leaveForm" (ngSubmit)="onSubmit()">
-            <div *ngIf="isAdmin">
+            <div *ngIf="isAdmin" class="employee-search-wrapper">
               <mat-form-field appearance="outline" class="w-100">
-                <mat-label>Employee ID</mat-label>
+                <mat-label>Search Employee</mat-label>
                 <input
                   matInput
                   type="text"
-                  formControlName="employeeId"
+                  [value]="employeeSearch"
+                  (input)="onEmployeeSearch($event)"
                   placeholder="Enter Employee ID"
                   maxlength="6"
-                  required
                 />
 
                 <mat-error
@@ -260,15 +266,29 @@
                 <mat-error
                   *ngIf="leaveForm.get('employeeId')?.hasError('minlength')"
                 >
-                  Employee ID length should be min 6 characters
+                  Employee ID must be 6 characters.
                 </mat-error>
 
                 <mat-error
                   *ngIf="leaveForm.get('employeeId')?.hasError('maxlength')"
                 >
-                  Employee ID must be 6 digits
+                  Employee ID must be 6 characters.
                 </mat-error>
               </mat-form-field>
+
+              <!-- Suggestions List -->
+              <div
+                class="suggestion-container"
+                *ngIf="employeeSuggestions.length > 0 && employeeSearch"
+              >
+                <div
+                  class="suggestion-item"
+                  *ngFor="let user of employeeSuggestions"
+                  (click)="selectEmployee(user)"
+                >
+                  {{ user.employeeId }} - {{ user.fullName }}
+                </div>
+              </div>
             </div>
 
             <mat-form-field appearance="outline" class="w-100">

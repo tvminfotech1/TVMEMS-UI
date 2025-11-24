@@ -1411,3 +1411,26 @@ td {
 .icon-btn2 {
   color: white;
 }
+.employee-search-wrapper {
+  position: relative;
+}
+
+.suggestion-container {
+  position: absolute;
+  background: #fff;
+  border: 1px solid #ccc;
+  width: 100%;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 1000;
+  border-radius: 4px;
+}
+
+.suggestion-item {
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.suggestion-item:hover {
+  background: #eee;
+}

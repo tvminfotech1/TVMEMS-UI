@@ -34,7 +34,6 @@ export interface newLeaveRequest {
   providedIn: "root",
 })
 export class LeaveService {
-
   constructor(private http: HttpClient) {}
 
   private getAuthHeaders(): HttpHeaders {
@@ -49,7 +48,7 @@ export class LeaveService {
     status: "APPROVED" | "REJECTED"
   ): Observable<any> {
     return this.http.put(
-      `${BASE_URL}/api/leave-requests/admin/${id}/status?status=${status}`,
+      `${BASE_URL}/leave/admin/${id}/status?status=${status}`,
       {},
       {
         headers: this.getAuthHeaders(),
@@ -62,35 +61,29 @@ export class LeaveService {
     });
   }
 
- getLeaveByEmployeeId(employeeId: number): Observable<any> {
-  return this.http.get<any>(
-    `${BASE_URL}/api/leave-requests/employee/${employeeId}`,
-    { headers: this.getAuthHeaders() }
-  );
-}
-
-  getAllLeaveRequests(): Observable<newLeaveRequest[]> {
-    return this.http.get<newLeaveRequest[]>(`${BASE_URL}/api/leave-requests/leaves`, {
+  getLeaveByEmployeeId(employeeId: number): Observable<any> {
+    return this.http.get<any>(`${BASE_URL}/leave/employee/${employeeId}`, {
       headers: this.getAuthHeaders(),
     });
   }
 
+  getAllLeaveRequests(): Observable<newLeaveRequest[]> {
+    return this.http.get<newLeaveRequest[]>(`${BASE_URL}/leave`, {
+      headers: this.getAuthHeaders(),
+    });
+  }
 
   createLeaveRequest(
     leaveRequest: newLeaveRequest
   ): Observable<newLeaveRequest> {
-    return this.http.post<newLeaveRequest>(
-      `${BASE_URL}/api/leave-requests/leaves`,
-      leaveRequest,
-      {
-        headers: this.getAuthHeaders(),
-      }
-    );
+    return this.http.post<newLeaveRequest>(`${BASE_URL}/leave`, leaveRequest, {
+      headers: this.getAuthHeaders(),
+    });
   }
 
   checkLeave(empId: number, date: string): Observable<{ body: boolean }> {
     return this.http.get<{ body: boolean }>(
-      `${BASE_URL}/api/leave-requests/check-leave-status/${empId}?date=${date}`,
+      `${BASE_URL}leave/leave-status/${empId}?date=${date}`,
       { headers: this.getAuthHeaders() }
     );
   }

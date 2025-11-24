@@ -9,7 +9,7 @@ import { BASE_URL } from 'src/app/models/baseurl/constant';
   providedIn: 'root',
 })
 export class MainLayoutService {
-  private apiUrl = `${BASE_URL}/api/hiring/jobs`;
+  private apiUrl = `${BASE_URL}/hiring`;
   constructor(private http: HttpClient) {}
 
   postJobPostings(job: JobPosting): Observable<JobPosting> {

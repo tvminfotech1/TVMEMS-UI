@@ -12,7 +12,7 @@ export class SalaryHistoryService {
   constructor(private http: HttpClient) {}
 
   getAllSalaryHistory(): Observable<any> {
-    return this.http.get<any>(`${BASE_URL}/api/salaryHistory`);
+    return this.http.get<any>(`${BASE_URL}/salaryHistory`);
   }
 
   getSalaryByEmployeeAndMonth(
@@ -20,25 +20,18 @@ export class SalaryHistoryService {
     month: string
   ): Observable<SalaryHistory[]> {
     return this.http.get<SalaryHistory[]>(
-      `${BASE_URL}/api/salaryHistory?id=${empId}&month=${month}`
+      `${BASE_URL}/salaryHistory?id=${empId}&month=${month}`
     );
   }
   getSalaryByEmployeeId(employeeId: number): Observable<any[]> {
-    return this.http.get<any[]>(`${BASE_URL}/api/salaryHistory/employee/${employeeId}`);
+    return this.http.get<any[]>(`${BASE_URL}/salaryHistory/employee/${employeeId}`);
   }
   addSalaryHistory(data: SalaryHistory): Observable<SalaryHistory> {
-    return this.http.post<SalaryHistory>(`${BASE_URL}/api/salaryHistory`, data);
+    return this.http.post<SalaryHistory>(`${BASE_URL}/salaryHistory`, data);
   }
-
-  updateSalaryHistory(
-    id: number,
-    data: SalaryHistory
-  ): Observable<SalaryHistory> {
-    return this.http.put<SalaryHistory>(`${BASE_URL}/api/salaryHistory/${id}`, data);
-  }
-  
+ 
   downloadSalarySlip(id: number, month: string): Observable<any> {
-    return this.http.get(`${BASE_URL}/api/salaryHistory/generate-payslip/${id}`, {
+    return this.http.get(`${BASE_URL}/salaryHistory/generate-payslip/${id}`, {
       params: { month },
       responseType: 'blob',
     });
@@ -46,13 +39,13 @@ export class SalaryHistoryService {
 
   getJoiningDate(id: number): Observable<any> {
     return this.http.get<any>(
-      `${BASE_URL}/api/employeePayRole/joiningDate/${id}`
+      `${BASE_URL}/employeePayRole/joiningDate/${id}`
     );
   }
   
 
   deleteSalaryBySalaryId(salaryId: string) {
-  return this.http.delete<any>(`${BASE_URL}/api/salaryHistory/${salaryId}`);
+  return this.http.delete<any>(`${BASE_URL}/salaryHistory/${salaryId}`);
 }
 
 }

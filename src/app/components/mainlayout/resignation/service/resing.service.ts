@@ -7,7 +7,7 @@ import { BASE_URL } from 'src/app/models/baseurl/constant';
   providedIn: 'root',
 })
 export class ResingService {
-  private apiUrl = `${BASE_URL}/api/offboarding`;
+  private apiUrl = `${BASE_URL}/offboarding`;
 
   constructor(private http: HttpClient) {}
 
