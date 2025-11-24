@@ -35,7 +35,6 @@ export class AdminAttendanceComponent implements OnInit {
     'employeeId',
     'fullName',
     'department',
-    'designation',
     'actions',
   ];
   userDisplayedColumns: string[] = [
@@ -89,7 +88,6 @@ export class AdminAttendanceComponent implements OnInit {
               employeeId: att.user.employeeId,
               fullName: att.user.fullName,
               department: att.department,
-              designation: att.designation,
             });
           }
         });
