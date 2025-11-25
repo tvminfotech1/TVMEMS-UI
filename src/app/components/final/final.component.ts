@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component } from "@angular/core";
 import {
   FormBuilder,
   FormGroup,
@@ -6,15 +6,16 @@ import {
   FormControl,
   AbstractControl,
   ValidationErrors,
-} from '@angular/forms';
-import { UserService } from '../user-service.service';
-import { Router } from '@angular/router';
-import { forkJoin } from 'rxjs';
-import { FormProgressService } from 'src/app/services/form-progress.service';
+} from "@angular/forms";
+import { UserService } from "../user-service.service";
+import { Router } from "@angular/router";
+import { forkJoin } from "rxjs";
+import { FormProgressService } from "src/app/services/form-progress.service";
+import { AuthService } from "src/app/services/auth.service";
 
 @Component({
-  templateUrl: './final.component.html',
-  styleUrls: ['./final.component.css'],
+  templateUrl: "./final.component.html",
+  styleUrls: ["./final.component.css"],
 })
 export class FinalComponent {
   declarationForm: FormGroup;
@@ -25,19 +26,20 @@ export class FinalComponent {
     private fb: FormBuilder,
     private router: Router,
     private userService: UserService,
-     private progressService :FormProgressService,
+    private progressService: FormProgressService,
+    private authService: AuthService
   ) {
     this.declarationForm = this.fb.group({
       checked: [false, Validators.requiredTrue],
-      signature: this.fb.control('', {
+      signature: this.fb.control("", {
         validators: [Validators.required, this.nameValidator],
-        updateOn: 'change',
+        updateOn: "change",
       }),
-      date: ['', Validators.required],
+      date: ["", Validators.required],
     });
   }
   back(): void {
-    this.router.navigate(['/mainlayout/resume']);
+    this.router.navigate(["/mainlayout/resume"]);
   }
 
   nameValidator(control: AbstractControl): ValidationErrors | null {
@@ -55,14 +57,13 @@ export class FinalComponent {
   }
 
   submitForm(): void {
-    this.userService.setFormData('aFinal', this.declarationForm.value);
-         this.progressService.markStepComplete(11);
-
+    this.userService.setFormData("aFinal", this.declarationForm.value);
+    this.progressService.markStepComplete(11);
 
     if (!this.userService.isAllFormsValid()) {
       const incompleteSteps = this.userService.getInvalidSteps();
       alert(
-        'Please complete these required steps: ' + incompleteSteps.join(', ')
+        "Please complete these required steps: " + incompleteSteps.join(", ")
       );
       return;
     }
@@ -71,13 +72,14 @@ export class FinalComponent {
       this.userService.uploadDocuments(),
       this.userService.submitJsonData(),
     ]).subscribe({
-      next: ([]) => {
+      next: ([res, document]) => {
+        this.authService.setOnboardingCompleted();
         this.userService.clearFormData();
-        this.router.navigate(['/mainlayout/thankYou']);
+        this.router.navigate(["/mainlayout/thankYou"]);
       },
       error: (err) => {
-        console.error('Submission error:', err);
-        alert('Something went wrong during submission.');
+        console.error("Submission error:", err);
+        alert("Something went wrong during submission.");
       },
     });
   }

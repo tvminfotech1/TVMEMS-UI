@@ -21,6 +21,8 @@ interface DecodedToken {
 })
 export class AuthService {
 
+  private cachedOnboardingStatus: boolean | null = null;
+
   constructor(private http: HttpClient, private router: Router) {}
 
   private saveToken(token: string): void {
@@ -189,6 +191,8 @@ export class AuthService {
   logout(): void {
     localStorage.clear();
     sessionStorage.clear();
+    this.cachedOnboardingStatus = null;
+
     this.router.navigateByUrl("/adminLogin");
   }
   getEmailFromToken(): string | null {
@@ -203,7 +207,19 @@ export class AuthService {
   }
 
   checkOnboardingStatus(employeeId: string | null): Observable<boolean> {
+    if (this.cachedOnboardingStatus !== null) {
+      return of(this.cachedOnboardingStatus);
+    }
+
     const url = `${BASE_URL}/final/check-status/${employeeId}`;
-    return this.http.get<boolean>(url);
+    return this.http.get<boolean>(url).pipe(
+      tap((status) => {
+        this.cachedOnboardingStatus = status;
+      })
+    );
+  }
+
+  setOnboardingCompleted() {
+    this.cachedOnboardingStatus = true;
   }
 }
