@@ -31,7 +31,6 @@ export class WorkfromhomeComponent implements OnInit {
     this.isAdmin = this.authservice.isAdmin();
     this.isUser = this.authservice.isUser();
     this.refreshRequests();
-    this.fetchAllWfhRequests();
     if (this.isAdmin) {
       this.fetchAllApprovalRequests();
     }
@@ -65,21 +64,20 @@ export class WorkfromhomeComponent implements OnInit {
     this.refreshRequests();
   }
 
-  refreshRequests() {
-    if (this.isUser) {
-      const email = this.authservice.getEmailFromToken();
-      if (email) {
-        this.authservice.getUserId(email).subscribe({
-          next: (id: number) => {
-            this.fetchUserWfhRequests(id);
-          },
-          error: (err: any) => console.error("Failed to get employeeId:", err),
-        });
-      }
-    } else if (this.isAdmin) {
-      this.fetchAllWfhRequests();
-    }
+ refreshRequests() {
+  const email = this.authservice.getEmailFromToken();
+
+  if (this.isUser && email) {
+    this.authservice.getUserId(email).subscribe({
+      next: (id: number) => this.fetchUserWfhRequests(id),
+      error: (err: any) => console.error("Failed to get employeeId:", err),
+    });
   }
+
+  if (this.isAdmin) {
+    this.fetchAllWfhRequests();
+  }
+}
 
   lastKnownStatuses: { [key: string]: string } = {};
 

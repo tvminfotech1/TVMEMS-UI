@@ -1320,5 +1320,5 @@ button[disabled] {
 
 .month-node.disabled {
   pointer-events: none;
-  opacity: 0.4; /* visually indicate disabled */
+  opacity: 0.4;
 }

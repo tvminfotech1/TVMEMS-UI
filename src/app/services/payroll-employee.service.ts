@@ -13,7 +13,7 @@ export class PayrollEmployeeService {
   constructor(private http: HttpClient) {}
 
   getEmployees(): Observable<Employee[]> {
-    return this.http.get<{ body: Employee[] }>(`${BASE_URL}/api/employeePayRole`).pipe(
+    return this.http.get<{ body: Employee[] }>(`${BASE_URL}/employeePayRole`).pipe(
       map((res) => res.body),
       catchError((err) => {
         console.error('Error fetching employees', err);
@@ -23,7 +23,7 @@ export class PayrollEmployeeService {
   }
 
   getEmployeeById(id: number): Observable<Employee> {
-    return this.http.get<{ body: Employee }>(`${BASE_URL}/api/employeePayRole/${id}`).pipe(
+    return this.http.get<{ body: Employee }>(`${BASE_URL}/employeePayRole/${id}`).pipe(
       map((res) => res.body),
       catchError((err) => {
         console.error('Error fetching employee by id', err);
@@ -34,27 +34,26 @@ export class PayrollEmployeeService {
 
   addEmployee(employee: Employee): Observable<Employee> {
     return this.http
-      .post<{ body: Employee }>(`${BASE_URL}/api/employeePayRole`, employee)
+      .post<{ body: Employee }>(`${BASE_URL}/employeePayRole`, employee)
       .pipe(map((res) => res.body));
   }
 
   updateEmployee(id: number, employee: Employee): Observable<Employee> {
     return this.http
-      .put<{ body: Employee }>(`${BASE_URL}/api/employeePayRole/${id}`, employee)
+      .put<{ body: Employee }>(`${BASE_URL}/employeePayRole/${id}`, employee)
       .pipe(map((res) => res.body));
   }
 
   updateEmployeeStatus(id: number, status: string): Observable<any> {
-    return this.http.patch(`${BASE_URL}/api/employeePayRole/${id}/status`, { status });
+    return this.http.patch(`${BASE_URL}/employeePayRole/${id}/status`, { status });
   }
 
   getPayRunData(month: string): Observable<any[]> {
     return this.http
-      .get<any[]>(`${BASE_URL}/api/employeePayRole/getPayRunData`, {
+      .get<any[]>(`${BASE_URL}/employeePayRole/getPayRunData`, {
         params: { month },
       })
       .pipe(
-        tap((data) => console.log('Pay Run Data from API:', data)),
         catchError((err) => {
           console.error('Error fetching Pay Run Data', err);
           return of([]);
@@ -63,6 +62,6 @@ export class PayrollEmployeeService {
   }
 
   deleteEmployee(id: number): Observable<any> {
-    return this.http.delete(`${BASE_URL}/api/employeePayRole/${id}`);
+    return this.http.delete(`${BASE_URL}/employeePayRole/${id}`);
   }
 }

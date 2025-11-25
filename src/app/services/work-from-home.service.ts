@@ -24,17 +24,6 @@ export class WorkFromHomeService {
       headers: this.getAuthHeaders(),
     });
   }
-  getWfhRequestsByMonth(): Observable<any> {
-    return this.http.get<any>(`${BASE_URL}/WFH/all`, {
-      headers: this.getAuthHeaders(),
-    });
-  }
-
-  getWfhRequests(): Observable<any> {
-    return this.http.get(`${BASE_URL}/WFH/all`, {
-      headers: this.getAuthHeaders(),
-    });
-  }
 
   getWfhAllApprovalRequests(): Observable<any> {
     return this.http.get(`${BASE_URL}/WFH/approvalallrequests`, {
@@ -71,19 +60,7 @@ export class WorkFromHomeService {
     });
   }
 
-  getRequestById(employeeId: any): Observable<any> {
-    return this.http.get(`${BASE_URL}/WFH/requests/${employeeId}`, {
-      headers: this.getAuthHeaders(),
-    });
-  }
-  getUserRequests(email: string): Observable<any[]> {
-    return this.http.get<any[]>(`${BASE_URL}/WFH/user/${email}`, {
-      headers: this.getAuthHeaders(),
-    });
-  }
-
-
   getApp_Pen_EmployeeWfh(employeeId: number): Observable<any> {
-    return this.http.get(`${BASE_URL}/WFH/employee/${employeeId}/wfh`)
+    return this.http.get(`${BASE_URL}/WFH/employee/${employeeId}`)
   }
 }
