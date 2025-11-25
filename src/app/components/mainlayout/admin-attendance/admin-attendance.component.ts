@@ -214,9 +214,8 @@ if (firstRecord?.user?.joiningDate) {
     joiningDateStr = jd.toISOString().split("T")[0];
   }
 }
-// ❗ If selected month < joining month → show empty message
 if (this.isBeforeJoining(this.filterMonth, joiningDateStr)) {
-  this.employeeAttendance = [];  // <-- IMPORTANT
+  this.employeeAttendance = []; 
 
   this.dialog.open(this.attendanceDialog, {
     width: "95%",

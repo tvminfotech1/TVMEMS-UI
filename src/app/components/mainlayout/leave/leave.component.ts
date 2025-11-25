@@ -62,7 +62,7 @@ export class LeaveComponent implements OnInit {
 
   leaveCards: any[] = [];
   selectedDate: Date = new Date();
-  queryData: any;
+  selectedEmployee: any = null;
 
   constructor(
     private fb: FormBuilder,
@@ -87,30 +87,8 @@ export class LeaveComponent implements OnInit {
         sessionStorage.getItem("employeeId") ??
         ""
     );
-
+    this.loadLeaves();
     this.loadHolidays();
-    if (this.employeeId) {
-      this.leaveService
-        .getLeaveByEmployeeId(Number(this.employeeId))
-        .subscribe({
-          next: (res) => {
-            const first = res.body?.[0];
-
-            if (first?.user?.joiningDate) {
-              this.joiningDate = new Date(first.user.joiningDate);
-            }
-
-            this.leaveRequests = res.body || [];
-            this.processLeaveResponse(this.leaveRequests);
-          },
-
-          error: (err) => {
-            console.error("Failed to fetch joining date", err);
-          },
-        });
-
-      this.loadLeaves();
-    }
 
     this.UserlistService.getAllUser().subscribe({
       next: (res) => {
@@ -161,14 +139,28 @@ export class LeaveComponent implements OnInit {
     const obs = this.isAdmin
       ? this.leaveService.getAllLeaveRequests()
       : this.leaveService.getLeaveByEmployeeId(Number(this.employeeId));
+
     obs.subscribe({
-      next: (res) => this.processLeaveResponse(res),
-      error: (err) => console.error("Error fetching leave requests:", err),
+      next: (res) => {
+        const leaveArray = Array.isArray(res) ? res : res.body ?? [];
+        this.leaveRequests = leaveArray;
+        this.processLeaveResponse(leaveArray);
+        if (!this.isAdmin && leaveArray.length > 0) {
+          const first = leaveArray[0];
+          if (first?.user?.joiningDate) {
+            this.joiningDate = new Date(first.user.joiningDate);
+          }
+        }
+      },
+
+      error: (err) => {
+        console.error("Error fetching leave requests:", err);
+      },
     });
   }
 
-  private processLeaveResponse(res: any): void {
-    const data: any[] = res?.body ?? [];
+  private processLeaveResponse(res: any[]): void {
+    const data: any[] = res ?? [];
 
     this.leaveList = data.map((l) => {
       const totalDays =
@@ -669,64 +661,6 @@ export class LeaveComponent implements OnInit {
       if (a.status !== "Pending" && b.status === "Pending") return 1;
       return 0;
     });
-    if (this.sortColumn) this.applySort();
-    this.currentPage = 1;
-  }
-
-  sortBy(key: string): void {
-    if (this.sortKey === key) {
-      this.sortDirection = this.sortDirection === "asc" ? "desc" : "asc";
-    } else {
-      this.sortKey = key;
-      this.sortDirection = "asc";
-    }
-
-    this.paginatedRequests.sort((a: any, b: any) => {
-      const getValue = (obj: any, path: string) =>
-        path.split(".").reduce((o, k) => (o ? o[k] : ""), obj);
-
-      const valA = getValue(a, key);
-      const valB = getValue(b, key);
-
-      if (valA < valB) return this.sortDirection === "asc" ? -1 : 1;
-      if (valA > valB) return this.sortDirection === "asc" ? 1 : -1;
-      return 0;
-    });
-  }
-
-  private applySort(): void {
-    if (!this.sortColumn) return;
-    const col = this.sortColumn;
-    const dir = this.sortDirection;
-
-    this.filteredRequests.sort((a, b) => {
-      if (a.status === "Pending" && b.status !== "Pending") return -1;
-      if (a.status !== "Pending" && b.status === "Pending") return 1;
-
-      const valA = a[col] ?? "";
-      const valB = b[col] ?? "";
-
-      const aNum = parseFloat(valA as any);
-      const bNum = parseFloat(valB as any);
-      const aDate = new Date(valA as any);
-      const bDate = new Date(valB as any);
-
-      let result = 0;
-      if (!isNaN(aNum) && !isNaN(bNum)) result = aNum - bNum;
-      else if (!isNaN(aDate.getTime()) && !isNaN(bDate.getTime()))
-        result = aDate.getTime() - bDate.getTime();
-      else
-        result = String(valA)
-          .toLowerCase()
-          .localeCompare(String(valB).toLowerCase());
-
-      return dir === "asc" ? result : -result;
-    });
-  }
-
-  getSortClass(column: string): string {
-    if (this.sortColumn !== column) return "";
-    return this.sortDirection === "asc" ? "sort-asc" : "sort-desc";
   }
 
   get paginatedRequests(): newLeaveRequest[] {
@@ -767,28 +701,6 @@ export class LeaveComponent implements OnInit {
       default:
         return "status-badge";
     }
-  }
-
-  filterCardsByEmployee(employeeId: string | number): void {
-    if (!employeeId) return;
-    this.leaveCards = this.leaveBalances.map((lb) => {
-      const usedLeavesForUser = this.leaveList
-        .filter(
-          (l) =>
-            l.user?.employeeId == employeeId && l.leaveType === lb.leaveType
-        )
-        .reduce((acc, curr) => acc + (curr.totalDays ?? 0), 0);
-      const available = lb.total - usedLeavesForUser + lb.carryOver;
-      return {
-        title: lb.leaveType,
-        total: lb.total,
-        used: usedLeavesForUser,
-        carryOver: lb.carryOver,
-        available: available < 0 ? 0 : available,
-        icon: this.getLeaveIcon(lb.leaveType),
-        color: this.getLeaveColor(lb.leaveType),
-      };
-    });
   }
 
   switchTab(tab: "leave" | "compoff"): void {
@@ -868,6 +780,13 @@ export class LeaveComponent implements OnInit {
       error: (err) => console.error("Holiday load failed", err),
     });
   }
+  onEmployeeSearch(event: any) {
+    this.selectedEmployee = null;
+    this.employeeSearch = event.target.value;
+
+    this.searchEmployee();
+  }
+
   searchEmployee() {
     const query = this.employeeSearch.trim().toLowerCase();
 
@@ -880,14 +799,11 @@ export class LeaveComponent implements OnInit {
       user.employeeId.toString().toLowerCase().includes(query)
     );
   }
-  selectEmployee(user: any) {
-    this.leaveForm.patchValue({ employeeId: user.employeeId });
-    this.employeeSearch = user.employeeId;
-    this.employeeSuggestions = [];
-  }
 
-  onEmployeeSearch(event: any) {
-    this.employeeSearch = event.target.value;
-    this.searchEmployee();
+  selectEmployee(user: any) {
+    this.selectedEmployee = user;
+    this.employeeSearch = user.employeeId.toString();
+    this.employeeSuggestions = [];
+    this.leaveForm.patchValue({ employeeId: user.employeeId });
   }
 }

@@ -130,9 +130,7 @@
   font-weight: 500;
   letter-spacing: 0.5px;
 }
-/* =============================== */
-/* Leave Summary Cards */
-/* =============================== */
+
 .leave-cards-grid {
   display: flex;
   justify-content: space-around;
@@ -353,19 +351,6 @@ td {
   white-space: nowrap;
 }
 
-.status-badge {
-  font-size: 12px;
-  text-align: center;
-}
-.status-approved {
-  color: green;
-}
-.status-pending {
-  color: #856404;
-}
-.status-rejected {
-  color: red;
-}
 
 .status-badge,
 .leave-type-badge {

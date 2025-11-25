@@ -54,7 +54,6 @@ export class PayrollEmployeeService {
         params: { month },
       })
       .pipe(
-        tap((data) => console.log('Pay Run Data from API:', data)),
         catchError((err) => {
           console.error('Error fetching Pay Run Data', err);
           return of([]);

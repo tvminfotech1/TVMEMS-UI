@@ -83,7 +83,7 @@ export class LeaveService {
 
   checkLeave(empId: number, date: string): Observable<{ body: boolean }> {
     return this.http.get<{ body: boolean }>(
-      `${BASE_URL}leave/leave-status/${empId}?date=${date}`,
+      `${BASE_URL}/leave/leave-status/${empId}?date=${date}`,
       { headers: this.getAuthHeaders() }
     );
   }

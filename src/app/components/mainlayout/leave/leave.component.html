@@ -131,15 +131,11 @@
           <table class="leave-table">
             <thead class="header-table">
               <tr>
-                <th (click)="sortBy('user.employeeId')" class="sortable">
-                  Employee ID
-                </th>
-                <th (click)="sortBy('leaveType')" class="sortable">
-                  Leave Type
-                </th>
-                <th (click)="sortBy('duration')" class="sortable">Duration</th>
+                <th>Employee ID</th>
+                <th>Leave Type</th>
+                <th>Duration</th>
                 <th>Date</th>
-                <th (click)="sortBy('status')" class="sortable">Status</th>
+                <th>Status</th>
                 <th>Reason</th>
                 <th *ngIf="isAdmin">Action</th>
               </tr>
@@ -251,6 +247,7 @@
                 <input
                   matInput
                   type="text"
+                  formControlName="employeeId"
                   [value]="employeeSearch"
                   (input)="onEmployeeSearch($event)"
                   placeholder="Enter Employee ID"
@@ -276,7 +273,6 @@
                 </mat-error>
               </mat-form-field>
 
-              <!-- Suggestions List -->
               <div
                 class="suggestion-container"
                 *ngIf="employeeSuggestions.length > 0 && employeeSearch"
@@ -288,6 +284,17 @@
                 >
                   {{ user.employeeId }} - {{ user.fullName }}
                 </div>
+              </div>
+
+              <div
+                class="suggestion-container no-results"
+                *ngIf="
+                  employeeSearch &&
+                  employeeSuggestions.length === 0 &&
+                  !selectedEmployee
+                "
+              >
+                <div class="suggestion-item no-click">No results found</div>
               </div>
             </div>
 
