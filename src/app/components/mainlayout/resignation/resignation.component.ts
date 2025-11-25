@@ -74,8 +74,6 @@ export class ResignationComponent implements OnInit {
   fetchResignationByEmployeeId(empId: string) {
     this.resingService.getResignationsByEmployeeId(empId).subscribe({
       next: (res) => {
-        console.log('response', res);
-
         if (res.status === 'Approved') {
           this.submittedData = [res];
           this.hasSubmittedResignation = true;

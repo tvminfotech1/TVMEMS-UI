@@ -1,11 +1,11 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
+import { BASE_URL } from "../models/baseurl/constant";
 
 @Injectable({ providedIn: "root" })
 export class EmployeeService {
-  private readonly baseUrl = "http://localhost:8080";
-  private readonly employeeApiUrl = `${this.baseUrl}/personal/findAll`;
+  private readonly employeeApiUrl = `${BASE_URL}/personal/findAll`;
 
   constructor(private http: HttpClient) {}
 
@@ -14,13 +14,13 @@ export class EmployeeService {
   }
 
   downloadDocument(fileId: number): Observable<Blob> {
-    return this.http.get(`${this.baseUrl}/documents/${fileId}/download`, {
+    return this.http.get(`${BASE_URL}/documents/${fileId}/download`, {
       responseType: "blob",
     });
   }
 
   getEmployeePhoto(employeeId: string | number): Observable<Blob> {
-    return this.http.get(`${this.baseUrl}/documents/photo/${employeeId}`, {
+    return this.http.get(`${BASE_URL}/documents/photo/${employeeId}`, {
       responseType: "blob",
     });
   }

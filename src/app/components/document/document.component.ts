@@ -139,7 +139,7 @@ this.userService.educationType$.subscribe((type) => {
         const file = this.documentForm.get(key)?.value;
         if (file) {
           formData.append(key, file);
-          console.log(`Appended ${key}:`, file);
+  
         }
       });
       this.userService.setUploadDoc('documents', formData);

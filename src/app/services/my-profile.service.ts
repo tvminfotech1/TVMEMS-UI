@@ -2,13 +2,12 @@ import { Injectable } from '@angular/core';
 import { AuthService } from './auth.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { BASE_URL } from '../models/baseurl/constant';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MyProfileService {
-  private apiUrl = 'http://localhost:8080/documents';
-
   constructor(private http: HttpClient, private authService: AuthService) {}
 
   private getAuthHeaders(): HttpHeaders {
@@ -21,7 +20,7 @@ export class MyProfileService {
 
   getUserPhoto(employeeId: number): Observable<string> {
     const headers = this.getAuthHeaders();
-    return this.http.get(`${this.apiUrl}/photo/${employeeId}`, {
+    return this.http.get(`${BASE_URL}/documents/photo/${employeeId}`, {
       responseType: 'text',
       headers,
     });

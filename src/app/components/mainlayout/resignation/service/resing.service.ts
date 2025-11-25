@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { BASE_URL } from 'src/app/models/baseurl/constant';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ResingService {
-  private apiUrl = 'http://localhost:8080/api/offboarding';
+  private apiUrl = `${BASE_URL}/api/offboarding`;
 
   constructor(private http: HttpClient) {}
 

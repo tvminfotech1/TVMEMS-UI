@@ -53,7 +53,6 @@ export class LoginByNumberComponent implements OnInit {
         .post(`${BASE_URL}/userlogin/mobile`, loginData)
         .subscribe({
           next: (res) => {
-            console.log('Login successful:', res);
             const token = (res as any).token;
             if (token) {
               sessionStorage.setItem('token', token);

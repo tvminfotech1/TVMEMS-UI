@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { AuthService } from './auth.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { BASE_URL } from '../models/baseurl/constant';
 
 export interface User {
   employeeId: number;
@@ -33,8 +34,6 @@ export interface AttendanceRecord {
 })
 export class AttendanceService {
   TEST_MODE = false;
-
-  private baseUrl = 'http://localhost:8080/Attendance';
   private attendanceList$ = new BehaviorSubject<AttendanceRecord[]>([]);
 
   constructor(private http: HttpClient, private authService: AuthService) {}
@@ -49,7 +48,7 @@ export class AttendanceService {
 
   private loadAttendance() {
     this.http
-      .get<AttendanceRecord[]>(`${this.baseUrl}/all`, {
+      .get<AttendanceRecord[]>(`${BASE_URL}/Attendance/all`, {
         headers: this.getAuthHeaders(),
       })
       .subscribe(
@@ -59,7 +58,7 @@ export class AttendanceService {
   }
 
   getAllAttendance(): Observable<AttendanceRecord[]> {
-    return this.http.get<AttendanceRecord[]>(`${this.baseUrl}/all`, {
+    return this.http.get<AttendanceRecord[]>(`${BASE_URL}/Attendance/all`, {
       headers: this.getAuthHeaders(),
     });
   }
@@ -68,7 +67,7 @@ export class AttendanceService {
     employeeId: number
   ): Observable<AttendanceRecord[]> {
     return this.http.get<AttendanceRecord[]>(
-      `${this.baseUrl}/employee/${employeeId}`,
+      `${BASE_URL}/Attendance/employee/${employeeId}`,
       { headers: this.getAuthHeaders() }
     );
   }
@@ -83,7 +82,7 @@ export class AttendanceService {
       Authorization: `Bearer ${token}`,
     });
 
-    return this.http.post<AttendanceRecord>(`${this.baseUrl}`, record, {
+    return this.http.post<AttendanceRecord>(`${BASE_URL}/Attendance`, record, {
       headers,
     });
   }
@@ -91,7 +90,7 @@ export class AttendanceService {
   updateAttendance(record: AttendanceRecord) {
     this.http
       .put<AttendanceRecord>(
-        `${this.baseUrl}/${record.empId}/${record.date}`,
+        `${BASE_URL}/Attendance/${record.empId}/${record.date}`,
         record,
         { headers: this.getAuthHeaders() }
       )

@@ -34,7 +34,6 @@ export interface newLeaveRequest {
   providedIn: "root",
 })
 export class LeaveService {
-  private apiUrl = "http://localhost:8080/api/leave-requests";
 
   constructor(private http: HttpClient) {}
 
@@ -50,7 +49,7 @@ export class LeaveService {
     status: "APPROVED" | "REJECTED"
   ): Observable<any> {
     return this.http.put(
-      `${this.apiUrl}/admin/${id}/status?status=${status}`,
+      `${BASE_URL}/api/leave-requests/admin/${id}/status?status=${status}`,
       {},
       {
         headers: this.getAuthHeaders(),
@@ -63,31 +62,25 @@ export class LeaveService {
     });
   }
 
-  getLeaveByEmployeeId(
-    employeeId: number
-  ): Observable<{ body: newLeaveRequest[] }> {
-    return this.http.get<{ body: newLeaveRequest[] }>(
-      `${this.apiUrl}/employee/${employeeId}`,
-      { headers: this.getAuthHeaders() }
-    );
-  }
+ getLeaveByEmployeeId(employeeId: number): Observable<any> {
+  return this.http.get<any>(
+    `${BASE_URL}/api/leave-requests/employee/${employeeId}`,
+    { headers: this.getAuthHeaders() }
+  );
+}
+
   getAllLeaveRequests(): Observable<newLeaveRequest[]> {
-    return this.http.get<newLeaveRequest[]>(`${this.apiUrl}/leaves`, {
+    return this.http.get<newLeaveRequest[]>(`${BASE_URL}/api/leave-requests/leaves`, {
       headers: this.getAuthHeaders(),
     });
   }
 
-  getMyLeaveRequests(): Observable<newLeaveRequest[]> {
-    return this.http.get<newLeaveRequest[]>(`${this.apiUrl}/my-leaves`, {
-      headers: this.getAuthHeaders(),
-    });
-  }
 
   createLeaveRequest(
     leaveRequest: newLeaveRequest
   ): Observable<newLeaveRequest> {
     return this.http.post<newLeaveRequest>(
-      `${this.apiUrl}/leaves`,
+      `${BASE_URL}/api/leave-requests/leaves`,
       leaveRequest,
       {
         headers: this.getAuthHeaders(),
@@ -97,7 +90,7 @@ export class LeaveService {
 
   checkLeave(empId: number, date: string): Observable<{ body: boolean }> {
     return this.http.get<{ body: boolean }>(
-      `${this.apiUrl}/check-leave-status/${empId}?date=${date}`,
+      `${BASE_URL}/api/leave-requests/check-leave-status/${empId}?date=${date}`,
       { headers: this.getAuthHeaders() }
     );
   }

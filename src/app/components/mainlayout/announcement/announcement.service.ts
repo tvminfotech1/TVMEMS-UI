@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { BASE_URL } from 'src/app/models/baseurl/constant';
 
 @Injectable({ providedIn: 'root' })
 export class AnnouncementService {
-  private baseUrl = 'http://localhost:8080/api/announcements';
+  private baseUrl = `${BASE_URL}/api/announcements`;
 
   constructor(private http: HttpClient) {}
 

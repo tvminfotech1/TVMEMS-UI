@@ -164,6 +164,7 @@
                   <mat-select
                     [(value)]="task.priority"
                     (selectionChange)="updateTask(task)"
+                    [disabled]="task.status === 'Completed'"
                   >
                     <mat-option value="Low">Low</mat-option>
                     <mat-option value="Medium">Medium</mat-option>

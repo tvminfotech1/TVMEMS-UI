@@ -2,13 +2,12 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AuthService } from './auth.service';
 import { Observable } from 'rxjs';
+import { BASE_URL } from '../models/baseurl/constant';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PendingUserService {
-  private baseUrl = 'http://localhost:8080/userPending';
-
   constructor(private http: HttpClient, private authService: AuthService) {}
 
   private getAuthHeaders(): HttpHeaders {
@@ -20,7 +19,7 @@ export class PendingUserService {
   }
 
   getUserPending(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/all`, {
+    return this.http.get(`${BASE_URL}/userPending/all`, {
       headers: this.getAuthHeaders(),
       observe: 'response',
     });

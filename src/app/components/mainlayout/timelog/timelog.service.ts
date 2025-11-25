@@ -18,8 +18,6 @@ export interface WorkFromHome {
   action: string;
 }
 
-
-
 export interface Hours {
   Monday?: string;
   Tuesday?: string;
@@ -62,8 +60,8 @@ export interface Holiday {
 }
 @Injectable({ providedIn: "root" })
 export class TimelogService {
-  private readonly userApiUrl = 'http://localhost:8080/user/timesheet';
-  private readonly adminAllUrl = 'http://localhost:8080/user/timesheet/all';
+  private readonly userApiUrl = `${BASE_URL}/user/timesheet`;
+  private readonly adminAllUrl = `${BASE_URL}/user/timesheet/all`;
 
   constructor(private http: HttpClient) {}
   private extractArrayFromResponse(res: any): any[] {

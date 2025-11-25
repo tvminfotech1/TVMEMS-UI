@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, Observer, throwError } from 'rxjs';
+import { Observable} from 'rxjs';
 import { AuthService } from './auth.service';
 import { BASE_URL } from '../models/baseurl/constant';
 
@@ -8,7 +8,6 @@ import { BASE_URL } from '../models/baseurl/constant';
   providedIn: 'root',
 })
 export class WorkFromHomeService {
-  private baseUrl = 'http://localhost:8080/WFH';
 
   constructor(private http: HttpClient, private authService: AuthService) { }
 
@@ -26,31 +25,31 @@ export class WorkFromHomeService {
     });
   }
   getWfhRequestsByMonth(): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/all`, {
+    return this.http.get<any>(`${BASE_URL}/WFH/all`, {
       headers: this.getAuthHeaders(),
     });
   }
 
   getWfhRequests(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/all`, {
+    return this.http.get(`${BASE_URL}/WFH/all`, {
       headers: this.getAuthHeaders(),
     });
   }
 
   getWfhAllApprovalRequests(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/approvalallrequests`, {
+    return this.http.get(`${BASE_URL}/WFH/approvalallrequests`, {
       headers: this.getAuthHeaders(),
     });
   }
 
   updateWfhStatus(wfh: any): Observable<any> {
-    return this.http.put(`${this.baseUrl}/updateStatus/${wfh.requestId}`, wfh, {
+    return this.http.put(`${BASE_URL}/WFH/updateStatus/${wfh.requestId}`, wfh, {
       headers: this.getAuthHeaders(),
     });
   }
   getWfhRequestsByMonthAndYear(month: number, year: number): Observable<any> {
     return this.http.get<any>(
-      `${this.baseUrl}/requests?month=${month}&year=${year}`,
+      `${BASE_URL}/WFH/requests?month=${month}&year=${year}`,
       { headers: this.getAuthHeaders(), observe: 'response' }
     );
   }
@@ -61,30 +60,30 @@ export class WorkFromHomeService {
     year: number
   ): Observable<any> {
     return this.http.get<any[]>(
-      `${this.baseUrl}/userrequests/${employeeId}?month=${month}&year=${year}`,
+      `${BASE_URL}/WFH/userrequests/${employeeId}?month=${month}&year=${year}`,
       { headers: this.getAuthHeaders(), observe: 'response' }
     );
   }
 
   createWfhRequest(request: any): Observable<any> {
-    return this.http.post(`${this.baseUrl}/create`, request, {
+    return this.http.post(`${BASE_URL}/WFH/create`, request, {
       headers: this.getAuthHeaders(),
     });
   }
 
   getRequestById(employeeId: any): Observable<any> {
-    return this.http.get(`${this.baseUrl}/requests/${employeeId}`, {
+    return this.http.get(`${BASE_URL}/WFH/requests/${employeeId}`, {
       headers: this.getAuthHeaders(),
     });
   }
   getUserRequests(email: string): Observable<any[]> {
-    return this.http.get<any[]>(`${this.baseUrl}/user/${email}`, {
+    return this.http.get<any[]>(`${BASE_URL}/WFH/user/${email}`, {
       headers: this.getAuthHeaders(),
     });
   }
 
 
   getApp_Pen_EmployeeWfh(employeeId: number): Observable<any> {
-    return this.http.get(`${this.baseUrl}/employee/${employeeId}/wfh`)
+    return this.http.get(`${BASE_URL}/WFH/employee/${employeeId}/wfh`)
   }
 }

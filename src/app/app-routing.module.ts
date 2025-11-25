@@ -22,19 +22,6 @@ import { EmployeeDataComponent } from './components/employee-data/employee-data.
 import { LoginByNumberComponent } from './components/login-by-number/login-by-number.component';
 import { ThankYouComponent } from './components/thank-you/thank-you.component';
 import { PendingUserComponent } from './components/pending-user/pending-user.component';
-
-import { EmployeeDetailsComponent } from './components/employee-details/employee-details.component';
-import { EmpkycComponent } from './components/employee-details/empkyc/empkyc.component';
-import { EmppassportComponent } from './components/employee-details/emppassport/emppassport.component';
-import { EmpfamilyComponent } from './components/employee-details/empfamily/empfamily.component';
-import { EmppreviousEmployeeComponent } from './components/employee-details/empprevious-employee/empprevious-employee.component';
-import { EmpeducationComponent } from './components/employee-details/empeducation/empeducation.component';
-import { EmpskillsComponent } from './components/employee-details/empskills/empskills.component';
-import { EmpcertificateComponent } from './components/employee-details/empcertificate/empcertificate.component';
-import { EmpdocumentComponent } from './components/employee-details/empdocument/empdocument.component';
-import { EmpresumeComponent } from './components/employee-details/empresume/empresume.component';
-import { EmpfinalComponent } from './components/employee-details/empfinal/empfinal.component';
-
 import { MainlayoutComponent } from './components/mainlayout/mainlayout.component';
 import { DashboardhomeComponent } from './components/mainlayout/dashboardhome/dashboardhome.component';
 import { HolidayCalendarComponent } from './components/mainlayout/hoilday-calendar/hoilday-calendar.component';
@@ -294,61 +281,7 @@ const routes: Routes = [
         canActivate: [adminAuthGuard],
       },
 
-      {
-        path: 'empdetails/:id',
-        component: EmployeeDetailsComponent,
-        canActivate: [adminAuthGuard],
-      },
-      {
-        path: 'empkyc/:id',
-        component: EmpkycComponent,
-        canActivate: [adminAuthGuard],
-      },
-      {
-        path: 'emppassport/:id',
-        component: EmppassportComponent,
-        canActivate: [adminAuthGuard],
-      },
-      {
-        path: 'empfamily/:id',
-        component: EmpfamilyComponent,
-        canActivate: [adminAuthGuard],
-      },
-      {
-        path: 'emppreviousEmployee/:id',
-        component: EmppreviousEmployeeComponent,
-        canActivate: [adminAuthGuard],
-      },
-      {
-        path: 'empeducation/:id',
-        component: EmpeducationComponent,
-        canActivate: [adminAuthGuard],
-      },
-      {
-        path: 'empskills/:id',
-        component: EmpskillsComponent,
-        canActivate: [adminAuthGuard],
-      },
-      {
-        path: 'empcertificate/:id',
-        component: EmpcertificateComponent,
-        canActivate: [adminAuthGuard],
-      },
-      {
-        path: 'empdocument/:id',
-        component: EmpdocumentComponent,
-        canActivate: [adminAuthGuard],
-      },
-      {
-        path: 'empresume/:id',
-        component: EmpresumeComponent,
-        canActivate: [adminAuthGuard],
-      },
-      {
-        path: 'empfinal/:id',
-        component: EmpfinalComponent,
-        canActivate: [adminAuthGuard],
-      },
+      
       {
         path: 'settings',
         children: [

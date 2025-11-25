@@ -100,14 +100,16 @@ export class GoalComponent implements OnInit {
         [Validators.required, Validators.min(0), Validators.max(100)],
       ],
     });
+
     if (this.isUser) {
       this.goalService.getGoalByUserid(Number(this.employeeId)).subscribe({
         next: (res) => {
           const first = res.body?.[0];
+
           if (first && first.user && first.user.joiningDate) {
             this.joiningDate = new Date(first.user.joiningDate);
             this.joiningMonth = this.joiningDate.getMonth();
-            this.loadArchivedGoals();
+            this.joiningYear = this.joiningDate.getFullYear();
             this.filterEmployeesByGoalMonth();
           }
         },
@@ -139,6 +141,7 @@ export class GoalComponent implements OnInit {
     if (this.selectedYear > this.joiningYear) {
       this.selectedYear--;
       this.filterGoalsByYear();
+
       if (
         this.selectedYear === this.joiningYear &&
         this.selectedDate.getMonth() < this.joiningMonth
@@ -203,10 +206,12 @@ export class GoalComponent implements OnInit {
             user.role?.toLowerCase() !== "admin" &&
             user.email?.toLowerCase() !== this.currentUserEmail?.toLowerCase()
         );
+
+        // this.filteredEmployees = [...this.employees];
         this.filterEmployeesByGoalMonth();
       },
       error: (err) => {
-        console.error(" Error fetching users", err);
+        console.error("❌ Error fetching users", err);
         this.employees = [];
         this.filteredEmployees = [];
       },
@@ -597,6 +602,8 @@ export class GoalComponent implements OnInit {
   goToPreviousMonth(): void {
     const date = new Date(this.selectedDate);
     date.setMonth(date.getMonth() - 1);
+
+    // Prevent going before joining month
     if (
       this.joiningDate &&
       date <
@@ -621,7 +628,7 @@ export class GoalComponent implements OnInit {
   filterGoalsBySelectedMonth(goals: any[]): any[] {
     if (!goals || goals.length === 0) return [];
 
-    const selectedMonth = this.currentDate.getMonth();
+    const selectedMonth = this.currentDate.getMonth(); // 0–11
     const selectedYear = this.currentDate.getFullYear();
 
     return goals.filter((goal) => {
