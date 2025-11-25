@@ -100,29 +100,45 @@ export class GoalComponent implements OnInit {
         [Validators.required, Validators.min(0), Validators.max(100)],
       ],
     });
-
-    if (this.isUser) {
-      this.goalService.getGoalByUserid(Number(this.employeeId)).subscribe({
-        next: (res) => {
-          const first = res.body?.[0];
-
-          if (first && first.user && first.user.joiningDate) {
-            this.joiningDate = new Date(first.user.joiningDate);
-            this.joiningMonth = this.joiningDate.getMonth();
-            this.joiningYear = this.joiningDate.getFullYear();
-            this.filterEmployeesByGoalMonth();
-          }
-        },
-        error: (err) => {
-          console.error("Failed to fetch joining date", err);
-        },
-      });
+     if (this.isUser) {
+      this.loadArchivedGoals();
     }
-    if (this.isAdmin) {
-      this.allUser();
-      this.updateDateRangeLabel();
-    }
+    
+     if (this.isAdmin) {
+    this.goalService.getAllGoals().subscribe({
+      next: (res: any) => {
+        const allGoals = res.body || [];
+        this.mapGoalsToEmployeesFromAllGoals(allGoals);
+      },
+      error: (err) => console.error("Error fetching all goals", err),
+    });
+    this.updateDateRangeLabel();
   }
+  }
+
+  mapGoalsToEmployeesFromAllGoals(allGoals: any[]): void {
+  const employeeMap: { [empId: string]: any } = {};
+  allGoals.forEach((goal) => {
+    const emp = goal.user;
+    if (!emp || !emp.employeeId) return;
+    if (!this.isGoalInSelectedMonth(goal)) return;
+    if (!employeeMap[emp.employeeId]) {
+      employeeMap[emp.employeeId] = { ...emp, goalsForMonth: [] };
+    }
+    employeeMap[emp.employeeId].goalsForMonth.push(goal);
+  });
+  this.filteredEmployees = Object.values(employeeMap);
+}
+
+viewGoals(emp: any): void {
+  const goals = emp.goalsForMonth || [];
+  if (goals.length > 0) {
+    this.openGoalPopup(goals);
+  } else {
+    this.goalListForPopup = [];
+    this.showGoalPopup = true;
+  }
+}
 
   fetchGoals() {
     this.goalService.getGoals().subscribe((data) => {
@@ -206,8 +222,6 @@ export class GoalComponent implements OnInit {
             user.role?.toLowerCase() !== "admin" &&
             user.email?.toLowerCase() !== this.currentUserEmail?.toLowerCase()
         );
-
-        // this.filteredEmployees = [...this.employees];
         this.filterEmployeesByGoalMonth();
       },
       error: (err) => {
@@ -436,27 +450,6 @@ export class GoalComponent implements OnInit {
     this.updateGoal(goal);
   }
 
-  viewGoals(emp: any): void {
-    this.goalService.getGoalByUserid(emp.employeeId).subscribe({
-      next: (res: any) => {
-        const allGoalsByUser = res.body || [];
-        const employeeGoals = allGoalsByUser.filter(
-          (g: any) => g.user?.employeeId === emp.employeeId
-        );
-        const filteredByMonth = this.filterGoalsBySelectedMonth(employeeGoals);
-
-        if (filteredByMonth.length > 0) {
-          this.openGoalPopup(filteredByMonth);
-        } else {
-          this.goalListForPopup = [];
-          this.showGoalPopup = true;
-        }
-      },
-      error: (err) => {
-        console.error("Error fetching goals:", err);
-      },
-    });
-  }
 
   openGoalPopup(goals: any[]): void {
     this.goalListForPopup = goals;
@@ -520,7 +513,8 @@ export class GoalComponent implements OnInit {
   }
 
   loadArchivedGoals() {
-    this.goalService.getAllGoals().subscribe({
+    if(this.isUser && !this.employeeId) return;
+    this.goalService.getGoalByUserid(Number(this.employeeId)).subscribe({
       next: (res) => {
         this.allGoals = res.body || [];
         this.allGoals.forEach((g: any) => {
@@ -529,6 +523,13 @@ export class GoalComponent implements OnInit {
             this.validateDueDate(g);
           } else {
             g.isDueDateLocked = false;
+          }
+          const first = res.body?.[0];
+
+          if (first && first.user && first.user.joiningDate) {
+            this.joiningDate = new Date(first.user.joiningDate);
+            this.joiningMonth = this.joiningDate.getMonth();
+            this.joiningYear = this.joiningDate.getFullYear();
           }
         });
 

@@ -14,7 +14,28 @@ import { MatSnackBar } from "@angular/material/snack-bar";
 export class AddSalaryComponent implements OnInit {
   @ViewChild("paySlip", { static: false }) paySlipElement!: ElementRef;
 
-  employee!: Employee;
+  employee: Employee = {
+    id: 0,
+    fullName: "",
+    email: "",
+    phone: "",
+    department: "",
+    joiningDate: "",
+    employeeType: "",
+    location: "",
+    status: "",
+    ctc: 0,
+    basicSalary: 0,
+    inHandSalary: 0,
+    aadhaarNumber: "",
+    panNumber: "",
+    bankDetails: {
+      bankName: "",
+      accountNumber: "",
+      ifscCode: "",
+      branch: "",
+    }
+  };
 
   payMonth: string = new Date().toISOString().substring(0, 7);
   payYear: number = new Date().getFullYear();

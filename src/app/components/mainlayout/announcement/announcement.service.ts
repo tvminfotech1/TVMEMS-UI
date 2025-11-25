@@ -5,7 +5,7 @@ import { BASE_URL } from 'src/app/models/baseurl/constant';
 
 @Injectable({ providedIn: 'root' })
 export class AnnouncementService {
-  private baseUrl = `${BASE_URL}/api/announcements`;
+  private baseUrl = `${BASE_URL}/announcements`;
 
   constructor(private http: HttpClient) {}
 

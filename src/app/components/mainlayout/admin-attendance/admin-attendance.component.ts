@@ -35,7 +35,6 @@ export class AdminAttendanceComponent implements OnInit {
     'employeeId',
     'fullName',
     'department',
-    'designation',
     'actions',
   ];
   userDisplayedColumns: string[] = [
@@ -89,7 +88,6 @@ export class AdminAttendanceComponent implements OnInit {
               employeeId: att.user.employeeId,
               fullName: att.user.fullName,
               department: att.department,
-              designation: att.designation,
             });
           }
         });
@@ -216,9 +214,8 @@ if (firstRecord?.user?.joiningDate) {
     joiningDateStr = jd.toISOString().split("T")[0];
   }
 }
-// ❗ If selected month < joining month → show empty message
 if (this.isBeforeJoining(this.filterMonth, joiningDateStr)) {
-  this.employeeAttendance = [];  // <-- IMPORTANT
+  this.employeeAttendance = []; 
 
   this.dialog.open(this.attendanceDialog, {
     width: "95%",

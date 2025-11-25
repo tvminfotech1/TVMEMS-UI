@@ -114,7 +114,7 @@ export class TimelogService {
     weekStart: string,
     weekEnd: string
   ): Observable<LeaveRequest[]> {
-    const url = `${BASE_URL}/api/leave-requests/approved/${employeeId}`;
+    const url = `${BASE_URL}/leave/approved/${employeeId}`;
     const params = new HttpParams().set("start", weekStart).set("end", weekEnd);
     return this.http.get<LeaveRequest[]>(url, { params });
   }
