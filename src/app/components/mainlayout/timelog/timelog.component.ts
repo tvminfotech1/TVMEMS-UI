@@ -5,6 +5,12 @@ import { AuthService } from "src/app/services/auth.service";
 import { DateUtilsService } from "./date-utils.service";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { LeaveRequest } from "./timelog.service";
+import { FormBuilder, FormGroup, FormArray } from "@angular/forms";
+interface WeekDayItem {
+  name: string;
+  date: string;
+  attendance?: string;
+}
 
 type WeekDay = "Monday" | "Tuesday" | "Wednesday" | "Thursday" | "Friday";
 
@@ -17,6 +23,7 @@ export class TimelogComponent implements OnInit {
   isSubmitting = false;
   wfhDays: string[] = [];
   leaveDays: string[] = [];
+  holidayDays: string[] = [];
 
   years: number[] = [];
   months: string[] = [
@@ -34,12 +41,12 @@ export class TimelogComponent implements OnInit {
     "December",
   ];
   weekendDates: string[] = [];
-  weekDays: WeekDay[] = [
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
+  weekDays: WeekDayItem[] = [
+    { name: "Monday", date: "", attendance: "" },
+    { name: "Tuesday", date: "", attendance: "" },
+    { name: "Wednesday", date: "", attendance: "" },
+    { name: "Thursday", date: "", attendance: "" },
+    { name: "Friday", date: "", attendance: "" },
   ];
 
   accordionStates: { [key: number]: boolean } = {};
@@ -74,31 +81,55 @@ export class TimelogComponent implements OnInit {
   isAdmin = false;
   isUser = false;
   entryExistsForWeek = false;
+  isLoading: boolean = true;
 
   selectedEmployeeId: string | null | undefined = null;
   selectedEmployeeName: string | null | undefined = null;
   selectedEmployeeHistory: TimelogEntry[] = [];
   showEmployeeHistory = false;
+  selectedMonthYear: string = "";
+  monthYearList: string[] = [];
+  selectedEmployeeJoiningDate: string = "";
+  historyMonths: string[] = [];
+  holidayDates: string[] = [];
+  disabledDays: any = {};
+  timesheetForm: any;
 
   constructor(
     private timelogService: TimelogService,
     private authService: AuthService,
     private dateUtils: DateUtilsService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private fb: FormBuilder
   ) {}
-
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.isAdmin = this.authService.isAdmin();
     this.isUser = this.authService.isUser();
     this.setEmployeeDetailsFromToken();
     this.initializeYears();
     this.setCurrentWeek();
+    this.timesheetForm = this.fb.group({
+      days: this.fb.array(
+        this.weekDays.map(() => this.fb.group({ attendance: [""] }))
+      ),
+    });
     this.resetEntry();
-    this.loadTimelogs();
     this.checkFormEnableCondition();
-    this.loadWFH();
-    this.loadApprovedLeaves();
+    this.loadHolidays()
+      .then(() => this.processHolidayDates())
+      .then(() => this.loadApprovedLeaves())
+      .then(() => this.loadWFH())
+      .then(() => this.loadTimelogs())
+      .then(() => this.updateHoursBasedOnPriority())
+      .then(() => this.loadWeeklyAttendance());
   }
+  getPriority(day: any): string {
+    if (day.isHoliday) return "HOLIDAY";
+    if (day.isLeave) return "LEAVE";
+    if (day.isWFH) return "WFH";
+    return "WFO";
+  }
+
   loadWFH(): Promise<void> {
     const employeeId = Number(this.timelog.employeeId);
     return new Promise((resolve) => {
@@ -149,67 +180,76 @@ export class TimelogComponent implements OnInit {
 
     this.calculateTotalHours();
   }
-  loadApprovedLeaves(): void {
-    const employeeId = Number(this.timelog.employeeId);
-    const weekStart = new Date(this.timelog.weekendDate);
-    const weekEnd = new Date(weekStart);
-    weekEnd.setDate(weekEnd.getDate() + 5);
+  loadApprovedLeaves(): Promise<void> {
+    return new Promise((resolve) => {
+      const employeeId = Number(this.timelog.employeeId);
+      const weekStart = new Date(this.timelog.weekendDate);
+      const weekEnd = new Date(weekStart);
+      weekEnd.setDate(weekEnd.getDate() + 5);
 
-    if (!this.timelogEntry.hours) {
-      this.timelogEntry.hours = {
-        monday: "",
-        tuesday: "",
-        wednesday: "",
-        thursday: "",
-        friday: "",
-      };
-    }
+      if (!this.timelogEntry.hours) {
+        this.timelogEntry.hours = {
+          monday: "",
+          tuesday: "",
+          wednesday: "",
+          thursday: "",
+          friday: "",
+        };
+      }
 
-    this.timelogService
-      .getApprovedLeavesByEmployee(
-        employeeId,
-        this.toDateOnlyISO(weekStart),
-        this.toDateOnlyISO(weekEnd)
-      )
-      .subscribe({
-        next: (leaves: LeaveRequest[]) => {
-          if (!leaves || leaves.length === 0) return;
+      this.timelogService
+        .getApprovedLeavesByEmployee(
+          employeeId,
+          this.dateUtils.toDateOnlyISO(weekStart),
+          this.dateUtils.toDateOnlyISO(weekEnd)
+        )
+        .subscribe({
+          next: (leaves: LeaveRequest[]) => {
+            if (leaves && leaves.length > 0) {
+              leaves.forEach((leave) => {
+                const leaveStart = new Date(leave.startDate);
+                const leaveEnd = new Date(leave.endDate);
 
-          leaves.forEach((leave) => {
-            const leaveStart = new Date(leave.startDate);
-            const leaveEnd = new Date(leave.endDate);
-
-            for (
-              let d = new Date(leaveStart);
-              d <= leaveEnd;
-              d.setDate(d.getDate() + 1)
-            ) {
-              if (d >= weekStart && d <= weekEnd) {
-                const dayName = d
-                  .toLocaleString("en-US", { weekday: "long" })
-                  .toLowerCase();
-                if (
-                  [
-                    "monday",
-                    "tuesday",
-                    "wednesday",
-                    "thursday",
-                    "friday",
-                  ].includes(dayName)
+                for (
+                  let d = new Date(leaveStart);
+                  d <= leaveEnd;
+                  d.setDate(d.getDate() + 1)
                 ) {
-                  if (this.timelogEntry.hours![dayName] !== "WFH") {
-                    this.timelogEntry.hours![dayName] = "Leave";
-                    this.leaveDays.push(dayName);
+                  if (d >= weekStart && d <= weekEnd) {
+                    const dayName = d
+                      .toLocaleString("en-US", { weekday: "long" })
+                      .toLowerCase();
+
+                    if (
+                      [
+                        "monday",
+                        "tuesday",
+                        "wednesday",
+                        "thursday",
+                        "friday",
+                      ].includes(dayName)
+                    ) {
+                      if (this.timelogEntry.hours![dayName] !== "HOLIDAY") {
+                        this.timelogEntry.hours![dayName] = "LEAVE";
+                        this.leaveDays.push(dayName);
+                      }
+                    }
                   }
                 }
-              }
-            }
-          });
+              });
 
-          this.calculateTotalHours();
-        },
-        error: (err) => console.error("Failed to fetch approved leaves", err),
-      });
+              this.calculateTotalHours();
+            }
+
+            resolve();
+          },
+
+          error: (err) => {
+            console.error("Failed to fetch approved leaves", err);
+            resolve();
+          },
+        });
+    });
   }
 
   isLeaveOptionDisabled(day: string): boolean {
@@ -276,6 +316,8 @@ export class TimelogComponent implements OnInit {
   setCurrentWeek(): void {
     this.currentMondayISO = this.dateUtils.getCurrentMondayISO();
     this.timelog.weekendDate = this.currentMondayISO;
+    this.populateWeekDays(this.timelog.weekendDate);
+
     const mondayDate = new Date(this.currentMondayISO);
     this.timelog.month = this.months[mondayDate.getMonth()];
     this.timelog.year = mondayDate.getFullYear();
@@ -299,7 +341,11 @@ export class TimelogComponent implements OnInit {
   onWeekendDateSelect(): void {
     if (!this.timelog.weekendDate) return;
 
-    const selectedWeekIso = this.toDateOnlyISO(this.timelog.weekendDate);
+    const selectedWeekIso = this.dateUtils.toDateOnlyISO(
+      this.timelog.weekendDate
+    );
+    this.populateWeekDays(selectedWeekIso);
+
     this.loadTimesheetForSelectedWeek();
     this.loadWFH().then(() => this.loadApprovedLeaves());
   }
@@ -365,7 +411,15 @@ export class TimelogComponent implements OnInit {
   }
 
   loadTimelogs(): void {
-    this.timelogService.getTimelogs(this.isAdmin).subscribe({
+    const empIdRaw =
+      this.timelog.employeeId ?? this.authService.getEmployeeId();
+    const empIdNum = empIdRaw ? Number(empIdRaw) : 0;
+
+    const obs = this.isAdmin
+      ? this.timelogService.getAllTimelogs()
+      : this.timelogService.getTimelogsByUserId(empIdNum);
+
+    obs.subscribe({
       next: (res: any) => {
         let arr: any[] = [];
         if (Array.isArray(res)) arr = res;
@@ -384,15 +438,20 @@ export class TimelogComponent implements OnInit {
               ? String(e.user.employeeId).trim()
               : "");
           const name = this.extractEmployeeName(e) || "Unknown";
+          const joiningDate =
+            e.user?.joiningDate ?? e.joiningDate ?? e.join_date ?? "";
           const rawWeekend =
             e.weekendDate ?? e.weekend_date ?? e.weekEndDate ?? "";
-          const weekendIso = this.toDateOnlyISO(rawWeekend);
+          const weekendIso = this.dateUtils.toDateOnlyISO(rawWeekend);
 
           return {
             ...e,
             id: e.id ?? e.timesheetId ?? e.timesheet_id,
             employeeId: empId,
             employeeName: name,
+            joiningDate: joiningDate
+              ? this.dateUtils.toDateOnlyISO(joiningDate)
+              : "",
             weekendDate: weekendIso,
             hours: this.normalizeHoursObject(e.hours),
             totalhours: e.totalhours ?? e.totalHours ?? 0,
@@ -440,6 +499,7 @@ export class TimelogComponent implements OnInit {
           );
 
           this.filteredAllEmployeeTimelogs = [...this.allEmployeeTimelogs];
+          const first = this.allEmployeeTimelogs[0];
           return;
         }
 
@@ -475,7 +535,6 @@ export class TimelogComponent implements OnInit {
           (b.weekendDate || "").localeCompare(a.weekendDate || "")
         );
         this.loadTimesheetForSelectedWeek();
-        this.resetEntry();
       },
       error: (err) => {
         console.error("[Timelog] getTimelogs failed:", err);
@@ -488,7 +547,7 @@ export class TimelogComponent implements OnInit {
   applyFilters(): void {
     const idTerm = (this.employeeIdSearch || "").trim().toLowerCase();
     const month = (this.employeeMonthFilter || "").trim();
-
+    const filterValue = this.selectedMonthYear;
     this.filteredAllEmployeeTimelogs = this.allEmployeeTimelogs.filter(
       (entry) => {
         const employeeId = entry.employeeId
@@ -503,14 +562,21 @@ export class TimelogComponent implements OnInit {
           employeeId.includes(idTerm) ||
           employeeName.includes(idTerm);
 
-        const entryMonth = entry.weekendDate
-          ? new Date(entry.weekendDate).toLocaleString("default", {
-              month: "long",
-            })
-          : "";
-        const matchesMonth = !month || entryMonth === month;
+        const entryDate = entry.weekendDate
+          ? new Date(entry.weekendDate)
+          : null;
 
-        return matchesIdOrName && matchesMonth;
+        const entryMonth = entryDate
+          ? entryDate.toLocaleString("default", { month: "long" })
+          : "";
+
+        const entryYear = entryDate ? entryDate.getFullYear() : null;
+
+        const entryMonthYear =
+          entryMonth && entryYear ? `${entryMonth} ${entryYear}` : "";
+        const matchesMonthYear = !filterValue || entryMonthYear === filterValue;
+
+        return matchesIdOrName && matchesMonthYear;
       }
     );
   }
@@ -521,11 +587,15 @@ export class TimelogComponent implements OnInit {
     this.selectedEmployeeHistory = [];
     this.filteredEmployeeHistory = [];
     this.historyMonthFilter = "";
+    this.selectedEmployeeJoiningDate = entry.joiningDate
+      ? this.dateUtils.toDateOnlyISO(entry.joiningDate)
+      : "";
+    this.generateYearsFromJoining(this.selectedEmployeeJoiningDate);
 
     this.selectedEmployeeName = entry.employeeName;
     this.selectedEmployeeId = entry.employeeId;
 
-    this.timelogService.getTimelogs(true).subscribe({
+    this.timelogService.getAllTimelogs().subscribe({
       next: (res: any) => {
         let arr: any[] = [];
         if (Array.isArray(res)) arr = res;
@@ -577,53 +647,93 @@ export class TimelogComponent implements OnInit {
     });
   }
   applyHistoryMonthFilter(): void {
-    if (!this.selectedEmployeeHistory) return;
-
     const selectedMonth = this.historyMonthFilter;
     const selectedYear = this.historyYearFilter;
-
     this.filteredEmployeeHistory = this.selectedEmployeeHistory.filter((e) => {
       if (!e.weekendDate) return false;
+      const entryDate = new Date(e.weekendDate);
+      const joiningDate = new Date(this.selectedEmployeeJoiningDate);
+      if (
+        joiningDate &&
+        !isNaN(joiningDate.getTime()) &&
+        entryDate < joiningDate
+      )
+        return false;
 
-      const date = new Date(e.weekendDate);
-      const entryMonth = date.toLocaleString("default", { month: "long" });
-      const entryYear = date.getFullYear().toString();
+      if (!entryDate || isNaN(entryDate.getTime())) return false;
+      const entryMonth = entryDate.toLocaleString("default", { month: "long" });
+      const entryYear = entryDate.getFullYear().toString();
 
-      const monthMatches = !selectedMonth || entryMonth === selectedMonth;
-      const yearMatches = !selectedYear || entryYear === selectedYear;
+      const matchMonth = !selectedMonth || entryMonth === selectedMonth;
+      const matchYear = !selectedYear || entryYear === selectedYear;
 
-      return monthMatches && yearMatches;
+      return matchMonth && matchYear;
     });
+  }
+  onHistoryYearChange(): void {
+    if (!this.historyYearFilter) {
+      this.historyMonths = [...this.months];
+      this.applyHistoryMonthFilter();
+      return;
+    }
+
+    const selectedYear = Number(this.historyYearFilter);
+
+    this.updateMonthsForYear(selectedYear);
   }
 
   loadTimesheetForSelectedWeek(): void {
     const myEmpId = String(this.timelog.employeeId || "").trim();
-    const selectedWeekIso = this.toDateOnlyISO(this.timelog.weekendDate);
+    const selectedWeekIso = this.dateUtils.toDateOnlyISO(
+      this.timelog.weekendDate
+    );
 
     const existing = this.timelogSummary.find(
       (e) =>
         (this.isAdmin || String(e.employeeId || "").trim() === myEmpId) &&
-        this.toDateOnlyISO(e.weekendDate) === selectedWeekIso
+        this.dateUtils.toDateOnlyISO(e.weekendDate) === selectedWeekIso
     );
 
     if (existing) {
-      this.timelogEntry = { ...this.getEmptyEntry(), ...existing };
-      this.timelogEntry.hours = this.normalizeHoursObject(existing.hours);
+      this.timelogEntry = existing;
+      Object.assign(this.timelogEntry, existing);
       this.entryExistsForWeek = existing.status?.toLowerCase() !== "rejected";
     } else {
       this.entryExistsForWeek = false;
       this.timelogEntry = this.getEmptyEntry();
     }
-
     this.timelogEntry.employeeName = this.timelog.employeeName;
     this.timelogEntry.employeeId = this.timelog.employeeId;
     this.timelogEntry.weekendDate = selectedWeekIso;
-
     this.calculateTotalHours();
+    this.processHolidayDates();
+    this.updateHoursBasedOnPriority();
+    this.loadWeeklyAttendance();
+    if (this.timesheetForm) {
+      this.timesheetForm.patchValue(this.timelogEntry.hours);
+    }
+  }
+
+  loadHolidays(): Promise<void> {
+    return new Promise((resolve) => {
+      this.timelogService.getAllHolidays().subscribe({
+        next: (res: any[]) => {
+          this.holidayDates = res
+            .map((h) => h.date ?? null)
+            .filter((d): d is string => d !== null);
+          resolve();
+        },
+        error: (err) => {
+          console.error("Failed to fetch holidays", err);
+          this.holidayDates = [];
+          resolve();
+        },
+      });
+    });
   }
 
   onSubmit(form: NgForm): void {
-    if(this.isSubmitting)return;
+    if (this.isSubmitting) return;
     if (!form.valid) {
       this.snackBar.open("Please fill all required fields", "Close", {
         duration: 3000,
@@ -642,13 +752,13 @@ export class TimelogComponent implements OnInit {
       });
       return;
     }
-    this.isSubmitting=true;
+    this.isSubmitting = true;
 
     this.timelogEntry.hours = this.normalizeHoursObject(
       this.timelogEntry.hours
     );
     this.calculateTotalHours();
-    const canonicalWeekend = this.toDateOnlyISO(
+    const canonicalWeekend = this.dateUtils.toDateOnlyISO(
       this.timelog.weekendDate || this.currentMondayISO
     );
 
@@ -677,7 +787,7 @@ export class TimelogComponent implements OnInit {
           verticalPosition: "top",
           panelClass: ["error-snackbar"],
         });
-        this.isSubmitting=false;
+        this.isSubmitting = false;
       },
     });
   }
@@ -746,16 +856,192 @@ export class TimelogComponent implements OnInit {
       wednesday: normalized.wednesday || "",
       thursday: normalized.thursday || "",
       friday: normalized.friday || "",
-    };
+    } as Hours;
+  }
+  generateYearsFromJoining(joiningDate: string) {
+    if (!joiningDate) return;
+
+    const jd = new Date(joiningDate);
+    if (isNaN(jd.getTime())) return;
+
+    const currentYear = new Date().getFullYear();
+    this.years = [];
+    for (let y = jd.getFullYear(); y <= currentYear; y++) {
+      this.years.push(y);
+    }
+    this.historyYearFilter = currentYear.toString();
+    this.updateMonthsForYear(currentYear, jd);
   }
 
-  private toDateOnlyISO(d?: string | Date | null): string {
+  updateMonthsForYear(selectedYear: number, joiningDate?: Date) {
+    if (!joiningDate) {
+      joiningDate = new Date(this.selectedEmployeeJoiningDate);
+      if (isNaN(joiningDate.getTime())) return;
+    }
+    const now = new Date();
+    const currentYear = now.getFullYear();
+
+    let startMonth = 0;
+    let endMonth = 11;
+    if (selectedYear === joiningDate.getFullYear()) {
+      startMonth = joiningDate.getMonth();
+    }
+    if (selectedYear === currentYear) {
+      endMonth = now.getMonth();
+    }
+    this.historyMonths = this.months.slice(startMonth, endMonth + 1);
+    if (
+      !this.historyMonthFilter ||
+      !this.historyMonths.includes(this.historyMonthFilter)
+    ) {
+      this.historyMonthFilter = "";
+    }
+    this.applyHistoryMonthFilter();
+  }
+  processHolidayDates(): void {
+    if (!this.holidayDates || this.holidayDates.length === 0) return;
+
+    this.holidayDates.forEach((holidayISO) => {
+      this.weekDays.forEach((day, index) => {
+        const localISO = this.toLocalDateOnlyISO(day.date);
+        if (localISO === holidayISO) {
+          const dayName = day.name.toLowerCase();
+          this.timelogEntry.hours![dayName] = "HOLIDAY";
+          this.weekDays[index].attendance = "HOLIDAY";
+          this.disableDayHoursField(dayName);
+        }
+      });
+    });
+    if (this.timesheetForm && this.timesheetForm.get("days")) {
+      const daysArray = this.timesheetForm.get("days") as FormArray;
+      this.weekDays.forEach((day, index) => {
+        daysArray.at(index).patchValue({
+          attendance: this.timelogEntry.hours![day.name.toLowerCase()] || "",
+        });
+      });
+    }
+
+    this.calculateTotalHours();
+  }
+
+  updateHoursBasedOnPriority(): void {
+    this.timelogEntry.hours?.["thursday"];
+    const weekStartISO = this.timelog.weekendDate;
+    for (let i = 0; i < 5; i++) {
+      const currentDay = new Date(weekStartISO);
+      currentDay.setDate(currentDay.getDate() + i);
+      const dayName = this.weekDays[i].name.toLowerCase();
+      const currentStatus = this.timelogEntry.hours![dayName];
+      const dateISO = this.dateUtils.toDateOnlyISO(currentDay);
+      if (currentStatus === "HOLIDAY" || currentStatus === "Leave") {
+        return;
+      }
+      let finalStatus = "";
+      if (this.holidayDates.includes(dateISO)) {
+        finalStatus = "Holiday";
+      } else if (this.leaveDays.includes(dayName)) {
+        finalStatus = "Leave";
+      } else if (this.wfhDays.includes(dayName)) {
+        finalStatus = "WFH";
+      }
+      if (this.timelogEntry.hours) {
+        (this.timelogEntry.hours as any)[dayName] = finalStatus;
+      }
+    }
+    this.calculateTotalHours();
+    if (this.timesheetForm) {
+      this.timesheetForm.patchValue(this.timelogEntry.hours);
+    }
+  }
+  loadWeeklyAttendance(): Promise<void> {
+    const employeeId = Number(this.timelog.employeeId);
+    const weekStartStr = this.dateUtils.toDateOnlyISO(
+      this.timelog.weekendDate || this.currentMondayISO
+    );
+    if (!this.timelogEntry) this.timelogEntry = this.getEmptyEntry();
+    if (!this.timelogEntry.hours) {
+      this.timelogEntry.hours = {
+        monday: "",
+        tuesday: "",
+        wednesday: "",
+        thursday: "",
+        friday: "",
+      };
+    }
+    return new Promise((resolve) => {
+      this.timelogService
+        .getWeeklyAttendance(employeeId, weekStartStr)
+        .subscribe({
+          next: (records: any[]) => {
+            this.patchAttendanceToWeek(records || []);
+            resolve();
+          },
+          error: (err) => {
+            console.error("Failed to load weekly attendance", err);
+            resolve();
+          },
+        });
+    });
+  }
+
+  patchAttendanceToWeek(attendance: any[]) {
+    attendance.forEach((record) => {
+      const apiDate = record.date;
+      const dateISO = this.dateUtils.toDateOnlyISO(apiDate);
+      const dayIndex = this.weekDays.findIndex(
+        (day) => this.dateUtils.toDateOnlyISO(day.date) === dateISO
+      );
+
+      if (dayIndex !== -1) {
+        const dayName = this.weekDays[dayIndex].name.toLowerCase();
+        const currentStatus = (this.timelogEntry.hours as any)[dayName];
+        const isHighPriorityStatus =
+          currentStatus === "HOLIDAY" ||
+          currentStatus === "LEAVE" ||
+          currentStatus === "WFH";
+        if (record.entryTime && !isHighPriorityStatus) {
+          this.weekDays[dayIndex].attendance = "WFO";
+          (this.timelogEntry.hours as any)[dayName] = "WFO";
+        }
+      }
+    });
+    this.calculateTotalHours();
+  }
+  disableDayHoursField(day: string) {
+    this.disabledDays[day] = true;
+  }
+  enableDayHoursField(day: string) {
+    this.disabledDays[day] = false;
+  }
+  populateWeekDays(mondayDateISO: string) {
+    const [year, month, day] = mondayDateISO.split("-").map(Number);
+    const start = new Date(Date.UTC(year, month - 1, day));
+    const dayOfWeek = start.getUTCDay();
+    if (dayOfWeek === 0) {
+      start.setUTCDate(start.getUTCDate() + 1);
+    }
+    for (let i = 0; i < this.weekDays.length; i++) {
+      const d = new Date(start);
+
+      d.setUTCDate(start.getUTCDate() + i);
+      (this.weekDays[i] as any).date = this.dateUtils.toDateOnlyISO(d);
+      (this.weekDays[i] as any).attendance = "";
+    }
+    if (this.timesheetForm && this.timesheetForm.get("days")) {
+      const arr = this.fb.array(
+        this.weekDays.map(() => this.fb.group({ attendance: [""] }))
+      );
+      this.timesheetForm.setControl("days", arr);
+    }
+  }
+
+  public toLocalDateOnlyISO(d?: string | Date | null): string {
     if (!d) return "";
     const dt = new Date(d);
     if (isNaN(dt.getTime())) return "";
-    const year = dt.getUTCFullYear();
-    const month = String(dt.getUTCMonth() + 1).padStart(2, "0");
-    const day = String(dt.getUTCDate()).padStart(2, "0");
+    const year = dt.getFullYear();
+    const month = String(dt.getMonth() + 1).padStart(2, "0");
+    const day = String(dt.getDate()).padStart(2, "0");
     return `${year}-${month}-${day}`;
   }
 }

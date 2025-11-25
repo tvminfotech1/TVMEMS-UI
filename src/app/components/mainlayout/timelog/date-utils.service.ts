@@ -1,13 +1,13 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from "@angular/core";
 
-@Injectable({ providedIn: 'root' })
+@Injectable({ providedIn: "root" })
 export class DateUtilsService {
   getAllMondaysOfMonth(year: number, monthIndex: number): string[] {
     const mondays: string[] = [];
     const date = new Date(year, monthIndex, 1);
     while (date.getMonth() === monthIndex) {
       if (date.getDay() === 1) {
-        mondays.push(date.toISOString().split('T')[0]);
+        mondays.push(date.toISOString().split("T")[0]);
       }
       date.setDate(date.getDate() + 1);
     }
@@ -21,6 +21,16 @@ export class DateUtilsService {
       today.getDate() - today.getDay() + (today.getDay() === 0 ? -6 : 1)
     );
     monday.setHours(0, 0, 0, 0);
-    return monday.toISOString().split('T')[0];
+    return monday.toISOString().split("T")[0];
+  }
+
+  public toDateOnlyISO(d?: string | Date | null): string {
+    if (!d) return "";
+    const dt = new Date(d);
+    if (isNaN(dt.getTime())) return "";
+    const year = dt.getUTCFullYear();
+    const month = String(dt.getUTCMonth() + 1).padStart(2, "0");
+    const day = String(dt.getUTCDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
   }
 }
