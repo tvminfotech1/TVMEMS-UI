@@ -352,7 +352,7 @@ export class LeaveComponent implements OnInit {
     };
 
     this.leaveService.createLeaveRequest(newLeave).subscribe({
-      next: (savedLeave) => {
+      next: () => {
         this.loadLeaves();
         this.snackBar.open("Leave applied successfully", "Close", {
           duration: 3000,
@@ -845,7 +845,7 @@ validateEmployeeId() {
     this.selectedEmployee = null;
   }
 
-  this.updateAdminFieldAccess();  // <-- REQUIRED
+  this.updateAdminFieldAccess(); 
 }
 
 updateAdminFieldAccess() {

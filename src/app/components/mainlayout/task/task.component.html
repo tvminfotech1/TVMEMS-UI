@@ -211,6 +211,7 @@
                   <mat-select
                     [(value)]="task.priority"
                     (selectionChange)="updateTask(task)"
+                    [disabled]="task.status === 'Completed'"
                   >
                     <mat-option value="Low">Low</mat-option>
                     <mat-option value="Medium">Medium</mat-option>
@@ -229,6 +230,7 @@
                   <mat-select
                     [(value)]="task.status"
                     (selectionChange)="updateTask(task)"
+                    [disabled]="task.status === 'Completed'"
                   >
                     <mat-option value="To do">To do</mat-option>
                     <mat-option value="In Progress">In Progress</mat-option>
