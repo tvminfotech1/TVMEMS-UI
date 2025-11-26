@@ -8,7 +8,7 @@ import { BASE_URL } from 'src/app/models/baseurl/constant';
 })
 export class GoalService {
   private baseUrl = `${BASE_URL}/goals`;
-  private apiUrl = `${BASE_URL}/goals/user`;
+  private apiUrl = `${BASE_URL}/allGoals`;
 
   constructor(private http: HttpClient) {}
 
@@ -29,7 +29,7 @@ export class GoalService {
   }
 
   getAllGoals(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/all`);
+    return this.http.get(`${this.baseUrl}/allGoals`);
   }
 
   getGoalByUserid(empId: number): Observable<any> {

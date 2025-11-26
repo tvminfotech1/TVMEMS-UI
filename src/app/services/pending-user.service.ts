@@ -19,7 +19,7 @@ export class PendingUserService {
   }
 
   getUserPending(): Observable<any> {
-    return this.http.get(`${BASE_URL}/userPending/all`, {
+    return this.http.get(`${BASE_URL}/userPending/allEmployee`, {
       headers: this.getAuthHeaders(),
       observe: 'response',
     });

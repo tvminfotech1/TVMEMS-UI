@@ -36,8 +36,7 @@ export interface AttendanceRecord {
 export class AttendanceService {
   TEST_MODE = false;
 
-  private baseUrl = "http://localhost:8080/Attendance";
-  private apiUrl = "http://localhost:8080";
+  private baseUrl = `${BASE_URL}/Attendance`;
   private attendanceList$ = new BehaviorSubject<AttendanceRecord[]>([]);
 
   constructor(private http: HttpClient, private authService: AuthService) {}
@@ -50,19 +49,9 @@ export class AttendanceService {
     return new HttpHeaders({ Authorization: `Bearer ${token}` });
   }
 
-  private loadAttendance() {
-    this.http
-      .get<AttendanceRecord[]>(`${BASE_URL}/Attendance/all`, {
-        headers: this.getAuthHeaders(),
-      })
-      .subscribe(
-        (data) => this.attendanceList$.next(data),
-        (error) => console.error("Error loading attendance", error)
-      );
-  }
 
   getAllAttendance(): Observable<AttendanceRecord[]> {
-    return this.http.get<AttendanceRecord[]>(`${BASE_URL}/Attendance/all`, {
+    return this.http.get<AttendanceRecord[]>(`${BASE_URL}/Attendance/allAttendance`, {
       headers: this.getAuthHeaders(),
     });
   }
@@ -91,20 +80,7 @@ export class AttendanceService {
     });
   }
 
-  updateAttendance(record: AttendanceRecord) {
-    this.http
-      .put<AttendanceRecord>(
-        `${this.baseUrl}/${record.empId}/${record.date}`,
-        record,
-        { headers: this.getAuthHeaders() }
-      )
-      .subscribe(
-        () => this.loadAttendance(),
-        (error) => console.error("Error updating attendance", error)
-      );
-  }
-
   isTodayHoliday(): Observable<boolean> {
-    return this.http.get<boolean>(`${this.apiUrl}/today`);
+    return this.http.get<boolean>(`${BASE_URL}/today`);
   }
 }

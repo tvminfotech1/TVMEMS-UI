@@ -35,6 +35,7 @@ export class LeaveComponent implements OnInit {
   showApplyLeaveModal = false;
   showCompOffModal = false;
   activeTab: "leave" | "compoff" = "leave";
+  isEmployeeValid: boolean = false;
 
   leaveForm!: FormGroup;
   allUsers: any[] = [];
@@ -98,6 +99,11 @@ export class LeaveComponent implements OnInit {
     });
 
     this.initForms();
+      if (this.isAdmin) {
+    this.leaveForm.get("employeeId")?.valueChanges.subscribe(() => {
+      this.validateEmployeeId();
+    });
+  }
     this.checkYearEndReset();
     const today = new Date();
     this.selectedDate = new Date(today.getFullYear(), today.getMonth(), 1);
@@ -133,6 +139,13 @@ export class LeaveComponent implements OnInit {
     this.leaveForm.get("startDate")?.valueChanges.subscribe(() => {
       this.leaveForm.get("endDate")?.updateValueAndValidity();
     });
+    if (this.isAdmin) {
+  this.leaveForm.get("leaveType")?.disable();
+  this.leaveForm.get("startDate")?.disable();
+  this.leaveForm.get("endDate")?.disable();
+  this.leaveForm.get("reason")?.disable();
+}
+
   }
 
   loadLeaves(): void {
@@ -353,7 +366,7 @@ export class LeaveComponent implements OnInit {
       },
       error: (err) => {
         console.error("Error applying leave:", err);
-        this.snackBar.open("please enter a valid employee Id", "Close", {
+        this.snackBar.open("error apllying leave", "Close", {
           duration: 3000,
           horizontalPosition: "center",
           verticalPosition: "top",
@@ -780,12 +793,14 @@ export class LeaveComponent implements OnInit {
       error: (err) => console.error("Holiday load failed", err),
     });
   }
-  onEmployeeSearch(event: any) {
-    this.selectedEmployee = null;
-    this.employeeSearch = event.target.value;
+ onEmployeeSearch(event: any) {
+  const value = event.target.value;
+  this.employeeSearch = value; 
+  this.employeeSuggestions = this.allUsers.filter((u) =>
+    u.employeeId.toString().includes(value)
+  );
+}
 
-    this.searchEmployee();
-  }
 
   searchEmployee() {
     const query = this.employeeSearch.trim().toLowerCase();
@@ -806,4 +821,49 @@ export class LeaveComponent implements OnInit {
     this.employeeSuggestions = [];
     this.leaveForm.patchValue({ employeeId: user.employeeId });
   }
+validateEmployeeId() {
+  const typedId = this.leaveForm.get('employeeId')?.value;
+
+  this.employeeSearch = typedId; 
+
+  if (!typedId) {
+    this.isEmployeeValid = false;
+    this.selectedEmployee = null;
+    this.updateAdminFieldAccess(); 
+    return;
+  }
+
+  const found = this.allUsers.find(
+    (u) => String(u.employeeId) === String(typedId)
+  );
+
+  if (found) {
+    this.isEmployeeValid = true;
+    this.selectedEmployee = found;
+  } else {
+    this.isEmployeeValid = false;
+    this.selectedEmployee = null;
+  }
+
+  this.updateAdminFieldAccess();  // <-- REQUIRED
+}
+
+updateAdminFieldAccess() {
+  if (!this.isAdmin) return;
+
+  if (this.isEmployeeValid) {
+    this.leaveForm.get("leaveType")?.enable();
+    this.leaveForm.get("startDate")?.enable();
+    this.leaveForm.get("endDate")?.enable();
+    this.leaveForm.get("reason")?.enable();
+  } else {
+    this.leaveForm.get("leaveType")?.disable();
+    this.leaveForm.get("startDate")?.disable();
+    this.leaveForm.get("endDate")?.disable();
+    this.leaveForm.get("reason")?.disable();
+  }
+}
+
+
+
 }
