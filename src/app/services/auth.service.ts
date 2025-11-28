@@ -111,9 +111,7 @@ export class AuthService {
   }
 
   checkMobileExists(mobile: string) {
-    return this.http.get<boolean>(
-      `${BASE_URL}/users/check-mobile/${mobile}`
-    );
+    return this.http.get<boolean>(`${BASE_URL}/users/check-mobile/${mobile}`);
   }
 
   getToken(): string | null {
@@ -201,9 +199,7 @@ export class AuthService {
   }
 
   getUserId(email: string): Observable<number> {
-    return this.http.get<number>(
-      `${BASE_URL}/WFH/employeeId?email=${email}`
-    );
+    return this.http.get<number>(`${BASE_URL}/WFH/employeeId?email=${email}`);
   }
 
   checkOnboardingStatus(employeeId: string | null): Observable<boolean> {
