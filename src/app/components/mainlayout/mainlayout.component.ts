@@ -230,6 +230,11 @@ export class MainlayoutComponent implements OnInit {
     this.router.navigate(["/mainlayout/myprofile", this.employeeId]);
   }
 
+  goToChangePassword() {
+    this.closeAllDropdowns();
+    this.router.navigate(["/mainlayout/changepassword"]);
+  }
+
   goToAnnouncements() {
     this.router.navigate(["/mainlayout/dashboard"], {
       queryParams: { section: "announcement" },

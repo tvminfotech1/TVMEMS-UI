@@ -120,16 +120,18 @@
                     class="nav-link sub"
                     routerLinkActive="active-sub-link"
                     [routerLinkActiveOptions]="{ exact: true }"
-                    ><span class="material-icons">calendar_today</span> {{isUser? 'My Leave':'Leave'}}</a
+                    ><span class="material-icons">calendar_today</span>
+                    {{ isUser ? "My Leave" : "Leave" }}</a
                   >
                 </li>
-                <li  *ngIf="isUser">
+                <li *ngIf="isUser">
                   <a
                     routerLink="attendance"
                     class="nav-link sub"
                     routerLinkActive="active-sub-link"
                     [routerLinkActiveOptions]="{ exact: true }"
-                    ><span class="material-icons">fact_check</span> {{isUser? 'My Attendance':'Attendance'}}</a
+                    ><span class="material-icons">fact_check</span>
+                    {{ isUser ? "My Attendance" : "Attendance" }}</a
                   >
                 </li>
                 <li>
@@ -208,7 +210,8 @@
                     class="nav-link sub"
                     routerLinkActive="active-sub-link"
                     [routerLinkActiveOptions]="{ exact: true }"
-                    ><span class="material-icons">task</span>  {{isUser? 'My Tasks':'Tasks'}}</a
+                    ><span class="material-icons">task</span>
+                    {{ isUser ? "My Tasks" : "Tasks" }}</a
                   >
                 </li>
               </ul>
@@ -241,7 +244,8 @@
                     class="nav-link sub"
                     routerLinkActive="active-sub-link"
                     [routerLinkActiveOptions]="{ exact: true }"
-                    ><span class="material-icons">star_rate</span>  {{isUser? 'My Goal Sheet':'Goal Sheet'}}</a
+                    ><span class="material-icons">star_rate</span>
+                    {{ isUser ? "My Goal Sheet" : "Goal Sheet" }}</a
                   >
                 </li>
               </ul>
@@ -549,11 +553,15 @@
           </button>
           <div *ngIf="showSettings" class="settings-dropdown">
             <div class="profile-header">
-             <img
-    [src]="profileImageUrl && profileImageUrl.trim() !== '' ? profileImageUrl : 'assets/images/profile.jpg'" 
-    alt="Profile"
-    class="profile-img"
-  />
+              <img
+                [src]="
+                  profileImageUrl && profileImageUrl.trim() !== ''
+                    ? profileImageUrl
+                    : 'assets/images/profile.jpg'
+                "
+                alt="Profile"
+                class="profile-img"
+              />
               <div class="profile-info">
                 <div class="profile-name">{{ userName }}</div>
                 <div class="profile-Id">Employee ID: {{ employeeId }}</div>
@@ -569,6 +577,9 @@
 
               <li (click)="goToHolidays()">
                 <span class="material-icons">event</span> Holidays
+              </li>
+              <li (click)="goToChangePassword()">
+                <span class="material-icons">key</span> Change Password
               </li>
               <li (click)="onLogout()">
                 <span class="material-icons">logout</span> Logout
