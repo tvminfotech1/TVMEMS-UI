@@ -78,7 +78,6 @@
 .icon-menu button.active {
   background: white;
   color: black;
-  transform: scale(1.05);
   box-shadow: 0 5px 12px rgba(10, 15, 60, 0.25);
 }
 

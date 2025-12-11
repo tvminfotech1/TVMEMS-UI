@@ -17,7 +17,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 2000;
+  z-index: 1000;
 }
 .employee-history {
   margin: 1rem 0;
@@ -134,6 +134,7 @@
   top: 0;
   z-index: 10;
 }
+
 .search-input {
   padding: 8px;
   width: 250px;
@@ -223,6 +224,39 @@ button[mat-raised-button]:hover {
   min-width: 10px;
 }
 
+.compact-select {
+  width: 90px !important;
+  height: 13px !important;
+}
+
+.compact-select .mat-mdc-form-field-flex {
+  height: 13px !important;
+  padding: 0 8px !important;
+}
+
+.compact-select .mat-mdc-select-trigger {
+  font-size: 10px !important;
+  padding-top: 4px !important;
+}
+
+.compact-select .mat-mdc-form-field-infix {
+  padding: 0 !important;
+  min-height: 13px !important;
+}
+
+.compact-select .mat-mdc-select-panel {
+  max-height: 200px !important;
+}
+
+
+.mat-select-arrow {
+  display: none !important;
+}
+
+.mat-select-trigger {
+  padding-right: 0 !important;
+}
+
 .timesheet-classic-container
   .classic-dropdown-section
   .classic-form-group
@@ -290,10 +324,15 @@ button[mat-raised-button]:hover {
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0);
 }
 
+.accordion-content input{
+  height: 56px;
+  margin-top: 1rem;
+}
+
+
 .timesheet-classic-container .classic-table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 1rem;
   font-size: 0.95rem;
 }
 
@@ -412,7 +451,7 @@ button[mat-raised-button]:hover {
   opacity: 0.7;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1200px) {
   .timesheet-classic-container {
     padding: 1rem;
   }
@@ -500,6 +539,17 @@ button[mat-raised-button]:hover {
   .timesheet-classic-container .classic-table td:nth-of-type(10):before {
     content: "Action";
   }
+
+  .compact-select {
+  width: 100% !important;
+  height: 13px !important;
+  margin-bottom: 1rem;
+}
+
+.accordion-content input{
+  height: 56px;
+  margin-top: 0.2rem;
+}
 
   .employee-history-section {
     width: 95%;
@@ -600,10 +650,27 @@ button[mat-raised-button]:hover {
     text-transform: capitalize;
   }
 
+ .classic-table .no-data-row td::before {
+    content: none !important;
+  }
+
+  /* Fix layout collapse for no-data row */
+  .classic-table .no-data-row td {
+    padding-left: 0 !important;
+    text-align: center !important;
+  }
+
   .no-data-row td {
-    border: none;
-    text-align: center;
-    padding: 40px 10px;
+    text-align: center !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .no-data {
+    width: 100%;
+    text-align: center !important;
+    display: block;
   }
 
   .employee-history-section .close-btn {
@@ -635,10 +702,9 @@ button[mat-raised-button]:hover {
   }
 }
 
-.table-wrapper {
-  max-height: 400px;
+.table-container {
+  max-height: 380px;
   overflow-y: auto;
-  border: 1px solid #ccc;
 }
 
 .history-table {
@@ -682,7 +748,7 @@ button[mat-raised-button]:hover {
 .classic-table tbody {
   display: block;
   max-height: 229px;
-  overflow-y: auto;
+  /* overflow-y: hidden; */
   width: 100%;
 }
 
@@ -736,3 +802,5 @@ button[mat-raised-button]:hover {
   border-color: #1abc9c;
   box-shadow: 0 0 4px rgba(26, 188, 156, 0.4);
 }
+
+

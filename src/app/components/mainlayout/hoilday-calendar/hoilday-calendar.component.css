@@ -107,8 +107,9 @@
   }
 
   .holiday-table {
-    min-width: 600px;
-  }
+  width: 100%;
+  table-layout: auto;
+}
 }
 
 @media (max-width: 480px) {

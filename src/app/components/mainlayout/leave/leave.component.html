@@ -114,17 +114,17 @@
             [(ngModel)]="searchTerm"
             (input)="applyFilters()"
           />
-
-          <select
-            class="filter-select"
-            [(ngModel)]="statusFilter"
-            (change)="applyFilters()"
-          >
-            <option value="">All Status</option>
-            <option value="Pending">Pending</option>
-            <option value="Approved">Approved</option>
-            <option value="Rejected">Rejected</option>
-          </select>
+          <mat-form-field appearance="fill" class="responsive-select">
+            <mat-label>Status</mat-label>
+            <mat-select
+              [(value)]="statusFilter"
+              (selectionChange)="applyFilters()"
+            >
+              <mat-option value="Pending">Pending</mat-option>
+              <mat-option value="Approved">Approved</mat-option>
+              <mat-option value="Rejected">Rejected</mat-option>
+            </mat-select>
+          </mat-form-field>
         </div>
 
         <div class="table-container" *ngIf="activeTab === 'leave'">
