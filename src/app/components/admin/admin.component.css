@@ -46,9 +46,9 @@
 
 .admin-container {
   max-width: 1400px;
-  width: 95%;
+  width: 100%;
   margin: 0 auto;
-  padding: 30px;
+  padding: 15px;
   background: #f9f9f9;
   border-radius: 10px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
@@ -66,7 +66,6 @@ table {
   border-collapse: collapse;
   background: #fff;
   border-radius: 4px;
-  overflow: hidden;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
 }
 
@@ -139,7 +138,7 @@ a {
 
 @media (max-width: 400px) {
   .searchBox {
-    flex-direction: column;
+    flex-direction: row;
     align-items: stretch;
   }
 
@@ -147,13 +146,7 @@ a {
     align-self: center;
     margin-bottom: 4px;
   }
-
-  .searchBox input {
-    display: none;
-  }
-
-  .searchBox::after {
-    content: "Search";
+    .searchBox::after {
     display: inline;
     text-align: center;
     border: none;

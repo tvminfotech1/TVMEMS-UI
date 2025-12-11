@@ -137,11 +137,6 @@
                   else approveText
                 "
               >
-                <mat-spinner
-                  diameter="20"
-                  strokeWidth="3"
-                  class="approve-spinner"
-                ></mat-spinner>
               </ng-container>
               <ng-template #approveText>✔</ng-template>
             </button>
@@ -158,11 +153,6 @@
               <ng-container
                 *ngIf="loadingStatus[d.requestId] === 'reject'; else rejectText"
               >
-                <mat-spinner
-                  diameter="20"
-                  strokeWidth="3"
-                  class="reject-spinner"
-                ></mat-spinner>
               </ng-container>
               <ng-template #rejectText>❌</ng-template>
             </button>

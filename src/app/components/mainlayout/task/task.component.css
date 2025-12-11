@@ -495,6 +495,7 @@ button.mat-mdc-raised-button {
   .inline-container .mat-select-placeholder {
     font-size: 0.85rem !important;
   }
+  
 }
 
 @media (max-width: 400px) {
@@ -516,15 +517,6 @@ button.mat-mdc-raised-button {
     padding: 6px 10px;
   }
 
-  .searchBox input {
-    display: none;
-  }
-
-  .searchBox::after {
-    content: "Search";
-    font-size: 14px;
-    color: #555;
-  }
 }
 
 @media (max-width: 500px) {
@@ -614,6 +606,9 @@ button.mat-mdc-raised-button {
     gap: 10px !important;
     flex-wrap: wrap !important;
   }
+  .right-icons .icon-btn{
+    display: none;
+  }
 
   .searchBox {
     width: calc(100% - 32px) !important;
@@ -629,6 +624,28 @@ button.mat-mdc-raised-button {
   .task-card {
     border-radius: 8px !important;
   }
+  .center-date {
+    font-size: 0.9rem;
+    gap: 4px;
+  }
+  .center-date span {
+    white-space: nowrap;
+    overflow: hidden;  
+    text-overflow: ellipsis; 
+    max-width: 150px; 
+  }
+  .center-date .icon-btn {
+    font-size: 18px;
+    padding: 3px 6px;
+  }
+  .center-date .calendar-icon{
+    display: none;
+  }
+.container2 {
+  padding:1%;
+  border-radius: 8px;
+}
+
 }
 
 @media (max-width: 700px) {
@@ -694,6 +711,7 @@ button.mat-mdc-raised-button {
     gap: 14px;
     height: auto !important;
   }
+  
 
   .center-date {
     position: static !important;
@@ -717,11 +735,26 @@ button.mat-mdc-raised-button {
     width: 70%;
     display: flex;
     justify-content: center;
-    margin-top: 10px;
+  
   }
 
   .searchBox input {
     width: 90%;
     max-width: 300px;
+  }
+}
+@media (max-width: 1024px) {
+  .topbar button.mat-mdc-raised-button {
+    padding: 6px 10px !important;
+    font-size: 0.9rem !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    white-space: nowrap !important; 
+  }
+  .topbar button.mat-mdc-raised-button mat-icon {
+    font-size: 20px !important;
+    width: 20px !important;
+    height: 20px !important;
+    margin-right: 4px !important; 
   }
 }

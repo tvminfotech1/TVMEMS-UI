@@ -75,14 +75,14 @@ export class AttendanceComponent implements OnInit {
 
   checkHolidayStatus() {
     this.attendanceService.isTodayHoliday().subscribe({
-      next: (res) => {
+      next: (res:any) => {
         this.isHoliday = res;
 
         if (this.isHoliday) {
           this.attendanceForm.disable();
         }
       },
-      error: (err) => {
+      error: (err:any) => {
         console.error("Holiday check failed", err);
       },
     });

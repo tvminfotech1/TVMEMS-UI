@@ -4,10 +4,6 @@
   (mouseleave)="resumeScroll()"
 >
   <div class="dashboard">
-    <div *ngIf="isLoading" class="card-loading">
-      <div class="spinner"></div>
-      <p>Loading wishes...</p>
-    </div>
     <div
       *ngIf="!isLoading && filteredWishes.length === 0"
       class="card-single-card"

@@ -631,15 +631,3 @@ body {
   color: #fff !important;
   font-weight: 500;
 }
-mat-spinner {
-  display: inline-block;
-  vertical-align: middle;
-}
-
-::ng-deep .approve-spinner circle {
-  stroke: #155724 !important;
-}
-
-::ng-deep .reject-spinner circle {
-  stroke: #721c24 !important;
-}

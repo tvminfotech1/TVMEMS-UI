@@ -313,16 +313,16 @@ export class TimelogComponent implements OnInit {
     this.years = Array.from({ length: 6 }, (_, i) => currentYear - 2 + i);
   }
 
-  setCurrentWeek(): void {
-    this.currentMondayISO = this.dateUtils.getCurrentMondayISO();
-    this.timelog.weekendDate = this.currentMondayISO;
-    this.populateWeekDays(this.timelog.weekendDate);
-
-    const mondayDate = new Date(this.currentMondayISO);
-    this.timelog.month = this.months[mondayDate.getMonth()];
-    this.timelog.year = mondayDate.getFullYear();
-    this.onMonthOrYearChange();
-  }
+ setCurrentWeek(): void {
+  const today = new Date();
+  const monday = this.dateUtils.getCurrentMondayISO();
+  this.currentMondayISO = monday;
+  this.timelog.weekendDate = monday;
+  this.timelog.month = this.months[today.getMonth()];
+  this.timelog.year = today.getFullYear();
+  this.populateWeekDays(monday);
+  this.onMonthOrYearChange();
+}
 
   onMonthOrYearChange(): void {
     if (!this.timelog.month)

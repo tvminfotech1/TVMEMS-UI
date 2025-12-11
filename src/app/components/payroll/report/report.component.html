@@ -55,12 +55,12 @@
 
       <tbody *ngIf="reportData.length > 0; else noDataRow">
         <tr *ngFor="let record of reportData">
-          <td>{{ record.employee.id }}</td>
-          <td>{{ record.employee.fullName }}</td>
-          <td>{{ record.employee.basicSalary | number }}</td>
-          <td>{{ record.employee.ctc | number }}</td>
-          <td>{{ record.totalPaid | number }}</td>
-          <td>{{ record.remainingCTC | number }}</td>
+          <td data-label="Emp ID">{{ record.employee.id }}</td>
+        <td data-label="Employee Name">{{ record.employee.fullName }}</td>
+        <td data-label="Basic Salary (₹)">{{ record.employee.basicSalary | number }}</td>
+        <td data-label="Total CTC (₹)">{{ record.employee.ctc | number }}</td>
+        <td data-label="Total Paid (₹)">{{ record.totalPaid | number }}</td>
+        <td data-label="Remaining CTC (₹)">{{ record.remainingCTC | number }}</td>
         </tr>
       </tbody>
 

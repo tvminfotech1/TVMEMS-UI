@@ -39,7 +39,7 @@
 }
 
 .close-btn:hover {
- background: linear-gradient(135deg, #0a0f3c, #1c2b8c);
+  background: linear-gradient(135deg, #0a0f3c, #1c2b8c);
   color: white;
 }
 
@@ -155,7 +155,7 @@ input:focus {
   color: #28a745;
 }
 
-.btn{
+.btn {
   background: linear-gradient(135deg, #0a0f3c, #1c2b8c);
   filter: drop-shadow(1px 1px 1px #07296c);
   color: #fff;
@@ -313,8 +313,8 @@ button:active {
   .employee-details-table td,
   .salary-table th,
   .salary-table td {
-    font-size: 11px;
-    padding: 5px;
+    font-size: 10px;
+    padding: 4px;
   }
 
   input[type="text"],

@@ -104,7 +104,13 @@ export class GoalComponent implements OnInit {
       this.loadArchivedGoals();
     }
     
-     if (this.isAdmin) {
+    if (this.isAdmin){
+      this.loadAdminGoals();
+    }
+  }
+
+  loadAdminGoals(){
+         if (this.isAdmin) {
     this.goalService.getAllGoals().subscribe({
       next: (res: any) => {
         const allGoals = res.body || [];
@@ -615,6 +621,7 @@ viewGoals(emp: any): void {
 
     this.selectedDate = date;
     this.fetchGoals();
+    this.loadAdminGoals();
     this.currentDate.setMonth(this.currentDate.getMonth() - 1);
     this.updateDateRangeLabel();
     this.filterEmployeesByGoalMonth();
@@ -622,6 +629,7 @@ viewGoals(emp: any): void {
 
   goToNextMonth(): void {
     this.currentDate.setMonth(this.currentDate.getMonth() + 1);
+    this.loadAdminGoals();
     this.updateDateRangeLabel();
     this.filterEmployeesByGoalMonth();
   }
@@ -703,6 +711,7 @@ viewGoals(emp: any): void {
         error: () => {},
       });
     });
+    this.loadAdminGoals();
   }
   get paginatedEmployees(): any[] {
     const start = (this.currentPage - 1) * this.itemsPerPage;

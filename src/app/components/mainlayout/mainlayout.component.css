@@ -160,7 +160,7 @@ main {
 
 .icon-btn:hover {
   color: #000;
-  background-color: #ffffff;
+  /* background-color: #ffffff; */
 }
 
 .search-input {

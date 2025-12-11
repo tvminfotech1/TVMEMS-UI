@@ -207,6 +207,9 @@ tr:hover td {
   filter: drop-shadow(1px 1px 1px #07296c);
   color: #fff;
 }
+.mat-icon {
+  overflow: visible;
+}
 
 @media (min-width: 768px) and (max-width: 1024px) {
   .employee-table {
@@ -347,7 +350,7 @@ tr:hover td {
     font-size: 0.8rem;
     padding: 5px 8px;
   }
-  .action-buttons button mat-icon {
+  .action-buttons button .mat-icon {
     font-size: 16px;
   }
 }
@@ -399,7 +402,116 @@ tr:hover td {
     font-size: 0.72rem;
     padding: 4px 6px;
   }
-  .action-buttons button mat-icon {
+  .action-buttons button .mat-icon {
     font-size: 14px;
+  }
+}
+@media (max-width: 768px) {
+  .employee-table table {
+    table-layout: auto !important;
+    width: 100% !important;
+  }
+  .employee-table td,
+  .employee-table th,
+  .mat-mdc-cell,
+  .mat-mdc-header-cell {
+    white-space: normal !important;
+    word-break: break-word !important;
+    padding: 6px 4px !important;
+    font-size: 12px !important;
+  }
+
+  .action-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .action-buttons button {
+    width: 100%;
+    font-size: 12px !important;
+  }
+}
+
+@media (max-width: 420px) {
+  .employee-table td.mat-cell {
+    font-size: 13px;
+  }
+  .employee-table td.mat-cell::before {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 320px) {
+  .employee-table td.mat-cell {
+    font-size: 12px;
+  }
+  .employee-table td.mat-cell::before {
+    font-size: 12px;
+  }
+}
+.employee-card-view {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  table.mat-mdc-table {
+    display: none !important;
+  }
+
+  .employee-card-view {
+    display: block;
+  }
+
+  .emp-card {
+    background: #fff;
+    padding: 16px;
+    margin: 12px 0;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .emp-row {
+    margin-bottom: 8px;
+    font-size: 14px;
+  }
+
+  .emp-row strong {
+    color: #003366;
+  }
+
+  .card-actions {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 12px;
+  }
+
+  .card-actions button {
+    flex: 1;
+    font-size: 13px;
+  }
+  .employee-card-view .card-actions .view-btn {
+    background: linear-gradient(135deg, #eef7fc, #eaeff2);
+    filter: drop-shadow(1px 1px 1px);
+    color: black;
+    font-weight: 500;
+    border-radius: 6px;
+  }
+
+  .employee-card-view .card-actions .add-btn {
+    background: linear-gradient(135deg, #0a0f3c, #1c2b8c);
+    filter: drop-shadow(1px 1px 1px #07296c);
+    color: #fff;
+    font-weight: 500;
+    border-radius: 6px;
+  }
+  .employee-card-view .card-actions button {
+    min-width: 0;
+    padding: 8px;
+  }
+  .mat-mdc-raised-button.mat-primary {
+    background: linear-gradient(135deg, #0a0f3c, #1c2b8c);
   }
 }

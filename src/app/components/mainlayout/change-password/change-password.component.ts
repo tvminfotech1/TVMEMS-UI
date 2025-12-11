@@ -100,7 +100,7 @@ export class ChangePasswordComponent implements OnInit {
     }
 
     this.authService.getUserDetails(Number(empId)).subscribe({
-      next: (data) => {
+      next: (data: { email: string; mobile: string }) => {
         this.employeeEmail = data.email;
         this.employeeMobile = data.mobile;
 

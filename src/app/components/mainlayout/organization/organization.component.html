@@ -25,11 +25,6 @@
     </nav>
   </header>
 
-  <div *ngIf="isLoading" class="loading-state">
-    <div class="spinner"></div>
-    <p>Loading employees...</p>
-  </div>
-
   <div
     *ngIf="!isLoading && activeTab !== 'directory'"
     class="org-chart-container"

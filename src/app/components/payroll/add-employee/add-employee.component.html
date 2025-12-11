@@ -12,7 +12,7 @@
   <form (ngSubmit)="onSubmit(empForm)" #empForm="ngForm">
     <div class="form-grid">
       <div class="search-section">
-        <mat-form-field appearance="outline">
+        <mat-form-field appearance="outline" class="inputWidth">
           <mat-label>Employee ID</mat-label>
           <input
             matInput
@@ -20,16 +20,14 @@
             [(ngModel)]="searchId"
             placeholder="Enter Employee ID"
             name="employeeId"
-            [disabled]="isEditMode"
-          />
+            [disabled]="isEditMode" />
           <button
             mat-icon-button
             matSuffix
             *ngIf="!isEditMode"
             color="primary"
             type="button"
-            (click)="searchEmployee()"
-          >
+            (click)="searchEmployee()">
             <mat-icon>search</mat-icon>
           </button>
         </mat-form-field>
@@ -37,71 +35,66 @@
         <div
           *ngIf="searchedEmployee && !isEditMode"
           class="employee-suggestion"
-          (click)="selectEmployee()"
-        >
+          (click)="selectEmployee()">
           {{ searchId }} - {{ searchedEmployee.fullName }}
         </div>
       </div>
 
-      <mat-form-field appearance="outline">
+      <mat-form-field appearance="outline" class="inputWidth">
         <mat-label>Full Name</mat-label>
         <input
           matInput
           type="text"
           name="fullName"
           [(ngModel)]="employee.fullName"
-          readonly
-        />
+          readonly />
       </mat-form-field>
 
-      <mat-form-field appearance="outline">
+      <mat-form-field appearance="outline" class="inputWidth">
         <mat-label>Email</mat-label>
         <input
           matInput
           type="email"
           name="email"
           [(ngModel)]="employee.email"
-          readonly
-        />
+          readonly />
       </mat-form-field>
 
-      <mat-form-field appearance="outline">
+      <mat-form-field appearance="outline" class="inputWidth">
         <mat-label>Phone</mat-label>
         <input
           matInput
           type="text"
           name="phone"
           [(ngModel)]="employee.phone"
-          readonly
-        />
+          readonly />
       </mat-form-field>
 
-      <mat-form-field appearance="outline">
+      <mat-form-field appearance="outline" class="inputWidth">
         <mat-label>Joining Date</mat-label>
         <input matInput [value]="employee.joiningDate" readonly />
       </mat-form-field>
 
-      <mat-form-field appearance="outline">
+      <mat-form-field appearance="outline" class="inputWidth">
         <mat-label>Aadhaar Number</mat-label>
         <input
           matInput
           name="aadhaarNumber"
           [(ngModel)]="employee.aadhaarNumber"
-          readonly
-        />
+          readonly />
       </mat-form-field>
 
-      <mat-form-field appearance="outline">
+      <mat-form-field appearance="outline" class="inputWidth">
         <mat-label>PAN Number</mat-label>
         <input
           matInput
           name="panNumber"
           [(ngModel)]="employee.panNumber"
-          readonly
-        />
+          readonly />
       </mat-form-field>
 
-      <mat-form-field appearance="outline" class="status-field">
+      <mat-form-field appearance="outline" class="status-field"
+        class="inputWidth">
         <mat-label>Status</mat-label>
         <input
           matInput
@@ -110,59 +103,50 @@
           value="Active"
           [disabled]="true"
           readonly
-          class="status-active"
-        />
+          class="status-active" />
       </mat-form-field>
 
-      <mat-form-field appearance="outline">
+      <mat-form-field appearance="outline" class="inputWidth">
         <mat-label>Department</mat-label>
         <mat-select
           name="department"
           [(ngModel)]="employee.department"
-          required
-        >
-          <mat-option value="">Select Department</mat-option>
-          <mat-option value="Frontend Development"
-            >Frontend Development</mat-option
-          >
-          <mat-option value="Backend Development"
-            >Backend Development</mat-option
-          >
-          <mat-option value="Full Stack Development"
-            >Full Stack Development</mat-option
-          >
-          <mat-option value="DevOps & Deployment"
-            >DevOps & Deployment</mat-option
-          >
-          <mat-option value="Software Development"
-            >Software Development</mat-option
-          >
+          required>
+          <mat-option value>Select Department</mat-option>
+          <mat-option value="Frontend Development">Frontend
+            Development</mat-option>
+          <mat-option value="Backend Development">Backend
+            Development</mat-option>
+          <mat-option value="Full Stack Development">Full Stack
+            Development</mat-option>
+          <mat-option value="DevOps & Deployment">DevOps &
+            Deployment</mat-option>
+          <mat-option value="Software Development">Software
+            Development</mat-option>
           <mat-option value="QA / Testing">QA / Testing</mat-option>
-          <mat-option value="Human Resources (HR)"
-            >Human Resources (HR)</mat-option
-          >
+          <mat-option value="Human Resources (HR)">Human Resources
+            (HR)</mat-option>
           <mat-option value="Finance & Accounts">Finance & Accounts</mat-option>
         </mat-select>
       </mat-form-field>
 
-      <mat-form-field appearance="outline">
+      <mat-form-field appearance="outline" class="inputWidth">
         <mat-label>Employee Type</mat-label>
         <mat-select
           [(ngModel)]="employee.employeeType"
           name="employeeType"
-          required
-        >
-          <mat-option value="">Select Employee Type</mat-option>
+          required>
+          <mat-option value>Select Employee Type</mat-option>
           <mat-option value="Intern">Intern</mat-option>
           <mat-option value="Full Time">Full Time</mat-option>
           <mat-option value="Part Time">Part Time</mat-option>
         </mat-select>
       </mat-form-field>
 
-      <mat-form-field appearance="outline">
+      <mat-form-field appearance="outline" class="inputWidth">
         <mat-label>Work Location</mat-label>
         <mat-select name="location" [(ngModel)]="employee.location" required>
-          <mat-option value="">Select Location</mat-option>
+          <mat-option value>Select Location</mat-option>
           <mat-option
             *ngFor="
               let city of [
@@ -179,44 +163,40 @@
                 'Other'
               ]
             "
-            [value]="city"
-          >
+            [value]="city">
             {{ city }}
           </mat-option>
         </mat-select>
       </mat-form-field>
 
-      <mat-form-field appearance="outline">
+      <mat-form-field appearance="outline" class="inputWidth">
         <mat-label>CTC</mat-label>
         <input
           matInput
           type="number"
           name="ctc"
           [(ngModel)]="employee.ctc"
-          required
-        />
+          required />
       </mat-form-field>
 
-      <mat-form-field appearance="outline">
+      <mat-form-field appearance="outline" class="inputWidth">
         <mat-label>Basic Salary</mat-label>
         <input
           matInput
           type="number"
           name="basicSalary"
           [(ngModel)]="employee.basicSalary"
-          required
-        />
+          required />
       </mat-form-field>
 
-      <mat-form-field appearance="outline">
+      <mat-form-field appearance="outline" class="inputWidth">
         <mat-label>In-Hand Salary</mat-label>
         <input
           matInput
           type="number"
           name="inHandSalary"
           [(ngModel)]="employee.inHandSalary"
-          required
-        />
+          required />
       </mat-form-field>
     </div>
 
@@ -224,44 +204,40 @@
 
     <h3>Bank Details</h3>
     <div class="form-grid">
-      <mat-form-field appearance="outline">
+      <mat-form-field appearance="outline" class="inputWidth">
         <mat-label>Bank Name</mat-label>
         <input
           matInput
           name="bankName"
           [(ngModel)]="employee.bankDetails.bankName"
-          required
-        />
+          required />
       </mat-form-field>
 
-      <mat-form-field appearance="outline">
+      <mat-form-field appearance="outline" class="inputWidth">
         <mat-label>Account Number</mat-label>
         <input
           matInput
           name="accountNumber"
           [(ngModel)]="employee.bankDetails.accountNumber"
-          required
-        />
+          required />
       </mat-form-field>
 
-      <mat-form-field appearance="outline">
+      <mat-form-field appearance="outline" class="inputWidth">
         <mat-label>IFSC Code</mat-label>
         <input
           matInput
           name="ifscCode"
           [(ngModel)]="employee.bankDetails.ifscCode"
-          required
-        />
+          required />
       </mat-form-field>
 
-      <mat-form-field appearance="outline">
+      <mat-form-field appearance="outline" class="inputWidth">
         <mat-label>Branch</mat-label>
         <input
           matInput
           name="branch"
           [(ngModel)]="employee.bankDetails.branch"
-          required
-        />
+          required />
       </mat-form-field>
     </div>
     <div class="button-group">
@@ -269,8 +245,7 @@
         mat-raised-button
         color="primary"
         type="submit"
-        class="submit-btn"
-      >
+        class="submit-btn">
         {{ isEditMode ? "Update Employee" : "Add Employee" }}
       </button>
     </div>
