@@ -64,13 +64,10 @@
       </table>
     </div>
   </div>
-
-  <!-- 👩‍💻 USER VIEW -->
   <div *ngIf="isUser" class="user-view">
-    <!-- Title -->
+  
     <h2>My Attendance</h2>
 
-    <!-- Filters -->
     <div class="filters">
       <div class="month-input-wrapper">
         <input
@@ -83,10 +80,6 @@
       </div>
     </div>
   
-
-
-
-    <!-- Attendance Table -->
     <div class="table-wrapper">
       <table class="full-width-table">
         <thead>
@@ -120,7 +113,7 @@
     </div>
   </div>
 
-  <!-- 🪟 Attendance Details Dialog -->
+ 
   <ng-template #attendanceDialog>
     <h2 mat-dialog-title>
       Attendance - {{ selectedEmployee?.fullName }} ({{ selectedMonthName }})

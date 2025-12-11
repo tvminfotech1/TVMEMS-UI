@@ -10,9 +10,9 @@ import { UserService } from '../user-service.service';
 import { Router } from '@angular/router';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { Subscription } from 'rxjs';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { MainlayoutService } from 'src/app/services/main-layout.service';
 import { FormProgressService } from 'src/app/services/form-progress.service';
+import { AlertService } from 'src/app/alert-service.service';
 
 export function minimumAgeValidator(minAge: number) {
   return (control: AbstractControl): ValidationErrors | null => {
@@ -50,7 +50,7 @@ export class PersonalComponent implements OnInit {
     private formBuilder: FormBuilder,
     private userService: UserService,
     private router: Router,
-    private snackBar: MatSnackBar,
+    private alertserivce: AlertService,
     private mainLayoutService: MainlayoutService,
      private progressService: FormProgressService,
   
@@ -310,12 +310,7 @@ allowTenDigitNumber(event: KeyboardEvent): void {
       this.mainLayoutService.markTabCompleted('personal', true);
       this.router.navigate(['/mainlayout/kyc']);
     } else {
-      this.snackBar.open('Please fill all required fields', 'Close', {
-        duration: 3000,
-        horizontalPosition: 'center',
-        verticalPosition: 'top',
-        panelClass: ['error-snackbar'],
-      });
+      this.alertserivce.showError('Please fill all required fields');
       this.userForm.markAllAsTouched();
     }
   }

@@ -7,8 +7,8 @@ import {
 } from "@angular/forms";
 import { AuthService } from "src/app/services/auth.service";
 import { LeaveService, newLeaveRequest } from "src/app/services/leave.service";
-import { MatSnackBar } from "@angular/material/snack-bar";
 import { UserlistService } from "src/app/services/admin.service";
+import { AlertService } from "src/app/alert-service.service";
 
 interface LeaveBalance {
   leaveType: string;
@@ -69,8 +69,8 @@ export class LeaveComponent implements OnInit {
     private fb: FormBuilder,
     private leaveService: LeaveService,
     private authService: AuthService,
-    private snackBar: MatSnackBar,
-    private UserlistService: UserlistService
+    private UserlistService: UserlistService,
+    private alertService: AlertService
   ) {}
   private lastUpdatedMonth = new Date().getMonth();
 
@@ -203,12 +203,7 @@ export class LeaveComponent implements OnInit {
     this.leaveForm.markAllAsTouched();
 
     if (!this.leaveForm.valid) {
-      this.snackBar.open("Please fill all required fields", "Close", {
-        duration: 3000,
-        horizontalPosition: "center",
-        verticalPosition: "top",
-        panelClass: ["error-snackbar"],
-      });
+      this.alertService.showError("Please fill all required fields");
       return;
     }
 
@@ -219,24 +214,12 @@ export class LeaveComponent implements OnInit {
     if (this.isAdmin) {
       selectedEmployeeId = Number(formValue.employeeId);
       if (!selectedEmployeeId) {
-        this.snackBar.open("Please enter a valid Employee ID", "Close", {
-          duration: 3000,
-          horizontalPosition: "center",
-          verticalPosition: "top",
-          panelClass: ["error-snackbar"],
-        });
+        this.alertService.showError("Please enter a valid Employee ID");
         return;
       }
       if (selectedEmployeeId === Number(this.isAdmin)) {
-        this.snackBar.open(
-          "Admins cannot apply leave for themselves.",
-          "Close",
-          {
-            duration: 3000,
-            horizontalPosition: "center",
-            verticalPosition: "top",
-            panelClass: ["error-snackbar"],
-          }
+        this.alertService.showError(
+          "Admins cannot apply leave for themselves."
         );
         return;
       }
@@ -265,15 +248,8 @@ export class LeaveComponent implements OnInit {
       const available =
         leaveBalance.total - leaveBalance.used + leaveBalance.carryOver;
       if (available < totalDays) {
-        this.snackBar.open(
-          `You only have ${available} ${leaveType} days available, cannot apply for ${totalDays} days.`,
-          "Close",
-          {
-            duration: 4000,
-            horizontalPosition: "center",
-            verticalPosition: "top",
-            panelClass: ["error-snackbar"],
-          }
+        this.alertService.showError(
+          `You only have ${available} ${leaveType} days available, cannot apply for ${totalDays} days.`
         );
         return;
       }
@@ -290,15 +266,8 @@ export class LeaveComponent implements OnInit {
     });
 
     if (sameMonthConflict) {
-      this.snackBar.open(
-        `You already have applied ${leaveType} for this month.`,
-        "Close",
-        {
-          duration: 4000,
-          horizontalPosition: "center",
-          verticalPosition: "top",
-          panelClass: ["error-snackbar"],
-        }
+      this.alertService.showError(
+        `You already have applied ${leaveType} for this month.`
       );
       return;
     }
@@ -320,15 +289,8 @@ export class LeaveComponent implements OnInit {
     });
 
     if (overlappingConflict) {
-      this.snackBar.open(
-        "You already have a pending or approved leave for these dates.",
-        "Close",
-        {
-          duration: 4000,
-          horizontalPosition: "center",
-          verticalPosition: "top",
-          panelClass: ["error-snackbar"],
-        }
+      this.alertService.showError(
+        "You have overlapping leave requests for the selected dates."
       );
       return;
     }
@@ -354,24 +316,14 @@ export class LeaveComponent implements OnInit {
     this.leaveService.createLeaveRequest(newLeave).subscribe({
       next: () => {
         this.loadLeaves();
-        this.snackBar.open("Leave applied successfully", "Close", {
-          duration: 3000,
-          horizontalPosition: "center",
-          verticalPosition: "top",
-          panelClass: ["success-snackbar"],
-        });
+        this.alertService.showSuccess("Leave applied successfully.");
         this.closeApplyLeaveModal();
         this.resetApplyLeaveForm();
         this.calculateLeaveBalances();
       },
       error: (err) => {
         console.error("Error applying leave:", err);
-        this.snackBar.open("error apllying leave", "Close", {
-          duration: 3000,
-          horizontalPosition: "center",
-          verticalPosition: "top",
-          panelClass: ["error-snackbar"],
-        });
+        this.alertService.showError("error applying leave");
       },
     });
   }
@@ -383,58 +335,55 @@ export class LeaveComponent implements OnInit {
   }
 
   approveRequest(id?: number): void {
-    if (!id) return;
-    const request = this.leaveList.find((l) => l.id === id);
-    if (
-      request &&
-      String(request.user?.employeeId) === String(this.currentUserId)
-    ) {
-      alert("You cannot approve or reject your own leave request.");
-      return;
-    }
+  if (!id) return;
 
-    this.leaveService.updateLeaveStatus(id, "APPROVED").subscribe({
-      next: () => {
-        const request = this.leaveList.find((l) => l.id === id);
-        if (!request) return;
+  this.leaveService.updateLeaveStatus(id, "APPROVED").subscribe({
+    next: () => {
+      const request = this.leaveList.find((l) => l.id === id);
+      if (!request) return;
 
-        request.status = "Approved";
+      request.status = "Approved";
 
-        const balance = this.leaveBalances.find(
-          (lb) => lb.leaveType === request.leaveType
-        );
-        if (balance) balance.used += request.totalDays ?? 0;
-        this.calculateLeaveBalances();
-        this.updateLeaveCards();
-        this.applyFilters();
-        this.loadLeaves();
-      },
-      error: (err) => console.error("Error approving leave:", err),
-    });
-  }
+      const balance = this.leaveBalances.find(
+        (lb) => lb.leaveType === request.leaveType
+      );
+      if (balance) balance.used += request.totalDays ?? 0;
 
-  rejectRequest(id?: number): void {
-    if (!id) return;
-    const request = this.leaveList.find((l) => l.id === id);
-    if (
-      request &&
-      String(request.user?.employeeId) === String(this.currentUserId)
-    ) {
-      alert("You cannot approve or reject your own leave request.");
-      return;
-    }
+      this.calculateLeaveBalances();
+      this.updateLeaveCards();
+      this.applyFilters();
+      this.loadLeaves();
 
-    this.leaveService.updateLeaveStatus(id, "REJECTED").subscribe({
-      next: () => {
-        const request = this.leaveList.find((l) => l.id === id);
-        if (request) request.status = "Rejected";
-        this.applyFilters();
-        this.calculateLeaveBalances();
-        this.loadLeaves();
-      },
-      error: (err) => console.error("Error rejecting leave:", err),
-    });
-  }
+      this.alertService.showSuccess("Leave request approved successfully!");
+    },
+    error: (err) => {
+      console.error("Error approving leave:", err);
+      this.alertService.showError("Failed to approve leave. Please try again.");
+    },
+  });
+}
+
+rejectRequest(id?: number): void {
+  if (!id) return;
+
+  this.leaveService.updateLeaveStatus(id, "REJECTED").subscribe({
+    next: () => {
+      const request = this.leaveList.find((l) => l.id === id);
+      if (request) request.status = "Rejected";
+
+      this.applyFilters();
+      this.calculateLeaveBalances();
+      this.loadLeaves();
+
+      this.alertService.showalert("Leave request rejected successfully!");
+    },
+    error: (err) => {
+      console.error("Error rejecting leave:", err);
+      this.alertService.showError("Failed to reject leave. Please try again.");
+    },
+  });
+}
+
 
   private calculateLeaveBalances(): void {
     const currentYear = new Date().getFullYear();

@@ -1,12 +1,13 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
+import { BASE_URL } from "./models/baseurl/constant";
 
 @Injectable({
   providedIn: "root",
 })
 export class ChangePasswordService {
-  private baseUrl = "http://localhost:8080";
+  private baseUrl = `${BASE_URL}`;
 
   constructor(private http: HttpClient) {}
 

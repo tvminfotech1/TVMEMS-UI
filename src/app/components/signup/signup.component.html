@@ -81,6 +81,9 @@
         <ng-container *ngIf="signupForm.get('empId')?.errors?.['required']"
           >Employee ID is required.</ng-container
         >
+        <ng-container *ngIf="signupForm.get('empId')?.errors?.['minlength']"
+          >Employee ID should be 6 letters</ng-container
+        >
       </mat-error>
     </mat-form-field>
 
@@ -254,7 +257,6 @@
     </span>
   </div>
  
-   <!-- Required Field Error -->
   <mat-error *ngIf="signupForm.get('confirmPassword')?.touched || signupForm.get('confirmPassword')?.dirty">
   <ng-container *ngIf="signupForm.get('confirmPassword')?.errors?.['required']">
     Confirm password is required.

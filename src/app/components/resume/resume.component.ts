@@ -3,9 +3,9 @@ import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { UserService } from '../user-service.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { MainlayoutService } from 'src/app/services/main-layout.service';
 import { FormProgressService } from 'src/app/services/form-progress.service';
+import { AlertService } from 'src/app/alert-service.service';
 
 @Component({
   selector: 'app-resume',
@@ -18,9 +18,8 @@ export class ResumeComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private http: HttpClient,
     private userService: UserService,
-    private snackBar: MatSnackBar,
+    private alertservice: AlertService,
     private mainlayoutService: MainlayoutService,
      private progressService :FormProgressService,
   ) {}
@@ -48,12 +47,7 @@ export class ResumeComponent implements OnInit {
       this.mainlayoutService.markTabCompleted('resume', true);
             this.router.navigate(['/mainlayout/final']);
     } else {
-      this.snackBar.open('Please fill all required fields', 'Close', {
-        duration: 3000,
-        horizontalPosition: 'center',
-        verticalPosition: 'top',
-        panelClass: ['error-snackbar'],
-      });
+      this.alertservice.showError('Please fill all required fields');
       this.resumeForm.markAllAsTouched();
     }
   }

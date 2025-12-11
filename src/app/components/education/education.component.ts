@@ -3,9 +3,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserService } from '../user-service.service';
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { MainlayoutService } from 'src/app/services/main-layout.service';
 import { FormProgressService } from 'src/app/services/form-progress.service';
+import { AlertService } from 'src/app/alert-service.service';
 
 @Component({
   selector: 'app-education',
@@ -20,7 +20,7 @@ export class EducationComponent implements OnInit {
     private formBuilder: FormBuilder,
     private router: Router,
     private userService: UserService,
-    private snackBar: MatSnackBar,
+    private alertservice: AlertService,
     private mainlayoutService: MainlayoutService,
      private progressService :FormProgressService,
   ) {
@@ -122,12 +122,7 @@ export class EducationComponent implements OnInit {
       this.mainlayoutService.markTabCompleted('education', true);
             this.router.navigate(['/mainlayout/skills']);
     } else {
-      this.snackBar.open('Please fill all required fields', 'Close', {
-        duration: 3000,
-        horizontalPosition: 'center',
-        verticalPosition: 'top',
-        panelClass: ['error-snackbar'],
-      });
+      this.alertservice.showError('Please fill all required fields');
       this.educationForm.markAllAsTouched();
     }
   }

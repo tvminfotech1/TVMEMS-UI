@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ResingService } from './service/resing.service';
 import { AuthService } from 'src/app/services/auth.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { AlertService } from 'src/app/alert-service.service';
 
 @Component({
   selector: 'app-resignation',
@@ -23,7 +23,7 @@ export class ResignationComponent implements OnInit {
     private fb: FormBuilder,
     private resingService: ResingService,
     private authService: AuthService,
-    private snackBar: MatSnackBar
+    private alertservice: AlertService
   ) {
     this.resignationForm = this.fb.group({
       name: ['', Validators.required],
@@ -95,55 +95,62 @@ export class ResignationComponent implements OnInit {
     });
   }
 
-  updateStatus(data: any, newStatus: 'Approved' | 'Rejected') {
-    data.status = newStatus;
+async updateStatus(data: any, newStatus: 'Approved' | 'Rejected') {
 
-    this.resingService.updateResignationStatus(data).subscribe({
-      next: (res) => {
-        if (this.isAdmin) {
-          this.submittedData = this.submittedData.filter(
-            (item) => item.id !== data.id
-          );
+  const result = await this.alertservice.showConfirm(
+    `Are you sure you want to ${newStatus.toLowerCase()} this resignation?`
+  );
 
-          if (newStatus === 'Rejected') {
-            if (data.employeeId === this.employeeId) {
-              this.hasSubmittedResignation = false;
-              this.submittedData = [res];
-              this.snackBar.open(
-                'Your resignation was rejected. You can submit a new request.',
-                'Close',
-                {
-                  duration: 3000,
-                  horizontalPosition: 'center',
-                  verticalPosition: 'top',
-                  panelClass: ['info-snackbar'],
-                }
-              );
-            }
+  if (!result.isConfirmed) return; 
+
+  data.status = newStatus;
+
+  this.resingService.updateResignationStatus(data).subscribe({
+    next: (res) => {
+      if (this.isAdmin) {
+        this.submittedData = this.submittedData.filter(
+          (item) => item.id !== data.id
+        );
+
+        if (newStatus === 'Rejected') {
+          if (data.employeeId === this.employeeId) {
+            this.hasSubmittedResignation = false;
+            this.submittedData = [res];
+            this.alertservice.showError(
+              'Your resignation was rejected. You can submit a new request.'
+            );
+            return;
           }
         }
-      },
-      error: (err) =>
-        console.error(`Error updating resignation to ${newStatus}:`, err),
-    });
+      }
+
+      this.alertservice.showSuccess(`Resignation ${newStatus.toLowerCase()} successfully!`);
+    },
+    error: (err) => {
+      console.error(`Error updating resignation to ${newStatus}:`, err);
+      this.alertservice.showError(
+        `Failed to ${newStatus.toLowerCase()} resignation. Please try again.`
+      );
+    },
+  });
+}
+
+
+openForm() {
+  const activeResignation = this.submittedData.find(
+    (r) => r.status === 'Pending' || r.status === 'Submitted' || r.status === 'Approved'
+  );
+
+  if (activeResignation) {
+    this.alertservice.showError(
+      'You have already submitted your resignation. You cannot apply again.'
+    );
+    return;
   }
 
-  openForm() {
-    if (this.submittedData.length > 0 || this.hasSubmittedResignation) {
-      this.snackBar.open(
-        'You have already submitted your resignation. You cannot apply again.',
-        'Close',
-        {
-          duration: 3000,
-          horizontalPosition: 'center',
-          verticalPosition: 'top',
-          panelClass: ['error-snackbar'],
-        }
-      );
-      return;
-    }
-    this.showForm = true;
-  }
+  this.showForm = true;
+}
+
 
   closeForm() {
     this.showForm = false;
@@ -156,30 +163,41 @@ export class ResignationComponent implements OnInit {
     });
   }
 
-  saveForm() {
-    if (this.resignationForm.valid) {
-      const formData = {
-        ...this.resignationForm.value,
-        date: new Date().toISOString().split('T')[0],
-        status: 'Pending',
-      };
-
-      this.resingService.submitResignation(formData).subscribe({
-        next: (res) => {
-          this.submittedData.unshift(res);
-          this.resignationForm.reset({
-            name: this.fullName,
-            employeeId: this.employeeId,
-          });
-          this.showForm = false;
-          this.hasSubmittedResignation = true;
-        },
-        error: (err) => {
-          console.error('Error saving resignation:', err);
-        },
-      });
-    } else {
-      this.resignationForm.markAllAsTouched();
-    }
+async saveForm() {
+  if (!this.resignationForm.valid) {
+    this.resignationForm.markAllAsTouched();
+    return;
   }
+
+  const result = await this.alertservice.showConfirm(
+    'Are you sure you want to submit your resignation?'
+  );
+
+  if (!result.isConfirmed) return; 
+
+  const formData = {
+    ...this.resignationForm.value,
+    date: new Date().toISOString().split('T')[0],
+    status: 'Pending',
+  };
+
+  this.resingService.submitResignation(formData).subscribe({
+    next: (res) => {
+      this.submittedData.unshift(res);
+      this.resignationForm.reset({
+        name: this.fullName,
+        employeeId: this.employeeId,
+      });
+      this.showForm = false;
+      this.hasSubmittedResignation = true;
+
+      this.alertservice.showSuccess('Resignation submitted successfully!');
+    },
+    error: (err) => {
+      console.error('Error saving resignation:', err);
+      this.alertservice.showError('Failed to submit resignation. Please try again.');
+    },
+  });
+}
+
 }

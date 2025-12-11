@@ -7,6 +7,7 @@ import {
 import { AuthService } from "src/app/services/auth.service";
 import { ChangeDetectorRef } from "@angular/core";
 import { LeaveService } from "src/app/services/leave.service";
+import { AlertService } from "src/app/alert-service.service";
 
 @Component({
   selector: "app-attendance",
@@ -28,7 +29,8 @@ export class AttendanceComponent implements OnInit {
     private attendanceService: AttendanceService,
     private authService: AuthService,
     private cdr: ChangeDetectorRef,
-    private leaveService: LeaveService
+    private leaveService: LeaveService,
+    private alertservice: AlertService,
   ) {}
 
   ngOnInit(): void {
@@ -91,7 +93,7 @@ export class AttendanceComponent implements OnInit {
   submitAttendance(): void {
     this.isSubmitted = true;
     if (this.attendanceForm.invalid) {
-      alert("⚠️ Please fill in required fields");
+      this.alertservice.showError(" Please fill in required fields");
       return;
     }
 
@@ -109,7 +111,7 @@ export class AttendanceComponent implements OnInit {
 
     this.attendanceService.submitAttendance(record).subscribe({
       next: () => {
-        alert("✅ Attendance submitted");
+        this.alertservice.showSuccess(" Attendance submitted Successfully");
 
         const empId = this.authService.getEmployeeId();
         const fullName = this.authService.getfullName();
@@ -133,7 +135,7 @@ export class AttendanceComponent implements OnInit {
         this.attendanceForm.get("department")?.setErrors(null);
         this.cdr.detectChanges();
       },
-      error: (err) => alert(err.error),
+      error: (err) => this.alertservice.showError(err.error),
     });
   }
 

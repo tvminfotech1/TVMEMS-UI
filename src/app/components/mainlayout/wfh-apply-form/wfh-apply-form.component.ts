@@ -9,7 +9,7 @@ import {
 } from "@angular/forms";
 import { WorkFromHomeService } from "src/app/services/work-from-home.service";
 import { AuthService } from "src/app/services/auth.service";
-import { MatSnackBar } from "@angular/material/snack-bar";
+import { AlertService } from "src/app/alert-service.service";
 
 export const dateRangeValidator: ValidatorFn = (
   control: AbstractControl
@@ -61,7 +61,7 @@ export class WfhApplyFormComponent implements OnInit {
     private fb: FormBuilder,
     private wfhService: WorkFromHomeService,
     private authService: AuthService,
-    private snackBar: MatSnackBar
+    private alertservice: AlertService,
   ) {
     this.wfhForm = this.fb.group(
       {
@@ -212,9 +212,8 @@ export class WfhApplyFormComponent implements OnInit {
           this.wfhForm.reset();
 
           this.formSubmitted.emit(response);
-          this.showSnackBar(
-            "WFH request submitted successfully!",
-            "success-snackbar"
+          this.alertservice.showSuccess(
+            "WFH request submitted successfully!"
           );
         },
         error: (error) => {
@@ -223,16 +222,15 @@ export class WfhApplyFormComponent implements OnInit {
       });
     } else {
       this.wfhForm.markAllAsTouched();
-      this.showSnackBar(
-        "Please fill all required fields correctly.",
-        "error-snackbar"
+      this.alertservice.showError(
+        "Please fill all required fields correctly."
       );
     }
   }
 
   onCancel(): void {
     this.formCancelled.emit();
-    this.showSnackBar("WFH request cancelled.", "error-snackbar");
+    this.alertservice.showInfo("WFH request cancelled.");
   }
 
   blockApproverInput(event: KeyboardEvent) {
@@ -266,15 +264,6 @@ export class WfhApplyFormComponent implements OnInit {
 
   onOverlayClick(_event: MouseEvent) {
     this.onCancel();
-  }
-
-  private showSnackBar(message: string, panelClass: string) {
-    this.snackBar.open(message, "Close", {
-      duration: 3000,
-      horizontalPosition: "center",
-      verticalPosition: "top",
-      panelClass: [panelClass],
-    });
   }
   toBeforeFromValidator(group: FormGroup) {
     const from = group.get("fromDate")?.value;

@@ -2,7 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { AuthService } from "src/app/services/auth.service";
 import { Router } from "@angular/router";
-import { MatSnackBar } from "@angular/material/snack-bar";
+import { AlertService } from "src/app/alert-service.service";
 
 @Component({
   selector: "app-login",
@@ -18,7 +18,7 @@ export class LoginComponent implements OnInit {
     private fb: FormBuilder,
     private authService: AuthService,
     private router: Router,
-    private snackBar: MatSnackBar
+    private alertservice: AlertService
   ) {}
 
   ngOnInit(): void {
@@ -59,26 +59,14 @@ export class LoginComponent implements OnInit {
         error: (err) => {
           console.error("Login error in component:", err);
 
-          this.snackBar.open(
-            "Invalid credentials. Please check and try again",
-            "Close",
-            {
-              duration: 3000,
-              horizontalPosition: "center",
-              verticalPosition: "top",
-              panelClass: ["error-snackbar"],
-            }
+          this.alertservice.showError(
+            "Invalid credentials. Please check and try again"
           );
         },
       });
     } else {
       this.loginForm.markAllAsTouched();
-      this.snackBar.open("Please enter your credentials", "Close", {
-        duration: 3000,
-        horizontalPosition: "center",
-        verticalPosition: "top",
-        panelClass: ["error-snackbar"],
-      });
+      this.alertservice.showError("Please enter your credentials");
     }
   }
 }

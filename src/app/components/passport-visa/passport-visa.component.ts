@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '../user-service.service';
 import { Router } from '@angular/router';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { MainlayoutService } from 'src/app/services/main-layout.service';
 import { FormProgressService } from 'src/app/services/form-progress.service';
+import { AlertService } from 'src/app/alert-service.service';
 
 @Component({
   selector: 'app-passport-visa',
@@ -19,7 +19,7 @@ export class PassportVisaComponent implements OnInit {
     private formBuilder: FormBuilder,
     private userService: UserService,
     private router: Router,
-    private snackBar: MatSnackBar,
+    private alertservice: AlertService,
     private mainlayoutService: MainlayoutService,
     private progressService :FormProgressService,
   ) {}
@@ -64,12 +64,7 @@ export class PassportVisaComponent implements OnInit {
       this.mainlayoutService.markTabCompleted('passport', true);
        this.router.navigate(['/mainlayout/family']);
     } else {
-      this.snackBar.open('Please fill all required fields', 'Close', {
-        duration: 3000,
-        horizontalPosition: 'center',
-        verticalPosition: 'top',
-        panelClass: ['error-snackbar'],
-      });
+      this.alertservice.showError('Please fill all required fields');
       this.userForm.markAllAsTouched();
     }
   }

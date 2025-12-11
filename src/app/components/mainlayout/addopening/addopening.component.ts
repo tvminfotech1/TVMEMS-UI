@@ -2,6 +2,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { JobPosting } from '../goal/interface/job-openingDto';
 import { MainLayoutService } from '../resignation/service/MainLayoutSevice';
+import { AlertService } from 'src/app/alert-service.service';
 
 @Component({
   selector: 'app-addopening',
@@ -18,7 +19,8 @@ export class AddOpeningComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private mainLayoutService: MainLayoutService
+    private mainLayoutService: MainLayoutService,
+    private alertservice: AlertService,
   ) {
     this.jobForm = this.fb.group({
       title: ['', [Validators.required, Validators.minLength(3)]],
@@ -67,9 +69,9 @@ export class AddOpeningComponent implements OnInit {
   };
 
   this.mainLayoutService.postJobPostings(formData).subscribe({
-    next: (data: JobPosting) => {
+    next: () => {
 
-      alert('Job posted successfully');
+      this.alertservice.showSuccess('Job posted successfully');
 
       this.jobForm.reset();
 
@@ -82,7 +84,7 @@ export class AddOpeningComponent implements OnInit {
       this.jobForm.updateValueAndValidity();
     },
     error: (err) => {
-      alert('Failed to post job');
+      this.alertservice.showError('Failed to post job');
       console.error(err);
     },
     complete: () => {

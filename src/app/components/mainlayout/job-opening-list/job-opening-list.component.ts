@@ -3,6 +3,7 @@ import { MainLayoutService } from '../resignation/service/MainLayoutSevice';
 import { MatDialog } from '@angular/material/dialog';
 import { JobEditDialogComponent } from './job-edit-dialog/job-edit-dialog.component';
 import { AuthService } from 'src/app/services/auth.service';
+import { AlertService } from 'src/app/alert-service.service';
 
 @Component({
   selector: 'app-job-opening-list',
@@ -21,7 +22,8 @@ export class JobOpeningListComponent implements OnInit {
   constructor(
     private mainLayoutService: MainLayoutService,
     private dialog: MatDialog,
-    private authService: AuthService
+    private authService: AuthService,
+    private alertservice: AlertService
   ) {}
 
   ngOnInit(): void {
@@ -66,25 +68,35 @@ export class JobOpeningListComponent implements OnInit {
         const index = this.jobs.findIndex((j) => j.id === this.editableJob.id);
         if (index !== -1) this.jobs[index] = { ...this.editableJob };
         this.showModal = false;
-        alert('Job details updated successfully!');
+  
       },
       error: (err) => {
         console.error('Error saving job', err);
-        alert('Failed to save job details');
+        this.alertservice.showError('Failed to save job details');
       },
     });
   }
 
-  deleteJob(id: number): void {
-    if (confirm('Are you sure you want to delete this job?')) {
+deleteJob(id: number): void {
+  this.alertservice
+    .showConfirm('Are you sure you want to delete this job?')
+    .then((result) => {
+      if (!result.isConfirmed) return; 
+
+
       this.mainLayoutService.deleteJobPosting(id).subscribe({
         next: () => {
           this.jobs = this.jobs.filter((j) => j.id !== id);
+          this.alertservice.showSuccess("Job deleted successfully!");
         },
-        error: (err) => console.error('Error deleting job', err),
+        error: (err) => {
+          console.error('Error deleting job', err);
+          this.alertservice.showError("Error deleting job");
+        },
       });
-    }
-  }
+    });
+}
+
   onQualificationChange(value: string): void {
     this.editableJob.qualifications = value.split(',').map((v) => v.trim());
   }

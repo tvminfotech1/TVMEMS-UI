@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PayrollEmployeeService } from 'src/app/services/payroll-employee.service';
 import { Employee } from 'src/app/models/employee';
+import { AlertService } from 'src/app/alert-service.service';
 
 @Component({
   selector: 'app-employee-view',
@@ -14,7 +15,8 @@ export class EmployeeViewComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private employeeService: PayrollEmployeeService,
-    private router: Router
+    private router: Router,
+    private alertservice: AlertService
   ) {}
 
   ngOnInit(): void {
@@ -42,7 +44,7 @@ export class EmployeeViewComponent implements OnInit {
         },
         error: (err) => {
           console.error('Failed to update status', err);
-          alert('Status update failed.');
+          this.alertservice.showError('Status update failed.');
         },
       });
   }
@@ -57,17 +59,19 @@ export class EmployeeViewComponent implements OnInit {
   }
 
   deleteEmployee(): void {
-    if (confirm('Are you sure you want to delete this employee?')) {
-      this.employeeService.deleteEmployee(this.employee.id).subscribe({
-        next: () => {
-          alert('Employee deleted successfully!');
-          this.router.navigate(['/mainlayout/payroll-employee']);
-        },
-        error: (err) => {
-          console.error('Failed to delete employee:', err);
-          alert('Failed to delete employee.');
-        },
-      });
-    }
+    this.alertservice.showConfirm('Are you sure you want to delete this employee?').then((result) => {
+      if (result.isConfirmed) {
+        this.employeeService.deleteEmployee(this.employee.id).subscribe({
+          next: () => {
+            this.alertservice.showSuccess('Employee deleted successfully!');
+            this.router.navigate(['/mainlayout/payroll-employee']);
+          },
+          error: (err) => {
+            console.error('Failed to delete employee:', err);
+            this.alertservice.showError('Failed to delete employee.');
+          },
+        });
+      }
+    });
   }
 }

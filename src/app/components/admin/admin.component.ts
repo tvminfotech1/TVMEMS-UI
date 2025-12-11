@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AlertService } from 'src/app/alert-service.service';
 import { UserlistService } from 'src/app/services/admin.service';
 import { AuthService } from 'src/app/services/auth.service';
 
@@ -16,7 +17,8 @@ export class AdminComponent implements OnInit {
 
   constructor(
     private userlistService: UserlistService,
-    private authService: AuthService
+    private authService: AuthService,
+    private alertservice: AlertService
   ) {}
 
   ngOnInit(): void {
@@ -59,23 +61,26 @@ export class AdminComponent implements OnInit {
     );
   }
 
-  deleteEmployee(employeeId: number): void {
-    if (!confirm('Are you sure you want to delete this user?')) return;
+async deleteEmployee(employeeId: number): Promise<void> {
+  const result = await this.alertservice.showConfirm('Are you sure you want to delete this user?');
 
-    this.userlistService.deleteUser(employeeId).subscribe({
-      next: () => {
-        alert('User deleted successfully!');
-        this.filteredEmployees = this.filteredEmployees.filter(
-          (emp) => emp.employeeId !== employeeId
-        );
-        this.employees = this.employees.filter(
-          (emp) => emp.employeeId !== employeeId
-        );
-      },
-      error: (err) => {
-        console.error('❌ Error deleting user:', err);
-        alert('Failed to delete user');
-      },
-    });
-  }
+  if (!result.isConfirmed) return;
+
+  this.userlistService.deleteUser(employeeId).subscribe({
+    next: () => {
+      this.alertservice.showSuccess('User deleted successfully!');
+      this.filteredEmployees = this.filteredEmployees.filter(
+        (emp) => emp.employeeId !== employeeId
+      );
+      this.employees = this.employees.filter(
+        (emp) => emp.employeeId !== employeeId
+      );
+    },
+    error: (err) => {
+      console.error('❌ Error deleting user:', err);
+      this.alertservice.showError('Failed to delete user');
+    },
+  });
+}
+
 }

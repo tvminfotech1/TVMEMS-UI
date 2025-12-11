@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserService } from '../user-service.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { MainlayoutService } from 'src/app/services/main-layout.service';
 import { FormProgressService } from 'src/app/services/form-progress.service';
+import { AlertService } from 'src/app/alert-service.service';
 
 @Component({
   selector: 'app-kyc',
@@ -18,7 +18,7 @@ export class KycComponent implements OnInit {
     private fb: FormBuilder,
     private userService: UserService,
     private router: Router,
-    private snackBar: MatSnackBar,
+    private alertservie: AlertService,
     private mainlayoutService: MainlayoutService,
     private progressService :FormProgressService,
   ) {}
@@ -76,12 +76,7 @@ export class KycComponent implements OnInit {
       this.mainlayoutService.markTabCompleted('kyc', true);
        this.router.navigate(['/mainlayout/passport']);
     } else {
-      this.snackBar.open('Please fill all required fields', 'Close', {
-        duration: 3000,
-        horizontalPosition: 'center',
-        verticalPosition: 'top',
-        panelClass: ['error-snackbar'],
-      });
+      this.alertservie.showError('Please fill all required fields');
       this.kycForm.markAllAsTouched();
     }
   }

@@ -18,7 +18,7 @@ import { AuthService } from "src/app/services/auth.service";
 import { Router } from "@angular/router";
 import { MatCardModule } from "@angular/material/card";
 import { ChangeDetectorRef } from "@angular/core";
-import { MatSnackBar } from "@angular/material/snack-bar";
+import { AlertService } from "src/app/alert-service.service";
 
 @Component({
   standalone: true,
@@ -89,7 +89,7 @@ export class ChangePasswordComponent implements OnInit {
   constructor(
     private router: Router,
     private cdr: ChangeDetectorRef,
-    private snackBar: MatSnackBar
+    private alertservice: AlertService
   ) {}
 
   ngOnInit(): void {
@@ -158,12 +158,7 @@ export class ChangePasswordComponent implements OnInit {
     control?.updateValueAndValidity();
 
     if (!control?.value) {
-      this.snackBar.open("Please enter your Previous Password", "Close", {
-        duration: 3000,
-        horizontalPosition: "center",
-        verticalPosition: "top",
-        panelClass: ["error-snackbar"],
-      });
+      this.alertservice.showError("Please enter your Previous Password");
       return;
     }
     this.validatePrevious(stepper);
@@ -211,30 +206,13 @@ export class ChangePasswordComponent implements OnInit {
     if (this.newPassGroup.invalid) {
       this.newPassGroup.markAllAsTouched();
       if (this.newPassGroup.hasError("sameAsOld")) {
-        this.snackBar.open(
-          "New password cannot be same as previous password",
-          "Close",
-          {
-            duration: 3000,
-            horizontalPosition: "center",
-            verticalPosition: "top",
-            panelClass: ["error-snackbar"],
-          }
+        this.alertservice.showError(
+          "New password cannot be same as previous password"
         );
       } else if (this.newPassGroup.hasError("mismatch")) {
-        this.snackBar.open("Passwords do not match", "Close", {
-          duration: 3000,
-          horizontalPosition: "center",
-          verticalPosition: "top",
-          panelClass: ["error-snackbar"],
-        });
+        this.alertservice.showError("Passwords do not match");
       } else if (this.newPassGroup.hasError("passwordRequired")) {
-        this.snackBar.open("Please fill all password fields", "Close", {
-          duration: 3000,
-          horizontalPosition: "center",
-          verticalPosition: "top",
-          panelClass: ["error-snackbar"],
-        });
+        this.alertservice.showError("Please fill all password fields");
       }
       return;
     }
