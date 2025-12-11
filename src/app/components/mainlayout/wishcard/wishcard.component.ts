@@ -177,7 +177,9 @@ export class WishcardComponent implements AfterViewInit, OnDestroy {
       if (!track) return;
 
       const cardCount = this.filteredWishes.length;
-      if (cardCount > 3) {
+      const screenWidth = window.innerWidth;
+
+      if (screenWidth >= 1000 && cardCount > 3) {
         const clone = track.cloneNode(true);
         track.parentNode.appendChild(clone);
       } else {
@@ -286,6 +288,34 @@ export class WishcardComponent implements AfterViewInit, OnDestroy {
     }, 2500);
   }
 
+  nextCardMobile() {
+    const track = this.carouselTrack.nativeElement as HTMLElement;
+    const cards = track.querySelectorAll(".card") as NodeListOf<HTMLElement>;
+    if (cards.length === 0) return;
+    const cardWidth = cards[0].offsetWidth + 25;
+    if (this.currentIndex >= cards.length - 1) {
+      this.currentIndex = 0;
+    } else {
+      this.currentIndex++;
+    }
+
+    track.style.transform = `translateX(-${this.currentIndex * cardWidth}px)`;
+  }
+
+  prevCardMobile() {
+    const track = this.carouselTrack.nativeElement as HTMLElement;
+    const cards = track.querySelectorAll(".card") as NodeListOf<HTMLElement>;
+    if (cards.length === 0) return;
+    const cardWidth = cards[0].offsetWidth + 25;
+    if (this.currentIndex <= 0) {
+      this.currentIndex = cards.length - 1;
+    } else {
+      this.currentIndex--;
+    }
+
+    track.style.transform = `translateX(-${this.currentIndex * cardWidth}px)`;
+  }
+
   ngAfterViewInit() {
     setTimeout(() => {
       const track = this.carouselTrack.nativeElement as HTMLElement;
@@ -296,17 +326,26 @@ export class WishcardComponent implements AfterViewInit, OnDestroy {
 
       track.querySelectorAll(".clone").forEach((c) => c.remove());
 
-      const trackWidth = track.scrollWidth;
+      const screenWidth = window.innerWidth;
 
-      const clones = cards.map((c) => {
-        const clone = c.cloneNode(true) as HTMLElement;
-        clone.classList.add("clone");
-        track.appendChild(clone);
-        return clone;
-      });
+      if (screenWidth < 1024) {
+        track.style.transform = "translateX(0)";
+        cancelAnimationFrame(this.animationFrame);
+      }
 
-      const totalScrollWidth = track.scrollWidth / 2;
-      this.startContinuousScroll(track, totalScrollWidth);
+      if (screenWidth >= 1000 && cards.length > 3) {
+        const clones = cards.map((c) => {
+          const clone = c.cloneNode(true) as HTMLElement;
+          clone.classList.add("clone");
+          track.appendChild(clone);
+          return clone;
+        });
+        const totalScrollWidth = track.scrollWidth / 2;
+        this.startContinuousScroll(track, totalScrollWidth);
+      } else {
+        cancelAnimationFrame(this.animationFrame);
+        track.style.transform = "translateX(0)";
+      }
     }, 800);
   }
 

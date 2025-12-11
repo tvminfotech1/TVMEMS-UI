@@ -2,70 +2,78 @@
   <div class="classic-dropdown-section" *ngIf="isUser">
     <div class="classic-form-group">
       <label for="year">Year:</label>
-      <select
-        id="year"
-        name="year"
-        [(ngModel)]="timelog.year"
-        (change)="onMonthOrYearChange()"
-        required>
-        <option *ngFor="let y of years" [value]="y">{{ y }}</option>
-      </select>
+      <mat-form-field appearance="outline" class="mat-dropdown">
+        <mat-select
+          [(ngModel)]="timelog.year"
+          (selectionChange)="onMonthOrYearChange()"
+          required
+        >
+          <mat-option *ngFor="let y of years" [value]="y">
+            {{ y }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
     </div>
 
     <div class="classic-form-group">
       <label for="month">Month:</label>
-      <select
-        id="month"
-        name="month"
-        [(ngModel)]="timelog.month"
-        (change)="onMonthOrYearChange()"
-        required>
-        <option value disabled>Select Month</option>
-        <option *ngFor="let m of months" [value]="m">{{ m }}</option>
-      </select>
+      <mat-form-field appearance="outline" class="mat-dropdown">
+        <mat-select
+          [(ngModel)]="timelog.month"
+          (selectionChange)="onMonthOrYearChange()"
+          required
+        >
+          <mat-option value="" disabled>Select Month</mat-option>
+          <mat-option *ngFor="let m of months" [value]="m">
+            {{ m }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
     </div>
 
     <div class="classic-form-group">
       <label for="weekendDate">Select Week (sunday):</label>
-      <select
-        id="weekendDate"
-        name="weekendDate"
-        [(ngModel)]="timelog.weekendDate"
-        (change)="onWeekendDateSelect()"
-        required>
-        <option
-          *ngFor="let date of weekendDates"
-          [value]="date"
-          [disabled]="isWeekendDateDisabled(date) && !isAdmin">
-          {{ date | date : "dd-MM-yyyy" }}
-          <span *ngIf="isWeekendDateDisabled(date) && !isAdmin">
-            (Not available)
-          </span>
-        </option>
-      </select>
+      <mat-form-field appearance="outline" class="filter-field">
+        <mat-select
+          [(ngModel)]="timelog.weekendDate"
+          (selectionChange)="onWeekendDateSelect()"
+        >
+          <mat-option
+            *ngFor="let date of weekendDates"
+            [value]="date"
+            [disabled]="isWeekendDateDisabled(date) && !isAdmin"
+          >
+            {{ date | date : "dd-MM-yyyy" }}
+            <span *ngIf="isWeekendDateDisabled(date) && !isAdmin">
+              (Not available)</span
+            >
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
     </div>
 
     <div class="classic-form-group">
-      <label for="employeeName">Employee Name:</label>
-      <input
-        type="text"
-        id="employeeName"
-        name="employeeName"
-        [(ngModel)]="timelog.employeeName"
-        readonly />
+      <label>Employee Name:</label>
+      <mat-form-field appearance="outline" class="mat-locked-select">
+        <mat-select [(ngModel)]="timelog.employeeName" disabled>
+          <mat-option [value]="timelog.employeeName">{{
+            timelog.employeeName
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
     </div>
 
     <div class="classic-form-group">
-      <label for="employeeId">Employee ID:</label>
-      <input
-        type="text"
-        id="employeeId"
-        name="employeeId"
-        [(ngModel)]="timelog.employeeId"
-        readonly />
+      <label>Employee ID:</label>
+      <mat-form-field appearance="outline" class="mat-locked-select">
+        <mat-select [(ngModel)]="timelog.employeeId" disabled>
+          <mat-option [value]="timelog.employeeId">{{
+            timelog.employeeId
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
     </div>
   </div>
-
   <div *ngIf="latestEntry && isUser" class="latest-entry-section">
     <h3>Latest Submitted Entry (Current Week)</h3>
     <table class="classic-table">
@@ -92,7 +100,9 @@
                   'approved',
                 'status-rejected':
                   (latestEntry.status ?? '').trim().toLowerCase() === 'rejected'
-              }">{{ latestEntry.status }}</span>
+              }"
+              >{{ latestEntry.status }}</span
+            >
           </td>
         </tr>
       </tbody>
@@ -100,10 +110,7 @@
   </div>
 
   <div class="accordion-item">
-    <h2 class="accordion-header">
-      Timesheet Summary
-
-    </h2>
+    <h2 class="accordion-header">Timesheet Summary</h2>
 
     <div class="accordion-content">
       <table class="classic-table">
@@ -142,19 +149,23 @@
                     (entry.status ?? '').trim().toLowerCase() === 'approved',
                   'status-rejected':
                     (entry.status ?? '').trim().toLowerCase() === 'rejected'
-                }">{{ entry.status }}</span>
+                }"
+                >{{ entry.status }}</span
+              >
             </td>
             <td *ngIf="isAdmin">
               <button
                 *ngIf="entry.status !== 'Approved'"
                 class="action-btn approve-btn"
-                (click)="updateTimesheetStatus(entry, 'Approved')">
+                (click)="updateTimesheetStatus(entry, 'Approved')"
+              >
                 Approve
               </button>
               <button
                 *ngIf="entry.status !== 'Rejected'"
                 class="action-btn reject-btn"
-                (click)="updateTimesheetStatus(entry, 'Rejected')">
+                (click)="updateTimesheetStatus(entry, 'Rejected')"
+              >
                 Reject
               </button>
             </td>
@@ -165,16 +176,14 @@
   </div>
 
   <div class="accordion-item" *ngIf="!isAdmin">
-    <h2 class="accordion-header">
-      Fill Your Timesheet
-
-    </h2>
+    <h2 class="accordion-header">Fill Your Timesheet</h2>
 
     <div class="accordion-content">
       <form
         #timelogForm="ngForm"
         (ngSubmit)="onSubmit(timelogForm)"
-        autocomplete="off">
+        autocomplete="off"
+      >
         <table class="classic-table">
           <thead class="header-table">
             <tr>
@@ -198,52 +207,78 @@
                   placeholder="Enter Project Name"
                   class="form-control"
                   required
-                  [disabled]="entryExistsForWeek || isAdmin" />
+                  [disabled]="entryExistsForWeek || isAdmin"
+                />
               </td>
               <td
                 *ngFor="
-        let day of [
-            'monday',
-            'tuesday',
-            'wednesday',
-            'thursday',
-            'friday'
-        ]
-    ">
+                  let day of [
+                    'monday',
+                    'tuesday',
+                    'wednesday',
+                    'thursday',
+                    'friday'
+                  ]
+                "
+              >
                 <ng-container
-                  *ngIf="timelogEntry.hours![day] === 'HOLIDAY'; else standardSelect">
+                  *ngIf="
+                    timelogEntry.hours![day] === 'HOLIDAY';
+                    else standardSelect
+                  "
+                >
                   <input
                     type="text"
                     [value]="timelogEntry.hours![day]"
                     [disabled]="true"
-                    class="form-control holiday-field">
+                    class="form-control holiday-field"
+                  />
                 </ng-container>
 
                 <ng-template #standardSelect>
-                  <select
-                    [name]="'hours' + day"
-                    [(ngModel)]="timelogEntry.hours![day]"
-                    (change)="calculateTotalHours()"
-                    required
-                    [disabled]="entryExistsForWeek || isAdmin">
-                    <option value>--select--</option>
-                    <option value="WFO">WFO</option>
+                  <mat-form-field appearance="outline" class="compact-select">
+                    <mat-select
+                      [name]="'hours' + day"
+                      [(ngModel)]="timelogEntry.hours![day]"
+                      (selectionChange)="calculateTotalHours()"
+                      required
+                      [disabled]="entryExistsForWeek || isAdmin"
+                    >
+                      <mat-option value="">--select--</mat-option>
 
-                    <option value="WFH"
-                      [disabled]="!wfhDays.includes(day)">WFH</option>
+                      <mat-option value="WFO"> WFO </mat-option>
 
-                    <option value="Leave"
-                      [disabled]="!leaveDays.includes(day)">Leave</option>
-                    <option value="Holiday"
-                      [disabled]="!holidayDates.includes(day)">Holiday</option>
-                  </select>
+                      <mat-option
+                        value="WFH"
+                        [disabled]="!wfhDays.includes(day)"
+                      >
+                        WFH
+                      </mat-option>
+
+                      <mat-option
+                        value="Leave"
+                        [disabled]="!leaveDays.includes(day)"
+                      >
+                        Leave
+                      </mat-option>
+
+                      <mat-option
+                        value="Holiday"
+                        [disabled]="!holidayDates.includes(day)"
+                      >
+                        Holiday
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
                 </ng-template>
-              </td> <td>
+              </td>
+              <td>
                 <input
                   type="text"
                   name="totalHours"
                   [(ngModel)]="timelogEntry.totalhours"
-                  readonly />
+                  readonly
+                />
               </td>
               <td>
                 <input
@@ -251,7 +286,8 @@
                   name="description"
                   [(ngModel)]="timelogEntry.description"
                   required
-                  [disabled]="entryExistsForWeek || isAdmin" />
+                  [disabled]="entryExistsForWeek || isAdmin"
+                />
               </td>
             </tr>
           </tbody>
@@ -261,8 +297,13 @@
           type="submit"
           class="submit-btn"
           [disabled]="
-            !timelogForm.valid || isFutureOrPastDateSelected || isAdmin || !isFormEnabled || isSubmitting
-          ">
+            !timelogForm.valid ||
+            isFutureOrPastDateSelected ||
+            isAdmin ||
+            !isFormEnabled ||
+            isSubmitting
+          "
+        >
           Submit
         </button>
       </form>
@@ -270,10 +311,7 @@
   </div>
 
   <div class="employee-history" *ngIf="isAdmin">
-    <h2 class="accordion-header">
-      Timesheet Details of All Employees
-
-    </h2>
+    <h2 class="accordion-header">Timesheet Details of All Employees</h2>
 
     <div class="accordion-content">
       <div>
@@ -283,8 +321,8 @@
             placeholder="Search by Employee ID or Name"
             [(ngModel)]="employeeIdSearch"
             (input)="applyFilters()"
-            class="search-input" />
-
+            class="search-input"
+          />
         </div>
 
         <table class="classic-table">
@@ -298,7 +336,8 @@
           <tbody>
             <tr
               *ngIf="filteredAllEmployeeTimelogs.length === 0"
-              class="no-data-row">
+              class="no-data-row"
+            >
               <td colspan="3">
                 <div class="no-data" style="padding: 80px">
                   No employees found
@@ -312,7 +351,8 @@
                 <button
                   mat-raised-button
                   color="primary"
-                  (click)="viewEmployeeHistory(entry)">
+                  (click)="viewEmployeeHistory(entry)"
+                >
                   View
                 </button>
               </td>
@@ -326,7 +366,8 @@
 
 <div
   *ngIf="selectedEmployeeHistory.length > 0"
-  class="employee-history-overlay">
+  class="employee-history-overlay"
+>
   <div class="employee-history-section">
     <button class="close-btn" (click)="closeEmployeeHistory()">×</button>
     <h3>
@@ -334,24 +375,43 @@
     </h3>
 
     <div class="filter-history">
-      <label>
+      <!-- <label>
         Year:
         <select [(ngModel)]="historyYearFilter"
           (change)="onHistoryYearChange()">
           <option value>All</option>
           <option *ngFor="let y of years" [value]="y">{{ y }}</option>
         </select>
-      </label>
+      </label> -->
+      <mat-form-field appearance="outline" class="filter-field">
+        <mat-label>Year</mat-label>
+        <mat-select
+          [(ngModel)]="timelog.year"
+          (selectionChange)="onMonthOrYearChange()"
+        >
+          <mat-option *ngFor="let y of years" [value]="y">{{ y }}</mat-option>
+        </mat-select>
+      </mat-form-field>
 
-      <label>
+      <!-- <label>
         Month:
         <select [(ngModel)]="historyMonthFilter"
           (change)="applyHistoryMonthFilter()">
           <option value>All</option>
           <option *ngFor="let m of historyMonths" [value]="m">{{ m }}</option>
         </select>
-      </label>
+      </label> -->
 
+      <mat-form-field appearance="outline" class="filter-field">
+        <mat-label>Month</mat-label>
+        <mat-select
+          [(ngModel)]="timelog.month"
+          (selectionChange)="onMonthOrYearChange()"
+        >
+          <mat-option value="" disabled>Select Month</mat-option>
+          <mat-option *ngFor="let m of months" [value]="m">{{ m }}</mat-option>
+        </mat-select>
+      </mat-form-field>
     </div>
 
     <div class="table-wrapper">
@@ -388,7 +448,9 @@
                     (entry.status ?? '').trim().toLowerCase() === 'approved',
                   'status-rejected':
                     (entry.status ?? '').trim().toLowerCase() === 'rejected'
-                }">{{ entry.status }}</span>
+                }"
+                >{{ entry.status }}</span
+              >
             </td>
           </tr>
         </tbody>

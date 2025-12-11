@@ -30,9 +30,10 @@ export class GoalService {
 
   getAllGoals(): Observable<any> {
     return this.http.get(`${this.baseUrl}/allGoals`);
+    return this.http.get(`${this.baseUrl}/allGoals`);
   }
 
   getGoalByUserid(empId: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/${empId}`);
+    return this.http.get(`${this.baseUrl}/allGoals/${empId}`);
   }
 }

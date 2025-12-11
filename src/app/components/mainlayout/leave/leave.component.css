@@ -264,18 +264,19 @@
   box-shadow: 0 0 8px rgba(0, 123, 255, 0.25);
 }
 
-.filter-select {
-  padding: 10px 14px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  background-color: white;
-  font-size: 14px;
-  cursor: pointer;
-  transition: all 0.3s ease;
+.responsive-select .mat-mdc-form-field-flex {
+  height: 30px !important;
+  border-radius: 6px !important;
+  border: 1px solid #ccc !important;
+  background: #fff !important;
 }
-.filter-select:hover {
-  border-color: #007bff;
-  box-shadow: 0 0 8px rgba(0, 123, 255, 0.15);
+
+.mat-mdc-form-field-infix {
+  min-height: 0px;
+}
+
+.mdc-text-field--filled:not(.mdc-text-field--disabled) {
+  background-color: white;
 }
 
 .table-wrapper {
@@ -350,7 +351,6 @@ td .btn-reject {
 td {
   white-space: nowrap;
 }
-
 
 .status-badge,
 .leave-type-badge {
@@ -738,6 +738,10 @@ td {
     font-size: 12px;
     padding: 5px 10px;
   }
+
+  .responsive-select {
+    width: 100%;
+  }
 }
 
 @media (max-width: 1250px) and (min-width: 1020px) {
@@ -1013,6 +1017,9 @@ td {
     min-width: 75px;
     margin: 2px 4px;
     vertical-align: middle;
+  }
+  .responsive-select {
+    width: 15%;
   }
 }
 

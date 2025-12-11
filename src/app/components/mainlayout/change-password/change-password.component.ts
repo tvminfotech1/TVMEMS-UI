@@ -92,6 +92,8 @@ export class ChangePasswordComponent implements OnInit {
     private alertservice: AlertService
   ) {}
 
+  
+
   ngOnInit(): void {
     const empId = this.authService.getEmployeeId();
 
