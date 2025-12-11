@@ -9,8 +9,7 @@
       <button
         mat-raised-button
         color="primary"
-        (click)="navigateToAddEmployee()"
-      >
+        (click)="navigateToAddEmployee()">
         <mat-icon>person_add</mat-icon>
         Add Employee
       </button>
@@ -21,7 +20,7 @@
     <mat-form-field appearance="outline">
       <mat-label>Work Location</mat-label>
       <mat-select [(value)]="selectedLocation">
-        <mat-option value="">All Locations</mat-option>
+        <mat-option value>All Locations</mat-option>
         <mat-option *ngFor="let loc of uniqueLocations" [value]="loc">
           {{ loc }}
         </mat-option>
@@ -31,7 +30,7 @@
     <mat-form-field appearance="outline">
       <mat-label>Status</mat-label>
       <mat-select [(value)]="selectedStatus">
-        <mat-option value="">All Status </mat-option>
+        <mat-option value>All Status </mat-option>
         <mat-option *ngFor="let status of uniqueStatuses" [value]="status">
           {{ status }}
         </mat-option>
@@ -41,7 +40,7 @@
     <mat-form-field appearance="outline">
       <mat-label>Department</mat-label>
       <mat-select [(value)]="selectedDesignation">
-        <mat-option value="">All Departments</mat-option>
+        <mat-option value>All Departments</mat-option>
         <mat-option *ngFor="let des of uniqueDesignations" [value]="des">
           {{ des }}
         </mat-option>
@@ -97,8 +96,7 @@
             [ngClass]="{
               'text-success': emp.status === 'Active',
               'text-danger': emp.status === 'Deactivated'
-            }"
-          >
+            }">
             <b>{{ emp.status }}</b>
           </span>
         </td>
@@ -116,12 +114,12 @@
             <button class="view-btn"
               mat-stroked-button
               color="primary"
-              [routerLink]="['/mainlayout/payroll-employee', emp.id]"
-            >
+              [routerLink]="['/mainlayout/payroll-employee', emp.id]">
               <mat-icon>visibility</mat-icon>
               View
             </button>
-            <button class="add-btn" mat-raised-button color="primary" (click)="viewPayRun(emp)">
+            <button class="add-btn" mat-raised-button color="primary"
+              (click)="viewPayRun(emp)">
               <mat-icon>add</mat-icon>
               Add Salary
             </button>
@@ -134,10 +132,50 @@
     </table>
     <div
       class="no-data mat-elevation-z1"
-      *ngIf="filteredEmployees.length === 0"
-    >
+      *ngIf="filteredEmployees.length === 0">
       <mat-icon color="warn">error_outline</mat-icon>
       No employees found for selected filters.
     </div>
+    <!-- CARD VIEW (Visible only on mobile) -->
+    <div class="employee-card-view" *ngIf="filteredEmployees.length > 0">
+      <div class="emp-card" *ngFor="let emp of filteredEmployees">
+        <div class="emp-row">
+          <strong>EMP ID:</strong> {{ emp.id }}
+        </div>
+        <div class="emp-row">
+          <strong>Name:</strong> {{ emp.fullName }}
+        </div>
+        <div class="emp-row">
+          <strong>Email:</strong> {{ emp.email }}
+        </div>
+        <div class="emp-row">
+          <strong>Department:</strong> {{ emp.department }}
+        </div>
+        <div class="emp-row">
+          <strong>Status:</strong>
+          <span [ngClass]="{
+              'text-success': emp.status === 'Active',
+              'text-danger': emp.status === 'Deactivated'
+            }">
+            {{ emp.status }}
+          </span>
+        </div>
+        <div class="emp-row">
+          <strong>Location:</strong> {{ emp.location }}
+        </div>
+
+        <div class="card-actions">
+          <button mat-stroked-button color="primary"
+            [routerLink]="['/mainlayout/payroll-employee', emp.id]">
+            <mat-icon>visibility</mat-icon> View
+          </button>
+
+          <button mat-raised-button color="primary" (click)="viewPayRun(emp)">
+            <mat-icon>add</mat-icon> Add Salary
+          </button>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>

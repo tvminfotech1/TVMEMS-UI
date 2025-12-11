@@ -91,20 +91,4 @@ export class AttendanceService {
     });
   }
 
-  updateAttendance(record: AttendanceRecord) {
-    this.http
-      .put<AttendanceRecord>(
-        `${this.baseUrl}/${record.empId}/${record.date}`,
-        record,
-        { headers: this.getAuthHeaders() }
-      )
-      .subscribe(
-        () => this.loadAttendance(),
-        (error) => console.error("Error updating attendance", error)
-      );
-  }
-
-  isTodayHoliday(): Observable<boolean> {
-    return this.http.get<boolean>(`${this.apiUrl}/today`);
-  }
 }

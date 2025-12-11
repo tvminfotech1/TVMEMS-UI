@@ -25,7 +25,7 @@
   margin: 0;
   font-size: 1.4rem;
   font-weight: 600;
-  color:#0a0f3c;
+  color: #0a0f3c;
 }
 
 .back-btn {
@@ -43,7 +43,7 @@
 }
 
 .close-btn:hover {
-  background-color:#0a0f3c;
+  background-color: #0a0f3c;
   color: white;
 }
 
@@ -167,5 +167,10 @@ input[type="number"] {
 
   .employee-suggestion {
     font-size: 0.9rem;
+  }
+}
+@media (max-width: 330px) {
+  .inputWidth {
+    width: 75% !important;
   }
 }

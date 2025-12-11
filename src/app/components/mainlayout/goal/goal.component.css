@@ -3,6 +3,7 @@
   font-family: "Segoe UI", sans-serif;
 }
 
+
 body {
   font-family: Arial, sans-serif;
   margin: 0;
@@ -64,7 +65,7 @@ body {
   height: auto;
   max-height: 90vh;
   overflow-y: auto;
-  overflow-x: hidden;
+  /* overflow-x: hidden; */
   scrollbar-width: thin;
   scrollbar-color: #ccc transparent;
 }
@@ -101,6 +102,13 @@ body {
   position: relative;
   z-index: 10;
   gap: 10px;
+}
+.view-btn {
+  background-color: #3f51b5;
+  color: #fff;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
 }
 
 .form-btn-group button {
@@ -173,6 +181,8 @@ body {
 }
 
 .admin-container h3 {
+  font-size: 30px;
+  font-weight: 500;
   text-align: center;
   margin-bottom: 20px;
   color: #333;
@@ -222,6 +232,11 @@ body {
   max-height: 380px;
   border-radius: 8px;
   border: 1px solid #ddd;
+  overflow-x: auto !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-x;
+  display: block;
 }
 
 .table {
@@ -277,7 +292,7 @@ th {
 }
 
 .mat-elevation-z8 th {
-  position: sticky;
+  position: static;
   background-color: #3f51b5;
   color: white;
   top: 0;
@@ -308,6 +323,13 @@ th {
   overflow-y: auto;
   position: relative;
 }
+.no-goals-cell,
+.no-goals-mobile{
+  text-align: center;
+  padding: 100px;
+  font-size: 16px;
+  color: #777;
+}
 
 .table-wrapper {
   max-height: 60vh;
@@ -325,6 +347,10 @@ th {
   font-weight: 600;
   background-color: #f5f5f5;
   border-bottom: 2px solid #ddd;
+  position: sticky !important;
+  top: 0;
+  background: white;
+  z-index: 20 !important;
 }
 
 .status-cell {
@@ -449,7 +475,6 @@ a {
   width: 60vw;
   box-sizing: border-box;
   max-height: 90vh;
-  overflow: hidden;
   border-radius: 8px;
   background: #fff;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
@@ -579,9 +604,9 @@ a {
 .goal-card-container {
   position: fixed;
   top: 50%;
-  left: 50%;
+  left: 60%;
   transform: translate(-50%, -50%);
-  width: 40%;
+  width: 50%;
   max-height: 80vh;
   background: #fff;
   border: 0px solid gray;
@@ -737,14 +762,17 @@ a {
 }
 
 .year-circle {
+  aspect-ratio: 1 / 1; 
+  width: clamp(30px, 10vw, 60px);
   position: relative;
-  width: 420px;
   height: 420px;
   border-radius: 50%;
+  font-size: clamp(10px, 3vw, 20px);
   display: flex;
   justify-content: center;
   align-items: center;
   margin: 0 auto;
+  flex-shrink: 1;  
 }
 
 .month-node {
@@ -993,93 +1021,183 @@ button[disabled] {
   font-weight: 500;
 }
 
-@media (max-width: 900px) {
-  .popup-table-user table,
-  .popup-table-user thead,
-  .popup-table-user tbody,
-  .popup-table-user th,
-  .popup-table-user td,
-  .popup-table-user tr {
-    display: block;
-    width: 100%;
-  }
+.popup-table-user-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
 
-  .popup-table-user thead {
-    display: none;
-  }
+.popup-table-user {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  width: 90%;
+  max-width: 1200px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 0;
+}
 
-  .popup-table-user tbody tr {
-    background: #fff;
-    margin: 12px 0;
-    padding: 15px;
-    border-radius: 10px;
-    border: 1px solid #e0e0e0;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  }
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  border-bottom: 2px solid #3f51b5;
+  background: #f5f5f5;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
 
-  .popup-table-user tbody td {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 8px 5px;
-    border-bottom: 1px solid #eee;
-  }
-
-  .popup-table-user tbody td:last-child {
-    border-bottom: none;
-  }
-
-  .popup-table-user tbody td:nth-child(1)::before {
-    content: "Category";
-    font-weight: 600;
-  }
-  .popup-table-user tbody td:nth-child(2)::before {
-    content: "Description";
-    font-weight: 600;
-  }
-  .popup-table-user tbody td:nth-child(3)::before {
-    content: "Weight";
-    font-weight: 600;
-  }
-  .popup-table-user tbody td:nth-child(4)::before {
-    content: "Start Date";
-    font-weight: 600;
-  }
-  .popup-table-user tbody td:nth-child(5)::before {
-    content: "Due Date";
-    font-weight: 600;
-  }
-  .popup-table-user tbody td:nth-child(6)::before {
-    content: "Progress";
-    font-weight: 600;
-  }
-  .popup-table-user tbody td:nth-child(7)::before {
-    content: "Action";
-    font-weight: 600;
-  }
-
-  .popup-table-user tbody td > * {
-    flex: 1;
-    text-align: right;
-  }
-
-  .popup-table-user mat-form-field,
-  .popup-table-user input,
-  .popup-table-user select,
-  .popup-table-user .mat-select {
-    width: 100%;
-  }
-
-  .popup-table-user tbody td:nth-of-type(7) {
-    justify-content: flex-end;
-    gap: 12px;
-  }
-
-  .popup-table-user i {
-    font-size: 18px;
+  h1 {
+    font-size: 1.5rem;
+    color: #3f51b5;
+    margin: 0;
   }
 }
 
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #333;
+  padding: 0;
+  line-height: 1;
+}
+
+.desktop-table-view {
+  display: none;
+  padding: 24px;
+}
+
+.custom-table {
+  width: 100%;
+}
+
+.custom-table .mat-form-field-wrapper {
+  padding-bottom: 0.5em;
+}
+.custom-table mat-form-field {
+  width: 100px;
+}
+
+.mat-header-cell {
+  background-color: #3f51b5;
+  color: #fff;
+  font-weight: bold;
+  padding: 12px 18px;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+}
+
+.mat-cell:last-child {
+  min-width: 250px;
+}
+
+.mat-cell button {
+  margin-right: 8px;
+  padding: 4px 8px;
+  min-width: unset;
+  line-height: 1.5;
+  height: auto;
+  font-size: 14px !important;
+}
+
+.ri-delete-bin-fill {
+  color: #e53935;
+  font-size: 20px;
+}
+
+.mobile-card-view {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+}
+
+.goal-box {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background: #fff;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.goal-box-header {
+  background: #0d47a1;
+  color: #fff;
+  font-weight: bold;
+  padding: 12px 16px;
+  font-size: 1.1rem;
+  text-align: center;
+}
+
+.goal-box-content {
+  padding: 10px 16px;
+}
+
+.goal-row-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  margin: 0;
+  border-bottom: 1px solid #eee;
+  font-size: 1rem;
+}
+
+.goal-row-item:last-child {
+  border-bottom: none;
+}
+
+.goal-row-item .label {
+  font-weight: bold;
+  color: #333;
+  flex-basis: 40%;
+}
+
+.goal-row-item .value,
+.goal-row-item .value-input {
+  text-align: right;
+  flex-basis: 60%;
+}
+
+.mobile-datepicker,
+.mobile-progress-field {
+  width: 100%;
+  min-width: 120px;
+  margin: 0;
+}
+.mobile-datepicker .mat-form-field-wrapper,
+.mobile-progress-field .mat-form-field-wrapper {
+  padding-bottom: 0.25em !important;
+}
+
+.goal-box-actions {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 8px;
+  border-top: 1px solid #ddd;
+}
+
+.delete-btn-mobile {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+.delete-btn-mobile .ri-delete-bin-fill {
+  color: #e53935;
+  font-size: 20px;
+}
 .pagination {
   display: flex;
   justify-content: center;
@@ -1114,7 +1232,288 @@ button[disabled] {
   font-weight: 500;
   color: #333;
 }
+
+@media (min-width: 992px) {
+  .mobile-card-view {
+    display: none;
+  }
+  .desktop-table-view {
+    display: block;
+  }
+}
+@media (max-width: 991px) {
+    .popup-table-user .table-wrapper.desktop-table-view {
+        display: none !important;
+    }
+    .popup-table-user .goals-vertical-list.mobile-card-view {
+        display: block !important; 
+    }
+}
+
+@media (min-width: 600px) and (max-width: 991px) {
+  .goal-box {
+    max-width: 400px;
+  }
+  .mobile-card-view {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .container2 {
+    padding: 10px;
+    margin: 10px;
+  }
+
+  .circle-map-container {
+    width: 100% !important;
+    height: 70vh;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    padding: 0;
+    margin: 0 auto !important;
+  }
+
+  .goal-mobile-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    bottom: 20px;
+  }
+
+  .year-circle {
+    width: 230px !important;
+    height: 230px !important;
+    position: relative !important;
+    margin: 0 auto !important;
+    transform: scale(0.8);
+    left: 5px;
+  }
+
+  .year-navigation {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 10px !important;
+  }
+
+  .year-label {
+    font-size: 14px !important;
+  }
+
+  .year-btn {
+    width: 28px !important;
+    height: 28px !important;
+    font-size: 14px !important;
+  }
+
+  .month-node {
+    width: 42px !important;
+    height: 42px !important;
+    line-height: 42px !important;
+    font-size: 10px !important;
+    position: absolute !important;
+    margin: 0 !important;
+  }
+
+  .month-circle {
+    width: 45px !important;
+    height: 45px !important;
+    font-size: 10px !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    border-radius: 50%;
+  }
+
+  .months-grid {
+    order: 2 !important;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-top: 10px;
+  }
+
+  .goal-card-container {
+    position: fixed;
+    top: 30%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 75% !important;
+    max-height: 70vh;
+    padding: 15px;
+    border-radius: 12px;
+  }
+
+  .goal-card-container h3 {
+    font-size: 16px !important;
+    text-align: center;
+    margin-bottom: 12px;
+  }
+
+  .goal-description-month {
+    font-size: 12px;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+
+  .goal-dates-month {
+    font-size: 13px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .progress-circle-wrapper {
+    width: 80px;
+    height: 80px;
+    margin: 10px auto;
+  }
+
+  .progress-value {
+    font-size: 18px !important;
+  }
+
+  .progress-text {
+    font-size: 14px !important;
+  }
+
+  .goal-row {
+    flex-direction: column !important;
+    gap: 5px !important;
+  }
+
+  .goal-col {
+    width: 100% !important;
+  }
+
+  .add-btn {
+    width: 100% !important;
+    padding: 7px 0 !important;
+    text-align: center !important;
+    border-radius: 10px !important;
+    font-size: 14px !important;
+  }
+
+  .modal,
+  .modal-container {
+    width: 95%;
+    max-width: 95%;
+    padding: 15px;
+  }
+
+  .goal-title-month {
+    font-size: 14px !important;
+  }
+
+  .section-title {
+    font-size: 16px !important;
+    margin-bottom: 10px !important;
+    text-align: center !important;
+  }
+  .noGoals {
+    width: 80% !important;
+    height: 50vh;
+    margin: 0 auto !important;
+    display: block !important;
+    font-size: 14px !important;
+    padding: 100px 0 !important;
+    border-radius: 8px !important;
+  }
+  .searchBox {
+    flex-direction: row;
+    align-items: stretch;
+    width: 100%;
+    padding: 6px;
+  }
+
+  .searchBox input {
+    width: 100%;
+    margin-bottom: 8px;
+  }
+
+  .searchBox button {
+    width: 100%;
+  }
+  .month-nav {
+    gap: 8px;
+  }
+
+  .month-nav span {
+    font-size: 14px;
+  }
+
+  .month-nav button {
+    font-size: 14px;
+  }
+  .pagination {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .pagination button {
+    font-size: 12px;
+    padding: 6px 10px;
+  }
+
+  .pagination span {
+    font-size: 12px;
+  }
+  .table-wrapperrr {
+    max-height: 250px;
+    
+  }
+
+  .table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .table th,
+  .table td {
+    font-size: 12px;
+    padding: 6px;
+  }
+
+  .view-btn {
+    padding: 5px 8px;
+    font-size: 12px;
+  }
+  .top-bar {
+    gap: 8px;
+    padding: 8px;
+  }
+}
+
 @media (max-width: 768px) {
+  .container2 {
+    padding: 15px;
+  }
+  
+  .circle-map-container,
+  .year-circle {
+    width: 350px;
+    height: 350px;
+  }
+  .month-node {
+    width: 45px;
+    height: 45px;
+    font-size: 11px;
+    line-height: 45px;
+  }
+  .month-circle {
+    width: 50px;
+    height: 50px;
+    font-size: 11px;
+  }
+  .goal-card-container {
+    width: 90%;
+    max-height: 70vh;
+  }
   .searchBox {
     width: 100%;
     max-width: 100%;
@@ -1135,10 +1534,6 @@ button[disabled] {
     width: 100%;
     max-width: 100%;
     padding: 8px 10px;
-  }
-
-  .month-nav span {
-    font-size: 16px;
   }
 
   .month-nav button {
@@ -1179,76 +1574,148 @@ button[disabled] {
     gap: 10px;
     padding: 10px;
   }
-}
-
-@media (max-width: 480px) {
-  .searchBox {
-    flex-direction: column;
-    align-items: stretch;
+  .goal-card-table .table {
     width: 100%;
-    padding: 8px;
+    border-collapse: collapse;
   }
 
-  .searchBox input {
-    width: 100%;
-    margin-bottom: 8px;
+  .goal-card-table thead {
+    display: none;
   }
 
-  .searchBox button {
-    width: 100%;
-  }
-  .month-nav {
-    gap: 8px;
-  }
-
-  .month-nav span {
-    font-size: 14px;
-  }
-
-  .month-nav button {
-    font-size: 14px;
-  }
-  .pagination {
-    flex-wrap: wrap;
-    gap: 6px;
-  }
-
-  .pagination button {
-    font-size: 12px;
-    padding: 6px 10px;
-  }
-
-  .pagination span {
-    font-size: 12px;
-  }
-  .table-wrapperrr {
-    max-height: 250px;
-  }
-
-  .table {
+  .goal-card-table .table,
+  .goal-card-table .table tbody,
+  .goal-card-table .table tr,
+  .goal-card-table .table td {
     display: block;
-    overflow-x: auto;
+    width: 100%;
+  }
+
+  .goal-card-table .table tr {
+    background: #fff;
+    margin-bottom: 14px;
+    padding: 14px 12px;
+    border-radius: 12px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+  }
+
+  .goal-card-table .table td {
+    padding: 10px 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    border: none;
+  }
+
+  .goal-card-table .table td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #444;
+    flex: 1;
+    text-align: left;
+    padding-right: 10px;
     white-space: nowrap;
   }
 
-  .table th,
-  .table td {
-    font-size: 12px;
-    padding: 6px;
+  .goal-card-table .view-btn-mobile {
+    background: #3f51b5;
+    color: #fff;
+    padding: 6px 14px;
+    border: none;
+    border-radius: 6px;
+    font-size: 13px;
+  }
+  .scroll,
+  .table-wrapper,
+  .table-wrapperrr {
+    overflow-x: auto !important;
+    overflow-y: auto !important;
+    touch-action: pan-x !important;
+    display: block !important;
+    width: 100%;
   }
 
-  .view-btn {
-    padding: 5px 8px;
+  body, html,
+  .main-container,
+  .container2,
+  .container,
+  .card {
+    overflow: visible !important;
+    min-width: 0 !important;
+  }
+
+}
+@media (max-width: 1024px) {
+  .container2 {
+    max-width: 95%;
+  }
+  .circle-map-container,
+  .year-circle {
+    width: 380px;
+    height: 380px;
+  }
+  .month-node {
+    width: 48px;
+    height: 48px;
+    font-size: 12px;
+    line-height: 48px;
+  }
+  .month-circle {
+    width: 52px;
+    height: 52px;
     font-size: 12px;
   }
-  .top-bar {
-    gap: 8px;
-    padding: 8px;
+  .goal-card-container {
+    width: 70%;
+    max-height: 75vh;
   }
 }
-@media (max-width: 320px) {
+
+@media (max-width: 1280px) {
+  .container2 {
+    max-width: 1100px;
+  }
+}
+
+@media (max-width: 768px) {
+  .goal-card,
+  .goal-card1 {
+    flex: 1 1 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .table-wrapperrr,
+  .scroll {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    touch-action: pan-x !important;
+  }
+}
+
+
+@media (max-width: 380px) {
+  .months-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .year-circle {
+    width: 230px !important;
+    height: 230px !important;
+    position: relative !important;
+    left: 10px;
+    margin: 0 auto !important;
+    transform: scale(0.7);
+  }
+}
+@media (max-width: 330px) {
+  .year-circle {
+    transform: scale(0.55);
+    left: 2;
+    bottom: 5px;
+  }
   .month-nav {
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     gap: 5px;
     padding: 6px 0;
@@ -1260,19 +1727,19 @@ button[disabled] {
   }
 
   .month-nav span {
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 600;
   }
   .searchBox {
-    flex-direction: column;
-    gap: 5px;
+    flex-direction: row;
+    gap: 4px;
     width: 100%;
-    padding: 5px;
+    padding: 4px;
   }
 
   .searchBox input {
     width: 100%;
-    font-size: 13px;
+    font-size: 12px;
   }
 
   .searchBox button {
@@ -1280,20 +1747,7 @@ button[disabled] {
     font-size: 13px;
     padding: 5px;
   }
-  .pagination {
-    flex-direction: column;
-    gap: 6px;
-  }
 
-  .pagination button {
-    width: 100%;
-    padding: 6px;
-    font-size: 12px;
-  }
-
-  .pagination span {
-    font-size: 12px;
-  }
   .table-wrapperrr {
     max-height: 220px;
   }
@@ -1307,18 +1761,126 @@ button[disabled] {
     padding: 5px;
   }
 
-  .view-btn {
-    width: 100%;
-    font-size: 11px;
-    padding: 5px;
-  }
   .top-bar {
     gap: 6px;
-    padding: 6px;
+    padding: 7px;
   }
 }
 
 .month-node.disabled {
   pointer-events: none;
   opacity: 0.4;
+}
+@media (max-width: 426px) {
+  .mobile-datepicker,
+  .mobile-progress-field {
+    width: 100px;
+    min-width: 100px;
+    margin: 0;
+  }
+  .mobile-datepicker .mat-form-field-wrapper,
+  .mobile-progress-field .mat-form-field-wrapper {
+    padding-bottom: 0.25em !important;
+    margin-top: 0;
+  }
+  .mobile-datepicker .mat-form-field-flex {
+    align-items: center;
+    height: 36px;
+  }
+  .mat-form-field-suffix {
+    align-self: center;
+  }
+
+  .popup-table-user {
+    width: 95%;
+  }
+  .header-container {
+    padding: 12px 16px;
+  }
+  .header-container h1 {
+    font-size: 1.3rem;
+  }
+  .mobile-card-view {
+    padding: 12px;
+    gap: 12px;
+  }
+  .goal-box-content {
+    padding: 8px 12px;
+  }
+  .goal-row-item {
+    font-size: 0.95rem;
+  }
+  .goal-box-actions button {
+    font-size: 13px !important;
+    padding: 4px 6px;
+    margin: 0 2px;
+  }
+  ::ng-deep
+    .mat-mdc-text-field-wrapper.mdc-text-field--outlined
+    .mat-mdc-form-field-infix {
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+  }
+  ::ng-deep .mat-mdc-form-field-infix {
+    width: 0%;
+  }
+  .admin-container {
+    padding: 15px;
+  }
+  .admin-container h3 {
+    font-size: 20px;
+  }
+}
+
+@media (min-width: 426px) and (max-width: 991px) {
+  .mobile-datepicker,
+  .mobile-progress-field {
+    width: 140px;
+    min-width: 140px;
+  }
+}
+.goal-card-container::-webkit-scrollbar,
+.modal-container::-webkit-scrollbar {
+  width: 6px;
+}
+.goal-card-container::-webkit-scrollbar-thumb,
+.modal-container::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+.goal-card-container::-webkit-scrollbar-track,
+.modal-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+@media (max-width: 380px) {
+  .goal-card-table .table td {
+    font-size: 12px;
+    padding: 8px 6px;
+    gap: 4px;
+    white-space: nowrap;
+  }
+
+  .goal-card-table .table td::before {
+    font-size: 12px;
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+
+  .goal-card-table .table td span,
+  .goal-card-table .table td {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .goal-card-table .table td {
+    display: flex;
+    justify-content: space-between;
+  }
+  td:nth-child(2),
+  th:nth-child(2) {
+    white-space: normal !important;
+    word-break: break-word !important;
+    text-align: right;
+  }
 }
