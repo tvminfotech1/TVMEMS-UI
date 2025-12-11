@@ -4,6 +4,7 @@ import { PayrollEmployeeService } from 'src/app/services/payroll-employee.servic
 import { Employee } from 'src/app/models/employee';
 import { SalaryHistory } from 'src/app/models/salaryHistory';
 import { Router } from '@angular/router';
+import { AlertService } from 'src/app/alert-service.service';
 
 declare var require: any;
 const html2pdf = require('html2pdf.js');
@@ -36,7 +37,8 @@ export class ReportComponent implements OnInit {
   constructor(
     private salaryService: SalaryHistoryService,
     private employeeService: PayrollEmployeeService,
-    private router: Router
+    private router: Router,
+    private alertservice: AlertService, 
   ) {}
 
   ngOnInit(): void {
@@ -135,5 +137,6 @@ export class ReportComponent implements OnInit {
     };
 
     html2pdf().from(element).set(options).save();
+    this.alertservice.showSuccess('Report downloaded successfully!');
   }
 }

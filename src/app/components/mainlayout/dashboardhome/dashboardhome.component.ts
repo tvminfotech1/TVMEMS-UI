@@ -40,33 +40,41 @@ export class DashboardhomeComponent implements OnInit {
     holidays: false,
     wishes: false,
   };
+  greetingIcon: any;
 
   constructor(
     private authService: AuthService,
     private route: ActivatedRoute
   ) {}
 
-  ngOnInit() {
-    const hour = new Date().getHours();
-    this.greeting =
-      hour < 12
-        ? 'Good Morning! 🌞'
-        : hour < 17
-        ? 'Good Afternoon! ☀️'
-        : 'Good Evening! 🌙';
+ngOnInit() {
+  const hour = new Date().getHours();
 
-    this.userName = this.authService.getfullName() || 'User';
-    const day = new Date().toLocaleDateString('en-US', { weekday: 'long' });
-    this.workInfo = `Happy ${day}! Let's make it a great one.`;
-
-    this.route.queryParams.subscribe((params) => {
-      const section = params['section'];
-      if (section && this.show.hasOwnProperty(section)) {
-        for (let key in this.show) this.show[key] = false;
-        this.show[section] = true;
-      }
-    });
+  if (hour < 12) {
+    this.greeting = 'Good Morning';
+    this.greetingIcon = 'assets/images/morning.png';
+  } else if (hour < 17) {
+    this.greeting = 'Good Afternoon';
+    this.greetingIcon = 'assets/images/afternoon.png';
+  } else {
+    this.greeting = 'Good Evening';
+    this.greetingIcon = 'assets/images/half-moon.png';
   }
+
+  this.userName = this.authService.getfullName() || 'User';
+
+  const day = new Date().toLocaleDateString('en-US', { weekday: 'long' });
+  this.workInfo = `Happy ${day}! Let's make it a great one.`;
+
+  this.route.queryParams.subscribe((params) => {
+    const section = params['section'];
+    if (section && this.show.hasOwnProperty(section)) {
+      Object.keys(this.show).forEach((key) => (this.show[key] = false));
+      this.show[section] = true;
+    }
+  });
+}
+
 
   toggle(section: string) {
     for (let key in this.show) this.show[key] = false;

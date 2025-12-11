@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AlertService } from 'src/app/alert-service.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { SalaryHistoryService } from 'src/app/services/salary-history.service';
 
@@ -43,7 +44,8 @@ export class UserPayslipComponent {
 
   constructor(
     private salaryService: SalaryHistoryService,
-    private authService: AuthService
+    private authService: AuthService,
+    private alertservice: AlertService
   ) {}
 
   ngOnInit(): void {
@@ -121,15 +123,15 @@ export class UserPayslipComponent {
   }
 
   downloadPayslip(monthName: string): void {
-  if (!this.employeeId) return alert('Employee ID not found.');
+  if (!this.employeeId) return this.alertservice.showError('Employee ID not found.');
 
   const monthObj = this.payslipData.find(m => m.month === monthName);
-  if (!monthObj) return alert('Invalid month.');
+  if (!monthObj) return this.alertservice.showError('Invalid month.');
 
   const formattedMonth = `${this.selectedYear}-${String(monthObj.monthNumber).padStart(2, '0')}`;
 
   if (!this.generatedPayslipMonths.has(formattedMonth)) {
-    return alert('Payslip not generated for this month.');
+    return this.alertservice.showError('Payslip not generated for this month.');
   }
 
   this.salaryService.downloadSalarySlip(this.employeeId, formattedMonth).subscribe({
@@ -144,10 +146,11 @@ export class UserPayslipComponent {
 
       window.URL.revokeObjectURL(url);
       link.remove();
+      this.alertservice.showSuccess('Payslip downloaded successfully!');
     },
     error: (err) => {
       console.error('Error generating payslip', err);
-      alert('Failed to generate payslip.');
+      this.alertservice.showError('Failed to generate payslip.');
     }
   });
 }

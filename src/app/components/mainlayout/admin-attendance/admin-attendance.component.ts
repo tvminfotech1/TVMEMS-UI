@@ -4,9 +4,8 @@ import {
   AttendanceRecord,
 } from 'src/app/services/attendance.service';
 import { AuthService } from 'src/app/services/auth.service';
-import { DateAdapter } from '@angular/material/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatButtonModule } from '@angular/material/button';
+import { AlertService } from 'src/app/alert-service.service';
 @Component({
   selector: 'app-admin-attendance',
   templateUrl: './admin-attendance.component.html',
@@ -15,6 +14,7 @@ import { MatButtonModule } from '@angular/material/button';
 export class AdminAttendanceComponent implements OnInit {
   allAttendance: AttendanceRecord[] = [];
   employees: any[] = [];
+  holidayDates: string[] = [];
   filterMonth = '';
   isAdmin = false;
   isUser = false;
@@ -50,8 +50,8 @@ export class AdminAttendanceComponent implements OnInit {
   constructor(
     private attendanceService: AttendanceService,
     private authService: AuthService,
-    private dateAdapter: DateAdapter<Date>,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private alertservice: AlertService,
   ) {}
 
   ngOnInit(): void {
@@ -59,6 +59,12 @@ export class AdminAttendanceComponent implements OnInit {
     this.isAdmin = this.authService.isAdmin();
     const currentMonth = new Date().toISOString().slice(0, 7);
     this.filterMonth = currentMonth;
+   this.attendanceService.getHolidayDates().subscribe({
+  next: (dates) => {
+    this.holidayDates = dates;
+  },
+  error: (err) => console.error(err),
+});
 
     if (this.isAdmin) {
       this.loadAllAttendance();
@@ -126,7 +132,6 @@ export class AdminAttendanceComponent implements OnInit {
       next: (data: any) => {
         const attendanceList = Array.isArray(data) ? data : data.body;
 
-        // 🔥 FIX: Get joining date from API response
         const firstRecord = attendanceList[0];
         let joiningDateStr = "";
         if (firstRecord?.user?.joiningDate) {
@@ -146,7 +151,6 @@ export class AdminAttendanceComponent implements OnInit {
           const currentDate = new Date(Date.UTC(year, month - 1, day));
           const formattedDate = currentDate.toISOString().split("T")[0];
 
-          // 🔥 Filter days BEFORE joining date
           if (joiningDateStr && formattedDate < joiningDateStr) continue;
 
           const record = attendanceList.find(
@@ -155,9 +159,10 @@ export class AdminAttendanceComponent implements OnInit {
 
           const isSunday = currentDate.getUTCDay() === 0;
           const isFutureDate = currentDate > today;
-
+          const isHoliday = this.holidayDates.includes(formattedDate);
           let status = "-";
-          if (isSunday) status = "Holiday";
+         if (isHoliday) status = "Holiday";
+         else if (isSunday) status = "Holiday";
           else if (record) status = "Present";
           else if (formattedDate === today.toISOString().split("T")[0])
             status = "Pending";
@@ -189,7 +194,7 @@ export class AdminAttendanceComponent implements OnInit {
     if (!empId) return;
 
     if (!this.filterMonth) {
-      alert('Please select a month first!');
+      this.alertservice.showInfo('Please select a month first!');
       return;
     }
 
@@ -240,7 +245,6 @@ if (this.isBeforeJoining(this.filterMonth, joiningDateStr)) {
  const currentDateStr =
     `${year}-${month}-${String(day).padStart(2, "0")}`;
 
-// Only apply filter if joining date is valid
 if (joiningDateStr && currentDateStr < joiningDateStr) continue;
 
 const formattedDate = currentDateStr;
@@ -253,9 +257,10 @@ const formattedDate = currentDateStr;
 
           const isSunday = currentDate.getDay() === 0;
           const isFutureDate = currentDate > today;
-
-          let status = '-';
-          if (isSunday) status = 'Holiday';
+          const isHoliday = this.holidayDates.includes(formattedDate);
+           let status = '-';
+         if (isHoliday) status = "Holiday";
+          else if (isSunday) status = "Holiday";
           else if (record) status = 'Present';
           else if (formattedDate === today.toISOString().split('T')[0])
             status = 'Pending';

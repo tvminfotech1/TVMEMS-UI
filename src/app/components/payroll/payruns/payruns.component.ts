@@ -5,7 +5,7 @@ import { PayrollEmployeeService } from "src/app/services/payroll-employee.servic
 import { SalaryHistoryService } from "src/app/services/salary-history.service";
 import { Employee, Payruns } from "src/app/models/employee";
 import { SalaryHistory } from "src/app/models/salaryHistory";
-import { MatSnackBar } from "@angular/material/snack-bar";
+import { AlertService } from "src/app/alert-service.service";
 
 @Component({
   selector: "app-payruns",
@@ -26,7 +26,7 @@ export class PayrunsComponent implements OnInit {
     private employeeService: PayrollEmployeeService,
     private salaryService: SalaryHistoryService,
     private router: Router,
-    private snackBar: MatSnackBar
+    private alertservice: AlertService,
   ) {}
 
   ngOnInit(): void {
@@ -85,7 +85,7 @@ export class PayrunsComponent implements OnInit {
           queryParams: { month: this.selectedMonth },
         });
       } else {
-        alert("Deactivated employee can't get salary.");
+        this.alertservice.showWarning("Deactivated employee can't get salary.");
       }
     }
   }
@@ -100,30 +100,38 @@ export class PayrunsComponent implements OnInit {
     );
   }
 
-  downloadSalarySlip(employeeId: number, month: string): void {
-    this.salaryService.downloadSalarySlip(employeeId, month).subscribe(
-      (data: Blob) => {
-        if (!data || data.size === 0) {
-          alert("Payslip file is empty or not generated.");
-          return;
-        }
-        const blob = new Blob([data], { type: "application/pdf" });
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = `Payslip_${employeeId}_${month}.pdf`;
-        a.style.display = "none";
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        window.URL.revokeObjectURL(url);
-      },
-      (err) => {
-        console.error("Error downloading salary slip:", err);
-        alert("Failed to download salary slip. Please try again later.");
+downloadSalarySlip(employeeId: number, month: string): void {
+  this.salaryService.downloadSalarySlip(employeeId, month).subscribe({
+    next: (data: Blob) => {
+      if (!data || data.size === 0) {
+        this.alertservice.showError("Payslip file is empty or not generated.");
+        return;
       }
-    );
-  }
+
+      const blob = new Blob([data], { type: "application/pdf" });
+      const url = window.URL.createObjectURL(blob);
+
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `Payslip_${employeeId}_${month}.pdf`;
+      a.style.display = "none";
+
+      document.body.appendChild(a);
+      a.click();
+
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+
+      this.alertservice.showSuccess("Payslip downloaded successfully!");
+    },
+
+    error: (err) => {
+      console.error("Error downloading salary slip:", err);
+      this.alertservice.showError("Failed to download salary slip. Please try again later.");
+    }
+  });
+}
+
 
   hasSalary(empId: number): boolean {
     return this.salaryHistory.some(
@@ -143,29 +151,27 @@ export class PayrunsComponent implements OnInit {
     return record ? record.salaryId : null;
   }
 
-  deleteSalary(salaryId: string | null) {
-    if (!salaryId) {
-      this.showPopup("Invalid salary record. Cannot delete.");
-      return;
-    }
+deleteSalary(salaryId: string | null) {
+  if (!salaryId) {
+    this.alertservice.showError("Invalid salary record. Cannot delete.");
+    return;
+  }
 
-    if (confirm("Are you sure you want to delete this salary record?")) {
+  this.alertservice
+    .showConfirm("Are you sure you want to delete this salary record?")
+    .then((result) => {
+      if (!result.isConfirmed) return; 
+
       this.salaryService.deleteSalaryBySalaryId(salaryId).subscribe({
         next: () => {
-          this.showPopup("Salary deleted successfully.");
+          this.alertservice.showSuccess("Salary deleted successfully.");
           this.loadData();
         },
-        error: () => alert("Failed to delete salary."),
+        error: () => {
+          this.alertservice.showError("Failed to delete salary.");
+        },
       });
-    }
-  }
-
-  showPopup(message: string) {
-    this.snackBar.open(message, "Close", {
-      duration: 4000,
-      horizontalPosition: "center",
-      verticalPosition: "top",
-      panelClass: ["error-snackbar"],
     });
-  }
+}
+
 }

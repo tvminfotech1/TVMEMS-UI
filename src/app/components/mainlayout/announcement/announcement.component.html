@@ -1,6 +1,9 @@
 <div class="announcement-page">
   <div class="header">
-    <h2>📢 Announcements</h2>
+    <div class="announcement-title">
+      <img class="ann-img" src="/assets/images/announcment.png" alt="" />
+      <h2 style="margin-bottom: 0px; color:rgb(10, 68, 106);">Announcements</h2>
+    </div>
     <button class="add-btn" (click)="openAddModal()" *ngIf="isAdmin">
       + Add Announcement
     </button>
@@ -41,7 +44,6 @@
     </div>
   </div>
 
-  <!-- Modal Overlay -->
   <div class="modal-overlay" *ngIf="showModal">
     <div class="modal mat-elevation-z8">
       <div class="modal-header">
@@ -56,7 +58,6 @@
         (ngSubmit)="submitForm()"
         class="announcement-form"
       >
-        <!-- Title -->
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>Title</mat-label>
           <input matInput formControlName="title" placeholder="Enter title" />
@@ -102,7 +103,6 @@
           <mat-icon matSuffix>place</mat-icon>
         </mat-form-field>
 
-        <!-- Description -->
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>Description</mat-label>
           <textarea

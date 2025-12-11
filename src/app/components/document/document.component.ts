@@ -7,9 +7,9 @@ import {
 } from '@angular/forms';
 import { UserService } from '../user-service.service';
 import { Router } from '@angular/router';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { MainlayoutService } from 'src/app/services/main-layout.service';
 import { FormProgressService } from 'src/app/services/form-progress.service';
+import { AlertService } from 'src/app/alert-service.service';
 
 export function fileRequired(
   control: AbstractControl
@@ -33,7 +33,7 @@ export class DocumentComponent {
   constructor(
     private fb: FormBuilder,
     private userService: UserService,
-    private snackBar: MatSnackBar,
+    private alertservice: AlertService,
     private router: Router,
     private mainlayoutService: MainlayoutService,
      private progressService :FormProgressService,
@@ -148,12 +148,7 @@ this.userService.educationType$.subscribe((type) => {
       this.mainlayoutService.markTabCompleted('document', true);
       this.router.navigate(['/mainlayout/resume']);
     } else {
-      this.snackBar.open('Please upload all the documents', 'Close', {
-        duration: 3000,
-        horizontalPosition: 'center',
-        verticalPosition: 'top',
-        panelClass: ['error-snackbar'],
-      });
+      this.alertservice.showError('Please upload all the documents');
       this.documentForm.markAllAsTouched();
     }
   }

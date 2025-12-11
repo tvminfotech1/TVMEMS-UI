@@ -3,7 +3,6 @@ import {
   FormBuilder,
   FormGroup,
   Validators,
-  FormControl,
   AbstractControl,
   ValidationErrors,
 } from "@angular/forms";
@@ -12,6 +11,7 @@ import { Router } from "@angular/router";
 import { forkJoin } from "rxjs";
 import { FormProgressService } from "src/app/services/form-progress.service";
 import { AuthService } from "src/app/services/auth.service";
+import { AlertService } from "src/app/alert-service.service";
 
 @Component({
   templateUrl: "./final.component.html",
@@ -27,7 +27,8 @@ export class FinalComponent {
     private router: Router,
     private userService: UserService,
     private progressService: FormProgressService,
-    private authService: AuthService
+    private authService: AuthService,
+    private alertservice: AlertService
   ) {
     this.declarationForm = this.fb.group({
       checked: [false, Validators.requiredTrue],
@@ -62,7 +63,7 @@ export class FinalComponent {
 
     if (!this.userService.isAllFormsValid()) {
       const incompleteSteps = this.userService.getInvalidSteps();
-      alert(
+      this.alertservice.showError(
         "Please complete these required steps: " + incompleteSteps.join(", ")
       );
       return;
@@ -72,14 +73,14 @@ export class FinalComponent {
       this.userService.uploadDocuments(),
       this.userService.submitJsonData(),
     ]).subscribe({
-      next: ([res, document]) => {
+      next: ([]) => {
         this.authService.setOnboardingCompleted();
         this.userService.clearFormData();
         this.router.navigate(["/mainlayout/thankYou"]);
       },
       error: (err) => {
         console.error("Submission error:", err);
-        alert("Something went wrong during submission.");
+        this.alertservice.showError("Something went wrong during submission.");
       },
     });
   }

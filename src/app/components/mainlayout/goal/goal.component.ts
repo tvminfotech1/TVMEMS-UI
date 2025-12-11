@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { AuthService } from "src/app/services/auth.service";
 import { GoalService } from "./goal.service";
 import { UserlistService } from "src/app/services/admin.service";
-import { MatDialog } from "@angular/material/dialog";
+import { AlertService } from "src/app/alert-service.service";
 
 @Component({
   selector: "app-goal",
@@ -82,8 +82,8 @@ export class GoalComponent implements OnInit {
     private authService: AuthService,
     private userlistService: UserlistService,
     private goalService: GoalService,
-    private dialog: MatDialog
-  ) {}
+    private alertservice: AlertService
+   ) {}
 
   ngOnInit(): void {
     this.isAdmin = this.authService.isAdmin();
@@ -274,7 +274,7 @@ viewGoals(emp: any): void {
         .updateGoal(this.pendingDueGoal.id, this.goalBackup)
         .subscribe({
           next: () => {
-            alert("You cannot close this modal until a due date is set!");
+            this.alertservice.showWarning("You cannot close this modal until a due date is set!");
             this.pendingDueGoal = null;
             this.goalBackup = null;
             this.showGoalPopup = true;
@@ -292,26 +292,25 @@ viewGoals(emp: any): void {
     this.currentView = "goalType";
   }
 
-  deleteGoal(goal: any) {
-    if (confirm("Are you sure you want to delete this goal?")) {
-      this.goalService.deleteGoal(goal.id).subscribe(
-        () => {
-          this.archivedGoals = this.archivedGoals.filter(
-            (g) => g.id !== goal.id
-          );
-          this.allGoals = this.allGoals.filter((g) => g.id !== goal.id);
-          this.completedGoals = this.completedGoals.filter(
-            (g) => g.id !== goal.id
-          );
-          alert("Goal deleted successfully!");
-        },
-        (error) => {
-          console.error(error);
-          alert("Error deleting goal");
-        }
-      );
-    }
-  }
+ async deleteGoal(goal: any) {
+  const result = await this.alertservice.showConfirm("Are you sure you want to delete this goal?");
+
+  if (!result.isConfirmed) return; 
+
+  this.goalService.deleteGoal(goal.id).subscribe({
+    next: () => {
+      this.archivedGoals = this.archivedGoals.filter((g) => g.id !== goal.id);
+      this.allGoals = this.allGoals.filter((g) => g.id !== goal.id);
+      this.completedGoals = this.completedGoals.filter((g) => g.id !== goal.id);
+      this.alertservice.showSuccess("Goal deleted successfully!");
+    },
+    error: (error) => {
+      console.error(error);
+      this.alertservice.showError("Error deleting goal");
+    },
+  });
+}
+
 
   filterGoals(): void {
     const term = this.searchText.trim().toLowerCase();
@@ -348,7 +347,7 @@ viewGoals(emp: any): void {
 
     if (!goal.dueDate) {
       this.pendingDueGoal = goal;
-      alert("You must set a due date for this goal before closing the modal!");
+      this.alertservice.showWarning("You must set a due date for this goal before closing the modal!");
       this.showGoalPopup = true;
     } else {
       this.saveGoalToBackend(goal);
@@ -390,48 +389,59 @@ viewGoals(emp: any): void {
     return !!goal.isOverdue;
   }
 
-  submitGoal(): void {
-    if (this.goalForm.valid) {
-      const confirmed = confirm("Are you sure you want to save this new goal?");
-      if (!confirmed) return;
+  async submitGoal(): Promise<void> {
+  if (this.goalForm.valid) {
+    const confirmed = await this.alertservice.showConfirm(
+      "Are you sure you want to save this new goal?"
+    );
 
-      const newGoal = {
-        employeeId: this.employeeId,
-        employeeName: this.fullName,
-        category: this.goalForm.value.category,
-        description: this.goalForm.value.description,
-        weight: this.goalForm.value.weight,
-        startDate: null,
-        endDate: null,
-        progress: null,
-        status: "Pending",
-        isStarted: false,
-      };
-
-      this.goalService.createGoal(newGoal).subscribe({
-        next: (res: any) => {
-          this.goalForm.reset();
-          this.currentView = "archived";
-          this.loadArchivedGoals();
-        },
-        error: (err) => {
-          console.error("Error creating goal:", err);
-          alert("Failed to save goal!");
-        },
-      });
-    } else {
-      this.goalForm.markAllAsTouched();
-    }
-  }
-
-  updateGoal(goal: any): void {
-    const confirmed = confirm("Do you want to save changes to this goal?");
     if (!confirmed) return;
 
-    this.goalService.updateGoal(goal.id, goal).subscribe({
-      error: (err) => console.error("Error updating goal:", err),
+    const newGoal = {
+      employeeId: this.employeeId,
+      employeeName: this.fullName,
+      category: this.goalForm.value.category,
+      description: this.goalForm.value.description,
+      weight: this.goalForm.value.weight,
+      startDate: null,
+      endDate: null,
+      progress: null,
+      status: "Pending",
+      isStarted: false,
+    };
+
+    this.goalService.createGoal(newGoal).subscribe({
+      next: () => {
+        this.alertservice.showSuccess("Goal saved successfully!");
+        this.goalForm.reset();
+        this.currentView = "archived";
+        this.loadArchivedGoals();
+      },
+      error: (err) => {
+        console.error("Error creating goal:", err);
+        this.alertservice.showError("Failed to save goal!");
+      },
     });
+  } else {
+    this.goalForm.markAllAsTouched();
   }
+}
+
+async updateGoal(goal: any): Promise<void> {
+  const confirmed = await this.alertservice.showConfirm(
+    "Do you want to save changes to this goal?"
+  );
+
+  if (!confirmed) return;
+
+  this.goalService.updateGoal(goal.id, goal).subscribe({
+    next: () => {
+      this.alertservice.showSuccess("Goal updated successfully!");
+    },
+    error: (err) => console.error("Error updating goal:", err),
+  });
+}
+
 
   onStatusChange(goal: any) {
     if (goal.status === "Started") {
@@ -488,7 +498,7 @@ viewGoals(emp: any): void {
   }
 
   saveGoal(goal: any) {
-    if (!confirm("Are you sure you want to save changes for this goal?")) {
+    if (!this.alertservice.showConfirm("Are you sure you want to save changes for this goal?")) {
       return;
     }
 
@@ -502,6 +512,7 @@ viewGoals(emp: any): void {
 
     this.goalService.updateGoal(goal.id, goal).subscribe({
       next: () => {
+        this.alertservice.showSuccess("Goal updated successfully!");
         goal.isEditing = false;
 
         this.validateDueDate(goal);
@@ -564,7 +575,7 @@ viewGoals(emp: any): void {
     goal.isDueDateLocked = true;
     this.validateDueDate(goal);
     this.goalService.updateGoal(goal.id, goal).subscribe({
-      next: (res) => {
+      next: () => {
         goal.isDueDateLocked = true;
       },
       error: (err) => {
@@ -610,7 +621,6 @@ viewGoals(emp: any): void {
     const date = new Date(this.selectedDate);
     date.setMonth(date.getMonth() - 1);
 
-    // Prevent going before joining month
     if (
       this.joiningDate &&
       date <
@@ -637,7 +647,7 @@ viewGoals(emp: any): void {
   filterGoalsBySelectedMonth(goals: any[]): any[] {
     if (!goals || goals.length === 0) return [];
 
-    const selectedMonth = this.currentDate.getMonth(); // 0–11
+    const selectedMonth = this.currentDate.getMonth(); 
     const selectedYear = this.currentDate.getFullYear();
 
     return goals.filter((goal) => {

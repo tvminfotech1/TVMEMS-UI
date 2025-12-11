@@ -214,15 +214,14 @@ export class AuthService {
       })
     );
   }
-
-  setOnboardingCompleted() {
-    this.cachedOnboardingStatus = true;
-  }
-
-  getUserDetails(employeeId: number) {
+   getUserDetails(employeeId: number) {
   return this.http.get<{ email: string; mobile: string }>(
     `${BASE_URL}/users/details/${employeeId}`
   );
 }
+  setOnboardingCompleted() {
+    this.cachedOnboardingStatus = true;
+  }
+
 
 }

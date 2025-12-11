@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { AuthService } from "src/app/services/auth.service";
 import { WorkFromHomeService } from "src/app/services/work-from-home.service";
-import { MatSnackBar } from "@angular/material/snack-bar";
+import { AlertService } from "src/app/alert-service.service";
 
 @Component({
   selector: "app-workfromhome",
@@ -24,7 +24,7 @@ export class WorkfromhomeComponent implements OnInit {
   constructor(
     private authservice: AuthService,
     private wfhService: WorkFromHomeService,
-    private snackBar: MatSnackBar
+    private alertservice: AlertService,
   ) {}
 
   ngOnInit(): void {
@@ -271,32 +271,24 @@ export class WorkfromhomeComponent implements OnInit {
         );
         this.fetchAllApprovalRequests();
         this.refreshRequests();
-        this.snackBar.open(
+        if(newStatus === "approved"){this.alertservice.showSuccess(
           `WFH Request ${
             request.requestId
-          } status updated to ${newStatus.toUpperCase()}`,
-          "Close",
-          {
-            duration: 3000,
-            horizontalPosition: "center",
-            verticalPosition: "top",
-            panelClass: ["error-snackbar"],
-          }
-        );
+          } status updated to ${newStatus.toUpperCase()}`
+        )}
+        else if(newStatus === "rejected"){this.alertservice.showalert(
+          `WFH Request ${
+            request.requestId
+          } status updated to ${newStatus.toUpperCase()}`
+        )}
+      
 
         this.loadingStatus[request.requestId] = null;
       },
       error: (error) => {
         console.error("Error updating status:", error);
-        this.snackBar.open(
-          "Failed to update status. Please try again.",
-          "close",
-          {
-            duration: 3000,
-            horizontalPosition: "center",
-            verticalPosition: "top",
-            panelClass: ["error-snackbar"],
-          }
+        this.alertservice.showError(
+          "Failed to update status. Please try again."
         );
         this.loadingStatus[request.requestId] = null;
       },
@@ -312,12 +304,7 @@ export class WorkfromhomeComponent implements OnInit {
     if (newRequest) {
       this.details.unshift(newRequest);
 
-      this.snackBar.open("WFH Request submitted successfully!", "Close", {
-        duration: 3000,
-        horizontalPosition: "center",
-        verticalPosition: "top",
-        panelClass: ["success-snackbar"],
-      });
+      this.alertservice.showSuccess("WFH Request submitted successfully!");
       this.refreshRequests();
     }
   }

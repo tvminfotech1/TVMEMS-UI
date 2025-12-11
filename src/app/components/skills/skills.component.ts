@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserService } from '../user-service.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { MainlayoutService } from 'src/app/services/main-layout.service';
 import { FormProgressService } from 'src/app/services/form-progress.service';
+import { AlertService } from 'src/app/alert-service.service';
 
 @Component({
   selector: 'app-skills',
@@ -21,7 +21,7 @@ export class SkillsComponent implements OnInit {
     private userService: UserService,
     private router: Router,
     private mainlayoutService: MainlayoutService,
-    private snackBar: MatSnackBar,
+    private alertService: AlertService,
      private progressService :FormProgressService,
   ) {
     this.skillForm = this.formBuilder.group({
@@ -112,12 +112,7 @@ export class SkillsComponent implements OnInit {
            this.progressService.markStepComplete(7);
       this.router.navigate(['/mainlayout/certificate']);
     } else {
-      this.snackBar.open('Minimum 1 skills is required', 'Close', {
-        duration: 3000,
-        horizontalPosition: 'center',
-        verticalPosition: 'top',
-        panelClass: ['error-snackbar'],
-      });
+      this.alertService.showWarning('Minimum 1 skills is required');
     }
   }
 

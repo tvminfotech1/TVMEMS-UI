@@ -3,9 +3,9 @@ import { NgForm } from "@angular/forms";
 import { TimelogService, TimelogEntry, Hours } from "./timelog.service";
 import { AuthService } from "src/app/services/auth.service";
 import { DateUtilsService } from "./date-utils.service";
-import { MatSnackBar } from "@angular/material/snack-bar";
 import { LeaveRequest } from "./timelog.service";
 import { FormBuilder, FormGroup, FormArray } from "@angular/forms";
+import { AlertService } from "src/app/alert-service.service";
 interface WeekDayItem {
   name: string;
   date: string;
@@ -99,7 +99,7 @@ export class TimelogComponent implements OnInit {
     private timelogService: TimelogService,
     private authService: AuthService,
     private dateUtils: DateUtilsService,
-    private snackBar: MatSnackBar,
+    private alertservice: AlertService,
     private fb: FormBuilder
   ) {}
   async ngOnInit(): Promise<void> {
@@ -281,21 +281,11 @@ export class TimelogComponent implements OnInit {
           (e) => e.id !== entry.id
         );
 
-        this.snackBar.open(`Timesheet ${status} successfully`, "Close", {
-          duration: 3000,
-          horizontalPosition: "center",
-          verticalPosition: "top",
-          panelClass: ["error-snackbar"],
-        });
+        this.alertservice.showSuccess(`Timesheet ${status} successfully`);
       },
       error: (err) => {
         console.error(`[Timelog] Failed to ${status} timesheet:`, err);
-        this.snackBar.open(`Failed to ${status} timesheet`, "Close", {
-          duration: 3000,
-          horizontalPosition: "center",
-          verticalPosition: "top",
-          panelClass: ["error-snackbar"],
-        });
+        this.alertservice.showError(`Failed to ${status} timesheet`);
       },
     });
   }
@@ -735,21 +725,11 @@ export class TimelogComponent implements OnInit {
   onSubmit(form: NgForm): void {
     if (this.isSubmitting) return;
     if (!form.valid) {
-      this.snackBar.open("Please fill all required fields", "Close", {
-        duration: 3000,
-        horizontalPosition: "center",
-        verticalPosition: "top",
-        panelClass: ["error-snackbar"],
-      });
+      this.alertservice.showError("Please fill all required fields",);
       return;
     }
     if (!this.isAdmin && this.entryExistsForWeek) {
-      this.snackBar.open("You have already submitted a timesheet", "Close", {
-        duration: 3000,
-        horizontalPosition: "center",
-        verticalPosition: "top",
-        panelClass: ["error-snackbar"],
-      });
+      this.alertservice.showError("You have already submitted a timesheet");
       return;
     }
     this.isSubmitting = true;
@@ -769,24 +749,14 @@ export class TimelogComponent implements OnInit {
     };
 
     this.timelogService.addTimelog(payload).subscribe({
-      next: (res) => {
-        this.snackBar.open("Timesheet Submitted Successfully", "Close", {
-          duration: 3000,
-          horizontalPosition: "center",
-          verticalPosition: "top",
-          panelClass: ["error-snackbar"],
-        });
+      next: () => {
+        this.alertservice.showSuccess("Timesheet Submitted Successfully");
         this.resetEntry();
         this.loadTimelogs();
         form.resetForm(this.timelogEntry);
       },
       error: () => {
-        this.snackBar.open("Failed to submit a timesheet.", "Close", {
-          duration: 3000,
-          horizontalPosition: "center",
-          verticalPosition: "top",
-          panelClass: ["error-snackbar"],
-        });
+        this.alertservice.showError("Failed to submit a timesheet.");
         this.isSubmitting = false;
       },
     });

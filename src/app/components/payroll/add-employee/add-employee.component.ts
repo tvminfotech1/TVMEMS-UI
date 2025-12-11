@@ -3,6 +3,7 @@ import { PayrollEmployeeService } from "src/app/services/payroll-employee.servic
 import { ActivatedRoute, Router } from "@angular/router";
 import { Employee } from "src/app/models/employee";
 import { UserService } from "./user.service";
+import { AlertService } from "src/app/alert-service.service";
 
 export interface EmployeePayload {
   id?: number;
@@ -67,7 +68,8 @@ export class AddEmployeeComponent implements OnInit {
     private empService: PayrollEmployeeService,
     private userService: UserService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private alertservice: AlertService
   ) {}
 
   ngOnInit(): void {
@@ -88,7 +90,7 @@ export class AddEmployeeComponent implements OnInit {
 
   searchEmployee() {
     if (!this.searchId) {
-      alert("Please enter an Employee ID");
+      this.alertservice.showError("Please enter an Employee ID");
       return;
     }
 
@@ -97,14 +99,14 @@ export class AddEmployeeComponent implements OnInit {
     this.userService.getUserById(empId).subscribe(
       (userData: any) => {
         if (!userData || Object.keys(userData).length === 0) {
-          alert("Employee not found!");
+          this.alertservice.showError("Employee not found!");
           this.searchedEmployee = null;
         } else {
           this.searchedEmployee = userData;
         }
       },
       (error) => {
-        alert("Employee not found!");
+        this.alertservice.showError("Employee not found!");
         this.searchedEmployee = null;
         console.error(error);
       }
@@ -120,7 +122,7 @@ export class AddEmployeeComponent implements OnInit {
       },
       error: (err) => {
         console.error("Error loading employee for edit:", err);
-        alert("Failed to load employee details.");
+        this,this.alertservice.showError("Failed to load employee details.");
       },
     });
   }
@@ -140,12 +142,12 @@ export class AddEmployeeComponent implements OnInit {
 
   onSubmit(empForm: any): void {
     if (!empForm.valid) {
-      alert("Please fill out all required fields before submitting.");
+      this.alertservice.showError("Please fill out all required fields before submitting.");
       return;
     }
 
     if (!this.employee.id && !this.searchId) {
-      alert("Please enter or select a valid Employee ID.");
+      this.alertservice.showError("Please enter or select a valid Employee ID.");
       return;
     }
 
@@ -156,23 +158,23 @@ export class AddEmployeeComponent implements OnInit {
         .updateEmployee(this.employee.id, this.employee)
         .subscribe({
           next: () => {
-            alert("Employee Updated Successfully!");
+            this.alertservice.showSuccess("Employee Updated Successfully!");
             this.router.navigate(["/mainlayout/payroll-employee"]);
           },
           error: (err) => {
             console.error("Error updating employee:", err);
-            alert("Failed to update employee.");
+            this.alertservice.showError("Failed to update employee.");
           },
         });
     } else {
       this.empService.addEmployee(this.employee).subscribe({
         next: () => {
-          alert("Employee Added Successfully!");
+          this.alertservice.showSuccess("Employee Added Successfully!");
           this.router.navigate(["/mainlayout/payroll-employee"]);
         },
         error: (err) => {
           console.error("Error while adding employee:", err);
-          alert("Failed to add employee. Please try again.");
+          this.alertservice.showError("Failed to add employee. Please try again.");
         },
       });
     }

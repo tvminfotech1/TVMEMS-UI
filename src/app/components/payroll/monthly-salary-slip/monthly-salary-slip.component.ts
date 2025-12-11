@@ -25,7 +25,7 @@ export class MonthlySalarySlipComponent implements OnInit {
   ngOnInit(): void {
     const salaryId = this.route.snapshot.paramMap.get('salaryId');
     const empIdParam = this.route.snapshot.paramMap.get('empId');
-    const empId = empIdParam ? +empIdParam : null; // Convert to number
+    const empId = empIdParam ? +empIdParam : null; 
 
     if (salaryId && empId !== null) {
       this.salaryService.getAllSalaryHistory().subscribe((salaries) => {

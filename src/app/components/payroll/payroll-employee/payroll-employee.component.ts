@@ -3,6 +3,7 @@ import { PayrollEmployeeService } from 'src/app/services/payroll-employee.servic
 import { Employee } from 'src/app/models/employee';
 import { Router } from '@angular/router';
 import * as XLSX from 'xlsx';
+import { AlertService } from 'src/app/alert-service.service';
 
 @Component({
   selector: 'app-payroll-employee',
@@ -34,7 +35,8 @@ export class PayrollEmployeeComponent implements OnInit {
 
   constructor(
     private employeeService: PayrollEmployeeService,
-    private router: Router
+    private router: Router,
+    private alertservice: AlertService
   ) {}
 
   ngOnInit(): void {
@@ -106,7 +108,7 @@ export class PayrollEmployeeComponent implements OnInit {
 
   uploadData(): void {
     if (!this.excelEmployees.length) {
-      alert('No data to upload. Please import an Excel file first.');
+      this.alertservice.showError('No data to upload. Please import an Excel file first.');
       return;
     }
 
@@ -118,13 +120,13 @@ export class PayrollEmployeeComponent implements OnInit {
         next: () => {
           uploaded++;
           if (uploaded === total) {
-            alert(`All ${total} employees imported successfully!`);
+            this.alertservice.showSuccess(`All ${total} employees imported successfully!`);
             this.loadEmployees();
           }
         },
         error: (err) => {
           console.error(' Failed to upload employee:', emp.id, err);
-          alert(`Employee with ID ${emp.id} could not be imported.`);
+          this.alertservice.showError(`Employee with ID ${emp.id} could not be imported.`);
         },
       });
     }
@@ -151,7 +153,7 @@ export class PayrollEmployeeComponent implements OnInit {
     if (emp.status === 'Active') {
       this.router.navigate(['/mainlayout/payruns', emp.id]);
     } else {
-      alert("Deactivated employee can't get salary.");
+      this.alertservice.showWarning("Deactivated employee can't add salary.");
     }
   }
 

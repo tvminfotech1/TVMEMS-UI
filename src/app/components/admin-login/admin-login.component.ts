@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { BASE_URL } from 'src/app/models/baseurl/constant';
+import { AlertService } from 'src/app/alert-service.service';
 
 @Component({
   selector: 'app-admin-login',
@@ -19,7 +19,7 @@ export class AdminLoginComponent {
     private fb: FormBuilder,
     private http: HttpClient,
     private router: Router,
-    private snackBar: MatSnackBar
+    private alertservice: AlertService
   ) {
     this.adminLoginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -42,26 +42,14 @@ export class AdminLoginComponent {
             this.router.navigate(['/mainlayout/dashboard']);
           },
           error: () => {
-            this.snackBar.open(
-              'Invalid credentials. Please check and try again',
-              'Close',
-              {
-                duration: 3000,
-                horizontalPosition: 'center',
-                verticalPosition: 'top',
-                panelClass: ['error-snackbar'],
-              }
+            this.alertservice.showError(
+              'Invalid credentials. Please check and try again'
             );
           },
         });
     } else {
       this.adminLoginForm.markAllAsTouched();
-      this.snackBar.open('Please enter your credentials', 'Close', {
-        duration: 3000,
-        horizontalPosition: 'center',
-        verticalPosition: 'top',
-        panelClass: ['error-snackbar'],
-      });
+      this.alertservice.showError('Please enter your credentials');
     }
   }
 }

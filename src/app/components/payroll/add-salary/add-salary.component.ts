@@ -4,7 +4,7 @@ import { PayrollEmployeeService } from "src/app/services/payroll-employee.servic
 import { SalaryHistoryService } from "src/app/services/salary-history.service";
 import { Employee } from "src/app/models/employee";
 import { SalaryHistory } from "src/app/models/salaryHistory";
-import { MatSnackBar } from "@angular/material/snack-bar";
+import { AlertService } from "src/app/alert-service.service";
 
 @Component({
   selector: "app-add-salary",
@@ -70,8 +70,8 @@ export class AddSalaryComponent implements OnInit {
     private route: ActivatedRoute,
     private employeeService: PayrollEmployeeService,
     private salaryService: SalaryHistoryService,
-    private router: Router,
-    private snackBar: MatSnackBar
+    private alertservice: AlertService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -157,7 +157,7 @@ export class AddSalaryComponent implements OnInit {
       .getSalaryByEmployeeAndMonth(empId, monthStr)
       .subscribe((existing) => {
         if (existing && existing.length > 0) {
-          alert(`Salary already generated for ${monthStr}.`);
+          this.alertservice.showSuccess(`Salary already generated for ${monthStr}.`);
           return;
         }
 
@@ -196,13 +196,13 @@ export class AddSalaryComponent implements OnInit {
           sYear < jYear || (sYear === jYear && sMonth < jMonth);
 
         if (isBeforeJoiningMonth) {
-          alert("Cannot add salary before joining date.");
+          this.alertservice.showError("Cannot add salary before joining date.");
           return;
         }
 
         this.salaryService.addSalaryHistory(salary).subscribe({
           next: () => {
-            this.showPopup("Salary added successfully.");
+            this.alertservice.showSuccess("Salary added successfully.");
             this.router.navigate(["/mainlayout/payroll-employee"]);
           },
           error: (err) => {
@@ -212,7 +212,7 @@ export class AddSalaryComponent implements OnInit {
               err.error?.error ||
               "Failed to add salary.";
 
-            this.showPopup(msg);
+            this.alertservice.showError(msg);
           },
         });
       });
@@ -222,12 +222,4 @@ export class AddSalaryComponent implements OnInit {
     this.router.navigate(["/mainlayout/payroll-employee"]);
   }
 
-  showPopup(message: string) {
-    this.snackBar.open(message, "Close", {
-      duration: 4000,
-      horizontalPosition: "center",
-      verticalPosition: "top",
-      panelClass: ["error-snackbar"],
-    });
-  }
 }

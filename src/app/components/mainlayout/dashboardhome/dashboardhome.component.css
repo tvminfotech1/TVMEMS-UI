@@ -19,11 +19,31 @@
   margin-bottom: 1.5rem;
   box-shadow: 0 4px 10px rgba(10, 15, 60, 0.2);
 }
-
+.greeting-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
 .welcome {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap; 
+  gap: 8px;
   font-size: 1.1rem;
   line-height: 1.4;
 }
+.greeting-icon {
+    width: 25px;
+    height: 25px;
+    object-fit: contain;
+}
+.welcome small {
+  width: 100%;
+  font-size: 0.85rem;
+  opacity: 0.9;
+  margin-top: -4px;    
+}
+
 
 .welcome strong {
   font-weight: 600;

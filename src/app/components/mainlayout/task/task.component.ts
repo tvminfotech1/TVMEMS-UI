@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TaskService } from './service/task.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { AlertService } from 'src/app/alert-service.service';
 
 @Component({
   selector: 'app-task',
@@ -39,7 +40,8 @@ export class TaskComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private taskService: TaskService,
-    private authservice: AuthService
+    private authservice: AuthService,
+    private alertservice: AlertService
   ) {}
 
   ngOnInit(): void {
@@ -86,7 +88,7 @@ export class TaskComponent implements OnInit {
       return;
     }
     if (this.taskForm.value.dueDate < this.taskForm.value.startDate) {
-      alert('Due date cannot be earlier than start date.');
+      this.alertservice.showWarning('Due date cannot be earlier than start date.');
       return;
     }
 
@@ -108,7 +110,8 @@ export class TaskComponent implements OnInit {
 
 
     this.taskService.addTask(payload).subscribe({
-      next: (res) => {
+      next: () => {
+        this.alertservice.showSuccess('Task added successfully!');
         this.closePopup();
         this.taskForm.reset({ priority: '', status: '' });
         this.loadTasks();
@@ -188,13 +191,7 @@ export class TaskComponent implements OnInit {
         return false;
       }
 
-      const taskDate = new Date(task.assignedDate);
 
-      const taskDateOnly = new Date(
-        taskDate.getFullYear(),
-        taskDate.getMonth(),
-        taskDate.getDate()
-      );
       const startDateOnly = new Date(
         this.startDate.getFullYear(),
         this.startDate.getMonth(),
@@ -287,23 +284,27 @@ export class TaskComponent implements OnInit {
     });
   }
 
-  deleteTask(taskId: any) {
-    if (!confirm('Are you sure you want to delete this task?')) {
-      return;
-    }
+deleteTask(taskId: any): void {
+  this.alertservice.showConfirm('Are you sure you want to delete this task?')
+    .then(result => {
+      if (!result.isConfirmed) return;
 
-    this.taskService.deleteTask(taskId).subscribe({
-      next: (res) => {
-        this.cards = this.cards.filter((task) => task.id !== taskId);
-        this.filteredCards = this.filteredCards.filter(
-          (task) => task.id !== taskId
-        );
+      this.taskService.deleteTask(taskId).subscribe({
+        next: () => {
+          this.alertservice.showSuccess('Task deleted successfully!');
+          this.cards = this.cards.filter(task => task.id !== taskId);
+          this.filteredCards = this.filteredCards.filter(task => task.id !== taskId);
 
-        if (this.searchText) this.filterTasksBySearch();
-        this.filterTasksByDate();
-        this.loadTasks();
-      },
-      error: (err) => console.error('Error deleting task', err),
+          if (this.searchText) this.filterTasksBySearch();
+          this.filterTasksByDate();
+          this.loadTasks();
+        },
+        error: (err) => {
+          console.error('Error deleting task:', err);
+          this.alertservice.showError('Failed to delete task!');
+        }
+      });
     });
-  }
+}
+
 }

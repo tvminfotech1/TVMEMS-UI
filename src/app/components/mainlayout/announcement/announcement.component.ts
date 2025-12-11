@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AnnouncementService } from './announcement.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { AlertService } from 'src/app/alert-service.service';
 
 @Component({
   selector: 'app-announcement',
@@ -21,7 +22,8 @@ export class AnnouncementComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private announcementService: AnnouncementService,
-    private authservice: AuthService
+    private authservice: AuthService,
+    private alertservice: AlertService
   ) {
     this.announcementForm = this.fb.group({
       title: ['', Validators.required],
@@ -80,15 +82,25 @@ export class AnnouncementComponent implements OnInit {
   }
   
 
-  deleteAnnouncement(id: number) {
-    if (confirm('Are you sure you want to delete this announcement?')) {
-      this.announcementService
-        .delete(id)
-        .subscribe(() => this.loadAnnouncements());
-    }
-  }
+async deleteAnnouncement(id: number) {
+  const result = await this.alertservice.showConfirm('Are you sure you want to delete this announcement?');
 
-  submitForm() {
+  if (result.isConfirmed) {
+    this.announcementService.delete(id).subscribe({
+      next: () => {
+        this.alertservice.showSuccess('Announcement deleted successfully.');
+        this.loadAnnouncements();
+      },
+      error: (err) => {
+        console.error('Error deleting announcement:', err);
+        this.alertservice.showError('Failed to delete announcement. Please try again.');
+      }
+    });
+  }
+}
+
+
+submitForm() {
   if (this.announcementForm.invalid) return;
 
   const formValue = this.announcementForm.value;
@@ -105,17 +117,32 @@ export class AnnouncementComponent implements OnInit {
   };
 
   if (this.isEditMode && this.selectedId) {
-    this.announcementService.update(this.selectedId, data).subscribe(() => {
-      this.loadAnnouncements();
-      this.closeModal();
+    this.announcementService.update(this.selectedId, data).subscribe({
+      next: () => {
+        this.loadAnnouncements();
+        this.closeModal();
+        this.alertservice.showSuccess('Announcement updated successfully!');
+      },
+      error: (err) => {
+        console.error('Error updating announcement:', err);
+        this.alertservice.showError('Failed to update announcement. Please try again.');
+      }
     });
   } else {
-    this.announcementService.create(data).subscribe(() => {
-      this.loadAnnouncements();
-      this.closeModal();
+    this.announcementService.create(data).subscribe({
+      next: () => {
+        this.loadAnnouncements();
+        this.closeModal();
+        this.alertservice.showSuccess('Announcement created successfully!');
+      },
+      error: (err) => {
+        console.error('Error creating announcement:', err);
+        this.alertservice.showError('Failed to create announcement. Please try again.');
+      }
     });
   }
 }
+
 
   closeModal(): void {
     this.showModal = false;

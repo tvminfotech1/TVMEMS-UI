@@ -1,10 +1,19 @@
 <div class="top-bar">
-  <div class="welcome">
-    {{ greeting }}, <strong>{{ userName }}</strong
-    ><br />
-    <small>{{ workInfo }}</small>
-  </div>
+
+<div class="welcome">
+  {{ greeting }}
+  <img
+    *ngIf="greetingIcon"
+    [src]="greetingIcon"
+    alt="greeting icon"
+    class="greeting-icon"
+  />
+  , <strong>{{ userName | uppercase }}</strong><br>
+  <small>{{ workInfo }}</small>
 </div>
+
+</div>
+
 
 <div class="icon-menu" role="toolbar" aria-label="Quick access menu">
   <button

@@ -67,7 +67,6 @@ import { MatSelectModule } from "@angular/material/select";
 import { MatOptionModule } from "@angular/material/core";
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { MatDatepickerModule } from "@angular/material/datepicker";
-import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { MatRadioModule } from "@angular/material/radio";
 import { A11yModule } from "@angular/cdk/a11y";
 import {
@@ -87,6 +86,7 @@ import { UserPayslipComponent } from "./components/payroll/user-payslip/user-pay
 import { LoaderComponent } from "./components/loader/loader.component";
 import { ChangePasswordComponent } from "./components/mainlayout/change-password/change-password.component";
 import { LoaderInterceptor } from "./services/loader.interceptor";
+import { CommonAlertComponent } from './common-alert/common-alert.component';
 
 @NgModule({
   declarations: [
@@ -146,9 +146,8 @@ import { LoaderInterceptor } from "./services/loader.interceptor";
     JobOpeningListComponent,
     JobEditDialogComponent,
     UserPayslipComponent,
-    
-
     LoaderComponent,
+    CommonAlertComponent,
   ],
   imports: [
     BrowserModule,
@@ -171,13 +170,11 @@ import { LoaderInterceptor } from "./services/loader.interceptor";
     MatCheckboxModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatSnackBarModule,
     MatRadioModule,
     MatDialogModule,
     MatTableModule,
     A11yModule,
     CommonModule,
-    ChangePasswordComponent,
   ],
   providers: [
      {

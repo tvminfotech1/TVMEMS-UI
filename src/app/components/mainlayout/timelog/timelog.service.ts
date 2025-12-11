@@ -61,7 +61,7 @@ export interface Holiday {
 @Injectable({ providedIn: "root" })
 export class TimelogService {
   private readonly userApiUrl = `${BASE_URL}/user/timesheet`;
-  private readonly adminAllUrl = `${BASE_URL}/user/timesheet/all`;
+  private readonly adminAllUrl = `${BASE_URL}/user/timesheet/allTimsheet`;
 
   constructor(private http: HttpClient) {}
   private extractArrayFromResponse(res: any): any[] {

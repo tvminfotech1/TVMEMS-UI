@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { BASE_URL } from 'src/app/models/baseurl/constant';
+import { AlertService } from 'src/app/alert-service.service';
 
 @Component({
   selector: 'app-login-by-number',
@@ -18,7 +18,7 @@ export class LoginByNumberComponent implements OnInit {
     private fb: FormBuilder,
     private http: HttpClient,
     private router: Router,
-    private snackBar: MatSnackBar
+    private alertservice: AlertService
   ) {}
 
   ngOnInit(): void {
@@ -58,38 +58,21 @@ export class LoginByNumberComponent implements OnInit {
               sessionStorage.setItem('token', token);
             } else {
               console.error('No token received from server:', res);
-              this.snackBar.open('Login failed: No token received.', 'Close', {
-                duration: 3000,
-                horizontalPosition: 'center',
-                verticalPosition: 'top',
-                panelClass: ['error-snackbar'],
-              });
+              this.alertservice.showError('Login failed: No token received.');
             }
 
             this.router.navigate(['/mainlayout/dashboard']);
           },
           error: (err) => {
             console.error('Login failed:', err);
-            this.snackBar.open(
-              'Invalid credentials. Please check and try again',
-              'Close',
-              {
-                duration: 3000,
-                horizontalPosition: 'center',
-                verticalPosition: 'top',
-                panelClass: ['error-snackbar'],
-              }
+            this.alertservice.showError(
+              'Invalid credentials. Please check and try again'
             );
           },
         });
     } else {
       this.mobileLoginForm.markAllAsTouched();
-      this.snackBar.open('Please enter your credentials', 'Close', {
-        duration: 3000,
-        horizontalPosition: 'center',
-        verticalPosition: 'top',
-        panelClass: ['error-snackbar'],
-      });
+      this.alertservice.showError('Please enter your credentials');
     }
   }
 }

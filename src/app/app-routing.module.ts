@@ -69,12 +69,6 @@ const routes: Routes = [
   { path: "thankYou", component: ThankYouComponent },
   { path: "pendingUser", component: PendingUserComponent },
 
-  { path: "admin", component: AdminComponent },
-  { path: "adminLogin", component: AdminLoginComponent },
-  { path: "employeeData/:id", component: EmployeeDataComponent },
-  { path: "thankYou", component: ThankYouComponent },
-  { path: "pendingUser", component: PendingUserComponent },
-
   {
     path: "mainlayout",
     component: MainlayoutComponent,

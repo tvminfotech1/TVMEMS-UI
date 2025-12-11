@@ -20,7 +20,7 @@ export class UserlistService {
   }
 
   getAllUser(): Observable<any> {
-    return this.http.get(`${BASE_URL}/userlist/all`, {
+    return this.http.get(`${BASE_URL}/userlist/allUser`, {
       headers: this.getAuthHeaders(),
       observe: 'response',
     });

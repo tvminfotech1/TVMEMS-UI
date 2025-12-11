@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth.service';
 import { of } from 'rxjs';
+import { AlertService } from 'src/app/alert-service.service';
 
 @Component({
   selector: 'app-signup',
@@ -19,7 +20,9 @@ export class SignupComponent implements OnInit {
   successMessage: string = '';
   today: string = new Date().toISOString().split('T')[0];
 
-  constructor(private fb: FormBuilder, private authService: AuthService) {}
+  constructor(private fb: FormBuilder, 
+    private authService: AuthService,
+    private alertservice: AlertService) {}
 
   ngOnInit(): void {
     this.signupForm = this.fb.group(
@@ -36,7 +39,7 @@ export class SignupComponent implements OnInit {
           '',
           [Validators.required, Validators.pattern(/^[A-Za-z\s]+$/)],
         ],
-        empId: ['', [Validators.required, Validators.pattern(/^[0-9]+$/)]],
+        empId: ['', [Validators.required, Validators.pattern(/^[0-9]+$/),Validators.minLength(6), Validators.maxLength(6)]],
         mobile: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
         email: [
           '',
@@ -203,7 +206,7 @@ this.signupForm.get('confirmPassword')?.valueChanges.subscribe(() => {
       next: (res: any) => {
         this.successMessage =
           res.message || 'Registration successful! Please check your email.';
-        alert(this.successMessage);
+        this.alertservice.showSuccess(this.successMessage);
         this.signupForm.reset();
         this.signupForm.markAsPristine();
         this.signupForm.markAsUntouched();
