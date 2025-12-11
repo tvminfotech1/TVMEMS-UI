@@ -66,7 +66,6 @@ export class MainlayoutComponent implements OnInit {
         error: (err) => console.error("Error checking onboarding status:", err),
       });
     }
-    this.loadProfilePhoto();
   }
   @HostListener("document:click", ["$event"])
   onDocumentClick(event: MouseEvent) {
@@ -200,6 +199,10 @@ export class MainlayoutComponent implements OnInit {
   toggleSettings() {
     const willShow = !this.showSettings;
     this.closeAllDropdowns(willShow ? "settings" : "");
+
+    if (willShow) {
+      this.loadProfilePhoto();
+    }
   }
 
   toggleSearch() {
@@ -225,6 +228,11 @@ export class MainlayoutComponent implements OnInit {
   goToProfile() {
     this.closeAllDropdowns();
     this.router.navigate(["/mainlayout/myprofile", this.employeeId]);
+  }
+
+  goToChangePassword() {
+    this.closeAllDropdowns();
+    this.router.navigate(["/mainlayout/changepassword"]);
   }
 
   goToAnnouncements() {

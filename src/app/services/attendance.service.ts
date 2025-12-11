@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { AuthService } from './auth.service';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable } from "@angular/core";
+import { BehaviorSubject, Observable } from "rxjs";
+import { AuthService } from "./auth.service";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { BASE_URL } from '../models/baseurl/constant';
+
 
 export interface User {
   employeeId: number;
@@ -24,16 +25,19 @@ export interface AttendanceRecord {
   remarks?: string;
   isApproved: boolean;
   department: string;
-  status?: 'Present' | 'Absent' | 'Holiday' | 'Pending' | 'No Status' ;
+  status?: "Present" | "Absent" | "Holiday" | "Pending" | "No Status";
 
   user?: User | null;
 }
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class AttendanceService {
   TEST_MODE = false;
+
+  private baseUrl = "http://localhost:8080/Attendance";
+  private apiUrl = "http://localhost:8080";
   private attendanceList$ = new BehaviorSubject<AttendanceRecord[]>([]);
 
   constructor(private http: HttpClient, private authService: AuthService) {}
@@ -41,7 +45,7 @@ export class AttendanceService {
   private getAuthHeaders(): HttpHeaders {
     const token = this.authService.getToken();
     if (!token) {
-      throw new Error('No valid auth token found. Please log in again.');
+      throw new Error("No valid auth token found. Please log in again.");
     }
     return new HttpHeaders({ Authorization: `Bearer ${token}` });
   }
@@ -53,7 +57,7 @@ export class AttendanceService {
       })
       .subscribe(
         (data) => this.attendanceList$.next(data),
-        (error) => console.error('Error loading attendance', error)
+        (error) => console.error("Error loading attendance", error)
       );
   }
 
@@ -75,7 +79,7 @@ export class AttendanceService {
   submitAttendance(record: AttendanceRecord): Observable<AttendanceRecord> {
     const token = this.authService.getToken();
     if (!token) {
-      throw new Error('No auth token. Please login again.');
+      throw new Error("No auth token. Please login again.");
     }
 
     const headers = new HttpHeaders({

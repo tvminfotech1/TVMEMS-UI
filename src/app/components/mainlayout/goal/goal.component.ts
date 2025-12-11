@@ -107,6 +107,18 @@ export class GoalComponent implements OnInit {
     if (this.isAdmin){
       this.loadAdminGoals();
     }
+    employeeMap[emp.employeeId].goalsForMonth.push(goal);
+  });
+  this.filteredEmployees = Object.values(employeeMap);
+}
+
+viewGoals(emp: any): void {
+  const goals = emp.goalsForMonth || [];
+  if (goals.length > 0) {
+    this.openGoalPopup(goals);
+  } else {
+    this.goalListForPopup = [];
+    this.showGoalPopup = true;
   }
   loadAdminGoals(){
          if (this.isAdmin) {

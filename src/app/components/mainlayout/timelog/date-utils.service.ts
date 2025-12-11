@@ -33,4 +33,14 @@ export class DateUtilsService {
     const day = String(dt.getUTCDate()).padStart(2, "0");
     return `${year}-${month}-${day}`;
   }
+
+  public toDateOnlyISO(d?: string | Date | null): string {
+    if (!d) return "";
+    const dt = new Date(d);
+    if (isNaN(dt.getTime())) return "";
+    const year = dt.getUTCFullYear();
+    const month = String(dt.getUTCMonth() + 1).padStart(2, "0");
+    const day = String(dt.getUTCDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  }
 }
