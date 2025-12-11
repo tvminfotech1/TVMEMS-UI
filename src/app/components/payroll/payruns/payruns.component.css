@@ -151,7 +151,7 @@ h2 {
 .action-buttons {
   display: flex;
   justify-content: center;
-  gap: 12px;       
+  gap: 12px;
   align-items: center;
 }
 @media (max-width: 768px) {
@@ -232,5 +232,64 @@ h2 {
   .btn-slip {
     padding: 5px 8px;
     font-size: 8px;
+  }
+}
+@media screen and (max-width: 768px) {
+  .salary-table,
+  .salary-table thead,
+  .salary-table tbody,
+  .salary-table th,
+  .salary-table td,
+  .salary-table tr {
+    display: block;
+    width: 100%;
+  }
+
+  .salary-table thead {
+    display: none;
+  }
+
+  .salary-table tr {
+    margin-bottom: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 12px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
+
+  .salary-table td {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 12px;
+    border: none;
+    border-bottom: 1px solid #eee;
+    position: relative;
+  }
+
+  .salary-table td:last-child {
+    border-bottom: 0;
+  }
+
+  .salary-table td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+
+  .salary-table td.action-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 6px;
+  }
+  .action-buttons span {
+    display: flex;
+    gap: 10px;
+  }
+  .salary-table td[data-label="employeeName"] div {
+    text-align: right;
+    width: 100%;
+    word-break: break-word;
   }
 }

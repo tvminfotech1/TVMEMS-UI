@@ -220,11 +220,47 @@ h2 {
     font-size: 16px;
     padding: 12px 14px;
   }
+  .recent-table,
+  .recent-table thead,
+  .recent-table tbody,
+  .recent-table tr,
+  .recent-table td,
+  .recent-table th {
+    display: block;
+    width: 100%;
+  }
+  .recent-table thead {
+    display: none !important;
+  }
+  .recent-table tbody tr {
+    background: #ffffff;
+    margin-bottom: 14px;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 14px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  }
 
-  .recent-table thead th,
   .recent-table tbody td {
-    padding: 10px 12px;
-    font-size: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 6px;
+    border-bottom: 1px solid #f1f5f9;
+    font-size: 15px;
+  }
+
+  .recent-table tbody td:last-child {
+    border-bottom: none;
+  }
+
+  .recent-table td::before {
+    content: attr(data-label);
+    font-weight: 700;
+    color: #0f172a;
+    margin-right: 10px;
+    width: 130px;
+    flex-shrink: 0;
   }
 }
 @media (max-width: 480px) {
@@ -267,16 +303,28 @@ h2 {
     padding: 10px 12px;
   }
 
-  .recent-table {
-    overflow-x: auto;
+  .recent-table tbody td {
     display: block;
+    padding: 8px 6px;
+    border-bottom: 1px solid #f1f5f9;
   }
 
-  .recent-table thead th,
-  .recent-table tbody td {
-    padding: 8px 10px;
+  .recent-table td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #0f172a;
+    display: block;
+    margin-bottom: 4px;
     font-size: 13px;
-    white-space: nowrap;
+  }
+
+  .recent-table td {
+    font-size: 13px;
+    word-break: break-word;
+  }
+
+  .recent-table tbody tr {
+    padding: 12px;
   }
 }
 @media (max-width: 320px) {
@@ -305,14 +353,12 @@ h2 {
     font-size: 20px;
   }
 
-  .recent-section h3 {
-    font-size: 14px;
-    padding: 8px 10px;
+  .recent-table td {
+    font-size: 12px;
+    padding: 6px 4px;
   }
 
-  .recent-table thead th,
-  .recent-table tbody td {
-    padding: 6px 8px;
+  .recent-table td::before {
     font-size: 12px;
   }
 }

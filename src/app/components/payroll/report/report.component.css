@@ -224,14 +224,7 @@
     padding: 15px;
     overflow-x: auto;
   }
-  .details-table {
-    font-size: 0.85rem;
-    min-width: 650px;
-  }
-  .details-table th,
-  .details-table td {
-    padding: 8px;
-  }
+
 }
 
 @media (max-width: 480px) {
@@ -251,12 +244,11 @@
     font-size: 1.1rem;
   }
   .slip-container {
-    padding: 12px;
-  }
-  .details-table th,
-  .details-table td {
-    font-size: 0.75rem;
     padding: 6px;
+  }
+  .slip-container h2{
+    font-size: 18px;
+    padding-left: 10px;
   }
   .download-btn button {
     width: 100%;
@@ -278,15 +270,68 @@
   .summary-cards .card p {
     font-size: 1rem;
   }
-  .details-table {
+  /* .details-table {
     font-size: 0.7rem;
   }
   .details-table th,
   .details-table td {
     padding: 4px;
-  }
+  } */
   .download-btn button {
     font-size: 0.85rem;
     padding: 8px 14px;
+  }
+}
+
+@media (max-width: 768px) {
+  .details-table {
+    border: 0;
+    width: 100%;
+  }
+
+  .details-table thead {
+    display: none;
+  }
+
+  .details-table,
+  .details-table tbody,
+  .details-table tr,
+  .details-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .details-table tr {
+    background: #fff;
+    margin-bottom: 12px;
+    padding: 12px 10px;
+    border-radius: 10px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.08);
+  }
+
+  .details-table td {
+    border: none;
+    padding: 10px 12px;
+    position: relative;
+    font-size: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .details-table td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #444;
+    flex: 1;
+    text-align: left;
+    padding-right: 10px;
+    white-space: nowrap;
+  }
+
+  .details-table td span,
+  .details-table td {
+    flex: 1.2;
+    text-align: right;
   }
 }

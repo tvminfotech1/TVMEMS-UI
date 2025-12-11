@@ -4,46 +4,43 @@
       <div *ngIf="isUser">
         <div class="section-title" style="text-align: center">My Goals</div>
         <div class="btn" style="text-align: right">
-          <button
+          <button class="add-btn"
             type="button"
             (click)="goToGoalType()"
-            style="background-color: #3f51b5; color: #fff"
-          >
+            style="background-color: #3f51b5; color: #fff">
             Add Goal
           </button>
         </div>
       </div>
       <div class="circle-map-container" *ngIf="isUser">
-        <div class="year-circle">
-          <div class="year-navigation">
-            <span class="year-label">
-              <button
-                class="year-btn"
-                (click)="previousYear()"
-                [disabled]="isPreviousDisabled()"
-              >
-                &lt;
-              </button>
-              🎯{{ selectedYear }} Goals
-              <button
-                class="year-btn"
-                (click)="nextYear()"
-                [disabled]="isNextDisabled()"
-              >
-                &gt;
-              </button></span
-            >
-          </div>
+        <div class="goal-mobile-wrapper">
+          <div class="year-circle">
+            <div class="year-navigation">
+              <span class="year-label">
+                <button
+                  class="year-btn"
+                  (click)="previousYear()"
+                  [disabled]="isPreviousDisabled()">
+                  &lt;
+                </button>
+                🎯{{ selectedYear }} Goals
+                <button
+                  class="year-btn"
+                  (click)="nextYear()"
+                  [disabled]="isNextDisabled()">
+                  &gt;
+                </button></span>
+            </div>
 
-          <div
-            *ngFor="let month of months; let i = index"
-            class="month-node"
-            [ngStyle]="getPosition(i)"
-            [class.disabled]="!isMonthSelectable(i)"
-            (click)="isMonthSelectable(i) ? selectMonth(month) : null"
-          >
-            <div class="month-circle">
-              {{ month }}
+            <div
+              *ngFor="let month of months; let i = index"
+              class="month-node"
+              [ngStyle]="getPosition(i)"
+              [class.disabled]="!isMonthSelectable(i)"
+              (click)="isMonthSelectable(i) ? selectMonth(month) : null">
+              <div class="month-circle">
+                {{ month }}
+              </div>
             </div>
           </div>
         </div>
@@ -59,23 +56,16 @@
 
             <div class="goal-row">
               <div class="goal-col">
-                <span
-                  ><strong>Start:</strong>
-                  {{ goal.startDate | date : "dd-MM-yyyy" }}</span
-                ><br />
-                <span
-                  ><strong>Due:</strong>
-                  {{ goal.dueDate | date : "dd-MM-yyyy" }}</span
-                ><br />
-                <span
-                  ><strong>End:</strong>
-                  {{ goal.endDate | date : "dd-MM-yyyy" }}</span
-                >
+                <span><strong>Start:</strong>
+                  {{ goal.startDate | date : "dd-MM-yyyy" }}</span><br />
+                <span><strong>Due:</strong>
+                  {{ goal.dueDate | date : "dd-MM-yyyy" }}</span><br />
+                <span><strong>End:</strong>
+                  {{ goal.endDate | date : "dd-MM-yyyy" }}</span>
               </div>
 
               <div class="goal-col">
-                <span><strong>Description</strong></span
-                ><br />
+                <span><strong>Description</strong></span><br />
                 <p class="goal-description-month">{{ goal.description }}</p>
               </div>
 
@@ -87,8 +77,7 @@
                     cy="60"
                     [attr.r]="radius"
                     stroke-width="12"
-                    fill="none"
-                  ></circle>
+                    fill="none"></circle>
                   <circle
                     class="fg"
                     cx="60"
@@ -99,14 +88,12 @@
                     [attr.stroke-dasharray]="circumference"
                     [attr.stroke-dashoffset]="
                       getOffset(getProgressValue(goal.progress))
-                    "
-                  ></circle>
+                    "></circle>
                   <text
                     x="60"
                     y="68"
                     class="progress-text"
-                    text-anchor="middle"
-                  >
+                    text-anchor="middle">
                     {{ getProgressValue(goal.progress) }}%
                   </text>
                 </svg>
@@ -152,8 +139,7 @@
                       cy="60"
                       [attr.r]="radius"
                       stroke-width="12"
-                      fill="none"
-                    ></circle>
+                      fill="none"></circle>
                     <circle
                       class="fg"
                       cx="60"
@@ -164,14 +150,12 @@
                       [attr.stroke-dasharray]="circumference"
                       [attr.stroke-dashoffset]="
                         getOffset(getProgressValue(goal.progress))
-                      "
-                    ></circle>
+                      "></circle>
                     <text
                       x="60"
                       y="68"
                       class="progress-text"
-                      text-anchor="middle"
-                    >
+                      text-anchor="middle">
                       {{ getProgressValue(goal.progress) }}%
                     </text>
                   </svg>
@@ -207,16 +191,14 @@
 
     <div
       *ngIf="currentView === 'newGoal'"
-      class="new-goal mat-elevation-z4 p-6 rounded-lg bg-white max-w-lg mx-auto"
-    >
+      class="new-goal mat-elevation-z4 p-6 rounded-lg bg-white max-w-lg mx-auto">
       <div class="newGoal-content" *ngIf="isUser">
         <button class="close-btn" (click)="goClose()">&#10006;</button>
 
         <form
           [formGroup]="goalForm"
           (ngSubmit)="submitGoal()"
-          class="space-y-4"
-        >
+          class="space-y-4">
           <h3 class="text-center mb-4 text-primary">Add New Goal</h3>
 
           <mat-form-field appearance="outline" class="w-full">
@@ -230,8 +212,7 @@
               *ngIf="
                 goalForm.get('category')?.touched &&
                 goalForm.get('category')?.invalid
-              "
-            >
+              ">
               Category is required
             </mat-error>
           </mat-form-field>
@@ -242,18 +223,15 @@
               matInput
               formControlName="description"
               maxlength="35"
-              placeholder="Enter goal description"
-            />
-            <mat-hint align="end"
-              >{{ goalForm.get("description")?.value?.length || 0 }} /
-              35</mat-hint
-            >
+              placeholder="Enter goal description" />
+            <mat-hint align="end">{{ goalForm.get("description")?.value?.length
+              || 0 }} /
+              35</mat-hint>
             <mat-error
               *ngIf="
                 goalForm.get('description')?.touched &&
                 goalForm.get('description')?.invalid
-              "
-            >
+              ">
               Description is required (max 35 characters)
             </mat-error>
           </mat-form-field>
@@ -266,14 +244,12 @@
               formControlName="weight"
               min="0"
               max="100"
-              placeholder="Enter goal weight (0-100)"
-            />
+              placeholder="Enter goal weight (0-100)" />
             <mat-error
               *ngIf="
                 goalForm.get('weight')?.touched &&
                 goalForm.get('weight')?.invalid
-              "
-            >
+              ">
               Weight must be between 0 and 100
             </mat-error>
           </mat-form-field>
@@ -283,8 +259,7 @@
               mat-raised-button
               color="primary"
               type="submit"
-              class="cancel-btn"
-            >
+              class="cancel-btn">
               Submit
             </button>
             <button
@@ -292,8 +267,7 @@
               color="primary"
               type="button"
               class="cancel-btn"
-              (click)="goBack()"
-            >
+              (click)="goBack()">
               Cancel
             </button>
           </div>
@@ -301,143 +275,217 @@
       </div>
     </div>
 
-    <div *ngIf="currentView === 'archived'">
-      <div *ngIf="isTableVisible" class="popup-table-user-overlay">
-        <div class="popup-table-user">
-          <div class="header-container">
-            <h1>Archived Goals</h1>
-            <button (click)="goClose()" class="close-btn">&#10006;</button>
-          </div>
+   <div *ngIf="currentView === 'archived'">
+  <div *ngIf="isTableVisible" class="popup-table-user-overlay">
+    <div class="popup-table-user">
 
-          <div class="table-wrapper">
-            <table
-              mat-table
-              [dataSource]="archivedGoals"
-              class="mat-elevation-z8 custom-table"
-            >
-              <ng-container matColumnDef="category">
-                <th mat-header-cell *matHeaderCellDef>Category</th>
-                <td mat-cell *matCellDef="let goal">{{ goal.category }}</td>
+      <div class="header-container">
+        <h1>Archived Goals</h1>
+        <button (click)="goClose()" class="close-btn">&#10006;</button>
+      </div>
+
+      <div class="table-wrapper desktop-table-view">
+        <table mat-table [dataSource]="archivedGoals" class="mat-elevation-z8 custom-table">
+          <ng-container matColumnDef="category">
+            <th mat-header-cell *matHeaderCellDef>Category</th>
+            <td mat-cell *matCellDef="let goal" data-label="Category">
+              {{ goal.category }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="description">
+            <th mat-header-cell *matHeaderCellDef>Description</th>
+            <td mat-cell *matCellDef="let goal" data-label="Description">
+              {{ goal.description }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="weight">
+            <th mat-header-cell *matHeaderCellDef>Weight</th>
+            <td mat-cell *matCellDef="let goal" data-label="Weight">
+              {{ goal.weight }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="startDate">
+            <th mat-header-cell *matHeaderCellDef>Start Date</th>
+            <td mat-cell *matCellDef="let goal" data-label="Start Date">
+              {{ goal.startDate | date : "dd-MM-yyyy" }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="dueDate">
+            <th mat-header-cell *matHeaderCellDef>Due Date</th>
+            <td mat-cell *matCellDef="let goal" data-label="Due Date">
+              <ng-container *ngIf="!goal.isDueDateLocked; else showDueDateTextTable">
+                <mat-form-field appearance="outline">
+                  <input
+                    matInput
+                    [matDatepicker]="picker"
+                    [(ngModel)]="goal.dueDate"
+                    [min]="goal.startDate"
+                    (dateChange)="onDueDateChange(goal, $event)"
+                    (focus)="picker.open()"
+                    readonly
+                  />
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
               </ng-container>
 
-              <ng-container matColumnDef="description">
-                <th mat-header-cell *matHeaderCellDef>Description</th>
-                <td mat-cell *matCellDef="let goal">{{ goal.description }}</td>
-              </ng-container>
+              <ng-template #showDueDateTextTable>
+                <span>{{ goal.dueDate | date : "dd-MM-yyyy" }}</span>
+              </ng-template>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="progress">
+            <th mat-header-cell *matHeaderCellDef>Progress</th>
+            <td mat-cell *matCellDef="let goal" data-label="Progress">
+              <mat-form-field appearance="outline" class="progress-field" *ngIf="goal.isEditing">
+                <mat-select [(ngModel)]="goal.progress">
+                  <mat-option value="25%">25%</mat-option>
+                  <mat-option value="50%">50%</mat-option>
+                  <mat-option value="75%">75%</mat-option>
+                  <mat-option value="100%">100%</mat-option>
+                </mat-select>
+              </mat-form-field>
 
-              <ng-container matColumnDef="weight">
-                <th mat-header-cell *matHeaderCellDef>Weight</th>
-                <td mat-cell *matCellDef="let goal">{{ goal.weight }}</td>
-              </ng-container>
+              <span *ngIf="!goal.isEditing">
+                {{ goal.progress || "-" }}
+              </span>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef>Action</th>
+            <td mat-cell *matCellDef="let goal" data-label="Action">
+              <button mat-button (click)="startGoal(goal)" [disabled]="goal.startDate != null">
+                Start
+              </button>
 
-              <ng-container matColumnDef="startDate">
-                <th mat-header-cell *matHeaderCellDef>Start Date</th>
-                <td mat-cell *matCellDef="let goal">
-                  {{ goal.startDate | date : "dd-MM-yyyy" }}
-                </td>
-              </ng-container>
+              <button
+                mat-button
+                (click)="editGoal(goal)"
+                [disabled]="goal.startDate == null || goal.isEditing"
+              >
+                Edit
+              </button>
 
-              <ng-container matColumnDef="dueDate">
-                <th mat-header-cell *matHeaderCellDef>Due Date</th>
-                <td mat-cell *matCellDef="let goal">
-                  <ng-container
-                    *ngIf="!goal.isDueDateLocked; else showDueDateText"
-                  >
-                    <mat-form-field appearance="outline">
-                      <input
-                        matInput
-                        [matDatepicker]="picker"
-                        [(ngModel)]="goal.dueDate"
-                        [min]="goal.startDate"
-                        (dateChange)="onDueDateChange(goal, $event)"
-                        (focus)="picker.open()"
-                        readonly
-                      />
-                      <mat-datepicker-toggle
-                        matSuffix
-                        [for]="picker"
-                      ></mat-datepicker-toggle>
-                      <mat-datepicker #picker></mat-datepicker>
-                    </mat-form-field>
-                  </ng-container>
-                  <ng-template #showDueDateText>
-                    <span>{{ goal.dueDate | date : "dd-MM-yyyy" }}</span>
-                  </ng-template>
-                </td>
-              </ng-container>
+              <button mat-button style="color: green" *ngIf="goal.isEditing" (click)="saveGoal(goal)">
+                Save
+              </button>
 
-              <ng-container matColumnDef="progress">
-                <th mat-header-cell *matHeaderCellDef>Progress</th>
-                <td mat-cell *matCellDef="let goal">
-                  <mat-form-field
-                    appearance="outline"
-                    class="progress-field"
-                    *ngIf="goal.isEditing"
-                  >
-                    <mat-select [(ngModel)]="goal.progress">
-                      <mat-option value="25%">25%</mat-option>
-                      <mat-option value="50%">50%</mat-option>
-                      <mat-option value="75%">75%</mat-option>
-                      <mat-option value="100%">100%</mat-option>
-                    </mat-select>
+              <button (click)="deleteGoal(goal)" style="background: none; border: none;">
+                <i class="ri-delete-bin-fill" style="color: red; font-size: 20px"></i>
+              </button>
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr class="no-data-row" *matNoDataRow>
+            <td [attr.colspan]="displayedColumns.length" class="no-goals-cell">
+              No archived goals found.
+            </td>
+          </tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+        </table>
+      </div>
+      <div class="goals-vertical-list mobile-card-view">
+        <div *ngIf="archivedGoals?.length === 0" class="no-goals-mobile">
+          No archived goals found.
+        </div>
+
+        <div *ngFor="let goal of archivedGoals" class="goal-box mat-elevation-z2">
+
+          <div class="goal-box-header">{{ goal.description }}</div>
+
+          <div class="goal-box-content">
+            <p class="goal-row-item">
+              <span class="label">Category</span>
+              <span class="value">{{ goal.category }}</span>
+            </p>
+
+            <p class="goal-row-item">
+              <span class="label">Weight</span>
+              <span class="value">{{ goal.weight }}</span>
+            </p>
+
+            <p class="goal-row-item">
+              <span class="label">Start Date</span>
+              <span class="value">{{ goal.startDate | date : "dd-MM-yyyy" }}</span>
+            </p>
+
+            <p class="goal-row-item">
+              <span class="label">Due Date</span>
+              <span class="value-input">
+                <ng-container *ngIf="!goal.isDueDateLocked; else showDueDateTextCard">
+                  <mat-form-field appearance="outline" class="mobile-datepicker">
+                    <input
+                      matInput
+                      [matDatepicker]="pickerCard"
+                      [(ngModel)]="goal.dueDate"
+                      [min]="goal.startDate"
+                      (dateChange)="onDueDateChange(goal, $event)"
+                      (focus)="pickerCard.open()"
+                      readonly
+                    />
+                    <mat-datepicker-toggle matSuffix [for]="pickerCard"></mat-datepicker-toggle>
+                    <mat-datepicker #pickerCard></mat-datepicker>
                   </mat-form-field>
-                  <span *ngIf="!goal.isEditing">{{
-                    goal.progress || "-"
-                  }}</span>
-                </td>
-              </ng-container>
+                </ng-container>
 
-              <ng-container matColumnDef="action">
-                <th mat-header-cell *matHeaderCellDef>Action</th>
-                <td mat-cell *matCellDef="let goal">
-                  <button
-                    mat-button
-                    style="color: black; font-size: 16px"
-                    (click)="startGoal(goal)"
-                    [disabled]="goal.startDate != null"
-                  >
-                    Start
-                  </button>
+                <ng-template #showDueDateTextCard>
+                  <span>{{ goal.dueDate | date : "dd-MM-yyyy" }}</span>
+                </ng-template>
+              </span>
+            </p>
 
-                  <button
-                    mat-button
-                    style="color: #3f51b5; font-size: 16px"
-                    (click)="editGoal(goal)"
-                    [disabled]="goal.startDate == null"
-                  >
-                    Edit
-                  </button>
+            <p class="goal-row-item">
+              <span class="label">Progress</span>
+              <span class="value-input">
+                <mat-form-field appearance="outline" class="mobile-progress-field" *ngIf="goal.isEditing">
+                  <mat-select [(ngModel)]="goal.progress">
+                    <mat-option value="25%">25%</mat-option>
+                    <mat-option value="50%">50%</mat-option>
+                    <mat-option value="75%">75%</mat-option>
+                    <mat-option value="100%">100%</mat-option>
+                  </mat-select>
+                </mat-form-field>
 
-                  <button
-                    mat-button
-                    style="color: green; font-size: 16px"
-                    *ngIf="goal.isEditing"
-                    (click)="saveGoal(goal)"
-                  >
-                    Save
-                  </button>
-                  <button
-                    (click)="deleteGoal(goal)"
-                    style="background: none; border: none; cursor: pointer"
-                  >
-                    <i
-                      class="ri-delete-bin-fill"
-                      style="color: red; font-size: 20px"
-                    ></i>
-                  </button>
-                </td>
-              </ng-container>
-              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-              <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-            </table>
+                <span *ngIf="!goal.isEditing">{{ goal.progress || "-" }}</span>
+              </span>
+            </p>
           </div>
+
+          <div class="goal-box-actions">
+            <button mat-button color="primary" (click)="startGoal(goal)" [disabled]="goal.startDate != null">
+              Start
+            </button>
+
+            <button
+              mat-button
+              color="accent"
+              (click)="editGoal(goal)"
+              [disabled]="goal.startDate == null || goal.isEditing"
+            >
+              Edit
+            </button>
+
+            <button mat-button style="color: green" *ngIf="goal.isEditing" (click)="saveGoal(goal)">
+              Save
+            </button>
+
+            <button (click)="deleteGoal(goal)" class="delete-btn-mobile">
+              <i class="ri-delete-bin-fill"></i>
+            </button>
+          </div>
+
         </div>
       </div>
+
     </div>
+  </div>
+</div>
+
 
     <div *ngIf="isAdmin">
       <div class="admin-container">
-        <h3 style="font-size: 30px; font-weight: 500; text-align: center">
+        <h3>
           Employee Goals
         </h3>
         <div class="top-bar">
@@ -456,64 +504,55 @@
               id="search"
               [(ngModel)]="searchText"
               (input)="onSearch()"
-              placeholder="Search by name or ID"
-            />
+              placeholder="Search by name or ID" />
           </div>
         </div>
-        <div class="table-wrapperrr">
-          <table
-            class="table"
-            *ngIf="filteredEmployees.length > 0; else noData"
-          >
-            <thead>
-              <tr>
-                <th>Employee ID</th>
-                <th>Full Name</th>
-                <th>View</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let emp of paginatedEmployees">
-                <ng-container *ngIf="!emp.isAdmin">
-                  <td>{{ emp.employeeId }}</td>
-                  <td>{{ emp.fullName }}</td>
-                  <td>
-                    <button
-                      type="button"
-                      (click)="viewGoals(emp)"
-                      style="
-                        background-color: #3f51b5;
-                        color: #fff;
-                        padding: 8px 16px;
-                        border: none;
-                        border-radius: 4px;
-                      "
-                    >
-                      View Goals
-                    </button>
-                  </td>
-                </ng-container>
-              </tr>
-            </tbody>
-          </table>
+        <div class="goal-card-table">
+          <div class="table-wrapperrr">
+            <table
+              class="table"
+              *ngIf="filteredEmployees.length > 0; else noData">
+              <thead>
+                <tr>
+                  <th>Employee ID</th>
+                  <th>Full Name</th>
+                  <th>View</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let emp of paginatedEmployees">
+                  <ng-container *ngIf="!emp.isAdmin">
+                    <td data-label="Employee ID">{{ emp.employeeId }}</td>
+                    <td data-label="Full Name">{{ emp.fullName }}</td>
+                    <td data-label="View">
+                      <button
+                        class="view-btn"
+                        type="button"
+                        (click)="viewGoals(emp)">
+                        View Goals
+                      </button>
+                    </td>
+                  </ng-container>
+                </tr>
+              </tbody>
+            </table>
 
-          <ng-template #noData>
-            <p class="no-data">No employee data available.</p>
-          </ng-template>
+            <ng-template #noData>
+              <p class="no-data">No employee data available.</p>
+            </ng-template>
+          </div>
         </div>
       </div>
       <div class="pagination">
         <button
           (click)="changePage(currentPage - 1)"
-          [disabled]="currentPage === 1"
-        >
+          [disabled]="currentPage === 1">
           Prev
         </button>
         <span>{{ currentPage }} / {{ totalPages }}</span>
         <button
           (click)="changePage(currentPage + 1)"
-          [disabled]="currentPage === totalPages"
-        >
+          [disabled]="currentPage === totalPages">
           Next
         </button>
       </div>

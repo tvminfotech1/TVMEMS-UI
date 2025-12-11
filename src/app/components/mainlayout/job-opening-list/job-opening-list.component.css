@@ -166,11 +166,10 @@ button {
   color: #0a0f3c;
 }
 .material-icon {
-  font-family: 'Material Icons';
+  font-family: "Material Icons";
   font-size: 20px;
   align-items: center;
-    color: #0a0f3c;
-
+  color: #0a0f3c;
 }
 
 .loader {
@@ -277,6 +276,9 @@ button {
     font-size: 12px;
     padding: 6px 10px;
   }
+  .no-data {
+    padding: 72px;
+  }
 
   .material-icons {
     font-size: 22px;
@@ -326,4 +328,3 @@ button {
     font-size: 18px;
   }
 }
-

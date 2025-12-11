@@ -35,12 +35,12 @@
           <td colspan="7" class="nodata">No Data available!</td>
         </tr>
         <tr *ngFor="let data of submittedData" class="center">
-          <td>{{ data.name }}</td>
-          <td>{{ data.employeeId }}</td>
-          <td>{{ data.reason }}</td>
-          <td>{{ data.date }}</td>
-          <td>{{ data.explanation }}</td>
-          <td>
+          <td data-label="Name">{{ data.name }}</td>
+          <td data-label="Employee ID">{{ data.employeeId }}</td>
+          <td data-label="Reason">{{ data.reason }}</td>
+          <td data-label="Date">{{ data.date }}</td>
+          <td data-label="Explanation">{{ data.explanation }}</td>
+          <td data-label="Status">
             <span
               class="status-chip"
               [ngClass]="{
@@ -48,24 +48,21 @@
                 pending: data.status === 'Pending',
                 rejected: data.status === 'Rejected',
                 approved: data.status === 'Approved'
-              }"
-            >
+              }">
               {{ data.status }}
             </span>
           </td>
-          <td *ngIf="isAdmin" class="actions">
+          <td *ngIf="isAdmin" class="actions" data-label="Action">
             <button
               class="btn approve"
               (click)="updateStatus(data, 'Approved')"
-              title="Approve"
-            >
+              title="Approve">
               Approve
             </button>
             <button
               class="btn reject"
               (click)="updateStatus(data, 'Rejected')"
-              title="Reject"
-            >
+              title="Reject">
               Rejected
             </button>
           </td>
@@ -88,8 +85,7 @@
           <input
             type="text"
             formControlName="name"
-            placeholder="Enter your name"
-          />
+            placeholder="Enter your name" />
         </div>
 
         <div class="form-group">
@@ -97,20 +93,21 @@
           <input
             type="text"
             formControlName="employeeId"
-            placeholder="Enter your employee ID"
-          />
+            placeholder="Enter your employee ID" />
         </div>
-
         <div class="form-group">
-          <label>Reason <span class="required">*</span></label>
-          <select formControlName="reason">
-            <option value="">-- Select Reason --</option>
-            <option value="Personal">Personal</option>
-            <option value="Career Growth">Career Growth</option>
-            <option value="Relocation">Relocation</option>
-            <option value="Other">Other</option>
-          </select>
-        </div>
+  <label>Reason <span class="required">*</span></label>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-select formControlName="reason" placeholder="-- Select Reason --">
+      <mat-option value="Personal">Personal</mat-option>
+      <mat-option value="Career Growth">Career Growth</mat-option>
+      <mat-option value="Relocation">Relocation</mat-option>
+      <mat-option value="Other">Other</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+
 
         <div class="form-group">
           <label>Explain Your Reason <span class="required">*</span></label>
@@ -135,8 +132,7 @@
             type="button"
             class="save-btn"
             [disabled]="!resignationForm.valid"
-            (click)="saveForm()"
-          >
+            (click)="saveForm()">
             SAVE
           </button>
         </div>
