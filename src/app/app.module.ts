@@ -86,6 +86,7 @@ import { MatDividerModule } from "@angular/material/divider";
 import { UserPayslipComponent } from "./components/payroll/user-payslip/user-payslip.component";
 import { LoaderComponent } from "./components/loader/loader.component";
 import { ChangePasswordComponent } from "./components/mainlayout/change-password/change-password.component";
+import { LoaderInterceptor } from "./services/loader.interceptor";
 
 @NgModule({
   declarations: [
@@ -179,6 +180,11 @@ import { ChangePasswordComponent } from "./components/mainlayout/change-password
     ChangePasswordComponent,
   ],
   providers: [
+     {
+    provide: HTTP_INTERCEPTORS,
+    useClass: LoaderInterceptor, 
+    multi: true
+  },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

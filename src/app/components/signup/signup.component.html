@@ -273,19 +273,11 @@
       <div>
        <button 
           type="submit" 
-          [disabled]="signupForm.invalid || loading"
+          [disabled]="signupForm.invalid"
           class="submit-btn"
-        >
-          <ng-container *ngIf="!loading">Create</ng-container>
-          <ng-container *ngIf="loading">
-            <span class="spinner"></span> loading......
-          </ng-container>
+        >Create
         </button>
       </div>
     </div>
   </form>
-
-  <div class="login-link">
-    <p>Already have an account? <a routerLink="/login">Login here</a></p>
-  </div>
 </div>

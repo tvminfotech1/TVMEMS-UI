@@ -215,6 +215,7 @@ button {
   border-radius: 6px;
   cursor: pointer;
   transition: background 0.3s ease;
+  display:flex;
 }
 
 button:hover {
@@ -289,7 +290,7 @@ button[disabled] {
   }
 }
 
-mat-spinner {
+/* mat-spinner {
   display: inline-block;
   vertical-align: middle;
 }
@@ -310,4 +311,4 @@ mat-spinner {
   100% {
     transform: rotate(360deg);
   }
-}
+} */
