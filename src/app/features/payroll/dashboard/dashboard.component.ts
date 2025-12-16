@@ -1,0 +1,51 @@
+import { Component, OnInit } from '@angular/core';
+import { PayrollEmployeeService } from 'src/app/core/services/payroll-employee.service';
+import { Employee } from 'src/app/core/models/employee';
+import { Router } from '@angular/router';
+
+@Component({
+  selector: 'app-dashboard',
+  templateUrl: './dashboard.component.html',
+  styleUrls: ['./dashboard.component.css'],
+})
+export class DashboardComponent implements OnInit {
+  employees: Employee[] = [];
+  totalEmployees = 0;
+  activeEmployees = 0;
+  inactiveEmployees = 0;
+  departmentCount = 0;
+  recentEmployees: Employee[] = [];
+
+  constructor(
+    private employeeService: PayrollEmployeeService,
+    private router: Router
+  ) {}
+
+  ngOnInit(): void {
+    this.employeeService.getEmployees().subscribe((data: Employee[]) => {
+      this.employees = data;
+      this.totalEmployees = data.length;
+      this.activeEmployees = data.filter(
+        (emp) => emp.status === 'Active'
+      ).length;
+      this.inactiveEmployees = data.filter(
+        (emp) => emp.status === 'Inactive' || emp.status === 'Deactivated'
+      ).length;
+      this.departmentCount = new Set(data.map((emp) => emp.department)).size;
+
+      this.recentEmployees = [...data.slice(-2).reverse()];
+    });
+  }
+
+  goToAddEmployee() {
+    this.router.navigate(['/mainlayout/add-employee']);
+  }
+
+  goToAllEmployees() {
+    this.router.navigate(['/mainlayout/payroll-employee']);
+  }
+
+  goToReports() {
+    this.router.navigate(['/mainlayout/reports']);
+  }
+}

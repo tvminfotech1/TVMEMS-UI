@@ -1,0 +1,163 @@
+import { Component, OnInit } from '@angular/core';
+import { PayrollEmployeeService } from 'src/app/core/services/payroll-employee.service';
+import { Employee } from 'src/app/core/models/employee';
+import { Router } from '@angular/router';
+import * as XLSX from 'xlsx';
+import { AlertService } from 'src/app/core/services/alert.service';
+
+@Component({
+  selector: 'app-payroll-employee',
+  templateUrl: './payroll-employee.component.html',
+  styleUrls: ['./payroll-employee.component.css'],
+})
+export class PayrollEmployeeComponent implements OnInit {
+  employees: Employee[] = [];
+  filteredEmployees: Employee[] = [];
+
+  selectedLocation: string = '';
+  selectedStatus: string = '';
+  selectedDesignation: string = '';
+
+  uniqueLocations: string[] = [];
+  uniqueStatuses: string[] = [];
+  uniqueDesignations: string[] = [];
+
+  excelEmployees: Employee[] = [];
+  displayedColumns: string[] = [
+    'id',
+    'name',
+    'email',
+    'department',
+    'status',
+    'location',
+    'details',
+  ];
+
+  constructor(
+    private employeeService: PayrollEmployeeService,
+    private router: Router,
+    private alertservice: AlertService
+  ) {}
+
+  ngOnInit(): void {
+    this.selectedLocation = '';
+    this.selectedStatus = '';
+    this.selectedDesignation = '';
+    this.loadEmployees();
+  }
+
+  loadEmployees(): void {
+    this.employeeService.getEmployees().subscribe((data) => {
+      this.employees = data;
+      this.filteredEmployees = [...data];
+      this.extractUniqueFilters(data);
+    });
+  }
+
+  extractUniqueFilters(data: Employee[]): void {
+    this.uniqueLocations = [
+      ...new Set(data.map((emp) => emp.location).filter(Boolean)),
+    ];
+    this.uniqueStatuses = [
+      ...new Set(data.map((emp) => emp.status).filter(Boolean)),
+    ];
+    this.uniqueDesignations = [
+      ...new Set(data.map((emp) => emp.department).filter(Boolean)),
+    ];
+  }
+
+  onFileChange(event: any): void {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+
+    reader.onload = (e: any) => {
+      const bstr: string = e.target.result;
+      const wb: XLSX.WorkBook = XLSX.read(bstr, { type: 'binary' });
+      const wsname: string = wb.SheetNames[0];
+      const ws: XLSX.WorkSheet = wb.Sheets[wsname];
+      const data = XLSX.utils.sheet_to_json(ws);
+
+      this.excelEmployees = (data as any[]).map(
+        (row: any): Employee => ({
+          id: +row['ID'] || 0,
+          fullName: row['Full Name'] || '',
+          email: row['Email'] || '',
+          phone: row['Phone'] || '',
+          department: row['Department'] || '',
+          joiningDate: row['Joining Date'] || '',
+          employeeType: row['Employee Type'] || '',
+          location: row['Location'] || '',
+          status: row['Status'] || 'Active',
+          ctc: +row['CTC'] || 0,
+          basicSalary: +row['Basic Salary'] || 0,
+          inHandSalary: +row['In-Hand Salary'] || 0,
+          aadhaarNumber: row['Aadhaar Number'] || '',
+          panNumber: row['PAN Number'] || '',
+          bankDetails: {
+            bankName: row['Bank Name'] || '',
+            accountNumber: row['Account Number'] || '',
+            ifscCode: row['IFSC Code'] || '',
+            branch: row['Branch'] || '',
+          },
+        })
+      );
+    };
+
+    reader.readAsBinaryString(file);
+  }
+
+  uploadData(): void {
+    if (!this.excelEmployees.length) {
+      this.alertservice.showError('No data to upload. Please import an Excel file first.');
+      return;
+    }
+
+    const total = this.excelEmployees.length;
+    let uploaded = 0;
+
+    for (let emp of this.excelEmployees) {
+      this.employeeService.addEmployee(emp).subscribe({
+        next: () => {
+          uploaded++;
+          if (uploaded === total) {
+            this.alertservice.showSuccess(`All ${total} employees imported successfully!`);
+            this.loadEmployees();
+          }
+        },
+        error: (err) => {
+          console.error(' Failed to upload employee:', emp.id, err);
+          this.alertservice.showError(`Employee with ID ${emp.id} could not be imported.`);
+        },
+      });
+    }
+  }
+
+  applyFilters(): void {
+    this.filteredEmployees = this.employees.filter(
+      (emp) =>
+        (this.selectedLocation === '' ||
+          emp.location === this.selectedLocation) &&
+        (this.selectedStatus === '' || emp.status === this.selectedStatus)
+        &&  (this.selectedDesignation === '' || emp.department === this.selectedDesignation)
+    );
+  }
+
+  resetFilters(): void {
+    this.selectedLocation = '';
+    this.selectedStatus = '';
+    this.selectedDesignation = '';
+    this.filteredEmployees = [...this.employees];
+  }
+
+  viewPayRun(emp: Employee): void {
+    if (emp.status === 'Active') {
+      this.router.navigate(['/mainlayout/payruns', emp.id]);
+    } else {
+      this.alertservice.showWarning("Deactivated employee can't add salary.");
+    }
+  }
+
+  navigateToAddEmployee(): void {
+    this.router.navigate(['/mainlayout/add-employee']);
+  }
+}

@@ -1,61 +1,59 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 
-import { PersonalComponent } from "./components/personal/personal.component";
-import { KycComponent } from "./components/kyc/kyc.component";
-import { PassportVisaComponent } from "./components/passport-visa/passport-visa.component";
-import { FamilyComponent } from "./components/family/family.component";
-import { EducationComponent } from "./components/education/education.component";
-import { SkillsComponent } from "./components/skills/skills.component";
-import { CertificateComponent } from "./components/certificate/certificate.component";
-import { DocumentComponent } from "./components/document/document.component";
-import { ResumeComponent } from "./components/resume/resume.component";
-import { FinalComponent } from "./components/final/final.component";
-import { PreviousEmploymentComponent } from "./components/previous-employment/previous-employment.component";
+import { PersonalComponent } from "./features/form/onboadingForm/personal/personal.component";
+import { KycComponent } from "./features/form/onboadingForm/kyc/kyc.component";
+import { PassportVisaComponent } from "./features/form/onboadingForm/passport-visa/passport-visa.component";
+import { FamilyComponent } from "./features/form/onboadingForm/family/family.component";
+import { EducationComponent } from "./features/form/onboadingForm/education/education.component";
+import { SkillsComponent } from "./features/form/onboadingForm/skills/skills.component";
+import { CertificateComponent } from "./features/form/onboadingForm/certificate/certificate.component";
+import { DocumentComponent } from "./features/form/onboadingForm/document/document.component";
+import { ResumeComponent } from "./features/form/onboadingForm/resume/resume.component";
+import { FinalComponent } from "./features/form/onboadingForm/final/final.component";
+import { PreviousEmploymentComponent } from "./features/form/onboadingForm/previous-employment/previous-employment.component";
 
-import { HomeComponent } from "./components/home/home.component";
-import { LoginComponent } from "./components/login/login.component";
-import { SignupComponent } from "./components/signup/signup.component";
-import { AdminComponent } from "./components/admin/admin.component";
-import { AdminLoginComponent } from "./components/admin-login/admin-login.component";
-import { EmployeeDataComponent } from "./components/employee-data/employee-data.component";
-import { LoginByNumberComponent } from "./components/login-by-number/login-by-number.component";
-import { ThankYouComponent } from "./components/thank-you/thank-you.component";
-import { PendingUserComponent } from "./components/pending-user/pending-user.component";
-import { MainlayoutComponent } from "./components/mainlayout/mainlayout.component";
-import { DashboardhomeComponent } from "./components/mainlayout/dashboardhome/dashboardhome.component";
-import { HolidayCalendarComponent } from "./components/mainlayout/hoilday-calendar/hoilday-calendar.component";
-import { WorkhoursComponent } from "./components/mainlayout/workhours/workhours.component";
-import { WorkHistoryComponent } from "./components/mainlayout/work-history/work-history.component";
-import { WishcardComponent } from "./components/mainlayout/wishcard/wishcard.component";
-import { AnnouncementComponent } from "./components/mainlayout/announcement/announcement.component";
-import { LeaveComponent } from "./components/mainlayout/leave/leave.component";
-import { WorkfromhomeComponent } from "./components/mainlayout/workfromhome/workfromhome.component";
-import { TimelogComponent } from "./components/mainlayout/timelog/timelog.component";
-import { TaskComponent } from "./components/mainlayout/task/task.component";
-import { ResignationComponent } from "./components/mainlayout/resignation/resignation.component";
-import { AttendanceComponent } from "./components/mainlayout/attendance/attendance.component";
-import { OrganizationComponent } from "./components/mainlayout/organization/organization.component";
-import { AddOpeningComponent } from "./components/mainlayout/addopening/addopening.component";
-import { GoalComponent } from "./components/mainlayout/goal/goal.component";
-import { DashboardComponent } from "./components/payroll/dashboard/dashboard.component";
-import { AddEmployeeComponent } from "./components/payroll/add-employee/add-employee.component";
-import { PayrollEmployeeComponent } from "./components/payroll/payroll-employee/payroll-employee.component";
-import { EmployeeViewComponent } from "./components/payroll/employee-view/employee-view.component";
-import { PayrunsComponent } from "./components/payroll/payruns/payruns.component";
-import { AddSalaryComponent } from "./components/payroll/add-salary/add-salary.component";
-import { MonthlySalarySlipComponent } from "./components/payroll/monthly-salary-slip/monthly-salary-slip.component";
-import { ReportComponent } from "./components/payroll/report/report.component";
-import { YearlySalarySlipComponent } from "./components/payroll/yearly-salary-slip/yearly-salary-slip.component";
-import { adminAuthGuard } from "./guards/admin-auth.guard";
-import { userAuthGuard } from "./guards/user-auth.guard";
-import { AdminAttendanceComponent } from "./components/mainlayout/admin-attendance/admin-attendance.component";
-import { AuthGuard } from "./guards/auth.guard";
-import { MyProfileComponent } from "./components/mainlayout/my-profile/my-profile.component";
-import { JobOpeningListComponent } from "./components/mainlayout/job-opening-list/job-opening-list.component";
-import { UserPayslipComponent } from "./components/payroll/user-payslip/user-payslip.component";
-import { StepGuard } from "./guards/step.guard";
-import { ChangePasswordComponent } from "./components/mainlayout/change-password/change-password.component";
+import { HomeComponent } from "./features/logins/home/home.component";
+import { LoginComponent } from "./features/logins/login/login.component";
+import { SignupComponent } from "./features/logins/signup/signup.component";
+import { AdminComponent } from "./features/form/userList/admin.component";
+import { AdminLoginComponent } from "./features/logins/admin-login/admin-login.component";
+import { EmployeeDataComponent } from "./features/employee-data/employee-data.component";
+import { LoginByNumberComponent } from "./features/logins/login-by-number/login-by-number.component";
+import { ThankYouComponent } from "./features/form/onboadingForm/thank-you/thank-you.component";
+import { PendingUserComponent } from "./features/form/pending-user/pending-user.component";
+import { MainlayoutComponent } from "./features/mainlayout/mainlayout.component";
+import { DashboardhomeComponent } from "./features/dashboard/dashboardhome/dashboardhome.component";
+import { HolidayCalendarComponent } from "./features/dashboard/hoilday-calendar/hoilday-calendar.component";
+import { WishcardComponent } from "./features/dashboard/wishcard/wishcard.component";
+import { AnnouncementComponent } from "./features/dashboard/announcement/announcement.component";
+import { LeaveComponent } from "./features/entries/leave/leave.component";
+import { WorkfromhomeComponent } from "./features/wfh/workfromhome/workfromhome.component";
+import { TimelogComponent } from "./features/entries/timelog/timelog.component";
+import { TaskComponent } from "./features/task/task.component";
+import { ResignationComponent } from "./features/resignation/resignation.component";
+import { AttendanceComponent } from "./features/entries/attendance/attendance.component";
+import { OrganizationComponent } from "./features/payroll/organization/organization.component";
+import { AddOpeningComponent } from "./features/jobOpening/addopening/addopening.component";
+import { GoalComponent } from "./features/goal/goal.component";
+import { DashboardComponent } from "./features/payroll/dashboard/dashboard.component";
+import { AddEmployeeComponent } from "./features/payroll/add-employee/add-employee.component";
+import { PayrollEmployeeComponent } from "./features/payroll/payroll-employee/payroll-employee.component";
+import { EmployeeViewComponent } from "./features/payroll/employee-view/employee-view.component";
+import { PayrunsComponent } from "./features/payroll/payruns/payruns.component";
+import { AddSalaryComponent } from "./features/payroll/add-salary/add-salary.component";
+import { MonthlySalarySlipComponent } from "./features/payroll/monthly-salary-slip/monthly-salary-slip.component";
+import { ReportComponent } from "./features/payroll/report/report.component";
+import { YearlySalarySlipComponent } from "./features/payroll/yearly-salary-slip/yearly-salary-slip.component";
+import { adminAuthGuard } from "./core/guards/admin-auth.guard";
+import { userAuthGuard } from "./core/guards/user-auth.guard";
+import { AdminAttendanceComponent } from "./features/entries/admin-attendance/admin-attendance.component";
+import { AuthGuard } from "./core/guards/auth.guard";
+import { MyProfileComponent } from "./features/dashboard/my-profile/my-profile.component";
+import { JobOpeningListComponent } from "./features/jobOpening/job-opening-list/job-opening-list.component";
+import { UserPayslipComponent } from "./features/payroll/user-payslip/user-payslip.component";
+import { StepGuard } from "./core/guards/step.guard";
+import { ChangePasswordComponent } from "./features/logins/change-password/change-password.component";
 
 const routes: Routes = [
   { path: "", component: HomeComponent },
@@ -99,16 +97,6 @@ const routes: Routes = [
         path: "organization",
         component: OrganizationComponent,
         canActivate: [AuthGuard],
-      },
-      {
-        path: "workhours",
-        component: WorkhoursComponent,
-        canActivate: [adminAuthGuard],
-      },
-      {
-        path: "workhistory",
-        component: WorkHistoryComponent,
-        canActivate: [adminAuthGuard],
       },
       {
         path: "wishcard",

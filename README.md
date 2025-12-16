@@ -13,8 +13,6 @@ TVMEMS-UI/
 │   │   │   │   ├── ...other guards
 │   │   │   ├── interceptors/
 │   │   │   │   ├── ...http interceptors
-│   │   │   ├── core.module.ts
-│   │   │   └── index.ts
 │   │   ├── shared/
 │   │   │   ├── components/
 │   │   │   │   ├── loader/
@@ -26,8 +24,6 @@ TVMEMS-UI/
 │   │   │   │   ├── ...custom pipes
 │   │   │   ├── directives/
 │   │   │   │   ├── ...custom directives
-│   │   │   ├── shared.module.ts
-│   │   │   └── index.ts
 │   │   ├── features/
 │   │   │   ├── login/
 │   │   │   │   ├── login.component.ts
