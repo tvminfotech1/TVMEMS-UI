@@ -199,96 +199,70 @@
           </thead>
           <tbody>
             <tr>
-              <td>
-                <input
-                  type="text"
-                  name="project"
-                  [(ngModel)]="timelogEntry.project"
-                  placeholder="Enter Project Name"
-                  class="form-control"
-                  required
-                  [disabled]="entryExistsForWeek || isAdmin"
-                />
-              </td>
-              <td
-                *ngFor="
-                  let day of [
-                    'monday',
-                    'tuesday',
-                    'wednesday',
-                    'thursday',
-                    'friday'
-                  ]
-                "
-              >
-                <ng-container
-                  *ngIf="
-                    timelogEntry.hours![day] === 'HOLIDAY';
-                    else standardSelect
-                  "
-                >
-                  <input
-                    type="text"
-                    [value]="timelogEntry.hours![day]"
-                    [disabled]="true"
-                    class="form-control holiday-field"
-                  />
-                </ng-container>
+          <td>
+  <input
+    type="text"
+    name="project"
+    [(ngModel)]="timelogEntry.project"
+    placeholder="Enter Project Name"
+    class="ts-input"
+    required
+    [disabled]="entryExistsForWeek || isAdmin"
+  />
+</td>
 
-                <ng-template #standardSelect>
-                  <mat-form-field appearance="outline" class="compact-select">
-                    <mat-select
-                      [name]="'hours' + day"
-                      [(ngModel)]="timelogEntry.hours![day]"
-                      (selectionChange)="calculateTotalHours()"
-                      required
-                      [disabled]="entryExistsForWeek || isAdmin"
-                    >
-                      <mat-option value="">--select--</mat-option>
+<td *ngFor="let day of ['monday','tuesday','wednesday','thursday','friday']">
 
-                      <mat-option value="WFO"> WFO </mat-option>
+  <ng-container *ngIf="timelogEntry.hours![day] === 'HOLIDAY'; else standardSelect">
+    <input
+      type="text"
+      [value]="timelogEntry.hours![day]"
+      class="ts-input holiday-field"
+      disabled
+    />
+  </ng-container>
 
-                      <mat-option
-                        value="WFH"
-                        [disabled]="!wfhDays.includes(day)"
-                      >
-                        WFH
-                      </mat-option>
+  <ng-template #standardSelect>
+    <mat-form-field appearance="outline" class="ts-field">
+      <mat-select
+        [name]="'hours' + day"
+        [(ngModel)]="timelogEntry.hours![day]"
+        (selectionChange)="calculateTotalHours()"
+        required
+        [disabled]="entryExistsForWeek || isAdmin"
+      >
+        <mat-option value="">--select--</mat-option>
+        <mat-option value="WFO">WFO</mat-option>
+        <mat-option value="WFH" [disabled]="!wfhDays.includes(day)">WFH</mat-option>
+        <mat-option value="Leave" [disabled]="!leaveDays.includes(day)">Leave</mat-option>
+        <mat-option value="Holiday" [disabled]="!holidayDates.includes(day)">Holiday</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </ng-template>
 
-                      <mat-option
-                        value="Leave"
-                        [disabled]="!leaveDays.includes(day)"
-                      >
-                        Leave
-                      </mat-option>
+</td>
 
-                      <mat-option
-                        value="Holiday"
-                        [disabled]="!holidayDates.includes(day)"
-                      >
-                        Holiday
-                      </mat-option>
-                    </mat-select>
-                  </mat-form-field>
-                </ng-template>
-              </td>
-              <td>
-                <input
-                  type="text"
-                  name="totalHours"
-                  [(ngModel)]="timelogEntry.totalhours"
-                  readonly
-                />
-              </td>
-              <td>
-                <input
-                  type="text"
-                  name="description"
-                  [(ngModel)]="timelogEntry.description"
-                  required
-                  [disabled]="entryExistsForWeek || isAdmin"
-                />
-              </td>
+<td>
+  <input
+    type="text"
+    name="totalHours"
+    [(ngModel)]="timelogEntry.totalhours"
+    class="ts-input"
+    readonly
+  />
+</td>
+
+<td>
+  <input
+    type="text"
+    name="description"
+    [(ngModel)]="timelogEntry.description"
+    class="ts-input"
+    required
+    [disabled]="entryExistsForWeek || isAdmin"
+  />
+</td>
+
             </tr>
           </tbody>
         </table>

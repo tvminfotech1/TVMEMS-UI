@@ -1,8 +1,9 @@
-.report-container {
-  width: 90%;
+.payroll-report-container {
+  min-height: 100vh;
   margin: 30px auto;
   font-family: "Poppins", sans-serif;
-  color: #333;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
 }
 
 .page-title {
@@ -22,10 +23,7 @@
   flex-wrap: wrap;
 }
 .filter-section {
-  background: #ffffff;
-  border-radius: 15px;
   padding: 20px 25px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
   margin-bottom: 30px;
   text-align: center;
 }
@@ -113,9 +111,6 @@
 }
 
 .slip-container {
-  background: white;
-  border-radius: 15px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   padding: 20px;
 }
 .slip-container h2{

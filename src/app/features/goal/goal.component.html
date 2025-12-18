@@ -1,8 +1,8 @@
-<div class="container2">
+<div class="container-one">
   <div class="main-container">
     <div class="container" [class.blurred]="isPopupView()">
-      <div *ngIf="isUser">
-        <div class="section-title" style="text-align: center">My Goals</div>
+      <div *ngIf="isUser" class="user-container">
+        <div class="section-title"><h2>My Goals</h2>
         <div class="btn" style="text-align: right">
           <button class="add-btn"
             type="button"
@@ -108,6 +108,8 @@
           <button class="close-btn" (click)="closeGoalPopup()">&#10006;</button>
           <p>No goals found for {{ selectedMonth }} - {{ selectedYear }}.</p>
         </div>
+        
+      </div>
       </div>
 
       <div *ngIf="isAdmin">

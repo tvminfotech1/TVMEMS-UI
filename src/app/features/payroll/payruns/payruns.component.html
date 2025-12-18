@@ -1,3 +1,4 @@
+<div class="main-container">
 <div class="payruns-container">
   <h2>Salary Status – {{ getMonthName() }}</h2>
 
@@ -12,8 +13,8 @@
       [(ngModel)]="selectedMonth"
       (change)="onMonthChange()" />
   </div>
-
-  <div class="table-responsive">
+</div>
+ <div class="table-container">
 
     <table class="salary-table">
       <thead>

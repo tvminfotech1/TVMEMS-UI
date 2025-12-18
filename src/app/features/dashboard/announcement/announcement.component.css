@@ -1,13 +1,10 @@
 .announcement-page {
-  padding: 40px;
-  background: linear-gradient(180deg, #f8faff 0%, #eef2f8 100%);
-  min-height: 100vh;
   font-family: "Poppins", sans-serif;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-.announcement-title{
+.announcement-title {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -21,16 +18,15 @@
   width: 100%;
   max-width: 1200px;
 }
+
 .no-data {
-  margin-top: 40px;
-  font-size: 30px;
+  margin-top: 10px;
+  font-size: clamp(1rem, 2vw, 2rem);
   font-weight: 600;
   color: #444;
   text-align: center;
-  background: #ffffffcc;
-  padding: clamp(40px, 15vw, 250px);
+  padding: clamp(40px, 4vw, 70px);
   border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   width: fit-content;
 }
 
@@ -58,21 +54,18 @@
 
 .card-container {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
   gap: 40px;
   justify-content: center;
-  align-content: start;
   padding: 0 40px 40px;
   width: 100%;
   max-width: 1200px;
   box-sizing: border-box;
 }
 
-@media (max-width: 900px) {
-  .card-container {
-    grid-template-columns: 1fr;
-    justify-items: center;
-  }
+.card-container > *:only-child {
+  grid-column: 1 / -1;
+  justify-self: center;
 }
 
 .announcement-card {
@@ -81,14 +74,18 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  width: 100%;
+
+  width: 100%;        
+  max-width: 550px;
+
   min-height: 350px;
   background: url("/assets/images/annoucemenybg.jpg");
   background-repeat: repeat;
   background-size: cover;
 }
-.ann-img{
-  width:40px;
+
+.ann-img {
+  width: 40px;
   height: 40px;
   margin-right: 8px;
 }
@@ -127,10 +124,8 @@
 }
 
 .place {
-  font-family: "Cinzel", serif;
   font-weight: 600;
   color: white;
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
   font-size: 15px;
   border-bottom: 1px solid #e0e4ee;
   padding-bottom: 6px;
@@ -138,18 +133,16 @@
 }
 
 .desc {
-  color: #333;
-  line-height: 1.6;
-  font-size: 15px;
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  width: 100%;
+  color: #0a0f3c;
+  max-width: 100%;
   word-wrap: break-word;
-  white-space: pre-wrap;
-  overflow: visible;
   background: #f8faff;
   border-radius: 10px;
   padding: 10px 12px;
   box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.03);
 }
+
 
 .card-footer {
   display: flex;
@@ -174,7 +167,6 @@
   background: #0a0f3c;
   color: white;
 }
-
 .edit-btn:hover {
   background: #1c2b8c;
 }
@@ -183,20 +175,19 @@
   background: #d32f2f;
   color: white;
 }
-
 .delete-btn:hover {
   background: #b71c1c;
 }
 
+
 .modal-title {
-  font-size: 22px;
+  font-size: clamp(1.2rem, 2vw, 1.375rem);
   font-weight: 600;
   color: #0d47a1;
   text-align: center;
   margin-bottom: 16px;
-  font-family: "Poppins", sans-serif;
-  letter-spacing: 0.5px;
 }
+
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -210,7 +201,6 @@
   padding: 40px 0;
   z-index: 1000;
   backdrop-filter: blur(5px);
-  box-sizing: border-box;
   overflow-y: auto;
 }
 .modal {
@@ -222,27 +212,11 @@
   max-height: 95vh;
   overflow-y: auto;
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
-  cursor: pointer;
 }
-.modal input,
-.modal textarea {
-  padding: 5px;
-  font-size: 15px;
-}
-.modal-title {
-  font-size: 22px;
-  font-weight: 600;
-  color: #0d47a1;
-  text-align: center;
-  margin-bottom: 16px;
-  font-family: "Poppins", sans-serif;
-  letter-spacing: 0.5px;
-}
+
 .modal-header {
   display: flex;
   justify-content: flex-end;
-  right: 5px;
-  top: 0px;
 }
 
 .announcement-form {
@@ -270,9 +244,7 @@
   font-weight: bold;
   color: #555;
   cursor: pointer;
-  transition: color 0.2s ease-in-out;
 }
-
 .close-btn:hover {
   color: #e53935;
   transform: scale(1.1);
@@ -297,19 +269,27 @@
   text-align: center;
 }
 
-mat-select {
-  width: 65px;
+@media (max-width: 1440px) {
+  .card-container {
+    grid-template-columns: repeat(auto-fit, minmax(480px, 1fr));
+    gap: 35px;
+    padding: 0 30px 40px;
+  }
 }
 
 @media (max-width: 1200px) {
   .announcement-page {
     padding: 30px;
+    text-align: center;
   }
+
   .card-container {
     gap: 30px;
     padding: 0 20px 30px;
+    grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
   }
 }
+
 
 @media (max-width: 1024px) {
   .header {
@@ -317,22 +297,25 @@ mat-select {
     gap: 15px;
     text-align: center;
   }
-
   .add-btn {
     width: 100%;
     max-width: 250px;
+  }
+
+  .announcement-card {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .card-container {
+    grid-template-columns: 1fr;
+    padding: 0 10px 30px;
   }
 }
 
 @media (max-width: 900px) {
   .card-container {
     grid-template-columns: 1fr;
-    padding: 0 10px 30px;
-  }
-
-  .announcement-card {
-    width: 100%;
-    min-height: 360px;
   }
 }
 
@@ -340,26 +323,14 @@ mat-select {
   .announcement-page {
     padding: 15px;
   }
-
-  .header h2 {
-    font-size: 20px;
-  }
-
   .card-header h3 {
     font-size: 18px;
   }
-
   .desc {
     font-size: 14px;
   }
-
   .modal {
     width: 95% !important;
-    padding: 15px 20px;
-  }
-
-  .time-row {
-    flex-direction: column;
   }
 }
 
@@ -367,20 +338,13 @@ mat-select {
   .announcement-card {
     padding: 0;
   }
-
-  .card-header h3 {
-    font-size: 16px;
-  }
-
   .desc {
     font-size: 13px;
   }
-
   .button-row {
     flex-direction: column;
     gap: 10px;
   }
-
   .add-btn {
     width: 100%;
   }

@@ -1,14 +1,14 @@
 
 .admin-attendance-container {
   font-family: 'Poppins', sans-serif;
-  background-color: #ffffff; 
   min-height: 100vh;
   margin: 2% auto;
   padding: 2%;
   border-radius: 1.5%;
   max-width: 95%;
   width: 95%;
-  box-shadow: 0 0.8vw 2vw rgba(0, 0, 0, 0.15); 
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -20,14 +20,11 @@ body {
 }
 .table-wrapper {
  position: relative;
-  max-height: 70vh;              
+  height: fit-content;              
   overflow-y: auto;
   overflow-x: auto;
-  border-radius: 12px;
-  background: #fff;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-  scroll-behavior: smooth;
   margin-top: 1rem;
+  scroll-behavior: smooth;
 }
 
 .full-width-table {

@@ -3,14 +3,14 @@
 
   <div *ngIf="isLoading" class="loading">Loading holidays...</div>
   <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
-
+  <div class="table-wrapper">
   <table *ngIf="!isLoading && holidays.length > 0" class="holiday-table">
     <thead>
       <tr>
-        <th>SL NO</th>
-        <th>HOLIDAY NAME</th>
-        <th>DATE</th>
-        <th>DAY NAME</th>
+        <th class="serial">SL NO</th>
+        <th class="h-name">HOLIDAY NAME</th>
+        <th class="date">DATE</th>
+        <th class="d-name">DAY NAME</th>
       </tr>
     </thead>
     <tbody>
@@ -22,7 +22,7 @@
       </tr>
     </tbody>
   </table>
-
+   </div>
   <div *ngIf="!isLoading && holidays.length === 0" class="no-data">
     No holidays found.
   </div>

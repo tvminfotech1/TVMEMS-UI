@@ -1,10 +1,8 @@
 .calendar-container {
   max-width: 1000px;
-  margin: 2rem auto;
-  background: #ffffff;
+  margin: 1rem auto;
   border-radius: 12px;
   padding: 2rem;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
   font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
@@ -20,9 +18,17 @@
   gap: 0.5rem;
 }
 
+.table-wrapper {
+  overflow-x: auto;
+  width: 100%;
+  -webkit-overflow-scrolling: touch;
+}
+
 .holiday-table {
   width: 100%;
+  min-width: 650px;          
   border-collapse: collapse;
+  table-layout: fixed;        
   border-radius: 8px;
   overflow: hidden;
 }
@@ -31,7 +37,9 @@
 .holiday-table td {
   padding: 12px 15px;
   text-align: left;
+  font-size: 1rem;
   border-bottom: 1px solid #e0e0e0;
+  white-space: nowrap;        /* Prevents text break */
 }
 .holiday-table thead {
   background: linear-gradient(135deg, #0a0f3c, #1c2b8c);
@@ -45,6 +53,20 @@
   background-color: #f9f9f9;
 }
 
+.serial {
+  width: 80px;
+}
+.h-name {
+  width: 200px;
+}
+.date {
+  width: 180px;
+}
+.d-name {
+  width: 150px;
+}
+
+/* messages */
 .loading,
 .error,
 .no-data {
@@ -53,9 +75,7 @@
   margin-top: 1rem;
 }
 
-.loading {
-  color: #2980b9;
-}
+.loading { color: #2980b9; }
 
 .error {
   color: #e74c3c;
@@ -85,49 +105,80 @@
   .calendar-container h2 {
     font-size: 1.6rem;
   }
+
+  .serial {
+    width: 60px;
+  }
 }
 
 @media (max-width: 768px) {
   .calendar-container {
     padding: 1rem;
+    overflow-x: auto;
+  }
+
+  .holiday-table {
+    min-width: 650px;
+    table-layout: fixed;
   }
 
   .holiday-table th,
   .holiday-table td {
     padding: 8px 10px;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
   }
 
   .calendar-container h2 {
     font-size: 1.4rem;
   }
 
-  .calendar-container {
-    overflow-x: auto;
-  }
-
-  .holiday-table {
-  width: 100%;
-  table-layout: auto;
-}
+  .serial     { width: 50px; }
+  .h-name     { width: 150px; }
+  .date       { width: 160px; }
+  .d-name     { width: 120px; }
 }
 
 @media (max-width: 480px) {
+
   .calendar-container {
     padding: 0.8rem;
+    overflow-x: auto;
   }
 
-  .calendar-container h2 {
-    font-size: 1.2rem;
+  .table-wrapper {
+    overflow-x: auto;
+    width: 100%;
+  }
+
+  .holiday-table {
+    min-width: 600px;    
+    table-layout: fixed;
   }
 
   .holiday-table th,
   .holiday-table td {
+    white-space: nowrap;
     padding: 6px 8px;
-    font-size: 0.85rem;
+    font-size: 0.75rem;
   }
 
-  .calendar-container {
-    overflow-x: auto;
+  .serial {
+    width: 40px !important; 
+  }
+
+  .h-name {
+    width: 140px;
+  }
+
+  .date {
+    width: 150px;
+  }
+
+  .d-name {
+    width: 110px;
+  }
+
+  .calendar-container h2 {
+    font-size: 1.25rem;
   }
 }

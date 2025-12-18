@@ -1,9 +1,14 @@
-* {
-  box-sizing: border-box;
-  font-family: "Segoe UI", sans-serif;
+
+.container-one{
+  min-height: 100vh;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
-
-
+.user-container{
+  min-height: 100vh;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
 body {
   font-family: Arial, sans-serif;
   margin: 0;
@@ -20,14 +25,18 @@ body {
 }
 
 .section-title {
+  text-align: center;
+  padding: 20px;
+}
+.section-title h2{
   font-size: 26px;
-  margin-bottom: 20px;
   font-weight: 600;
 }
 
 .btn {
   text-align: right;
   margin-bottom: 20px;
+  margin-right: 30px;
 }
 
 .btn button {
@@ -65,7 +74,6 @@ body {
   height: auto;
   max-height: 90vh;
   overflow-y: auto;
-  /* overflow-x: hidden; */
   scrollbar-width: thin;
   scrollbar-color: #ccc transparent;
 }
@@ -124,8 +132,6 @@ body {
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
   padding: 10px 20px;
-  border-bottom: 1px solid #ddd;
-  background-color: #fff;
   width: 100%;
   position: relative;
 }
@@ -174,9 +180,6 @@ body {
   width: 100%;
   margin: 0 auto;
   padding: 30px;
-  background: #f9f9f9;
-  border-radius: 10px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
   margin-left: auto;
 }
 
@@ -719,6 +722,7 @@ a {
   position: relative;
   width: 400px;
   height: 400px;
+  padding: 300px;
   margin: 0 auto;
   display: flex;
   justify-content: center;

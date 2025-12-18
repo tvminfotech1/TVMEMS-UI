@@ -1,20 +1,19 @@
 .resignation-container {
   padding: 30px 24px;
-  background: #f7f9fa;
   min-height: 100vh;
   position: relative;
   font-family: "Segoe UI", "Roboto", Arial, sans-serif;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .top-bar-card {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #fff;
   border-radius: 16px;
   padding: 36px 32px 36px 42px;
   margin-bottom: 32px;
-  box-shadow: 0 1px 18px 0 rgba(30, 44, 75, 0.1);
 }
 
 .top-bar-info {
@@ -84,9 +83,7 @@
 }
 
 .table-card {
-  background: #fff;
   border-radius: 14px;
-  padding: 24px;
   box-shadow: 0 2px 16px 0 rgba(30, 44, 75, 0.07);
   overflow-x: auto;
   margin-bottom: 40px;
@@ -540,11 +537,9 @@ th {
 }
 
 .admin-header {
-  background: #f9f9fb;
   border-radius: 10px;
   padding: 12px 20px;
   margin-bottom: 15px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
 
 .admin-header .resignation-title {

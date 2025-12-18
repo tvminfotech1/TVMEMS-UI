@@ -1,9 +1,10 @@
 .leave-dashboard {
   font-family: "Segoe UI", "Roboto", sans-serif;
-  background-color: #f5f7fb;
   min-height: 100vh;
   margin: 0;
   padding: 0;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .header {
@@ -11,7 +12,6 @@
   display: flex;
   justify-content: flex-end;
   align-items: center;
-
   margin-bottom: 1px;
 }
 
@@ -245,7 +245,6 @@
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid #e0e0e0;
-  background-color: #fdfdfd;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
   border-radius: 8px 8px 0 0;
 }
@@ -375,7 +374,6 @@ td {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #f8f9fa;
   border-top: 1px solid #ddd;
 }
 
@@ -858,7 +856,6 @@ td {
     width: 100%;
     overflow-x: auto;
     border-radius: 12px;
-    background: #fff;
     padding: 0;
     margin: 0;
   }
