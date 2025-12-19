@@ -5,10 +5,10 @@ import {
   Validators,
   AbstractControl,
 } from "@angular/forms";
-import { AuthService } from "src/app/core/services/auth.service";
-import { LeaveService, newLeaveRequest } from "src/app/core/services/leave.service";
 import { UserlistService } from "src/app/core/services/admin.service";
 import { AlertService } from "src/app/core/services/alert.service";
+import { AuthService } from "src/app/core/services/auth.service";
+import { LeaveService, newLeaveRequest } from "src/app/core/services/leave.service";
 
 interface LeaveBalance {
   leaveType: string;
@@ -672,21 +672,16 @@ rejectRequest(id?: number): void {
     this.updateLeaveCards();
   }
   formatDateRange(): string {
-    const date = new Date(this.selectedDate);
-    const first = new Date(date.getFullYear(), date.getMonth(), 1);
-    const last = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+  const date = new Date(this.selectedDate);
 
-    const options: Intl.DateTimeFormatOptions = {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
-    };
+  const options: Intl.DateTimeFormatOptions = {
+    month: "short",
+    year: "numeric",
+  };
 
-    return `${first.toLocaleDateString(
-      "en-US",
-      options
-    )} - ${last.toLocaleDateString("en-US", options)}`;
-  }
+  return date.toLocaleDateString("en-US", options);
+}
+
   leavemonth() {
     const date = new Date(this.fixedmonth);
     const first = new Date(date.getFullYear(), date.getMonth(), 1);
@@ -812,7 +807,4 @@ updateAdminFieldAccess() {
     this.leaveForm.get("reason")?.disable();
   }
 }
-
-
-
 }

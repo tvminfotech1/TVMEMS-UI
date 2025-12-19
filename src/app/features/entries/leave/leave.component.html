@@ -71,31 +71,13 @@
             Leave Requests
           </button>
         </div>
-
-        <div class="table-controls top-controls">
+        <div class="table-controls">
           <div class="date-range-inline">
             <div class="center-date">
-              <span
-                class="material-icons icon-btn"
-                (click)="goToPreviousMonth()"
-                title="Previous Month"
-              >
-                chevron_left
-              </span>
-
-              <span class="calendar-icon material-icons"> calendar_today </span>
-
-              <span class="date-text2">
-                {{ formatDateRange() }}
-              </span>
-
-              <span
-                class="material-icons icon-btn"
-                (click)="goToNextMonth()"
-                title="Next Month"
-              >
-                chevron_right
-              </span>
+              <button (click)="goToPreviousMonth()">&#60;</button>
+              <span class="calendar-icon material-icons">calendar_today</span>
+              <h2>{{ formatDateRange() }}</h2>
+              <button (click)="goToNextMonth()">&#62;</button>
             </div>
 
             <input
@@ -107,24 +89,34 @@
             />
           </div>
 
-          <input
-            type="text"
-            class="search-input"
-            placeholder="Search..."
-            [(ngModel)]="searchTerm"
-            (input)="applyFilters()"
-          />
-          <mat-form-field appearance="fill" class="responsive-select">
-            <mat-label>Status</mat-label>
-            <mat-select
-              [(value)]="statusFilter"
-              (selectionChange)="applyFilters()"
-            >
-              <mat-option value="Pending">Pending</mat-option>
-              <mat-option value="Approved">Approved</mat-option>
-              <mat-option value="Rejected">Rejected</mat-option>
-            </mat-select>
-          </mat-form-field>
+          <div class="search-field responsive-search">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-icon matPrefix>search</mat-icon>
+
+              <input
+                matInput
+                type="text"
+                placeholder="Search..."
+                [(ngModel)]="searchTerm"
+                (input)="applyFilters()"
+              />
+            </mat-form-field>
+          </div>
+
+          <div class="responsive-select">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Status</mat-label>
+              <mat-select
+                [(value)]="statusFilter"
+                (selectionChange)="applyFilters()"
+              >
+                <mat-option value="">All</mat-option>
+                <mat-option value="Pending">Pending</mat-option>
+                <mat-option value="Approved">Approved</mat-option>
+                <mat-option value="Rejected">Rejected</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
         </div>
 
         <div class="table-container" *ngIf="activeTab === 'leave'">
@@ -244,14 +236,13 @@
             <div *ngIf="isAdmin" class="employee-search-wrapper">
               <mat-form-field appearance="outline" class="w-100">
                 <mat-label>Search Employee</mat-label>
-              <input 
-  matInput
-  type="text"
-  formControlName="employeeId"
-  (input)="validateEmployeeId(); onEmployeeSearch($event)"
-  placeholder="Enter Employee ID"
-/>
-
+                <input
+                  matInput
+                  type="text"
+                  formControlName="employeeId"
+                  (input)="validateEmployeeId(); onEmployeeSearch($event)"
+                  placeholder="Enter Employee ID"
+                />
 
                 <mat-error
                   *ngIf="leaveForm.get('employeeId')?.hasError('required')"

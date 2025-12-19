@@ -47,11 +47,8 @@
 }
 
 .apply-leave-btn {
-  background-color: #04aa6d;
+  background: linear-gradient(135deg, #0a0f3c, #1c2b8c);
   color: white;
-}
-.apply-leave-btn:hover {
-  background-color: #03784d;
 }
 
 .leave-btn {
@@ -96,6 +93,7 @@
 }
 
 .page-title {
+  text-align: center;
   font-size: 24px;
   font-weight: 600;
   color: white;
@@ -110,7 +108,7 @@
 }
 
 .date-text {
-  background-color: #13ba8a;
+  background-color: none;
   color: white;
   padding: 6px 14px;
   border-radius: 4px;
@@ -239,6 +237,16 @@
   color: #0a0f3c;
 }
 
+.mat-form-field-outline {
+  height: 40px !important; 
+}
+
+.mat-form-field-flex {
+  height: 40px !important; 
+  padding: 0 12px !important;
+  align-items: center !important;
+}
+
 .table-controls {
   padding: 16px 24px;
   display: flex;
@@ -257,10 +265,9 @@
   font-size: 14px;
   transition: all 0.3s ease;
 }
-.search-input:focus {
-  outline: none;
-  border-color: #007bff;
-  box-shadow: 0 0 8px rgba(0, 123, 255, 0.25);
+
+.mat-form-field-infix {
+  padding: 0 !important;
 }
 
 .responsive-select .mat-mdc-form-field-flex {
@@ -268,7 +275,8 @@
   border-radius: 6px !important;
   border: 1px solid #ccc !important;
   background: #fff !important;
-}
+  margin-top: 2px;
+} 
 
 .mat-mdc-form-field-infix {
   min-height: 0px;
@@ -276,6 +284,94 @@
 
 .mdc-text-field--filled:not(.mdc-text-field--disabled) {
   background-color: white;
+}
+
+.table-section,
+.table-wrapper,
+.table-controls {
+
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  margin-top: 10px;
+}
+
+.table-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  width: 100%;
+}
+
+.table-controls > div {
+  flex: 1; 
+  min-width: 180px; 
+}
+
+.date-range-inline,
+.center-date {
+  min-width: 0;
+}
+
+.date-range-inline,
+.search-field,
+.responsive-select {
+  flex: 1;
+}
+
+.date-range-inline {
+  display: flex;
+  align-items: center;
+  height: 56px; 
+}
+
+.normal-input input,
+.normal-select select {
+  width: 100%;
+  height: 40px;
+  padding: 8px 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+}
+
+.normal-input label,
+.normal-select label {
+  display: block;
+  font-size: 12px;
+  margin-bottom: 4px;
+}
+
+.center-date {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+  background: linear-gradient(135deg, #0a0f3c, #1c2b8c);
+  border-radius: 8px;
+  width: 100%;
+  top: 0;
+  color: white;
+  height: 60px;
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+.center-date button {
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: white;
+}
+
+.center-date h2 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
 }
 
 .table-wrapper {
@@ -380,18 +476,15 @@ td {
 .pagination-btn {
   padding: 6px 12px;
   border-radius: 4px;
-  background-color: #007bff;
+  background: linear-gradient(135deg, #0a0f3c, #1c2b8c);
   color: white;
   border: none;
   cursor: pointer;
   width: 80px;
 }
 .pagination-btn:disabled {
-  background-color: #ccc;
+  background: #ccc;
   cursor: not-allowed;
-}
-.pagination-btn:hover:not(:disabled) {
-  background-color: #0056b3;
 }
 
 .modal-overlay {
@@ -927,16 +1020,6 @@ td {
     border-radius: 6px;
   }
 
-  .table-controls {
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .search-input,
-  .filter-select {
-    width: 100%;
-  }
-
   .modal-dialog {
     width: 100%;
     margin: 20px auto;
@@ -1194,6 +1277,24 @@ td {
     height: 30px;
     margin-top: 6px;
   }
+  .no-data-row{
+    text-align: center;
+  }
+  .table-controls {
+    margin-top: 5px;
+    flex-direction: column;
+  }
+
+  .table-controls > div {
+    width: 100%;
+  }
+  .table-wrapper,
+  .table-section,
+  .leave-card,
+  .main-content {
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+  }
 }
 
 @media (min-width: 768px) and (max-width: 900px) {
@@ -1360,15 +1461,7 @@ td {
   }
 }
 
-.center-date {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  font-size: 20px;
-  font-weight: 500;
-  margin-bottom: 15px;
-}
+
 
 .icon-btn {
   cursor: pointer;
@@ -1390,7 +1483,7 @@ td {
 
 .calendar-icon {
   font-size: 22px;
-  color: #2d8cf0;
+  color: white;
 }
 
 .date-text {
