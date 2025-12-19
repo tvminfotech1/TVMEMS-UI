@@ -68,7 +68,8 @@ textarea[matInput] {
 
 .update-button {
   width: 100%;
-  background-color: #3f51b5;
+  background: linear-gradient(135deg, #0a0f3c, #1c2b8c);
+  filter: drop-shadow(1px 1px 1px #07296c);
   color: #fff;
   border: none;
   padding: 10px 0;

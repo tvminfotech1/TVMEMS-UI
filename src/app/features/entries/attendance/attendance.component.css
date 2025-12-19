@@ -1,6 +1,6 @@
 .page-title {
   text-align: center;
-  color: #0056b3;
+  color: #0a0f3c;
   margin-bottom: 20px;
   font-size: 1.8rem;
 }
@@ -36,8 +36,6 @@
 .remarks {
   grid-column: 1 / -1;
 }
-
-
 
 .form-flex {
   display: flex;
@@ -216,3 +214,4 @@ padding: 0px !important;
   text-align: center;
   vertical-align: middle;
 }
+

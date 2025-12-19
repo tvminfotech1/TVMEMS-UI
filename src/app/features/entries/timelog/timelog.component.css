@@ -394,7 +394,7 @@ button[mat-raised-button]:hover {
   box-shadow: 0 0 4px #07296c;
 }
 
-.status-pending {
+.status-pending { 
   color: #f39c12;
   font-weight: bold;
 }
@@ -648,7 +648,7 @@ button[mat-raised-button]:hover {
     text-align: left;
   }
 
-  .history-table td::before {
+  .history-table td::before { 
     content: attr(data-label);
     font-weight: 600;
     color: #34495e;
@@ -676,7 +676,6 @@ button[mat-raised-button]:hover {
     content: none !important;
   }
 
-  /* Fix layout collapse for no-data row */
   .classic-table .no-data-row td {
     padding-left: 0 !important;
     text-align: center !important;
@@ -770,7 +769,6 @@ button[mat-raised-button]:hover {
 .classic-table tbody {
   display: block;
   max-height: 229px;
-  /* overflow-y: hidden; */
   width: 100%;
 }
 
@@ -823,4 +821,229 @@ button[mat-raised-button]:hover {
 .filter-history select:focus {
   border-color: #1abc9c;
   box-shadow: 0 0 4px rgba(26, 188, 156, 0.4);
+}
+
+@media (max-width: 600px) {
+
+  .timesheet-classic-container {
+    padding: 0.5rem;
+  }
+
+  .classic-dropdown-section,
+  .filter-history {
+    flex-direction: column;
+    gap: 6px;
+    padding: 8px;
+  }
+
+  .filter-history label {
+    font-size: 0.85rem;
+  }
+
+  .filter-history select {
+    font-size: 0.85rem;
+    padding: 6px;
+  }
+
+  .compact-select {
+    height: auto !important;
+    min-height: 40px !important;
+    width: 100% !important;
+  }
+
+  .accordion-content input {
+    height: 42px;
+    font-size: 0.85rem;
+  }
+
+  .timesheet-classic-container .classic-table tr {
+    margin-bottom: 0.75rem;
+    border-radius: 6px;
+  }
+
+  .timesheet-classic-container .classic-table td {
+    padding: 6px;
+    font-size: 0.8rem;
+    padding-left: 48%;
+  }
+
+  .timesheet-classic-container .classic-table td:before {
+    font-size: 0.8rem;
+    top: 38px;
+    left: 6px;
+  }
+
+  .employee-history-section {
+    width: 100%;
+    padding: 0.75rem;
+    max-height: 80vh;
+  }
+
+  .employee-history-section .close-btn {
+    font-size: 18px;
+    top: 8px;
+    right: 8px;
+  }
+
+  .history-table tr {
+    padding: 8px;
+  }
+
+  .history-table td {
+    font-size: 0.8rem;
+    padding: 6px 4px;
+  }
+
+  .history-table td::before {
+    font-size: 0.8rem;
+  }
+
+  .no-data {
+    font-size: 0.85rem;
+  }
+
+  .history-table tr {
+    border: 1px solid #ddd;
+    margin-bottom: 1rem;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    padding: 8px 12px;
+  }
+
+  .history-table td {
+    border: none;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 6px;
+    font-size: 0.95rem;
+    text-align: left;
+  }
+
+  .history-table td::before { 
+    content: attr(data-label);
+    font-weight: 300;
+    color: #34495e;
+    flex: 1 0 45%;
+    text-align: left
+}
+
+.timesheet-classic-container .classic-table td {
+  padding: 25px;
+}
+
+}
+
+@media (max-width: 800px) {
+
+  .timesheet-classic-container {
+    padding: 0.5rem;
+  }
+
+  .classic-dropdown-section,
+  .filter-history {
+    flex-direction: column;
+    gap: 6px;
+    padding: 8px;
+  }
+
+  .filter-history label {
+    font-size: 0.85rem;
+  }
+
+  .filter-history select {
+    font-size: 0.85rem;
+    padding: 6px;
+  }
+
+  .compact-select {
+    height: auto !important;
+    min-height: 40px !important;
+    width: 100% !important;
+  }
+
+  .accordion-content input {
+    height: 42px;
+    font-size: 0.85rem;
+  }
+
+  .timesheet-classic-container .classic-table tr {
+    margin-bottom: 0.75rem;
+    border-radius: 6px;
+  }
+
+  .timesheet-classic-container .classic-table td {
+    padding: 6px;
+    font-size: 0.8rem;
+    padding-left: 48%;
+  }
+
+  .timesheet-classic-container .classic-table td:before {
+    font-size: 0.8rem;
+    top: 39px;
+    left: 6px;
+  }
+
+  .employee-history-section {
+    width: 100%;
+    padding: 0.75rem;
+    max-height: 80vh;
+  }
+
+  .employee-history-section .close-btn {
+    font-size: 18px;
+    top: 8px;
+    right: 8px;
+  }
+
+  .history-table tr {
+    padding: 8px;
+  }
+
+  .history-table td {
+    font-size: 0.8rem;
+    padding: 6px 4px;
+  }
+
+  .history-table td::before {
+    font-size: 0.8rem;
+  }
+
+  .no-data {
+    font-size: 0.85rem;
+  }
+
+  .history-table tr {
+    border: 1px solid #ddd;
+    margin-bottom: 1rem;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    padding: 8px 12px;
+  }
+
+  .history-table td {
+    border: none;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 6px;
+    font-size: 0.95rem;
+    text-align: left;
+  }
+
+  .history-table td::before { 
+    content: attr(data-label);
+    font-weight: 300;
+    color: #34495e;
+    flex: 1 0 45%;
+    text-align: left
+}
+
+.timesheet-classic-container .classic-table td {
+  padding: 25px;
+}
 }
