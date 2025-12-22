@@ -76,6 +76,8 @@ export class FinalComponent {
       next: ([]) => {
         this.authService.setOnboardingCompleted();
         this.userService.clearFormData();
+        sessionStorage.removeItem("editMode");
+
         this.router.navigate(["/mainlayout/thankYou"]);
       },
       error: (err) => {

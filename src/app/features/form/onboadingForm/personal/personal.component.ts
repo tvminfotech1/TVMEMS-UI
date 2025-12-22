@@ -1,18 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from "@angular/core";
 import {
   FormBuilder,
   FormGroup,
   Validators,
   AbstractControl,
   ValidationErrors,
-} from '@angular/forms';
-import { UserService } from '../../../../core/services/user.service';
-import { Router } from '@angular/router';
-import { MatCheckboxChange } from '@angular/material/checkbox';
-import { Subscription } from 'rxjs';
-import { MainlayoutService } from 'src/app/core/services/main-layout.service';
-import { FormProgressService } from 'src/app/core/services/form-progress.service';
-import { AlertService } from 'src/app/core/services/alert.service';
+} from "@angular/forms";
+import { UserService } from "../../../../core/services/user.service";
+import { Router } from "@angular/router";
+import { MatCheckboxChange } from "@angular/material/checkbox";
+import { Subscription } from "rxjs";
+import { MainlayoutService } from "src/app/core/services/main-layout.service";
+import { FormProgressService } from "src/app/core/services/form-progress.service";
+import { AlertService } from "src/app/core/services/alert.service";
+import { OnboardingPatchService } from "src/app/features/dashboard/my-profile/onboarding-patch.service";
 
 export function minimumAgeValidator(minAge: number) {
   return (control: AbstractControl): ValidationErrors | null => {
@@ -36,12 +37,12 @@ export function minimumAgeValidator(minAge: number) {
 }
 
 @Component({
-  selector: 'app-personal',
-  templateUrl: './personal.component.html',
-  styleUrls: ['./personal.component.css'],
+  selector: "app-personal",
+  templateUrl: "./personal.component.html",
+  styleUrls: ["./personal.component.css"],
 })
 export class PersonalComponent implements OnInit {
-  current_countryValue: string = '';
+  current_countryValue: string = "";
   userForm!: FormGroup;
   currentAddressSubscription?: Subscription;
   copyAddressChecked: boolean = false;
@@ -52,22 +53,22 @@ export class PersonalComponent implements OnInit {
     private router: Router,
     private alertserivce: AlertService,
     private mainLayoutService: MainlayoutService,
-     private progressService: FormProgressService,
-  
+    private progressService: FormProgressService,
+    private patchService: OnboardingPatchService
   ) {
     this.userForm = this.formBuilder.group({
       fname: [
-    '',
-    [
-      Validators.required,
+        "",
+        [
+          Validators.required,
           Validators.minLength(4),
           Validators.pattern(/^[A-Za-z\s]+$/),
-    ],
-  ],
-      mname: ['', [Validators.pattern(/^[A-Za-z\s]*$/)]],
-      lname: ['', [Validators.required, Validators.pattern(/^[A-Za-z\s]+$/)]],
+        ],
+      ],
+      mname: ["", [Validators.pattern(/^[A-Za-z\s]*$/)]],
+      lname: ["", [Validators.required, Validators.pattern(/^[A-Za-z\s]+$/)]],
       email: [
-        '',
+        "",
         [
           Validators.required,
           Validators.pattern(
@@ -75,63 +76,63 @@ export class PersonalComponent implements OnInit {
           ),
         ],
       ],
-      gender: ['', Validators.required],
-      bloodGroup: ['', Validators.required],
-      dob: ['', [Validators.required, minimumAgeValidator(15)]],
-      marital: ['', Validators.required],
-      marriegedate: [''],
-      current_address: ['', Validators.required],
-      current_country: ['', Validators.required],
-      current_state: ['', Validators.required],
-      current_city: ['', Validators.required],
+      gender: ["", Validators.required],
+      bloodGroup: ["", Validators.required],
+      dob: ["", [Validators.required, minimumAgeValidator(15)]],
+      marital: ["", Validators.required],
+      marriegedate: [""],
+      current_address: ["", Validators.required],
+      current_country: ["", Validators.required],
+      current_state: ["", Validators.required],
+      current_city: ["", Validators.required],
       current_pincode: [
-        '',
+        "",
         [Validators.required, Validators.pattern(/^\d{6}$/)],
       ],
       current_contact: [
-        '',
+        "",
         [Validators.required, Validators.pattern(/^\d{10}$/)],
       ],
-      permanent_country: ['', Validators.required],
-      permanent_address: ['', Validators.required],
-      permanent_state: ['', Validators.required],
-      permanent_city: ['', Validators.required],
+      permanent_country: ["", Validators.required],
+      permanent_address: ["", Validators.required],
+      permanent_state: ["", Validators.required],
+      permanent_city: ["", Validators.required],
       permanent_pincode: [
-        '',
+        "",
         [Validators.required, Validators.pattern(/^\d{6}$/)],
       ],
       permanent_contact: [
-        '',
+        "",
         [Validators.required, Validators.pattern(/^\d{10}$/)],
       ],
-      bcp_address: ['', Validators.required],
-      bcp_country: ['', Validators.required],
-      bcp_state: ['', Validators.required],
-      bcp_city: ['', Validators.required],
-      bcp_pincode: ['', [Validators.required, Validators.pattern(/^\d{6}$/)]],
-      emergency_contact_name: ['', Validators.required],
+      bcp_address: ["", Validators.required],
+      bcp_country: ["", Validators.required],
+      bcp_state: ["", Validators.required],
+      bcp_city: ["", Validators.required],
+      bcp_pincode: ["", [Validators.required, Validators.pattern(/^\d{6}$/)]],
+      emergency_contact_name: ["", Validators.required],
       emergency_contact_number: [
-        '',
+        "",
         [Validators.required, Validators.pattern(/^\d{10}$/)],
       ],
       emergency_relationship: [
-        '',
+        "",
         [Validators.required, Validators.pattern(/^[A-Za-z\s]+$/)],
       ],
-      exp_year: ['', Validators.required],
-      exp_month: ['', Validators.required],
-      relevantYear: ['', Validators.required],
+      exp_year: ["", Validators.required],
+      exp_month: ["", Validators.required],
+      relevantYear: ["", Validators.required],
     });
 
-    this.userForm.get('marital')?.valueChanges.subscribe((value) => {
-      const marriageDateControl = this.userForm.get('marriegedate');
+    this.userForm.get("marital")?.valueChanges.subscribe((value) => {
+      const marriageDateControl = this.userForm.get("marriegedate");
       this.userService.setMaritalStatus(value);
-      if (value === 'married') {
+      if (value === "married") {
         marriageDateControl?.setValidators([Validators.required]);
         marriageDateControl?.enable();
       } else {
         marriageDateControl?.clearValidators();
-        marriageDateControl?.setValue('');
+        marriageDateControl?.setValue("");
         marriageDateControl?.disable();
       }
       marriageDateControl?.updateValueAndValidity();
@@ -146,56 +147,53 @@ export class PersonalComponent implements OnInit {
   }
 
   allowOnlyNumbers(event: KeyboardEvent): void {
-  const char = event.key;
-  if (!/^[0-9]$/.test(char)) {
-    event.preventDefault();
-  }
-}
-
-preventInvalidKeys(event: KeyboardEvent): void {
-  if (['e', 'E', '+', '-'].includes(event.key)) {
-    event.preventDefault();
-  }
-}
-
-allowSixDigitPincode(event: KeyboardEvent): void {
-  const char = event.key;
-  const input = (event.target as HTMLInputElement).value;
-
-  if (!/^[0-9]$/.test(char)) {
-    event.preventDefault();
-    return;
+    const char = event.key;
+    if (!/^[0-9]$/.test(char)) {
+      event.preventDefault();
+    }
   }
 
-  if (input.length >= 6) {
-    event.preventDefault();
-  }
-}
-
-allowTenDigitNumber(event: KeyboardEvent): void {
-  const char = event.key;
-  const input = (event.target as HTMLInputElement).value;
-
-  
-  if (!/^[0-9]$/.test(char)) {
-    event.preventDefault();
-    return;
+  preventInvalidKeys(event: KeyboardEvent): void {
+    if (["e", "E", "+", "-"].includes(event.key)) {
+      event.preventDefault();
+    }
   }
 
-  
-  if (input.length === 0 && char === '0') {
-    event.preventDefault();
-    return;
+  allowSixDigitPincode(event: KeyboardEvent): void {
+    const char = event.key;
+    const input = (event.target as HTMLInputElement).value;
+
+    if (!/^[0-9]$/.test(char)) {
+      event.preventDefault();
+      return;
+    }
+
+    if (input.length >= 6) {
+      event.preventDefault();
+    }
   }
 
-  
-  if (input.length >= 10) {
-    event.preventDefault();
+  allowTenDigitNumber(event: KeyboardEvent): void {
+    const char = event.key;
+    const input = (event.target as HTMLInputElement).value;
+
+    if (!/^[0-9]$/.test(char)) {
+      event.preventDefault();
+      return;
+    }
+
+    if (input.length === 0 && char === "0") {
+      event.preventDefault();
+      return;
+    }
+
+    if (input.length >= 10) {
+      event.preventDefault();
+    }
   }
-}
 
   ngOnInit(): void {
-    const savedData = this.userService.getFormData('personal');
+    const savedData = this.userService.getFormData("personal");
     if (savedData) {
       this.userForm.patchValue(savedData);
       this.copyAddressChecked = !!savedData.copyAddressChecked;
@@ -207,7 +205,26 @@ allowTenDigitNumber(event: KeyboardEvent): void {
       }
     }
 
-    this.userService.setFormGroup('personal', this.userForm);
+    this.userService.setFormGroup("personal", this.userForm);
+    const editMode = sessionStorage.getItem("editMode") === "true";
+    const onboardingData = this.patchService.getOnboardingData();
+    if (editMode && onboardingData && onboardingData.personal) {
+      const p = onboardingData.personal;
+
+      const numericPatch = {
+        ...p,
+        relevantYear: p.relevantYear ? Number(p.relevantYear) : "",
+        exp_year: p.exp_year ? Number(p.exp_year) : "",
+        exp_month: p.exp_month ? Number(p.exp_month) : "",
+      };
+      this.patchService.patchSection(this.userForm, numericPatch);
+
+      if (numericPatch.copyAddressChecked) {
+        this.copyAddressChecked = true;
+        this.disablePermanentFields();
+        this.syncPermanentWithCurrent();
+      }
+    }
   }
 
   copyCurrentToPermanent(event: MatCheckboxChange): void {
@@ -233,23 +250,23 @@ allowTenDigitNumber(event: KeyboardEvent): void {
 
   disablePermanentFields() {
     [
-      'permanent_address',
-      'permanent_country',
-      'permanent_state',
-      'permanent_city',
-      'permanent_pincode',
-      'permanent_contact',
+      "permanent_address",
+      "permanent_country",
+      "permanent_state",
+      "permanent_city",
+      "permanent_pincode",
+      "permanent_contact",
     ].forEach((field) => this.userForm.get(field)?.disable());
   }
 
   enablePermanentFields() {
     [
-      'permanent_address',
-      'permanent_country',
-      'permanent_state',
-      'permanent_city',
-      'permanent_pincode',
-      'permanent_contact',
+      "permanent_address",
+      "permanent_country",
+      "permanent_state",
+      "permanent_city",
+      "permanent_pincode",
+      "permanent_contact",
     ].forEach((field) => this.userForm.get(field)?.enable());
   }
 
@@ -257,35 +274,35 @@ allowTenDigitNumber(event: KeyboardEvent): void {
     this.currentAddressSubscription?.unsubscribe();
 
     this.currentAddressSubscription = this.userForm
-      .get('current_address')
+      .get("current_address")
       ?.valueChanges.subscribe((value) => {
         this.userForm
-          .get('permanent_address')
+          .get("permanent_address")
           ?.setValue(value, { emitEvent: false });
       });
-    this.userForm.get('current_country')?.valueChanges.subscribe((value) => {
+    this.userForm.get("current_country")?.valueChanges.subscribe((value) => {
       this.userForm
-        .get('permanent_country')
+        .get("permanent_country")
         ?.setValue(value, { emitEvent: false });
     });
-    this.userForm.get('current_state')?.valueChanges.subscribe((value) => {
+    this.userForm.get("current_state")?.valueChanges.subscribe((value) => {
       this.userForm
-        .get('permanent_state')
+        .get("permanent_state")
         ?.setValue(value, { emitEvent: false });
     });
-    this.userForm.get('current_city')?.valueChanges.subscribe((value) => {
+    this.userForm.get("current_city")?.valueChanges.subscribe((value) => {
       this.userForm
-        .get('permanent_city')
+        .get("permanent_city")
         ?.setValue(value, { emitEvent: false });
     });
-    this.userForm.get('current_pincode')?.valueChanges.subscribe((value) => {
+    this.userForm.get("current_pincode")?.valueChanges.subscribe((value) => {
       this.userForm
-        .get('permanent_pincode')
+        .get("permanent_pincode")
         ?.setValue(value, { emitEvent: false });
     });
-    this.userForm.get('current_contact')?.valueChanges.subscribe((value) => {
+    this.userForm.get("current_contact")?.valueChanges.subscribe((value) => {
       this.userForm
-        .get('permanent_contact')
+        .get("permanent_contact")
         ?.setValue(value, { emitEvent: false });
     });
   }
@@ -305,12 +322,12 @@ allowTenDigitNumber(event: KeyboardEvent): void {
         copyAddressChecked: this.copyAddressChecked,
       };
 
-      this.userService.setFormData('personal', formValue);
-       this.progressService.markStepComplete(1);
-      this.mainLayoutService.markTabCompleted('personal', true);
-      this.router.navigate(['/mainlayout/kyc']);
+      this.userService.setFormData("personal", formValue);
+      this.progressService.markStepComplete(1);
+      this.mainLayoutService.markTabCompleted("personal", true);
+      this.router.navigate(["/mainlayout/kyc"]);
     } else {
-      this.alertserivce.showError('Please fill all required fields');
+      this.alertserivce.showError("Please fill all required fields");
       this.userForm.markAllAsTouched();
     }
   }

@@ -1,306 +1,796 @@
 <div class="main-container">
-<div class="PV-container" *ngIf="userData">
-  <h1>PROFILE INFORMATION</h1>
+  <div class="PV-container" *ngIf="userData">
+    <h1>PROFILE INFORMATION</h1>
+    <button class="close-btn" (click)="close()">✖</button>
 
+    <div class="profile-header">
+      <div class="profile-image">
+        <img
+          [src]="profileImageUrl || 'assets/images/profile.jpg'"
+          alt="Profile Photo"
+          class="profile-img"
+          (error)="profileImageUrl = 'assets/images/profile.jpg'"
+        />
+      </div>
 
-
-  <div class="profile-header">
-    <div class="profile-image">
-      <img
-        [src]="profileImageUrl || 'assets/images/profile.jpg'"
-        alt="Profile Photo"
-        class="profile-img"
-        (error)="profileImageUrl = 'assets/images/profile.jpg'"
-      />
+      <div class="profile-info">
+        <h2>{{ fullName }}</h2>
+        <p><span>E-mail:</span> {{ email }}</p>
+        <p><span>EmpID:</span> {{ employeeId }}</p>
+      </div>
+      <ng-template #noInfo>
+        <div class="no-info">
+          <h3>There is no information</h3>
+          <p>Please fill the onboarding form details to view your details.</p>
+        </div>
+      </ng-template>
     </div>
 
-    <div class="profile-info">
-      <h2>{{ fullName }}</h2>
-      <p><span>E-mail:</span> {{ email }}</p>
-      <p><span>EmpID:</span> {{ employeeId }}</p>
-    </div>
+    <mat-card class="show" *ngIf="isLoaded">
+      <div class="header">
+        <h1>Onboarding Information</h1>
+        <button
+          mat-mini-fab
+          color="primary"
+          class="edit-btn"
+          (click)="editOnboarding()"
+        >
+          <mat-icon>edit</mat-icon>
+        </button>
+      </div>
+      <div class="onboarding-wrapper">
+        <button
+          class="stepper-arrow left"
+          *ngIf="stepper.selectedIndex > 0"
+          (click)="stepper.previous()"
+        >
+          ❮
+        </button>
+        <div class="stepper-container">
+          <mat-horizontal-stepper linear #stepper>
+            <mat-step label="Personal">
+              <h2 class="section-title">Personal Details</h2>
+
+              <mat-card class="section-card">
+                <mat-card-title>Basic Information</mat-card-title>
+                <mat-card-content>
+                  <div class="grid">
+                    <div class="item">
+                      <strong>First Name:</strong>
+                      {{ onboarding.personal.fname }}
+                    </div>
+                    <div class="item">
+                      <strong>Middle Name:</strong>
+                      {{ onboarding.personal.mname }}
+                    </div>
+                    <div class="item">
+                      <strong>Last Name:</strong>
+                      {{ onboarding.personal.lname }}
+                    </div>
+                    <div class="item">
+                      <strong>Email:</strong> {{ onboarding.personal.email }}
+                    </div>
+                    <div class="item">
+                      <strong>Gender:</strong> {{ onboarding.personal.gender }}
+                    </div>
+                    <div class="item">
+                      <strong>DOB:</strong>
+                      {{ onboarding.personal.dob | date : "dd-MM-yyyy" }}
+                    </div>
+                    <div class="item">
+                      <strong>Blood Group:</strong>
+                      {{ onboarding.personal.bloodGroup }}
+                    </div>
+                    <div class="item">
+                      <strong>Marital Status:</strong>
+                      {{ onboarding.personal.marital }}
+                    </div>
+                    <div
+                      class="item"
+                      *ngIf="onboarding.personal.marital === 'married'"
+                    >
+                      <strong>Marriage Date:</strong>
+                      {{ onboarding.personal.marriegedate }}
+                    </div>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+
+              <mat-card class="section-card">
+                <mat-card-title>Contact Details</mat-card-title>
+                <mat-card-content>
+                  <div class="grid">
+                    <div class="item">
+                      <strong>Current Contact:</strong>
+                      {{ onboarding.personal.current_contact }}
+                    </div>
+                    <div class="item">
+                      <strong>Permanent Contact:</strong>
+                      {{ onboarding.personal.permanent_contact }}
+                    </div>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+
+              <mat-card class="section-card">
+                <mat-card-title>Emergency Contact</mat-card-title>
+                <mat-card-content>
+                  <div class="grid">
+                    <div class="item">
+                      <strong>Name:</strong>
+                      {{ onboarding.personal.emergency_contact_name }}
+                    </div>
+                    <div class="item">
+                      <strong>Phone:</strong>
+                      {{ onboarding.personal.emergency_contact_number }}
+                    </div>
+                    <div class="item">
+                      <strong>Relationship:</strong>
+                      {{ onboarding.personal.emergency_relationship }}
+                    </div>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+
+              <mat-card class="section-card">
+                <mat-card-title>Current Address</mat-card-title>
+                <mat-card-content>
+                  <div class="grid">
+                    <div class="item">
+                      <strong>Address:</strong>
+                      {{ onboarding.personal.current_address }}
+                    </div>
+                    <div class="item">
+                      <strong>City:</strong>
+                      {{ onboarding.personal.current_city }}
+                    </div>
+                    <div class="item">
+                      <strong>State:</strong>
+                      {{ onboarding.personal.current_state }}
+                    </div>
+                    <div class="item">
+                      <strong>Country:</strong>
+                      {{ onboarding.personal.current_country }}
+                    </div>
+                    <div class="item">
+                      <strong>Pincode:</strong>
+                      {{ onboarding.personal.current_pincode }}
+                    </div>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+
+              <mat-card class="section-card">
+                <mat-card-title>Experience</mat-card-title>
+                <mat-card-content>
+                  <div class="grid">
+                    <div class="item">
+                      <strong>Total Experience:</strong>
+                      {{ onboarding.personal.exp_year }} years
+                      {{ onboarding.personal.exp_month }} months
+                    </div>
+                    <div class="item">
+                      <strong>Relevant Experience:</strong>
+                      {{ onboarding.personal.relevantYear }} years
+                    </div>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+
+              <div class="step-actions">
+                <button
+                  mat-raised-button
+                  color="primary"
+                  (click)="stepper.next()"
+                >
+                  Next
+                </button>
+              </div>
+            </mat-step>
+
+            <mat-step label="KYC">
+              <h2 class="section-title">KYC Details</h2>
+
+              <mat-card class="section-card">
+                <mat-card-title>PAN Details</mat-card-title>
+                <mat-card-content>
+                  <div class="grid">
+                    <div class="item">
+                      <strong>PAN Number:</strong> {{ onboarding.kyc.pan }}
+                    </div>
+                    <div class="item">
+                      <strong>PAN Name:</strong> {{ onboarding.kyc.panName }}
+                    </div>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+
+              <mat-card class="section-card">
+                <mat-card-title>Aadhar Details</mat-card-title>
+                <mat-card-content>
+                  <div class="grid">
+                    <div class="item">
+                      <strong>Aadhar Number:</strong>
+                      {{ onboarding.kyc.aadhar }}
+                    </div>
+                    <div class="item">
+                      <strong>Aadhar Name:</strong>
+                      {{ onboarding.kyc.aadharName }}
+                    </div>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+
+              <mat-card class="section-card">
+                <mat-card-title>Other KYC Details</mat-card-title>
+                <mat-card-content>
+                  <div class="grid">
+                    <div class="item">
+                      <strong>UAN:</strong> {{ onboarding.kyc.uan }}
+                    </div>
+                    <div class="item">
+                      <strong>PF Number:</strong> {{ onboarding.kyc.pf }}
+                    </div>
+                    <div class="item">
+                      <strong>HDFC Account:</strong> {{ onboarding.kyc.hdfc }}
+                    </div>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+
+              <div class="step-actions">
+                <button
+                  mat-raised-button
+                  color="primary"
+                  (click)="stepper.next()"
+                >
+                  Next
+                </button>
+              </div>
+            </mat-step>
+
+            <mat-step label="Passport">
+              <h2 class="section-title">Passport Details</h2>
+
+              <mat-card class="section-card">
+                <mat-card-title>Passport Information</mat-card-title>
+                <mat-card-content>
+                  <div class="grid">
+                    <div class="item">
+                      <strong>Nationality:</strong>
+                      {{ onboarding.passport.nationality }}
+                    </div>
+
+                    <div class="item">
+                      <strong>Has Passport?</strong>
+                      {{ onboarding.passport.ifPassport }}
+                    </div>
+
+                    <div
+                      class="item"
+                      *ngIf="onboarding.passport.ifPassport === 'Yes'"
+                    >
+                      <strong>Passport Number:</strong>
+                      {{ onboarding.passport.passportNumber || "N/A" }}
+                    </div>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+
+              <div class="step-actions">
+                <button
+                  mat-raised-button
+                  color="primary"
+                  (click)="stepper.next()"
+                >
+                  Next
+                </button>
+              </div>
+            </mat-step>
+            <mat-step label="Family">
+              <h2 class="section-title">Family Details</h2>
+
+              <mat-card class="section-card">
+                <mat-card-title>Parents</mat-card-title>
+                <mat-card-content>
+                  <div class="grid">
+                    <div class="item">
+                      <strong>Father Name:</strong>
+                      {{ onboarding.family.fatherName }}
+                    </div>
+
+                    <div class="item">
+                      <strong>Father DOB:</strong>
+                      {{ onboarding.family.fatherDOB | date }}
+                    </div>
+
+                    <div class="item">
+                      <strong>Mother Name:</strong>
+                      {{ onboarding.family.motherName }}
+                    </div>
+
+                    <div class="item">
+                      <strong>Mother DOB:</strong>
+                      {{ onboarding.family.motherDOB | date }}
+                    </div>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+
+              <mat-card
+                class="section-card"
+                *ngIf="onboarding.family.spouseName"
+              >
+                <mat-card-title>Spouse Details</mat-card-title>
+
+                <mat-card-content>
+                  <div class="grid">
+                    <div class="item">
+                      <strong>Spouse Name:</strong>
+                      {{ onboarding.family.spouseName }}
+                    </div>
+
+                    <div class="item">
+                      <strong>Spouse DOB:</strong>
+                      {{ onboarding.family.spouseDOB | date }}
+                    </div>
+
+                    <div class="item">
+                      <strong>Spouse Gender:</strong>
+                      {{ onboarding.family.spouseGender }}
+                    </div>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+
+              <mat-card
+                class="section-card"
+                *ngIf="onboarding.family.children?.length > 0"
+              >
+                <mat-card-title>Children</mat-card-title>
+
+                <mat-card-content>
+                  <div
+                    *ngFor="
+                      let child of onboarding.family.children;
+                      let i = index
+                    "
+                    class="child-block"
+                  >
+                    <h4>Child {{ i + 1 }}</h4>
+
+                    <div class="grid">
+                      <div class="item">
+                        <strong>Name:</strong> {{ child.name }}
+                      </div>
+
+                      <div class="item">
+                        <strong>DOB:</strong> {{ child.dob | date }}
+                      </div>
+
+                      <div class="item">
+                        <strong>Gender:</strong> {{ child.gender }}
+                      </div>
+                    </div>
+
+                    <hr />
+                  </div>
+                </mat-card-content>
+              </mat-card>
+
+              <div class="step-actions">
+                <button
+                  mat-raised-button
+                  color="primary"
+                  (click)="stepper.next()"
+                >
+                  Next
+                </button>
+              </div>
+            </mat-step>
+
+            <mat-step label="Education">
+              <h2 class="section-title">Education Details</h2>
+
+              <ng-container
+                *ngIf="onboarding.education?.length > 0; else noEdu"
+              >
+                <mat-card
+                  class="section-card"
+                  *ngFor="let edu of onboarding.education; let i = index"
+                >
+                  <mat-card-title>Education {{ i + 1 }}</mat-card-title>
+
+                  <mat-card-content>
+                    <div class="grid">
+                      <div class="item">
+                        <strong>Qualification:</strong>
+                        {{ edu.qualification }}
+                      </div>
+
+                      <div class="item">
+                        <strong>Specialization:</strong>
+                        {{ edu.specilization }}
+                      </div>
+
+                      <div class="item">
+                        <strong>Institute:</strong>
+                        {{ edu.instituteName }}
+                      </div>
+
+                      <div class="item">
+                        <strong>University:</strong>
+                        {{ edu.universityName }}
+                      </div>
+
+                      <div class="item">
+                        <strong>Study Type:</strong>
+                        {{ edu.time }}
+                      </div>
+
+                      <div class="item">
+                        <strong>From:</strong>
+                        {{ edu.fromDate | date }}
+                      </div>
+
+                      <div class="item">
+                        <strong>To:</strong>
+                        {{ edu.toDate | date }}
+                      </div>
+
+                      <div class="item">
+                        <strong>Percentage:</strong>
+                        {{ edu.percentage }}%
+                      </div>
+
+                      <div class="item">
+                        <strong>Roll No:</strong>
+                        {{ edu.rollNo }}
+                      </div>
+
+                      <div class="item">
+                        <strong>Education Type:</strong>
+                        {{ edu.educationType }}
+                      </div>
+                    </div>
+                  </mat-card-content>
+                </mat-card>
+              </ng-container>
+
+              <ng-template #noEdu>
+                <p>No education details found.</p>
+              </ng-template>
+
+              <div class="step-actions">
+                <button
+                  mat-raised-button
+                  color="primary"
+                  (click)="stepper.next()"
+                >
+                  Next
+                </button>
+              </div>
+            </mat-step>
+
+            <mat-step label="Previous Employment">
+              <h2 class="section-title">Previous Employment</h2>
+
+              <ng-container
+                *ngIf="
+                  onboarding.previousEmployment?.length > 0;
+                  else noPrevEmp
+                "
+              >
+                <mat-card
+                  class="section-card"
+                  *ngFor="
+                    let job of onboarding.previousEmployment;
+                    let i = index
+                  "
+                >
+                  <mat-card-title>Employment {{ i + 1 }}</mat-card-title>
+
+                  <mat-card-content>
+                    <div class="grid">
+                      <div class="item">
+                        <strong>Company Name:</strong>
+                        {{ job.companyName }}
+                      </div>
+
+                      <div class="item">
+                        <strong>Designation:</strong>
+                        {{ job.designation }}
+                      </div>
+
+                      <div class="item">
+                        <strong>Employment Type:</strong>
+                        {{ job.employmentType }}
+                      </div>
+
+                      <div class="item">
+                        <strong>Start Date:</strong>
+                        {{ job.startDate | date }}
+                      </div>
+
+                      <div class="item">
+                        <strong>End Date:</strong>
+                        {{ job.endDate | date }}
+                      </div>
+                    </div>
+                  </mat-card-content>
+                </mat-card>
+              </ng-container>
+
+              <ng-template #noPrevEmp>
+                <p>No previous employment records found.</p>
+              </ng-template>
+
+              <div class="step-actions">
+                <button
+                  mat-raised-button
+                  color="primary"
+                  (click)="stepper.next()"
+                >
+                  Next
+                </button>
+              </div>
+            </mat-step>
+
+            <mat-step label="Skills">
+              <h2 class="section-title">Skills</h2>
+
+              <ng-container
+                *ngIf="onboarding.skills?.length > 0; else noPrevEmp"
+              >
+                <mat-card
+                  class="section-card"
+                  *ngFor="let skills of onboarding.skills; let i = index"
+                >
+                  <mat-card-title>Skills {{ i + 1 }}</mat-card-title>
+
+                  <mat-card-content>
+                    <div class="grid">
+                      <div class="item">
+                        <strong>Skill Name:</strong>
+                        {{ skills.skillName }}
+                      </div>
+
+                      <div class="item">
+                        <strong>Skill Category:</strong>
+                        {{ skills.skillCategories }}
+                      </div>
+
+                      <div class="item">
+                        <strong>Version:</strong>
+                        {{ skills.versionNum }}
+                      </div>
+
+                      <div class="item">
+                        <strong>Experience in Years:</strong>
+                        {{ skills.experience_year }}
+                      </div>
+
+                      <div class="item">
+                        <strong>Experience in months:</strong>
+                        {{ skills.exp_month }}
+                      </div>
+
+                      <div class="item">
+                        <strong>Ratings:</strong>
+                        {{ skills.selfRate }}
+                      </div>
+                    </div>
+                  </mat-card-content>
+                </mat-card>
+              </ng-container>
+
+              <ng-template #noSkills>
+                <p>No Skills found.</p>
+              </ng-template>
+
+              <div class="step-actions">
+                <button
+                  mat-raised-button
+                  color="primary"
+                  (click)="stepper.next()"
+                >
+                  Next
+                </button>
+              </div>
+            </mat-step>
+
+            <mat-step label="Certifications">
+              <h2 class="section-title">Certification</h2>
+
+              <ng-container
+                *ngIf="onboarding.certification?.length > 0; else noPrevEmp"
+              >
+                <mat-card
+                  class="section-card"
+                  *ngFor="let cert of onboarding.certification; let i = index"
+                >
+                  <mat-card-title>Certification{{ i + 1 }}</mat-card-title>
+
+                  <mat-card-content>
+                    <div class="grid">
+                      <div class="item">
+                        <strong>Certification Name:</strong>
+                        {{ cert.certificateName }}
+                      </div>
+
+                      <div class="item">
+                        <strong>Certified By:</strong>
+                        {{ cert.certifiedBy }}
+                      </div>
+
+                      <div class="item">
+                        <strong>Completion Date:</strong>
+                        {{ cert.completionDate | date }}
+                      </div>
+
+                      <div class="item">
+                        <strong>Marks:</strong>
+                        {{ cert.marks }}
+                      </div>
+                    </div>
+                  </mat-card-content>
+                </mat-card>
+              </ng-container>
+
+              <ng-template #noCertification>
+                <p>No Certifications found.</p>
+              </ng-template>
+
+              <div class="step-actions">
+                <button
+                  mat-raised-button
+                  color="primary"
+                  (click)="stepper.next()"
+                >
+                  Next
+                </button>
+              </div>
+            </mat-step>
+
+            <mat-step label="Documents">
+              <h2 class="section-title">Uploaded Documents</h2>
+
+              <div class="doc-grid">
+                <button
+                  mat-raised-button
+                  color="primary"
+                  class="doc-card"
+                  *ngIf="onboarding.documents.panCard"
+                  (click)="viewDocument('pancard')"
+                >
+                  View PanCard
+                </button>
+
+                <button
+                  mat-raised-button
+                  color="primary"
+                  class="doc-card"
+                  *ngIf="onboarding.documents.aadharCard"
+                  (click)="viewDocument('aadharcard')"
+                >
+                  View AadharCard
+                </button>
+
+                <button
+                  mat-raised-button
+                  color="primary"
+                  class="doc-card"
+                  *ngIf="onboarding.documents.matric"
+                  (click)="viewDocument('matric')"
+                >
+                  View
+                </button>
+
+                <button
+                  mat-raised-button
+                  color="primary"
+                  class="doc-card"
+                  *ngIf="onboarding.documents.intermediate"
+                  (click)="viewDocument('intermediate')"
+                >
+                  View 12thMarksheet
+                </button>
+
+                <button
+                  mat-raised-button
+                  color="primary"
+                  class="doc-card"
+                  *ngIf="onboarding.documents.graduationMarksheet"
+                  (click)="viewDocument('graduationmarksheet')"
+                >
+                  View GraduationMarksheet
+                </button>
+
+                <button
+                  mat-raised-button
+                  color="primary"
+                  class="doc-card"
+                  *ngIf="onboarding.documents.postGraduation"
+                  (click)="viewDocument('postgraduation')"
+                >
+                  View PostGraduationMarksheet
+                </button>
+
+                <button
+                  mat-raised-button
+                  color="primary"
+                  class="doc-card"
+                  *ngIf="onboarding.documents.checkLeaf"
+                  (click)="viewDocument('checkleaf')"
+                >
+                  View CheckLeaf
+                </button>
+
+                <button
+                  mat-raised-button
+                  color="primary"
+                  class="doc-card"
+                  *ngIf="onboarding.documents.passbook"
+                  (click)="viewDocument('passbook')"
+                >
+                  View PassBook
+                </button>
+
+                <button
+                  mat-raised-button
+                  color="primary"
+                  class="doc-card"
+                  *ngIf="onboarding.documents.psizePhoto"
+                  (click)="viewDocument('psizephoto')"
+                >
+                  View Photo
+                </button>
+              </div>
+
+              <div class="step-buttons">
+                <button
+                  mat-raised-button
+                  color="primary"
+                  (click)="stepper.previous()"
+                >
+                  Previous
+                </button>
+              </div>
+            </mat-step>
+          </mat-horizontal-stepper>
+        </div>
+        <button
+          class="stepper-arrow right"
+          *ngIf="stepper.selectedIndex < stepper.steps.length - 1"
+          (click)="stepper.next()"
+        >
+          ❯
+        </button>
+      </div>
+
+      <ng-template #documentPopup let-data>
+        <h2 mat-dialog-title>Document Preview</h2>
+
+        <mat-dialog-content>
+          <img
+            *ngIf="data.fileType === 'image'"
+            [src]="'data:image/png;base64,' + data.base64"
+            style="width: 100%; max-height: 500px; object-fit: contain"
+          />
+
+          <iframe
+            *ngIf="data.fileType === 'pdf'"
+            [src]="data.safeUrl"
+            width="100%"
+            height="500px"
+          >
+          </iframe>
+        </mat-dialog-content>
+
+        <mat-dialog-actions align="end">
+          <button mat-raised-button mat-dialog-close>Close</button>
+        </mat-dialog-actions>
+      </ng-template>
+    </mat-card>
   </div>
-
-
-
-  <div *ngIf="userDetails; else noInfo">
-    <h3>Personal Details</h3>
-    <table class="profile-table">
-      <tr>
-        <th>Field</th>
-        <th>Value</th>
-      </tr>
-      <tr>
-        <td>First Name</td>
-        <td>{{ userDetails.value.personal.fname }}</td>
-      </tr>
-      <tr>
-        <td>Middle Name</td>
-        <td>{{ userDetails.value.personal.mname }}</td>
-      </tr>
-      <tr>
-        <td>Last Name</td>
-        <td>{{ userDetails.value.personal.lname }}</td>
-      </tr>
-      <tr>
-        <td>Gender</td>
-        <td>{{ userDetails.value.personal.gender }}</td>
-      </tr>
-      <tr>
-        <td>Blood Group</td>
-        <td>{{ userDetails.value.personal.bloodGroup }}</td>
-      </tr>
-      <tr>
-        <td>DOB</td>
-        <td>{{ userDetails.value.personal.dob | date }}</td>
-      </tr>
-      <tr>
-        <td>Marital Status</td>
-        <td>{{ userDetails.value.personal.marital }}</td>
-      </tr>
-      <tr>
-        <td>Marriage Date</td>
-        <td>{{ userDetails.value.personal.marriegedate | date }}</td>
-      </tr>
-      <tr>
-        <td>Current Address</td>
-        <td>
-          {{ userDetails.value.personal.current_address }},
-          {{ userDetails.value.personal.current_city }},
-          {{ userDetails.value.personal.current_state }},
-          {{ userDetails.value.personal.current_country }} -
-          {{ userDetails.value.personal.current_pincode }}
-        </td>
-      </tr>
-      <tr>
-        <td>Permanent Address</td>
-        <td>
-          {{ userDetails.value.personal.permanent_address }},
-          {{ userDetails.value.personal.permanent_city }},
-          {{ userDetails.value.personal.permanent_state }},
-          {{ userDetails.value.personal.permanent_country }} -
-          {{ userDetails.value.personal.permanent_pincode }}
-        </td>
-      </tr>
-      <tr>
-        <td>BCP Address</td>
-        <td>
-          {{ userDetails.value.personal.bcp_addrewss }},
-          {{ userDetails.value.personal.bcp_city }},
-          {{ userDetails.value.personal.bcp_state }},
-          {{ userDetails.value.personal.bcp_country }} -
-          {{ userDetails.value.personal.bcp_pincode }}
-        </td>
-      </tr>
-      <tr>
-        <td>Emergency Contact</td>
-        <td>
-          {{ userDetails.value.personal.emergency_contact_name }} ({{
-            userDetails.value.personal.emergency_relationship
-          }}) - {{ userDetails.value.personal.emergency_contact_number }}
-        </td>
-      </tr>
-      <tr>
-        <td>Experience</td>
-        <td>
-          {{ userDetails.value.personal.exp_year }} years
-          {{ userDetails.value.personal.exp_month }} months
-        </td>
-      </tr>
-    </table>
-
-    <h3>KYC Details</h3>
-    <table class="profile-table">
-      <tr>
-        <th>Field</th>
-        <th>Value</th>
-      </tr>
-      <tr>
-        <td>PAN</td>
-        <td>
-          {{ userDetails.value.kyc.pan }} ({{ userDetails.value.kyc.panName }})
-        </td>
-      </tr>
-      <tr>
-        <td>Aadhar</td>
-        <td>
-          {{ userDetails.value.kyc.aadhar }} ({{
-            userDetails.value.kyc.aadharName
-          }})
-        </td>
-      </tr>
-      <tr>
-        <td>UAN</td>
-        <td>{{ userDetails.value.kyc.uan }}</td>
-      </tr>
-      <tr>
-        <td>PF</td>
-        <td>{{ userDetails.value.kyc.pf }}</td>
-      </tr>
-      <tr>
-        <td>HDFC</td>
-        <td>{{ userDetails.value.kyc.hdfc }}</td>
-      </tr>
-    </table>
-
-    <h3>Passport Details</h3>
-    <table class="profile-table">
-      <tr>
-        <th>Field</th>
-        <th>Value</th>
-      </tr>
-      <tr>
-        <td>Nationality</td>
-        <td>{{ userDetails.value.passport.nationality }}</td>
-      </tr>
-      <tr>
-        <td>Has Passport</td>
-        <td>{{ userDetails.value.passport.ifPassport }}</td>
-      </tr>
-      <tr>
-        <td>Passport Number</td>
-        <td>{{ userDetails.value.passport.passportNumber }}</td>
-      </tr>
-    </table>
-
-    <h3>Family Details</h3>
-    <table class="profile-table">
-      <tr>
-        <th>Field</th>
-        <th>Value</th>
-      </tr>
-      <tr>
-        <td>Father Name</td>
-        <td>
-          {{ userDetails.value.family.fatherName }} ({{
-            userDetails.value.family.fatherDOB | date
-          }})
-        </td>
-      </tr>
-      <tr>
-        <td>Mother Name</td>
-        <td>
-          {{ userDetails.value.family.motherName }} ({{
-            userDetails.value.family.motherDOB | date
-          }})
-        </td>
-      </tr>
-      <tr>
-        <td>Spouse Name</td>
-        <td>
-          {{ userDetails.value.family.spouseName }} ({{
-            userDetails.value.family.spouseDOB | date
-          }}) - {{ userDetails.value.family.spouseGender }}
-        </td>
-      </tr>
-      <tr>
-        <td>Children</td>
-        <td>{{ userDetails.value.family.children }}</td>
-      </tr>
-    </table>
-
-    <h3>Previous Employment</h3>
-    <table
-      class="profile-table"
-      *ngIf="userDetails.value.previousEmployment?.length"
-    >
-      <tr>
-        <th>Company</th>
-        <th>Designation</th>
-        <th>Type</th>
-        <th>Start</th>
-        <th>End</th>
-      </tr>
-      <tr *ngFor="let job of userDetails.value.previousEmployment">
-        <td>{{ job.companyName }}</td>
-        <td>{{ job.designation }}</td>
-        <td>{{ job.employmentType }}</td>
-        <td>{{ job.startDate | date }}</td>
-        <td>{{ job.endDate | date }}</td>
-      </tr>
-    </table>
-
-    <h3>Education</h3>
-    <table class="profile-table">
-      <tr>
-        <th>Qualification</th>
-        <th>Specialization</th>
-        <th>Institute</th>
-        <th>University</th>
-        <th>Type</th>
-        <th>From</th>
-        <th>To</th>
-        <th>%</th>
-        <th>Roll No</th>
-      </tr>
-      <tr>
-        <td>{{ userDetails.value.education.qualification }}</td>
-        <td>{{ userDetails.value.education.specilization }}</td>
-        <td>{{ userDetails.value.education.instituteName }}</td>
-        <td>{{ userDetails.value.education.universityName }}</td>
-        <td>{{ userDetails.value.education.educationType }}</td>
-        <td>{{ userDetails.value.education.fromDate | date }}</td>
-        <td>{{ userDetails.value.education.toDate | date }}</td>
-        <td>{{ userDetails.value.education.percentage }}</td>
-        <td>{{ userDetails.value.education.rollNo }}</td>
-      </tr>
-    </table>
-
-    <h3>Skills</h3>
-    <table class="profile-table" *ngIf="userDetails.value.skills?.length">
-      <tr>
-        <th>Skill</th>
-        <th>Category</th>
-        <th>Version</th>
-        <th>Experience (Years)</th>
-        <th>Self Rate</th>
-      </tr>
-      <tr *ngFor="let skill of userDetails.value.skills">
-        <td>{{ skill.skillName }}</td>
-        <td>{{ skill.skillCategories }}</td>
-        <td>{{ skill.versionNum }}</td>
-        <td>{{ skill.experience_year }}y {{ skill.experience_month }}m</td>
-        <td>{{ skill.selfRate }}</td>
-      </tr>
-    </table>
-
-    <h3>Certifications</h3>
-    <table
-      class="profile-table"
-      *ngIf="userDetails.value.certification?.length"
-    >
-      <tr>
-        <th>Certificate</th>
-        <th>Certified By</th>
-        <th>Completion Date</th>
-        <th>Marks</th>
-      </tr>
-      <tr *ngFor="let cert of userDetails.value.certification">
-        <td>{{ cert.certificateName }}</td>
-        <td>{{ cert.certifiedBy }}</td>
-        <td>{{ cert.completionDate | date }}</td>
-        <td>{{ cert.marks }}</td>
-      </tr>
-    </table>
-
-    <h3>Resume</h3>
-    <table class="profile-table">
-      <tr>
-        <th>Achievements</th>
-        <td>{{ userDetails.value.resume.achievements }}</td>
-      </tr>
-      <tr>
-        <th>Category</th>
-        <td>{{ userDetails.value.resume.resumeCate }}</td>
-      </tr>
-    </table>
-  </div>
-<button class="close-btn" (click)="close()">✖</button>
-  <ng-template #noInfo>
-    <div class="no-info">
-      <h3>There is no information</h3>
-      <p>Please fill the onboarding form details to view your details.</p>
-    </div>
-  </ng-template>
-</div>
 </div>

@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { UserService } from '../../../../core/services/user.service';
-import { Router } from '@angular/router';
-import { AbstractControl, ValidatorFn } from '@angular/forms';
-import { MainlayoutService } from 'src/app/core/services/main-layout.service';
-import { FormProgressService } from 'src/app/core/services/form-progress.service';
+import { Component, OnInit } from "@angular/core";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { UserService } from "../../../../core/services/user.service";
+import { Router } from "@angular/router";
+import { AbstractControl, ValidatorFn } from "@angular/forms";
+import { MainlayoutService } from "src/app/core/services/main-layout.service";
+import { FormProgressService } from "src/app/core/services/form-progress.service";
+import { OnboardingPatchService } from "src/app/features/dashboard/my-profile/onboarding-patch.service";
 
 function startDateValidator(): ValidatorFn {
   return (control: AbstractControl) => {
@@ -38,11 +39,18 @@ function endDateValidator(startDateControlName: string): ValidatorFn {
     return null;
   };
 }
-
+interface Employment {
+  id?: number;
+  companyName: string;
+  designation: string;
+  employmentType: string;
+  startDate: string | Date;
+  endDate: string | Date;
+}
 @Component({
-  selector: 'app-previous-employment',
-  templateUrl: './previous-employment.component.html',
-  styleUrls: ['./previous-employment.component.css'],
+  selector: "app-previous-employment",
+  templateUrl: "./previous-employment.component.html",
+  styleUrls: ["./previous-employment.component.css"],
 })
 export class PreviousEmploymentComponent implements OnInit {
   showPopup = false;
@@ -51,7 +59,7 @@ export class PreviousEmploymentComponent implements OnInit {
   maxStartDate!: Date;
 
   get minEndDate(): Date | null {
-    const sd = this.employmentForm.get('startDate')?.value;
+    const sd = this.employmentForm.get("startDate")?.value;
     if (!sd) return null;
     const d = new Date(sd);
     d.setDate(d.getDate() + 1);
@@ -63,7 +71,8 @@ export class PreviousEmploymentComponent implements OnInit {
     private userService: UserService,
     private router: Router,
     private mainlayoutService: MainlayoutService,
-     private progressService :FormProgressService,
+    private progressService: FormProgressService,
+    private patchService: OnboardingPatchService
   ) {}
 
   ngOnInit(): void {
@@ -73,26 +82,50 @@ export class PreviousEmploymentComponent implements OnInit {
 
     this.employmentForm = this.fb.group({
       companyName: [
-        '',
+        "",
         [
           Validators.required,
           Validators.minLength(3),
           Validators.pattern(/^[a-zA-Z0-9\s.,&'-]+$/),
         ],
       ],
-      designation: ['', Validators.required],
-      employmentType: ['', Validators.required],
-      startDate: ['', [Validators.required, startDateValidator()]],
-      endDate: ['', [Validators.required, endDateValidator('startDate')]],
+      designation: ["", Validators.required],
+      employmentType: ["", Validators.required],
+      startDate: ["", [Validators.required, startDateValidator()]],
+      endDate: ["", [Validators.required, endDateValidator("startDate")]],
     });
 
-    this.employmentForm.get('startDate')?.valueChanges.subscribe(() => {
-      this.employmentForm.get('endDate')?.updateValueAndValidity();
+    this.employmentForm.get("startDate")?.valueChanges.subscribe(() => {
+      this.employmentForm.get("endDate")?.updateValueAndValidity();
     });
 
-    const savedData = this.userService.getFormData('previousEmployment');
+    const savedData = this.userService.getFormData("previousEmployment");
     if (savedData) {
       this.employmentList = savedData;
+    }
+    const editMode = sessionStorage.getItem("editMode") === "true";
+    const onboardingData = this.patchService.getOnboardingData();
+    if (editMode && onboardingData?.previousEmployment?.length) {
+      this.employmentList = onboardingData.previousEmployment.map(
+        (emp: Employment) => ({
+          ...emp,
+          startDate: new Date(emp.startDate),
+          endDate: new Date(emp.endDate),
+        })
+      );
+
+      const firstEmployment = this.employmentList[0];
+      if (firstEmployment) {
+        this.employmentForm.patchValue({
+          companyName: firstEmployment.companyName,
+          designation: firstEmployment.designation,
+          employmentType: firstEmployment.employmentType,
+          startDate: firstEmployment.startDate,
+          endDate: firstEmployment.endDate,
+        });
+      }
+
+      this.userService.setFormData("previousEmployment", this.employmentList);
     }
   }
 
@@ -123,7 +156,7 @@ export class PreviousEmploymentComponent implements OnInit {
   endDateFilter = (d: Date | null): boolean => {
     if (!d) return true;
 
-    const startDateValue = this.employmentForm.get('startDate')?.value;
+    const startDateValue = this.employmentForm.get("startDate")?.value;
     if (!startDateValue) return true;
 
     const startDate = new Date(startDateValue);
@@ -146,7 +179,7 @@ export class PreviousEmploymentComponent implements OnInit {
   saveEmployment(): void {
     if (this.employmentForm.valid) {
       this.employmentList.push(this.employmentForm.value);
-      this.userService.setFormData('previousEmployment', this.employmentList);
+      this.userService.setFormData("previousEmployment", this.employmentList);
       this.closePopup();
     } else {
       this.employmentForm.markAllAsTouched();
@@ -154,15 +187,15 @@ export class PreviousEmploymentComponent implements OnInit {
   }
 
   formatDesignation(value: string): string {
-    if (!value) return '';
+    if (!value) return "";
     return value
-      .split('_')
+      .split("_")
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(' ');
+      .join(" ");
   }
 
   back(): void {
-    this.router.navigate(['/mainlayout/family']);
+    this.router.navigate(["/mainlayout/family"]);
   }
 
   deleteEmployment(index: number): void {
@@ -171,15 +204,15 @@ export class PreviousEmploymentComponent implements OnInit {
 
   finalSave(): void {
     if (this.employmentList.length >= 0) {
-      this.userService.setFormData('previousEmployment', this.employmentList);
-           this.progressService.markStepComplete(5);
-     
-      this.mainlayoutService.markTabCompleted('previousEmployee', true);
-       this.router.navigate(['/mainlayout/education']);
+      this.userService.setFormData("previousEmployment", this.employmentList);
+      this.progressService.markStepComplete(5);
+
+      this.mainlayoutService.markTabCompleted("previousEmployee", true);
+      this.router.navigate(["/mainlayout/education"]);
     } else {
-      this.userService.setFormData('previousEmployment', this.employmentList);
-      this.mainlayoutService.markTabCompleted('previousEmployee', true);
-      this.router.navigate(['/mainlayout/education']);
+      this.userService.setFormData("previousEmployment", this.employmentList);
+      this.mainlayoutService.markTabCompleted("previousEmployee", true);
+      this.router.navigate(["/mainlayout/education"]);
     }
   }
 }

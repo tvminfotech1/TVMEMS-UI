@@ -20,13 +20,15 @@ export class StepGuard implements CanActivate {
     const employeeId = this.auth.getEmployeeId();
     const role = this.auth.getUserRole();
     const token = this.auth.getToken();
+    const editMode = sessionStorage.getItem("editMode") === "true";
+
 
     if (role === "ROLE_ADMIN") {
       this.router.navigate(["/mainlayout/dashboard"]);
       return false;
     }
 
-    if (!token) {
+    if (!token ) {
       this.router.navigate(["/login"]);
       return false;
     }
@@ -38,10 +40,11 @@ export class StepGuard implements CanActivate {
 
     return this.auth.checkOnboardingStatus(employeeId).pipe(
       map((status: boolean) => {
-        if (status === true) {
+        if (status === true && !editMode) {
           this.router.navigate(["/mainlayout/dashboard"]);
           return false;
         }
+      
 
         if (this.progress.canAccessStep(stepNumber)) {
           return true;

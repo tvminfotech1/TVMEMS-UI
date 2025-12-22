@@ -85,7 +85,7 @@ import { LoaderComponent } from "./shared/components/loader/loader.component";
 import { ChangePasswordComponent } from "./features/logins/change-password/change-password.component";
 import { LoaderInterceptor } from "./core/services/loader.interceptor";
 import { CommonAlertComponent } from './shared/components/common-alert/common-alert.component';
-
+import { MatStepperModule } from "@angular/material/stepper";
 @NgModule({
   declarations: [
     AppComponent,
@@ -170,6 +170,7 @@ import { CommonAlertComponent } from './shared/components/common-alert/common-al
     MatTableModule,
     A11yModule,
     CommonModule,
+    MatStepperModule,
   ],
   providers: [
      {

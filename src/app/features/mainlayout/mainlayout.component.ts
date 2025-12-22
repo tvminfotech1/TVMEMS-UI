@@ -198,6 +198,8 @@ export class MainlayoutComponent implements OnInit {
 
   toggleSettings() {
     const willShow = !this.showSettings;
+    sessionStorage.removeItem("editMode");
+
     this.closeAllDropdowns(willShow ? "settings" : "");
 
     if (willShow) {

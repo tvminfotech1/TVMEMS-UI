@@ -1,14 +1,14 @@
-import { Component } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { UserService } from '../../../../core/services/user.service';
-import { Router } from '@angular/router';
-import { MainlayoutService } from 'src/app/core/services/main-layout.service';
-import { FormProgressService } from 'src/app/core/services/form-progress.service';
-
+import { Component } from "@angular/core";
+import { FormGroup, FormBuilder, Validators } from "@angular/forms";
+import { UserService } from "../../../../core/services/user.service";
+import { Router } from "@angular/router";
+import { MainlayoutService } from "src/app/core/services/main-layout.service";
+import { FormProgressService } from "src/app/core/services/form-progress.service";
+import { OnboardingPatchService } from "src/app/features/dashboard/my-profile/onboarding-patch.service";
 @Component({
-  selector: 'app-certificate',
-  templateUrl: './certificate.component.html',
-  styleUrls: ['./certificate.component.css'],
+  selector: "app-certificate",
+  templateUrl: "./certificate.component.html",
+  styleUrls: ["./certificate.component.css"],
 })
 export class CertificateComponent {
   today: Date = new Date();
@@ -22,14 +22,15 @@ export class CertificateComponent {
     private router: Router,
     private userService: UserService,
     private mainlayoutService: MainlayoutService,
-     private progressService :FormProgressService,
+    private progressService: FormProgressService,
+    private patchService: OnboardingPatchService
   ) {
     this.certificateForm = this.formBuilder.group({
-      certificateName: ['', Validators.required],
-      certifiedBy: ['', Validators.required],
-      completionDate: ['', Validators.required],
+      certificateName: ["", Validators.required],
+      certifiedBy: ["", Validators.required],
+      completionDate: ["", Validators.required],
       marks: [
-        '',
+        "",
         [Validators.required, Validators.pattern(/^(100|[0-9]{1,2})$/)],
       ],
     });
@@ -47,7 +48,7 @@ export class CertificateComponent {
   addCertificate() {
     if (this.certificateForm.valid) {
       this.certificateList.push(this.certificateForm.value);
-      this.userService.setFormData('certification', this.certificateList);
+      this.userService.setFormData("certification", this.certificateList);
       this.certificateForm.reset();
       this.closePopup();
     }
@@ -56,7 +57,7 @@ export class CertificateComponent {
   ngOnInit(): void {
     this.certificateForm = this.formBuilder.group({
       certificateName: [
-        '',
+        "",
         [
           Validators.required,
           Validators.minLength(3),
@@ -65,7 +66,7 @@ export class CertificateComponent {
         ],
       ],
       certifiedBy: [
-        '',
+        "",
         [
           Validators.required,
           Validators.minLength(3),
@@ -73,9 +74,9 @@ export class CertificateComponent {
           Validators.pattern(/^[A-Za-z\s]+$/),
         ],
       ],
-      completionDate: ['', Validators.required],
+      completionDate: ["", Validators.required],
       marks: [
-        '',
+        "",
         [
           Validators.required,
           Validators.min(1),
@@ -85,9 +86,24 @@ export class CertificateComponent {
       ],
     });
 
-    const savedCertificates = this.userService.getFormData('certification');
+    const savedCertificates = this.userService.getFormData("certification");
     if (savedCertificates && Array.isArray(savedCertificates)) {
       this.certificateList = savedCertificates;
+    }
+    const editMode = sessionStorage.getItem("editMode") === "true";
+    const onboardingData =
+      this.patchService.getOnboardingData?.() ||
+      JSON.parse(localStorage.getItem("onboardingData")!);
+
+    if (editMode && onboardingData?.certification?.length > 0) {
+      this.certificateList = onboardingData.certification.map((c: any) => ({
+        certificateName: c.certificateName,
+        certifiedBy: c.certifiedBy,
+        completionDate: c.completionDate?.split("T")[0], // fix date
+        marks: c.marks,
+      }));
+
+      this.userService.setFormData("certification", this.certificateList);
     }
   }
 
@@ -96,35 +112,35 @@ export class CertificateComponent {
   }
 
   finalSubmit(): void {
-    if (this.certificateList.length >=0) {
-      this.userService.setFormData('certification', this.certificateList);
-           this.progressService.markStepComplete(8);
-      this.mainlayoutService.markTabCompleted('certificate', true);
-       this.router.navigate(['/mainlayout/document']);
+    if (this.certificateList.length >= 0) {
+      this.userService.setFormData("certification", this.certificateList);
+      this.progressService.markStepComplete(8);
+      this.mainlayoutService.markTabCompleted("certificate", true);
+      this.router.navigate(["/mainlayout/document"]);
     } else {
-      this.userService.setFormData('certification', this.certificateList);
-      this.mainlayoutService.markTabCompleted('certificate', true);
-      this.router.navigate(['/mainlayout/document']);
+      this.userService.setFormData("certification", this.certificateList);
+      this.mainlayoutService.markTabCompleted("certificate", true);
+      this.router.navigate(["/mainlayout/document"]);
     }
   }
 
   preventInvalidInput(event: KeyboardEvent): void {
-    if (['e', 'E', '+', '-', '.'].includes(event.key)) {
+    if (["e", "E", "+", "-", "."].includes(event.key)) {
       event.preventDefault();
     }
   }
 
   back(): void {
-    this.router.navigate(['/mainlayout/skills']);
+    this.router.navigate(["/mainlayout/skills"]);
   }
 
   blockMarksInput(event: KeyboardEvent) {
     const allowedKeys = [
-      'Backspace',
-      'ArrowLeft',
-      'ArrowRight',
-      'Tab',
-      'Delete',
+      "Backspace",
+      "ArrowLeft",
+      "ArrowRight",
+      "Tab",
+      "Delete",
     ];
     if (allowedKeys.includes(event.key)) {
       return;
@@ -153,12 +169,12 @@ export class CertificateComponent {
 
   blockCertificateNameInput(event: KeyboardEvent) {
     const allowedKeys = [
-      'Backspace',
-      'ArrowLeft',
-      'ArrowRight',
-      'Tab',
-      'delete',
-      ' ',
+      "Backspace",
+      "ArrowLeft",
+      "ArrowRight",
+      "Tab",
+      "delete",
+      " ",
     ];
     const pattern = /[A-Za-z]/;
 
@@ -174,12 +190,12 @@ export class CertificateComponent {
 
   blockCertifiedByInput(event: KeyboardEvent) {
     const allowedKeys = [
-      'Backspace',
-      'ArrowLeft',
-      'ArrowRight',
-      'Tab',
-      'delete',
-      ' ',
+      "Backspace",
+      "ArrowLeft",
+      "ArrowRight",
+      "Tab",
+      "delete",
+      " ",
     ];
     const pattern = /[A-Za-z]/;
 

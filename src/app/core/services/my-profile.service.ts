@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core';
-import { AuthService } from './auth.service';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { BASE_URL } from '../constant/constant';
+import { Injectable } from "@angular/core";
+import { AuthService } from "./auth.service";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { Observable } from "rxjs";
+import { BASE_URL } from "../constant/constant";
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class MyProfileService {
   constructor(private http: HttpClient, private authService: AuthService) {}
@@ -13,7 +13,7 @@ export class MyProfileService {
   private getAuthHeaders(): HttpHeaders {
     const token = this.authService.getToken();
     if (!token) {
-      throw new Error('No valid auth token found. Please log in again.');
+      throw new Error("No valid auth token found. Please log in again.");
     }
     return new HttpHeaders({ Authorization: `Bearer ${token}` });
   }
@@ -21,8 +21,21 @@ export class MyProfileService {
   getUserPhoto(employeeId: number): Observable<string> {
     const headers = this.getAuthHeaders();
     return this.http.get(`${BASE_URL}/documents/photo/${employeeId}`, {
-      responseType: 'text',
+      responseType: "text",
       headers,
+    });
+  }
+
+  getOnboardingDetails(employeeId: number): Observable<any> {
+    return this.http.get(
+      `${BASE_URL}/personal/onboardingDetails/${employeeId}`,
+      { headers: this.getAuthHeaders() }
+    );
+  }
+
+  viewDocument(employeeId: number, docType: string): Observable<string> {
+    return this.http.get(`${BASE_URL}/personal/view/${employeeId}/${docType}`, {
+      responseType: "text",
     });
   }
 }

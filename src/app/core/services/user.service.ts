@@ -1,29 +1,28 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-import { AuthService } from 'src/app/core/services/auth.service';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { BASE_URL } from '../constant/constant';
+import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import { FormGroup } from "@angular/forms";
+import { AuthService } from "src/app/core/services/auth.service";
+import { BehaviorSubject, Observable } from "rxjs";
+import { BASE_URL } from "../constant/constant";
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class UserService {
-
   private formData: Record<string, any> = {};
   private formGroups: Record<string, FormGroup> = {};
   private documentData: FormData = new FormData();
 
   private optionalSteps: string[] = [
-    'previousEmployee',
-    'skills',
-    'certification',
+    "previousEmployee",
+    "skills",
+    "certification",
   ];
 
-  private maritalStatusSubject = new BehaviorSubject<string>('');
+  private maritalStatusSubject = new BehaviorSubject<string>("");
   maritalStatus$ = this.maritalStatusSubject.asObservable();
-  
-    private educationTypeSubject = new BehaviorSubject<string | null>(null);
+
+  private educationTypeSubject = new BehaviorSubject<string | null>(null);
 
   educationType$ = this.educationTypeSubject.asObservable();
 
@@ -34,7 +33,7 @@ export class UserService {
   constructor(private http: HttpClient, private authService: AuthService) {}
 
   private getEmployeeId(): number | null {
-    const empIdStr = sessionStorage.getItem('employeeId');
+    const empIdStr = sessionStorage.getItem("employeeId");
     return empIdStr ? Number(empIdStr) : null;
   }
   setFormData(step: string, data: any): void {
@@ -89,12 +88,12 @@ export class UserService {
   }
 
   submitJsonData(): Observable<any> {
-    const token = sessionStorage.getItem('token');
-    if (!token) throw new Error('Token not found');
+    const token = sessionStorage.getItem("token");
+    if (!token) throw new Error("Token not found");
 
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     });
 
     const employeeId = this.getEmployeeId();
@@ -106,11 +105,11 @@ export class UserService {
   }
 
   uploadDocuments(): Observable<any> {
-    const token = sessionStorage.getItem('token');
-    if (!token) throw new Error('Token not found');
+    const token = sessionStorage.getItem("token");
+    if (!token) throw new Error("Token not found");
 
     const employeeId = this.getEmployeeId();
-    if (!employeeId) throw new Error('Employee ID missing in Session Storage');
+    if (!employeeId) throw new Error("Employee ID missing in Session Storage");
 
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`,
@@ -121,5 +120,11 @@ export class UserService {
       this.documentData,
       { headers }
     );
+  }
+
+  setDocumentOne(key: string, file: File) {
+    let docs = this.getFormData("documents") || {};
+    docs[key] = file;
+    this.setFormData("documents", docs);
   }
 }
