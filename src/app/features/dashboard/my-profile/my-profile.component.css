@@ -13,6 +13,7 @@
   width: 100%;
   background: white;
   padding: 20px;
+  position: relative;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -164,9 +165,27 @@ h2 {
   cursor: pointer;
 }
 
+.profile-back-btn {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  z-index: 10;
+}
+
+.back-btn {
+  background: #ffffff;
+  box-shadow: none;
+}
+
+.gradient-icon {
+  font-size: 30px;
+  background: linear-gradient(135deg, #0a0f3c, #1c2b8c);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 .section-card {
   margin-bottom: 20px;
-  padding: 12px;
   border-radius: 10px;
 }
 
@@ -188,6 +207,10 @@ h2 {
 
 .edit-btn[_ngcontent-ng-c977669060] {
   margin-right: 10px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 30px;
   background: linear-gradient(135deg, #0a0f3c, #1c2b8c);
   color: #fff;
 }
@@ -195,13 +218,13 @@ h2 {
 .grid {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 10px, 20px;
 }
 
 .item {
   padding: 10px;
   border-radius: 6px;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .mat-mdc-card-title,
@@ -218,12 +241,18 @@ h2 {
   margin-bottom: 16px;
   font-size: 20px;
   font-weight: bold;
+  text-align: center;
 }
 
 .doc-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 16px;
+  margin-bottom: 80px;
+}
+.back {
+  background: grey !important;
+  color: white !important;
 }
 
 .doc-card {
@@ -240,17 +269,30 @@ h2 {
 
 .mat-card-title {
   margin-bottom: 15px;
-  font-size: 16px;
-  font-weight: 600;
+  font-size: 18px;
+  font-weight: bold;
 }
+.mat-mdc-card-title {
+  font-size: 18px;
+  text-decoration: underline;
+}
+
+.head {
+  font-weight: bold;
+}
+
 .step-actions {
   display: flex;
-  justify-content: flex-end;
-  margin-top: 20px;
+  gap: 10px;
+  align-items: center;
+}
+
+.push-right {
+  margin-left: auto;
 }
 
 .step-buttons {
-  margin-top: 20px;
+  margin-top: 10px;
 }
 
 .stepper-nav-container {

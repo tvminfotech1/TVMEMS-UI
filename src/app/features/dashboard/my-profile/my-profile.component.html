@@ -1,8 +1,11 @@
 <div class="main-container">
   <div class="PV-container" *ngIf="userData">
-    <h1>PROFILE INFORMATION</h1>
-    <button class="close-btn" (click)="close()">✖</button>
-
+    <div class="profile-back-btn">
+      <button mat-icon-button class="back-btn" (click)="goBack()">
+        <mat-icon class="gradient-icon">arrow_back</mat-icon>
+      </button>
+    </div>
+    <h1 class="profile-title">PROFILE INFORMATION</h1>
     <div class="profile-header">
       <div class="profile-image">
         <img
@@ -28,14 +31,15 @@
 
     <mat-card class="show" *ngIf="isLoaded">
       <div class="header">
-        <h1>Onboarding Information</h1>
+        <h1>ONBOARDING INFORMATION</h1>
         <button
-          mat-mini-fab
+          mat-raised-button
           color="primary"
           class="edit-btn"
           (click)="editOnboarding()"
         >
           <mat-icon>edit</mat-icon>
+          Edit
         </button>
       </div>
       <div class="onboarding-wrapper">
@@ -49,47 +53,49 @@
         <div class="stepper-container">
           <mat-horizontal-stepper linear #stepper>
             <mat-step label="Personal">
-              <h2 class="section-title">Personal Details</h2>
+              <h2 class="section-title">PERSONAL DETAILS</h2>
 
               <mat-card class="section-card">
                 <mat-card-title>Basic Information</mat-card-title>
                 <mat-card-content>
                   <div class="grid">
                     <div class="item">
-                      <strong>First Name:</strong>
+                      <span class="head">First Name:</span>
                       {{ onboarding.personal.fname }}
                     </div>
                     <div class="item">
-                      <strong>Middle Name:</strong>
+                      <span class="head">Middle Name:</span>
                       {{ onboarding.personal.mname }}
                     </div>
                     <div class="item">
-                      <strong>Last Name:</strong>
+                      <span class="head">Last Name:</span>
                       {{ onboarding.personal.lname }}
                     </div>
                     <div class="item">
-                      <strong>Email:</strong> {{ onboarding.personal.email }}
+                      <span class="head">Email:</span>
+                      {{ onboarding.personal.email }}
                     </div>
                     <div class="item">
-                      <strong>Gender:</strong> {{ onboarding.personal.gender }}
+                      <span class="head">Gender:</span>
+                      {{ onboarding.personal.gender }}
                     </div>
                     <div class="item">
-                      <strong>DOB:</strong>
+                      <span class="head">DOB:</span>
                       {{ onboarding.personal.dob | date : "dd-MM-yyyy" }}
                     </div>
                     <div class="item">
-                      <strong>Blood Group:</strong>
+                      <span class="head">Blood Group:</span>
                       {{ onboarding.personal.bloodGroup }}
                     </div>
                     <div class="item">
-                      <strong>Marital Status:</strong>
+                      <span class="head">Marital Status:</span>
                       {{ onboarding.personal.marital }}
                     </div>
                     <div
                       class="item"
                       *ngIf="onboarding.personal.marital === 'married'"
                     >
-                      <strong>Marriage Date:</strong>
+                      <span class="head">Marriage Date:</span>
                       {{ onboarding.personal.marriegedate }}
                     </div>
                   </div>
@@ -101,11 +107,11 @@
                 <mat-card-content>
                   <div class="grid">
                     <div class="item">
-                      <strong>Current Contact:</strong>
+                      <span class="head">Current Contact:</span>
                       {{ onboarding.personal.current_contact }}
                     </div>
                     <div class="item">
-                      <strong>Permanent Contact:</strong>
+                      <span class="head">Permanent Contact:</span>
                       {{ onboarding.personal.permanent_contact }}
                     </div>
                   </div>
@@ -117,15 +123,15 @@
                 <mat-card-content>
                   <div class="grid">
                     <div class="item">
-                      <strong>Name:</strong>
+                      <span class="head">Name:</span>
                       {{ onboarding.personal.emergency_contact_name }}
                     </div>
                     <div class="item">
-                      <strong>Phone:</strong>
+                      <span class="head">Phone:</span>
                       {{ onboarding.personal.emergency_contact_number }}
                     </div>
                     <div class="item">
-                      <strong>Relationship:</strong>
+                      <span class="head">Relationship:</span>
                       {{ onboarding.personal.emergency_relationship }}
                     </div>
                   </div>
@@ -137,23 +143,23 @@
                 <mat-card-content>
                   <div class="grid">
                     <div class="item">
-                      <strong>Address:</strong>
+                      <span class="head">Address:</span>
                       {{ onboarding.personal.current_address }}
                     </div>
                     <div class="item">
-                      <strong>City:</strong>
+                      <span class="head">City:</span>
                       {{ onboarding.personal.current_city }}
                     </div>
                     <div class="item">
-                      <strong>State:</strong>
+                      <span class="head">State:</span>
                       {{ onboarding.personal.current_state }}
                     </div>
                     <div class="item">
-                      <strong>Country:</strong>
+                      <span class="head">Country:</span>
                       {{ onboarding.personal.current_country }}
                     </div>
                     <div class="item">
-                      <strong>Pincode:</strong>
+                      <span class="head">Pincode:</span>
                       {{ onboarding.personal.current_pincode }}
                     </div>
                   </div>
@@ -165,12 +171,12 @@
                 <mat-card-content>
                   <div class="grid">
                     <div class="item">
-                      <strong>Total Experience:</strong>
+                      <span class="head">Total Experience:</span>
                       {{ onboarding.personal.exp_year }} years
                       {{ onboarding.personal.exp_month }} months
                     </div>
                     <div class="item">
-                      <strong>Relevant Experience:</strong>
+                      <span class="head">Relevant Experience:</span>
                       {{ onboarding.personal.relevantYear }} years
                     </div>
                   </div>
@@ -181,6 +187,17 @@
                 <button
                   mat-raised-button
                   color="primary"
+                  *ngIf="stepper.selectedIndex !== 0"
+                  (click)="stepper.previous()"
+                >
+                  Previous
+                </button>
+
+                <button
+                  mat-raised-button
+                  color="primary"
+                  class="push-right"
+                  *ngIf="stepper.selectedIndex !== stepper.steps.length - 1"
                   (click)="stepper.next()"
                 >
                   Next
@@ -189,17 +206,19 @@
             </mat-step>
 
             <mat-step label="KYC">
-              <h2 class="section-title">KYC Details</h2>
+              <h2 class="section-title">KYC DETAILS</h2>
 
               <mat-card class="section-card">
                 <mat-card-title>PAN Details</mat-card-title>
                 <mat-card-content>
                   <div class="grid">
                     <div class="item">
-                      <strong>PAN Number:</strong> {{ onboarding.kyc.pan }}
+                      <span class="head">PAN Number:</span>
+                      {{ onboarding.kyc.pan }}
                     </div>
                     <div class="item">
-                      <strong>PAN Name:</strong> {{ onboarding.kyc.panName }}
+                      <span class="head">PAN Name:</span>
+                      {{ onboarding.kyc.panName }}
                     </div>
                   </div>
                 </mat-card-content>
@@ -210,11 +229,11 @@
                 <mat-card-content>
                   <div class="grid">
                     <div class="item">
-                      <strong>Aadhar Number:</strong>
+                      <span class="head">Aadhar Number:</span>
                       {{ onboarding.kyc.aadhar }}
                     </div>
                     <div class="item">
-                      <strong>Aadhar Name:</strong>
+                      <span class="head">Aadhar Name:</span>
                       {{ onboarding.kyc.aadharName }}
                     </div>
                   </div>
@@ -226,13 +245,15 @@
                 <mat-card-content>
                   <div class="grid">
                     <div class="item">
-                      <strong>UAN:</strong> {{ onboarding.kyc.uan }}
+                      <span class="head">UAN:</span> {{ onboarding.kyc.uan }}
                     </div>
                     <div class="item">
-                      <strong>PF Number:</strong> {{ onboarding.kyc.pf }}
+                      <span class="head">PF Number:</span>
+                      {{ onboarding.kyc.pf }}
                     </div>
                     <div class="item">
-                      <strong>HDFC Account:</strong> {{ onboarding.kyc.hdfc }}
+                      <span class="head">HDFC Account:</span>
+                      {{ onboarding.kyc.hdfc }}
                     </div>
                   </div>
                 </mat-card-content>
@@ -242,6 +263,17 @@
                 <button
                   mat-raised-button
                   color="primary"
+                  *ngIf="stepper.selectedIndex !== 0"
+                  (click)="stepper.previous()"
+                >
+                  Previous
+                </button>
+
+                <button
+                  mat-raised-button
+                  color="primary"
+                  class="push-right"
+                  *ngIf="stepper.selectedIndex !== stepper.steps.length - 1"
                   (click)="stepper.next()"
                 >
                   Next
@@ -250,19 +282,19 @@
             </mat-step>
 
             <mat-step label="Passport">
-              <h2 class="section-title">Passport Details</h2>
+              <h2 class="section-title">PASSPORT DETAILS</h2>
 
               <mat-card class="section-card">
                 <mat-card-title>Passport Information</mat-card-title>
                 <mat-card-content>
                   <div class="grid">
                     <div class="item">
-                      <strong>Nationality:</strong>
+                      <span class="head">Nationality:</span>
                       {{ onboarding.passport.nationality }}
                     </div>
 
                     <div class="item">
-                      <strong>Has Passport?</strong>
+                      <span class="head">Has Passport?</span>
                       {{ onboarding.passport.ifPassport }}
                     </div>
 
@@ -270,7 +302,7 @@
                       class="item"
                       *ngIf="onboarding.passport.ifPassport === 'Yes'"
                     >
-                      <strong>Passport Number:</strong>
+                      <span class="head">Passport Number:</span>
                       {{ onboarding.passport.passportNumber || "N/A" }}
                     </div>
                   </div>
@@ -281,6 +313,17 @@
                 <button
                   mat-raised-button
                   color="primary"
+                  *ngIf="stepper.selectedIndex !== 0"
+                  (click)="stepper.previous()"
+                >
+                  Previous
+                </button>
+
+                <button
+                  mat-raised-button
+                  color="primary"
+                  class="push-right"
+                  *ngIf="stepper.selectedIndex !== stepper.steps.length - 1"
                   (click)="stepper.next()"
                 >
                   Next
@@ -295,22 +338,22 @@
                 <mat-card-content>
                   <div class="grid">
                     <div class="item">
-                      <strong>Father Name:</strong>
+                      <span class="head">Father Name:</span>
                       {{ onboarding.family.fatherName }}
                     </div>
 
                     <div class="item">
-                      <strong>Father DOB:</strong>
+                      <span class="head">Father DOB:</span>
                       {{ onboarding.family.fatherDOB | date }}
                     </div>
 
                     <div class="item">
-                      <strong>Mother Name:</strong>
+                      <span class="head">Mother Name:</span>
                       {{ onboarding.family.motherName }}
                     </div>
 
                     <div class="item">
-                      <strong>Mother DOB:</strong>
+                      <span class="head">Mother DOB:</span>
                       {{ onboarding.family.motherDOB | date }}
                     </div>
                   </div>
@@ -326,17 +369,17 @@
                 <mat-card-content>
                   <div class="grid">
                     <div class="item">
-                      <strong>Spouse Name:</strong>
+                      <span class="head">Spouse Name:</span>
                       {{ onboarding.family.spouseName }}
                     </div>
 
                     <div class="item">
-                      <strong>Spouse DOB:</strong>
+                      <span class="head">Spouse DOB:</span>
                       {{ onboarding.family.spouseDOB | date }}
                     </div>
 
                     <div class="item">
-                      <strong>Spouse Gender:</strong>
+                      <span class="head">Spouse Gender:</span>
                       {{ onboarding.family.spouseGender }}
                     </div>
                   </div>
@@ -361,15 +404,15 @@
 
                     <div class="grid">
                       <div class="item">
-                        <strong>Name:</strong> {{ child.name }}
+                        <span class="head">Name:</span> {{ child.name }}
                       </div>
 
                       <div class="item">
-                        <strong>DOB:</strong> {{ child.dob | date }}
+                        <span class="head">DOB:</span> {{ child.dob | date }}
                       </div>
 
                       <div class="item">
-                        <strong>Gender:</strong> {{ child.gender }}
+                        <span class="head">Gender:</span> {{ child.gender }}
                       </div>
                     </div>
 
@@ -382,6 +425,17 @@
                 <button
                   mat-raised-button
                   color="primary"
+                  *ngIf="stepper.selectedIndex !== 0"
+                  (click)="stepper.previous()"
+                >
+                  Previous
+                </button>
+
+                <button
+                  mat-raised-button
+                  color="primary"
+                  class="push-right"
+                  *ngIf="stepper.selectedIndex !== stepper.steps.length - 1"
                   (click)="stepper.next()"
                 >
                   Next
@@ -390,7 +444,7 @@
             </mat-step>
 
             <mat-step label="Education">
-              <h2 class="section-title">Education Details</h2>
+              <h2 class="section-title">EDUCATION DETAILS</h2>
 
               <ng-container
                 *ngIf="onboarding.education?.length > 0; else noEdu"
@@ -404,52 +458,52 @@
                   <mat-card-content>
                     <div class="grid">
                       <div class="item">
-                        <strong>Qualification:</strong>
+                        <span class="head">Qualification:</span>
                         {{ edu.qualification }}
                       </div>
 
                       <div class="item">
-                        <strong>Specialization:</strong>
+                        <span class="head">Specialization:</span>
                         {{ edu.specilization }}
                       </div>
 
                       <div class="item">
-                        <strong>Institute:</strong>
+                        <span class="head">Institute:</span>
                         {{ edu.instituteName }}
                       </div>
 
                       <div class="item">
-                        <strong>University:</strong>
+                        <span class="head">University:</span>
                         {{ edu.universityName }}
                       </div>
 
                       <div class="item">
-                        <strong>Study Type:</strong>
+                        <span class="head">Study Type:</span>
                         {{ edu.time }}
                       </div>
 
                       <div class="item">
-                        <strong>From:</strong>
+                        <span class="head">From:</span>
                         {{ edu.fromDate | date }}
                       </div>
 
                       <div class="item">
-                        <strong>To:</strong>
+                        <span class="head">To:</span>
                         {{ edu.toDate | date }}
                       </div>
 
                       <div class="item">
-                        <strong>Percentage:</strong>
+                        <span class="head">Percentage:</span>
                         {{ edu.percentage }}%
                       </div>
 
                       <div class="item">
-                        <strong>Roll No:</strong>
+                        <span class="head">Roll No:</span>
                         {{ edu.rollNo }}
                       </div>
 
                       <div class="item">
-                        <strong>Education Type:</strong>
+                        <span class="head">Education Type:</span>
                         {{ edu.educationType }}
                       </div>
                     </div>
@@ -465,6 +519,17 @@
                 <button
                   mat-raised-button
                   color="primary"
+                  *ngIf="stepper.selectedIndex !== 0"
+                  (click)="stepper.previous()"
+                >
+                  Previous
+                </button>
+
+                <button
+                  mat-raised-button
+                  color="primary"
+                  class="push-right"
+                  *ngIf="stepper.selectedIndex !== stepper.steps.length - 1"
                   (click)="stepper.next()"
                 >
                   Next
@@ -473,7 +538,7 @@
             </mat-step>
 
             <mat-step label="Previous Employment">
-              <h2 class="section-title">Previous Employment</h2>
+              <h2 class="section-title">PREVIOUS EMPLOYMENT</h2>
 
               <ng-container
                 *ngIf="
@@ -493,27 +558,27 @@
                   <mat-card-content>
                     <div class="grid">
                       <div class="item">
-                        <strong>Company Name:</strong>
+                        <span class="head">Company Name:</span>
                         {{ job.companyName }}
                       </div>
 
                       <div class="item">
-                        <strong>Designation:</strong>
+                        <span class="head">Designation:</span>
                         {{ job.designation }}
                       </div>
 
                       <div class="item">
-                        <strong>Employment Type:</strong>
+                        <span class="head">Employment Type:</span>
                         {{ job.employmentType }}
                       </div>
 
                       <div class="item">
-                        <strong>Start Date:</strong>
+                        <span class="head">Start Date:</span>
                         {{ job.startDate | date }}
                       </div>
 
                       <div class="item">
-                        <strong>End Date:</strong>
+                        <span class="head">End Date:</span>
                         {{ job.endDate | date }}
                       </div>
                     </div>
@@ -529,6 +594,17 @@
                 <button
                   mat-raised-button
                   color="primary"
+                  *ngIf="stepper.selectedIndex !== 0"
+                  (click)="stepper.previous()"
+                >
+                  Previous
+                </button>
+
+                <button
+                  mat-raised-button
+                  color="primary"
+                  class="push-right"
+                  *ngIf="stepper.selectedIndex !== stepper.steps.length - 1"
                   (click)="stepper.next()"
                 >
                   Next
@@ -537,7 +613,7 @@
             </mat-step>
 
             <mat-step label="Skills">
-              <h2 class="section-title">Skills</h2>
+              <h2 class="section-title">SKILLS</h2>
 
               <ng-container
                 *ngIf="onboarding.skills?.length > 0; else noPrevEmp"
@@ -551,32 +627,32 @@
                   <mat-card-content>
                     <div class="grid">
                       <div class="item">
-                        <strong>Skill Name:</strong>
+                        <span class="head">Skill Name:</span>
                         {{ skills.skillName }}
                       </div>
 
                       <div class="item">
-                        <strong>Skill Category:</strong>
+                        <span class="head">Skill Category:</span>
                         {{ skills.skillCategories }}
                       </div>
 
                       <div class="item">
-                        <strong>Version:</strong>
+                        <span class="head">Version:</span>
                         {{ skills.versionNum }}
                       </div>
 
                       <div class="item">
-                        <strong>Experience in Years:</strong>
+                        <span class="head">Experience in Years:</span>
                         {{ skills.experience_year }}
                       </div>
 
                       <div class="item">
-                        <strong>Experience in months:</strong>
+                        <span class="head">Experience in months:</span>
                         {{ skills.exp_month }}
                       </div>
 
                       <div class="item">
-                        <strong>Ratings:</strong>
+                        <span class="head">Ratings:</span>
                         {{ skills.selfRate }}
                       </div>
                     </div>
@@ -592,6 +668,17 @@
                 <button
                   mat-raised-button
                   color="primary"
+                  *ngIf="stepper.selectedIndex !== 0"
+                  (click)="stepper.previous()"
+                >
+                  Previous
+                </button>
+
+                <button
+                  mat-raised-button
+                  color="primary"
+                  class="push-right"
+                  *ngIf="stepper.selectedIndex !== stepper.steps.length - 1"
                   (click)="stepper.next()"
                 >
                   Next
@@ -600,7 +687,7 @@
             </mat-step>
 
             <mat-step label="Certifications">
-              <h2 class="section-title">Certification</h2>
+              <h2 class="section-title">CERTIFICATION</h2>
 
               <ng-container
                 *ngIf="onboarding.certification?.length > 0; else noPrevEmp"
@@ -614,22 +701,22 @@
                   <mat-card-content>
                     <div class="grid">
                       <div class="item">
-                        <strong>Certification Name:</strong>
+                        <span class="head">Certification Name:</span>
                         {{ cert.certificateName }}
                       </div>
 
                       <div class="item">
-                        <strong>Certified By:</strong>
+                        <span class="head">Certified By:</span>
                         {{ cert.certifiedBy }}
                       </div>
 
                       <div class="item">
-                        <strong>Completion Date:</strong>
+                        <span class="head">Completion Date:</span>
                         {{ cert.completionDate | date }}
                       </div>
 
                       <div class="item">
-                        <strong>Marks:</strong>
+                        <span class="head">Marks:</span>
                         {{ cert.marks }}
                       </div>
                     </div>
@@ -645,6 +732,17 @@
                 <button
                   mat-raised-button
                   color="primary"
+                  *ngIf="stepper.selectedIndex !== 0"
+                  (click)="stepper.previous()"
+                >
+                  Previous
+                </button>
+
+                <button
+                  mat-raised-button
+                  color="primary"
+                  class="push-right"
+                  *ngIf="stepper.selectedIndex !== stepper.steps.length - 1"
                   (click)="stepper.next()"
                 >
                   Next
@@ -653,7 +751,7 @@
             </mat-step>
 
             <mat-step label="Documents">
-              <h2 class="section-title">Uploaded Documents</h2>
+              <h2 class="section-title">UPLOADED DOCUMENTS</h2>
 
               <div class="doc-grid">
                 <button
@@ -747,13 +845,33 @@
                 </button>
               </div>
 
-              <div class="step-buttons">
+              <div class="step-actions">
                 <button
                   mat-raised-button
                   color="primary"
+                  *ngIf="stepper.selectedIndex !== 0"
                   (click)="stepper.previous()"
                 >
                   Previous
+                </button>
+
+                <button
+                  mat-raised-button
+                  color="primary"
+                  class="push-right"
+                  *ngIf="stepper.selectedIndex !== stepper.steps.length - 1"
+                  (click)="stepper.next()"
+                >
+                  Next
+                </button>
+
+                <button
+                  mat-raised-button
+                  class="back push-right"
+                  *ngIf="stepper.selectedIndex === stepper.steps.length - 1"
+                  (click)="goBack()"
+                >
+                  Back
                 </button>
               </div>
             </mat-step>
@@ -788,7 +906,7 @@
         </mat-dialog-content>
 
         <mat-dialog-actions align="end">
-          <button mat-raised-button mat-dialog-close>Close</button>
+          <button mat-raised-button color="primary">Close</button>
         </mat-dialog-actions>
       </ng-template>
     </mat-card>

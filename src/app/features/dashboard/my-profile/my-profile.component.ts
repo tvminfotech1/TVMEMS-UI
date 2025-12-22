@@ -8,6 +8,7 @@ import { MatDialog } from "@angular/material/dialog";
 import { DomSanitizer, SafeResourceUrl } from "@angular/platform-browser";
 import { Router } from "@angular/router";
 import { OnboardingPatchService } from "./onboarding-patch.service";
+import { MatStepper } from "@angular/material/stepper";
 
 @Component({
   selector: "app-my-profile",
@@ -25,6 +26,7 @@ export class MyProfileComponent implements OnInit {
   isLoaded = false;
   @ViewChild("documentPopup") documentPopup!: TemplateRef<any>;
   popupData: any = {};
+  @ViewChild(MatStepper) stepper!: MatStepper;
 
   constructor(
     private authService: AuthService,
@@ -125,6 +127,9 @@ export class MyProfileComponent implements OnInit {
     this.patchService.setOnboardingData(this.onboarding);
     sessionStorage.setItem("editMode", "true");
     this.router.navigate(["/mainlayout/personal"]);
+  }
+  goBack() {
+    this.stepper.selectedIndex = 0;
   }
 
   goNext(stepper: any) {
