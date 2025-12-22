@@ -170,15 +170,17 @@ h2 {
   top: 16px;
   left: 16px;
   z-index: 10;
+  
 }
 
 .back-btn {
   background: #ffffff;
   box-shadow: none;
+  align-content: center;
 }
 
 .gradient-icon {
-  font-size: 30px;
+  font-size: 26px;
   background: linear-gradient(135deg, #0a0f3c, #1c2b8c);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
