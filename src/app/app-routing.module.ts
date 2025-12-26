@@ -18,7 +18,6 @@ import { LoginComponent } from "./features/logins/login/login.component";
 import { SignupComponent } from "./features/logins/signup/signup.component";
 import { AdminComponent } from "./features/form/userList/admin.component";
 import { AdminLoginComponent } from "./features/logins/admin-login/admin-login.component";
-import { EmployeeDataComponent } from "./features/employee-data/employee-data.component";
 import { LoginByNumberComponent } from "./features/logins/login-by-number/login-by-number.component";
 import { ThankYouComponent } from "./features/form/onboadingForm/thank-you/thank-you.component";
 import { PendingUserComponent } from "./features/form/pending-user/pending-user.component";
@@ -63,7 +62,6 @@ const routes: Routes = [
 
   { path: "admin", component: AdminComponent },
   { path: "adminLogin", component: AdminLoginComponent },
-  { path: "employeeData/:id", component: EmployeeDataComponent },
   { path: "thankYou", component: ThankYouComponent },
   { path: "pendingUser", component: PendingUserComponent },
 

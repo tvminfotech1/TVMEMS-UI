@@ -4,7 +4,7 @@ import { UserService } from "../../../../core/services/user.service";
 import { Router } from "@angular/router";
 import { MainlayoutService } from "src/app/core/services/main-layout.service";
 import { FormProgressService } from "src/app/core/services/form-progress.service";
-import { OnboardingPatchService } from "src/app/features/dashboard/my-profile/onboarding-patch.service";
+import { OnboardingPatchService } from "src/app/core/services/onboarding-patch.service";
 @Component({
   selector: "app-certificate",
   templateUrl: "./certificate.component.html",

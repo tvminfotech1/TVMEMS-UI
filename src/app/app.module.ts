@@ -22,7 +22,6 @@ import { LoginComponent } from "./features/logins/login/login.component";
 import { SignupComponent } from "./features/logins/signup/signup.component";
 import { AdminComponent } from "./features/form/userList/admin.component";
 import { AdminLoginComponent } from "./features/logins/admin-login/admin-login.component";
-import { EmployeeDataComponent } from "./features/employee-data/employee-data.component";
 import { LoginByNumberComponent } from "./features/logins/login-by-number/login-by-number.component";
 import { PendingUserComponent } from "./features/form/pending-user/pending-user.component";
 import { AuthInterceptor } from "./core/interceptors/auth.interceptor";
@@ -107,7 +106,6 @@ import { MatStepperModule } from "@angular/material/stepper";
     SignupComponent,
     AdminComponent,
     AdminLoginComponent,
-    EmployeeDataComponent,
     LoginByNumberComponent,
     PendingUserComponent,
     ThankYouComponent,

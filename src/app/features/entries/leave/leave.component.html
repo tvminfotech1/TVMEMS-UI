@@ -63,13 +63,11 @@
     <div class="table-section">
       <div class="table-wrapper">
         <div class="table-tabs">
-          <button
-            class="tab-button"
-            [class.active]="activeTab === 'leave'"
-            (click)="switchTab('leave')"
+          <h3
+            class="tab-div"
           >
             Leave Requests
-          </button>
+        </h3>
         </div>
         <div class="table-controls">
           <div class="date-range-inline">
@@ -119,7 +117,7 @@
           </div>
         </div>
 
-        <div class="table-container" *ngIf="activeTab === 'leave'">
+        <div class="table-container">
           <table class="leave-table">
             <thead class="header-table">
               <tr>

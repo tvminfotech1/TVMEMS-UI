@@ -34,7 +34,6 @@ export class LeaveComponent implements OnInit {
   employeeId = "";
   showApplyLeaveModal = false;
   showCompOffModal = false;
-  activeTab: "leave" | "compoff" = "leave";
   isEmployeeValid: boolean = false;
 
   leaveForm!: FormGroup;
@@ -665,12 +664,6 @@ rejectRequest(id?: number): void {
     }
   }
 
-  switchTab(tab: "leave" | "compoff"): void {
-    this.activeTab = tab;
-    this.loadLeaves();
-    this.calculateLeaveBalances();
-    this.updateLeaveCards();
-  }
   formatDateRange(): string {
   const date = new Date(this.selectedDate);
 

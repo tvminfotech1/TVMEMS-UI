@@ -91,6 +91,13 @@
 .employee-view {
   background-color: #0a0f3c;
 }
+.tab-div{
+    font-size: 30px;
+    font-weight: 800;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #0a0f3c;
+}
 
 .page-title {
   text-align: center;
@@ -294,7 +301,7 @@
   max-width: 100%;
   box-sizing: border-box;
   overflow-x: hidden;
-  margin-top: 10px;
+  margin-top: 30px;
 }
 
 .table-controls {

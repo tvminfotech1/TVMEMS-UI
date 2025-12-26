@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AnnouncementService } from './announcement.service';
+import { AnnouncementService } from '../../../core/services/announcement.service';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { AlertService } from 'src/app/core/services/alert.service';
 

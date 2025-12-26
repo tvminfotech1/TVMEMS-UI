@@ -39,12 +39,12 @@
   animation: fadeIn 0.3s ease-in-out;
   position: relative;
 }
-.ts-field{
+.ts-field {
   width: 110px !important;
   height: 10px !important;
 }
 
-.ts-input{
+.ts-input {
   width: 110px !important;
   height: 48px !important;
 }
@@ -203,8 +203,9 @@ button[mat-raised-button] {
   font-size: 0.9rem;
   padding: 0.5rem 1.2rem;
   border-radius: 6px;
-  background-color: #3f51b5;
-  color: white;
+  background: linear-gradient(135deg, #0a0f3c, #1c2b8c);
+  filter: drop-shadow(1px 1px 1px #07296c);
+  color: #fff;
   transition: background-color 0.3s ease;
 }
 
@@ -257,7 +258,6 @@ button[mat-raised-button]:hover {
 .compact-select .mat-mdc-select-panel {
   max-height: 200px !important;
 }
-
 
 .mat-select-arrow {
   display: none !important;
@@ -334,11 +334,10 @@ button[mat-raised-button]:hover {
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0);
 }
 
-.accordion-content input{
+.accordion-content input {
   height: 56px;
   margin-top: 1rem;
 }
-
 
 .timesheet-classic-container .classic-table {
   width: 100%;
@@ -352,8 +351,7 @@ button[mat-raised-button]:hover {
   border-radius: 10px;
 }
 
-.timesheet-classic-container .classic-table th
-{
+.timesheet-classic-container .classic-table th {
   padding: 0.6rem 0.8rem;
   text-align: center;
   vertical-align: middle;
@@ -377,14 +375,16 @@ button[mat-raised-button]:hover {
   box-sizing: border-box;
   text-align: center;
 }
-::ng-deep .mat-mdc-form-field .mat-mdc-text-field-wrapper.mdc-text-field--outlined .mat-mdc-form-field-infix {
-    padding-top: 12px !important;
-    padding-bottom: 12px !important;
-    min-height: 40px !important;
-    display: flex !important;
-    align-items: center !important;
+::ng-deep
+  .mat-mdc-form-field
+  .mat-mdc-text-field-wrapper.mdc-text-field--outlined
+  .mat-mdc-form-field-infix {
+  padding-top: 12px !important;
+  padding-bottom: 12px !important;
+  min-height: 40px !important;
+  display: flex !important;
+  align-items: center !important;
 }
-
 
 .timesheet-classic-container .classic-table input:focus,
 .timesheet-classic-container .classic-table select:focus,
@@ -394,7 +394,7 @@ button[mat-raised-button]:hover {
   box-shadow: 0 0 4px #07296c;
 }
 
-.status-pending { 
+.status-pending {
   color: #f39c12;
   font-weight: bold;
 }
@@ -563,15 +563,15 @@ button[mat-raised-button]:hover {
   }
 
   .compact-select {
-  width: 100% !important;
-  height: 13px !important;
-  margin-bottom: 1rem;
-}
+    width: 100% !important;
+    height: 13px !important;
+    margin-bottom: 1rem;
+  }
 
-.accordion-content input{
-  height: 56px;
-  margin-top: 0.2rem;
-}
+  .accordion-content input {
+    height: 56px;
+    margin-top: 0.2rem;
+  }
 
   .employee-history-section {
     width: 95%;
@@ -648,7 +648,7 @@ button[mat-raised-button]:hover {
     text-align: left;
   }
 
-  .history-table td::before { 
+  .history-table td::before {
     content: attr(data-label);
     font-weight: 600;
     color: #34495e;
@@ -672,7 +672,7 @@ button[mat-raised-button]:hover {
     text-transform: capitalize;
   }
 
- .classic-table .no-data-row td::before {
+  .classic-table .no-data-row td::before {
     content: none !important;
   }
 
@@ -824,7 +824,6 @@ button[mat-raised-button]:hover {
 }
 
 @media (max-width: 600px) {
-
   .timesheet-classic-container {
     padding: 0.5rem;
   }
@@ -922,22 +921,20 @@ button[mat-raised-button]:hover {
     text-align: left;
   }
 
-  .history-table td::before { 
+  .history-table td::before {
     content: attr(data-label);
     font-weight: 300;
     color: #34495e;
     flex: 1 0 45%;
-    text-align: left
-}
+    text-align: left;
+  }
 
-.timesheet-classic-container .classic-table td {
-  padding: 25px;
-}
-
+  .timesheet-classic-container .classic-table td {
+    padding: 25px;
+  }
 }
 
 @media (max-width: 800px) {
-
   .timesheet-classic-container {
     padding: 0.5rem;
   }
@@ -1035,15 +1032,15 @@ button[mat-raised-button]:hover {
     text-align: left;
   }
 
-  .history-table td::before { 
+  .history-table td::before {
     content: attr(data-label);
     font-weight: 300;
     color: #34495e;
     flex: 1 0 45%;
-    text-align: left
-}
+    text-align: left;
+  }
 
-.timesheet-classic-container .classic-table td {
-  padding: 25px;
-}
+  .timesheet-classic-container .classic-table td {
+    padding: 25px;
+  }
 }

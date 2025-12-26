@@ -5,7 +5,7 @@ import { Router } from "@angular/router";
 import { AbstractControl, ValidatorFn } from "@angular/forms";
 import { MainlayoutService } from "src/app/core/services/main-layout.service";
 import { FormProgressService } from "src/app/core/services/form-progress.service";
-import { OnboardingPatchService } from "src/app/features/dashboard/my-profile/onboarding-patch.service";
+import { OnboardingPatchService } from "src/app/core/services/onboarding-patch.service";
 
 function startDateValidator(): ValidatorFn {
   return (control: AbstractControl) => {

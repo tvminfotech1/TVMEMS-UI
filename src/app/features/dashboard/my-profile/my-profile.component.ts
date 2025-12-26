@@ -7,7 +7,7 @@ import { Location } from "@angular/common";
 import { MatDialog } from "@angular/material/dialog";
 import { DomSanitizer, SafeResourceUrl } from "@angular/platform-browser";
 import { Router } from "@angular/router";
-import { OnboardingPatchService } from "./onboarding-patch.service";
+import { OnboardingPatchService } from "../../../core/services/onboarding-patch.service";
 import { MatStepper } from "@angular/material/stepper";
 
 @Component({
